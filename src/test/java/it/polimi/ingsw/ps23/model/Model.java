@@ -28,6 +28,3 @@ public class Model extends Observable implements Cloneable {
 	}
 	public void inizializeGame() {
 		List cities = parseCSVFile("src/test/java/it/polimi/ingsw/ps23/CSV/cities.csv");
-		
-	}
-}
