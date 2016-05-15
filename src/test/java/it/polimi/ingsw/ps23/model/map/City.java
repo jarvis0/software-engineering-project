@@ -19,5 +19,4 @@ public abstract class City {
 	public void adiacent() {
 		
 	}
-			
 }
