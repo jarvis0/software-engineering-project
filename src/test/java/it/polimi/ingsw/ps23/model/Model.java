@@ -15,16 +15,19 @@ public class Model extends Observable implements Cloneable {
 	public void setPlayerNumber(int playerNumber) {
 		this.playerNumber = playerNumber;
 	}
-	private List parseCSVFile(String path) {
-			CSVReader reader;
-			try {
-				reader = new CSVReader(new FileReader(path));
-				ArrayList<String[]> a = (ArrayList<String[]>) reader.readAll();
-				System.out.println(a.);
-			} catch (IOException e) {
-				System.out.println("Cannot load cities.");
-			}
-			return null;
+	private List<String[]> parseCSVFile(String path) throws IOException {
+		CSVReader reader = new CSVReader(new FileReader(path));
+		return reader.readAll();
 	}
 	public void inizializeGame() {
-		List cities = parseCSVFile("src/test/java/it/polimi/ingsw/ps23/CSV/cities.csv");
+		try {
+			List<String[]> cities = parseCSVFile("src/test/java/it/polimi/ingsw/ps23/CSV/cities.csv");
+			for(String[] temp : cities) {
+				System.out.println(temp[0]);
+				//needed: link to City class
+			}
+		} catch (IOException e) {
+			System.out.println("Cannot load cities.");
+		}
+	}
+}
