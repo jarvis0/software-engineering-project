@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import it.polimi.ingsw.ps23.model.Player;
 
 public abstract class City {
-	private String name;
-	private Color color;
+	protected String name;
+	protected Color color;
 	private ArrayList<Player> emporiumList;
 	
 	public void buildEmporium(Player player) throws AlreadyConstructedHereException{ //dovrebbe ritornare il nome della città
