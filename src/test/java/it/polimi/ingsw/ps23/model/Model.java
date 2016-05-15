@@ -1,6 +1,9 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.io.FileReader;
 import java.util.Observable;
+
+import com.opencsv.CSVReader;
 
 public class Model extends Observable implements Cloneable {
 	
@@ -11,6 +14,6 @@ public class Model extends Observable implements Cloneable {
 	}
 	
 	public void inizializeGame() {
-		
+		CSVReader reader = new CSVReader(new FileReader("../../CSV/cities.csv"));
 	}
 }
