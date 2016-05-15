@@ -10,7 +10,6 @@ public class Model extends Observable implements Cloneable {
 		this.playerNumber = playerNumber;
 	}
 	
-	public void inizializeGame() {
-		
+	public void inizializeGame() {		
 	}
 }
