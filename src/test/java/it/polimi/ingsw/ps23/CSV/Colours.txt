@@ -1,0 +1,5 @@
+0xffd700 - gold
+0xc0c0c0 - silver
+0xcd7f32 - bronze
+0xe6e7e8 - blue iron
+0x551a8b - purple
