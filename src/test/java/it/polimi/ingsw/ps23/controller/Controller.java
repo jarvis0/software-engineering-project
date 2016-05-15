@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.view.View;
 
 public class Controller implements Observer {
 
-	private Model model;
+	private final Model model;
 	private View view;
 	
 	public Controller(Model model, View view) {
@@ -18,7 +18,11 @@ public class Controller implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		
+		if(o != view || !(arg instanceof Integer)){
+			throw new IllegalArgumentException();
+		}
+		model.setPlayerNumber(((int) arg));
+		model.inizializeGame();
 	}
 
 }

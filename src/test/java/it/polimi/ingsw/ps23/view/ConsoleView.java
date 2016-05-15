@@ -15,16 +15,23 @@ public class ConsoleView extends View {
 		this.output = new PrintStream(output);
 	}	
 	
+	private void setPlayerNumber() {
+		output.println("Player number: ");
+		setChanged();
+		notifyObservers(scanner.nextInt());
+	}
+	
 	@Override
 	public void run() {
+		setPlayerNumber();
 		while(true){
-			output.println("Indicare una scelta:");
+			output.println("Make a choice: ");
 			String text = scanner.next();
 			try {				
 				//Choice choice = Choice.parseInput(text);
 				//processChoice(choice);			
 			} catch(IllegalArgumentException e) {
-				output.println("Errore di input!");
+				output.println("Input error!");
 			}
 		}		
 	}
