@@ -7,16 +7,16 @@ import it.polimi.ingsw.ps23.model.Player;
 public abstract class City {
 	protected String name;
 	protected Color color;
-	private ArrayList<Player> emporiumList;
+	protected ArrayList<Player> emporiumList;
 	
-	public void buildEmporium(Player player) throws AlreadyConstructedHereException{ //dovrebbe ritornare il nome della città
+	public void buildEmporium(Player player) throws AlreadyBuiltHereException{ //dovrebbe ritornare il nome della città
 		if (emporiumList.contains(player))
-			throw new AlreadyConstructedHereException();
+			throw new AlreadyBuiltHereException();
 		else 
 			emporiumList.add(player); //qui dovrebbe far ritornare la città in cui ha costruito al player
 	}
 	
-	public void adiacent(){
+	public void adiacent() {
 		
 	}
 			
