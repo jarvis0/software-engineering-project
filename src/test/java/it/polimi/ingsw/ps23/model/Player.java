@@ -13,9 +13,33 @@ public class Player {
 	private int nobilityTrackPoints;
 	private int gold;
 	private int assistant;
-	private ArrayList<City> buildedEmporium;
+	private ArrayList<City> builtEmporiums;
 	//private ArrayList<PermissionHandDeck> permissionHand;
-	//private ArrayList<PoliticHandDeck> politicHand;
+	//private ArrayList<PoliticHandDeck> politicHand;	
+		
+	public String getId() {
+		return id;
+	}
+
+	public int getVictoryPoints() {
+		return victoryPoints;
+	}
+
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
+
+	public int getGold() {
+		return gold;
+	}
+
+	public int getAssistant() {
+		return assistant;
+	}
+
+	public ArrayList<City> getBuiltEmporium() {
+		return builtEmporiums;
+	}
 	
 	public Player(String id, int gold,int assistant) {
 		this.id = id;
@@ -23,7 +47,7 @@ public class Player {
 		nobilityTrackPoints = 0;
 		this.gold = gold;
 		this.assistant = assistant;
-		buildedEmporium = new ArrayList<City>();
+		builtEmporiums = new ArrayList<City>();
 		//permissionHand = new ArrayList<PermissionHandDeck>();
 		//politicHand = new ArrayList<PoliticHandDeck>();
 	}
@@ -63,7 +87,7 @@ public class Player {
 	}
 	
 	public int remaingEmporium() {
-		return buildedEmporium.size();// - tutte le città della mappa
+		return builtEmporiums.size();// - tutte le città della mappa
 	}
 	
 	
