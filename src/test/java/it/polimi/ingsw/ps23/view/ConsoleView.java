@@ -15,15 +15,15 @@ public class ConsoleView extends View {
 		this.output = new PrintStream(output);
 	}	
 	
-	private void setPlayerNumber() {
-		output.println("Player number: ");
+	private void setPlayersNumber() {
+		output.println("Players number: ");
 		setChanged();
 		notifyObservers(scanner.nextInt());
 	}
 	
 	@Override
 	public void run() {
-		setPlayerNumber();
+		setPlayersNumber();
 		while(true){
 			output.println("Make a choice: ");
 			String text = scanner.next();
