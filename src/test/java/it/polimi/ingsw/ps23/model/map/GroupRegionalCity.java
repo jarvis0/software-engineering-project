@@ -11,7 +11,7 @@ public class GroupRegionalCity extends Region{
 	//private ArrayList<PermissionCard> permissionCard;
 	
 	public GroupRegionalCity() {
-		cities = new ArrayList<City>();
+		super();
 		//create bonus tile per regione
 	}
 

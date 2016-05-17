@@ -6,7 +6,15 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public abstract class Region {
 	
-	protected ArrayList<City> cities = new ArrayList<City>();
+	private ArrayList<City> cities;
+	
+	protected ArrayList<City> getCities() {
+		return cities;
+	}
+
+	public Region() {
+		cities = new ArrayList<City>();
+	}
 	
 	public void addCity(City city) throws InvalidCityException {
 		if(!cities.contains(city)){

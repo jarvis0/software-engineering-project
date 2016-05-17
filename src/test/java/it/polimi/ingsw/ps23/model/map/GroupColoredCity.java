@@ -8,9 +8,10 @@ public class GroupColoredCity extends Region{
 
 	//private Arraylist<ColorBonusTile> bonus;
 	
-	public GroupColoredCity() {
-		cities = new ArrayList<City>();
+	public GroupColoredCity(){
+		super();
 		//create bonus tile per regione
+		
 	}
 
 	@Override
