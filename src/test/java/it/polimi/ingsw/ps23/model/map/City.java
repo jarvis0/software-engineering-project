@@ -8,7 +8,6 @@ public abstract class City {
 	protected String name;
 	protected Color color;
 	protected ArrayList<Player> emporiumList;
-
 	public void buildEmporium(Player player) throws AlreadyBuiltHereException{ //dovrebbe ritornare il nome della città
 		if (emporiumList.contains(player))
 			throw new AlreadyBuiltHereException();
