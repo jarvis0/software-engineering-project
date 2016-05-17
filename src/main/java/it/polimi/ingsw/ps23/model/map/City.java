@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import it.polimi.ingsw.ps23.model.Player;
 
 public abstract class City {
-	protected String name;
-	protected Color color;
-	protected ArrayList<Player> emporiumList;
+	private String name;
+	private Color color;
+	private ArrayList<Player> emporiumList;
+	
+	public City(String name, Color color){
+		this.name = name;
+		this.color = color;
+		emporiumList = new ArrayList<Player>();
+	}
 	
 	public void buildEmporium(Player player) throws AlreadyBuiltHereException{ //dovrebbe ritornare il nome della città
 		if (emporiumList.contains(player))

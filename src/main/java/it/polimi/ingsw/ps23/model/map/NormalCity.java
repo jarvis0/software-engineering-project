@@ -9,9 +9,7 @@ public class NormalCity extends City {
  //	RewardToken cityToken;
 	
 	public NormalCity(String name, Color color){ /* RewardToken cityToken)*/
-		this.name = name;
-		this.color = color;
-		emporiumList = new ArrayList<Player>();
+		super (name, color);
 		//this.cityToken = cityToken;
 	}
 }
