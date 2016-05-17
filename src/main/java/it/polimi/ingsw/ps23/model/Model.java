@@ -22,7 +22,7 @@ public class Model extends Observable implements Cloneable {
 	private void loadCities() {
 		List<String[]> cities = null;
 		try {
-			cities = parseCSVFile("src/test/java/it/polimi/ingsw/ps23/CSV/cities.csv");
+			cities = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/CSV/cities.csv");
 		} catch (IOException e) {
 			System.out.println("Cannot load cities.");
 		}
