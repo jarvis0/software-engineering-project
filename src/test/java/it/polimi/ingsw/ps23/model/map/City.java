@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.model.Player;
 public abstract class City {
 	protected String name;
 	protected Color color;
-	private ArrayList<Player> emporiumList;
+	protected ArrayList<Player> emporiumList;
 	
 	public void buildEmporium(Player player) throws AlreadyBuiltHereException{ //dovrebbe ritornare il nome della città
 		if (emporiumList.contains(player))
