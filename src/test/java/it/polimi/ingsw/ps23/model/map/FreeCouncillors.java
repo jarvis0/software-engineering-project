@@ -8,4 +8,17 @@ public class FreeCouncillors {
 		freeCouncillors = new ArrayList<Councillor>();
 	}
 	
+	public void insertNewFreeCouncillor(Councillor councillor){
+		freeCouncillors.add(councillor);
+	}
+
+	public ArrayList<Councillor> getFreeCouncillors() {
+		return freeCouncillors;
+	}
+	
+	public void selectCouncillor (int i, Council nameCouncil){
+		insertNewFreeCouncillor(nameCouncil.pushCouncillor(freeCouncillors.remove(i)));
+	}
+	
+	
 }

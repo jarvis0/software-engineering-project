@@ -8,5 +8,6 @@ public class Councillor {
 	{
 		this.color=color;
 	}
+	
 
 }
