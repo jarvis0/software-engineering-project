@@ -1,13 +1,9 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
-import it.polimi.ingsw.ps23.model.Player;
+public class PoliticCardBonus extends Bonus {
 
-public class PoliticCardBonus extends Bonus{
-
-	@Override
-	public void updateBonus(Player player) {
-		// TODO Auto-generated method stub
-		
+	public PoliticCardBonus() {
+		super.setId("politicCardBonus");
 	}
-
+	
 }
