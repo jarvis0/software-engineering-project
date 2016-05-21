@@ -21,8 +21,8 @@ public class Controller implements Observer {
 		if(o != view || !(arg instanceof Integer)){
 			throw new IllegalArgumentException();
 		}
-		model.setPlayerNumber(((int) arg));
-		model.inizializeGame();
+		model.setPlayersNumber(((int) arg));
+		model.getGame();
 	}
 
 }

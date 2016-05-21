@@ -1,15 +1,27 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.awt.Color;
 import java.util.ArrayList;
+import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.Player;
 
 public abstract class City {
-	protected String name;
-	protected Color color;
-	protected ArrayList<Player> emporiumList;
+	private String name;
+	private GameColor color;
+	private ArrayList<Player> emporiumList;
 	
-	public void buildEmporium(Player player) throws AlreadyBuiltHereException{ //dovrebbe ritornare il nome della città
+	public City(String name, GameColor color) {
+		this.name = name;
+		this.color = color;
+		
+		emporiumList = new ArrayList<Player>();
+	}
+	
+	@Override
+	public String toString() {
+		return name + " " + color;
+	}
+	
+	public void buildEmporium(Player player) throws AlreadyBuiltHereException { //dovrebbe ritornare il nome della città
 		if (emporiumList.contains(player))
 			throw new AlreadyBuiltHereException();
 		else 
