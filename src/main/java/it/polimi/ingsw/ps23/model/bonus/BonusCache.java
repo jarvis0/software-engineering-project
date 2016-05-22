@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model;
+package it.polimi.ingsw.ps23.model.bonus;
 
 import java.util.HashMap;
 
@@ -20,33 +20,34 @@ public class BonusCache {
 	private static final String ADDITIONAL_MAIN_ACTION = "additionalMainAction";
 	private static final String NOBILITY_TRACK_STEP = "nobilityTrackStep";
 	
-	public static Bonus getBonus(String bonusId) {
+	public static Bonus getBonus(String bonusId, int value) {
 		Bonus cachedBonus = bonusMap.get(bonusId);
-		return (Bonus) cachedBonus.clone();
+		Bonus bonus = (Bonus) cachedBonus.clone();
+		bonus.setValue(value);
+		return bonus;
 	}
-	private static void putBonus(Bonus bonus, String Id) {
-		bonus.setId(Id);
+	private static void putBonus(Bonus bonus) {
 		bonusMap.put(bonus.getId(), bonus);
 	}
 	
 	public static void loadCache() {
-		AssistantBonus assistantBonus = new AssistantBonus();
-		putBonus(assistantBonus, ASSISTANT);
+		AssistantBonus assistantBonus = new AssistantBonus(ASSISTANT);
+		putBonus(assistantBonus);
 		
-		CoinBonus coinBonus = new CoinBonus();
-		putBonus(coinBonus, COIN);
+		CoinBonus coinBonus = new CoinBonus(COIN);
+		putBonus(coinBonus);
 		
-		VictoryPointBonus victoryPointBonus = new VictoryPointBonus();
-		putBonus(victoryPointBonus, VICTORY_POINT);
+		VictoryPointBonus victoryPointBonus = new VictoryPointBonus(VICTORY_POINT);
+		putBonus(victoryPointBonus);
 		
-		PoliticCardBonus politicCardBonus = new PoliticCardBonus();
-		putBonus(politicCardBonus, POLITIC_CARD);
+		PoliticCardBonus politicCardBonus = new PoliticCardBonus(POLITIC_CARD);
+		putBonus(politicCardBonus);
 		
-		AdditionalMainActionBonus additionalMainActionBonus = new AdditionalMainActionBonus();
-		putBonus(additionalMainActionBonus, ADDITIONAL_MAIN_ACTION);
+		AdditionalMainActionBonus additionalMainActionBonus = new AdditionalMainActionBonus(ADDITIONAL_MAIN_ACTION);
+		putBonus(additionalMainActionBonus);
 		
-		NobilityTrackStepBonus nobilityTrackStepBonus = new NobilityTrackStepBonus();
-		putBonus(nobilityTrackStepBonus, NOBILITY_TRACK_STEP);
+		NobilityTrackStepBonus nobilityTrackStepBonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
+		putBonus(nobilityTrackStepBonus);
 	}
 	
 }
