@@ -1,10 +1,10 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.awt.Color;
+import it.polimi.ingsw.ps23.model.GameColor;
 
 public class Councillor {
-	Color color;
-	public Councillor (Color color)
+	GameColor color;
+	public Councillor (GameColor color)
 	{
 		this.color=color;
 	}
