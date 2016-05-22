@@ -17,6 +17,12 @@ public class Game {
 	private HashMap<String, City> cities;
 	private Deck politicDeck;
 	private Deck permissionDeck;
+	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
+	private static final String CITIES_CSV = "cities.csv";
+	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
+	private static final String COUNCILLORS_CSV = "councillors.csv";
+	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
+	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	
 	public Game() {
 		loadCities();
@@ -39,7 +45,7 @@ public class Game {
 	private void loadCities() {
 		List<String[]> rawCities = new ArrayList<>();
 		try {
-			rawCities = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/cities.csv");
+			rawCities = parseCSVFile(PATH + CITIES_CSV);
 		} catch (IOException e) {
 			System.out.println("Cannot load cities.");
 		}
@@ -50,7 +56,7 @@ public class Game {
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new ArrayList<>();
 		try {
-			rawPoliticCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/politicDeck.csv");
+			rawPoliticCards = parseCSVFile(PATH + POLITIC_DECK_CSV);
 		} catch (IOException e) {
 			System.out.println("Cannot load politic deck.");
 		}
@@ -61,7 +67,7 @@ public class Game {
 	private void loadPermissionDeck() {
 		List<String[]> rawPermissionCards = new ArrayList<>();
 		try {
-			rawPermissionCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/permissionDeck.csv");
+			rawPermissionCards = parseCSVFile(PATH + PERMISSION_DECK_CSV);
 		} catch (IOException e) {
 			System.out.println("Cannot load permission deck.");
 		}
@@ -69,4 +75,15 @@ public class Game {
 		System.out.println(permissionDeck);
 	}
 	
+	private void loadCouncillors() {
+		List<String[]> rawCouncillors = new ArrayList<>();
+		try{
+			rawCouncillors = parseCSVFile(PATH + COUNCILLORS_CSV);		
+		} catch(IOException e) {
+			System.out.println("Cannot load permission deck.");
+		}
+		
+		 
+		
+	}
 }
