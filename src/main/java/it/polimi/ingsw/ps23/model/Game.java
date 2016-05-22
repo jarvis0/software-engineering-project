@@ -54,7 +54,6 @@ public class Game {
 	
 	private void loadPermissionDeck() {
 		List<String[]> rawPermissionCards = new ArrayList<>();
-		ArrayList<Card> permissionCards = new ArrayList<>();
 		try {
 			rawPermissionCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/permissionDeck.csv");
 		} catch (IOException e) {

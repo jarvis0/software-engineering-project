@@ -24,29 +24,29 @@ public class BonusCache {
 		Bonus cachedBonus = bonusMap.get(bonusId);
 		return (Bonus) cachedBonus.clone();
 	}
+	private static void putBonus(Bonus bonus, String Id) {
+		bonus.setId(Id);
+		bonusMap.put(bonus.getId(), bonus);
+	}
+	
 	public static void loadCache() {
 		AssistantBonus assistantBonus = new AssistantBonus();
-		assistantBonus.setId(ASSISTANT);
-		bonusMap.put(assistantBonus.getId(), assistantBonus);
+		putBonus(assistantBonus, ASSISTANT);
 		
 		CoinBonus coinBonus = new CoinBonus();
-		coinBonus.setId(COIN);
-		bonusMap.put(coinBonus.getId(), coinBonus);
+		putBonus(coinBonus, COIN);
 		
 		VictoryPointBonus victoryPointBonus = new VictoryPointBonus();
-		victoryPointBonus.setId(VICTORY_POINT);
-		bonusMap.put(victoryPointBonus.getId(), victoryPointBonus);
+		putBonus(victoryPointBonus, VICTORY_POINT);
 		
 		PoliticCardBonus politicCardBonus = new PoliticCardBonus();
-		politicCardBonus.setId(POLITIC_CARD);
-		bonusMap.put(politicCardBonus.getId(), politicCardBonus);
+		putBonus(politicCardBonus, POLITIC_CARD);
 		
 		AdditionalMainActionBonus additionalMainActionBonus = new AdditionalMainActionBonus();
-		additionalMainActionBonus.setId(ADDITIONAL_MAIN_ACTION);
-		bonusMap.put(additionalMainActionBonus.getId(), additionalMainActionBonus);
+		putBonus(additionalMainActionBonus, ADDITIONAL_MAIN_ACTION);
 		
 		NobilityTrackStepBonus nobilityTrackStepBonus = new NobilityTrackStepBonus();
-		nobilityTrackStepBonus.setId(NOBILITY_TRACK_STEP);
-		bonusMap.put(nobilityTrackStepBonus.getId(), nobilityTrackStepBonus);
+		putBonus(nobilityTrackStepBonus, NOBILITY_TRACK_STEP);
 	}
+	
 }

@@ -14,7 +14,7 @@ public class PermissionDeckFactory extends DeckFactory {
 	@Override
 	public Deck makeDeck(List<String[]> rawPermissionCards) {
 		ArrayList<Card> permissionCards = new ArrayList<>();
-		String[] fields = rawPermissionCards.remove(0);
+		String[] fields = rawPermissionCards.remove(rawPermissionCards.size() - 1);
 		BonusCache.loadCache();
 		for(String[] rawPermissionCard : rawPermissionCards) {
 			int i = 0;
