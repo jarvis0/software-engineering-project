@@ -10,12 +10,14 @@ import com.opencsv.CSVReader;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
 public class Game {
 	
 	private ArrayList<City> cities;
 	private Deck politicDeck;
 	private Deck permissionDeck;
+	private FreeCouncillors freeCouncillors;
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
@@ -27,6 +29,7 @@ public class Game {
 		loadCities();
 		loadPoliticDeck();
 		loadPermissionDeck();
+		loadCouncillors();
 	}
 
 	private List<String[]> parseCSVFile(String path) throws IOException {
@@ -76,7 +79,8 @@ public class Game {
 		} catch(IOException e) {
 			System.out.println("Cannot load permission deck.");
 		}
-		
+		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
+		System.out.println(freeCouncillors);
 		 
 		
 	}
