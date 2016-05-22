@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.bonus.RewardToken;
@@ -12,14 +13,14 @@ public class CitiesFactory {
 	
 	private static final String CAPITAL = "Capital";
 	
-	public ArrayList<City> makeCities(List<String[]> rawCities) {
-		ArrayList<City> cities = new ArrayList<>();
+	public HashMap<String, City> makeCities(List<String[]> rawCities) {
+		HashMap<String, City> cities = new HashMap<>();
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {
-				cities.add(new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), new RewardToken()));
+				cities.put(rawCity[0], new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), new RewardToken()));
 			}
 			else {
-				cities.add(new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
+				cities.put(rawCity[0], new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
 			}
 		}
 		return cities;

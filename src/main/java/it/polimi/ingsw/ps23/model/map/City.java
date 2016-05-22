@@ -12,8 +12,7 @@ public abstract class City {
 	public City(String name, GameColor color) {
 		this.name = name;
 		this.color = color;
-		
-		emporiumList = new ArrayList<Player>();
+		emporiumList = new ArrayList<>();
 	}
 	
 	@Override
@@ -21,12 +20,7 @@ public abstract class City {
 		return name + " " + color;
 	}
 	
-	public void buildEmporium(Player player) throws AlreadyBuiltHereException { //dovrebbe ritornare il nome della città
-		if (emporiumList.contains(player))
-			throw new AlreadyBuiltHereException();
-		else 
-			emporiumList.add(player); //qui dovrebbe far ritornare la città in cui ha costruito al player
-	}
+	public abstract void buildEmporium(Player player);
 	
 	public void adiacent() {
 		
