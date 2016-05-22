@@ -1,10 +1,16 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
+import javax.naming.InsufficientResourcesException;
+
+import it.polimi.ingsw.ps23.model.Player;
+
 public abstract class Bonus implements Cloneable {
 
 	private String id;
 	private int value;
 	
+	public abstract void updateBonus(Player player) throws InsufficientResourcesException;
+
 	public String getId() {
 		return id;
 	}
