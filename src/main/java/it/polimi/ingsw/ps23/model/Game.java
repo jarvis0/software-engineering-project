@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 
-import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 
