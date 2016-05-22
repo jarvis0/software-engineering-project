@@ -16,6 +16,12 @@ public class Game {
 	private ArrayList<City> cities;
 	private Deck politicDeck;
 	private Deck permissionDeck;
+	private final static String path = ("src/main/java/it/polimi/ingsw/ps23/csv/");
+	private final static String citiesCVS = ("cities.csv");
+	private final static String connectionsCVS = ("citiesConnections.csv");
+	private final static String councillorsCVS = ("councillors.csv");
+	private final static String permissionDeckCVS = ("permissionDeck.csv");
+	private final static String politicDeckCVS = ("politicDeck.csv");
 	
 	public Game() {
 		loadCities();
@@ -33,7 +39,7 @@ public class Game {
 	private void loadCities() {
 		List<String[]> rawCities = new ArrayList<>();
 		try {
-			rawCities = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/cities.csv");
+			rawCities = parseCSVFile( path + citiesCVS);
 		} catch (IOException e) {
 			System.out.println("Cannot load cities.");
 		}
@@ -44,7 +50,7 @@ public class Game {
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new ArrayList<>();
 		try {
-			rawPoliticCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/politicDeck.csv");
+			rawPoliticCards = parseCSVFile( path + politicDeckCVS);
 		} catch (IOException e) {
 			System.out.println("Cannot load politic deck.");
 		}
@@ -54,9 +60,8 @@ public class Game {
 	
 	private void loadPermissionDeck() {
 		List<String[]> rawPermissionCards = new ArrayList<>();
-		ArrayList<Card> permissionCards = new ArrayList<>();
 		try {
-			rawPermissionCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/permissionDeck.csv");
+			rawPermissionCards = parseCSVFile( path + permissionDeckCVS);
 		} catch (IOException e) {
 			System.out.println("Cannot load permission deck.");
 		}
@@ -64,4 +69,15 @@ public class Game {
 		System.out.println(permissionDeck);
 	}
 	
+	private void loadCouncillors() {
+		List<String[]> rawCouncillors = new ArrayList<>();
+		try{
+			rawCouncillors = parseCSVFile(path + councillorsCVS);		
+		} catch(IOException e) {
+			System.out.println("Cannot load permission deck.");
+		}
+		
+		 
+		
+	}
 }
