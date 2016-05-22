@@ -16,17 +16,25 @@ public class FreeCouncillors {
 	public String toString() {
 		return this.getFreeCouncillors().toString();
 	}
-	
-	public void insertNewFreeCouncillor(Councillor councillor){
-		freeCouncillors.add(councillor);
-	}
 
 	public ArrayList<Councillor> getFreeCouncillors() {
 		return freeCouncillors;
 	}
+	 
+	public Councillor remove(int i) {
+		return freeCouncillors.remove(i);
+	}
+	
+	public int getSize() {
+		return freeCouncillors.size();
+	}
 	
 	public void selectCouncillor (int i, Council nameCouncil){
 		insertNewFreeCouncillor(nameCouncil.pushCouncillor(freeCouncillors.remove(i)));
+	}
+	
+	public void insertNewFreeCouncillor(Councillor councillor){
+		freeCouncillors.add(councillor);
 	}
 	
 	

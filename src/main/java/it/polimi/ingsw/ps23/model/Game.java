@@ -4,11 +4,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
@@ -18,6 +20,9 @@ public class Game {
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
+	private Council seasideCouncil = new Council();
+	private Council hillCouncil = new Council();
+	private Council mountainCouncil = new Council();
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
@@ -30,6 +35,7 @@ public class Game {
 		loadPoliticDeck();
 		loadPermissionDeck();
 		loadCouncillors();
+		createCouncils();
 	}
 
 	private List<String[]> parseCSVFile(String path) throws IOException {
@@ -81,6 +87,18 @@ public class Game {
 		}
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		System.out.println(freeCouncillors);
-		
 	}
+	
+	private void createCouncils() {
+		seasideCouncil.createCouncil(freeCouncillors);
+		hillCouncil.createCouncil(freeCouncillors);
+		mountainCouncil.createCouncil(freeCouncillors);
+		
+		/*System.out.println("sea " +seasideCouncil);
+		System.out.println("hill " +hillCouncil);
+		System.out.println("mountain " +mountainCouncil);
+		System.out.println(freeCouncillors);
+		*/
+	}
+	
 }
