@@ -9,26 +9,31 @@ public abstract class Bonus implements Cloneable {
 	private String id;
 	private int value;
 	
+	public Bonus(String id) {
+		this.id = id;
+	}
+	
 	public abstract void updateBonus(Player player) throws InsufficientResourcesException;
 
 	public String getId() {
 		return id;
 	}
 	
-	public int getValue() {
+	protected int getValue() {
 		return value;
 	}
 	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public void setValue(int value) {
+	void setValue(int value) {
 		this.value = value;
 	}
 
 	@Override
-	public Object clone() {
+	public String toString() {
+		return id + " " + value;
+	}
+	
+	@Override
+	protected Object clone() {
 		Object clone = null;
 		try {
 			clone = super.clone();
@@ -36,6 +41,6 @@ public abstract class Bonus implements Cloneable {
 			e.printStackTrace();
 	      }
 		return clone;
-		}
+	}
 	
 }

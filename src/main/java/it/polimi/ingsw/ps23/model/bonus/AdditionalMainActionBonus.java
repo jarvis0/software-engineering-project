@@ -6,8 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class AdditionalMainActionBonus extends Bonus {
 
-	public AdditionalMainActionBonus() {
-		super.setId("additionalMainAction");
+	public AdditionalMainActionBonus(String id) {
+		super(id);
 	}
 
 	@Override

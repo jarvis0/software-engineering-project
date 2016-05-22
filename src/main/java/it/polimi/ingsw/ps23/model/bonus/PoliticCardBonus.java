@@ -6,8 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class PoliticCardBonus extends Bonus {
 
-	public PoliticCardBonus() {
-		super.setId("politicCardBonus");
+	public PoliticCardBonus(String id) {
+		super(id);
 	}
 
 	@Override

@@ -6,6 +6,11 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class RecycleRewardToken extends Bonus {
 
+	public RecycleRewardToken(String id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void updateBonus(Player player) throws InsufficientResourcesException {
 		// TODO Auto-generated method stub

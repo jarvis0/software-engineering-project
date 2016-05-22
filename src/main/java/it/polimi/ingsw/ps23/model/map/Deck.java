@@ -12,7 +12,13 @@ public class Deck {
 		this.cards = cards;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getDeck().toString();
+	}
+	
 	public List<Card> getDeck() {
 		return cards;
 	}
+	
 }

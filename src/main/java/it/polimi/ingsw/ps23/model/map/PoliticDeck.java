@@ -8,9 +8,4 @@ public class PoliticDeck extends Deck {
 		super(cards);
 	}
 	
-	@Override
-	public String toString() {
-		return this.getDeck().toString();
-	}
-	
 }
