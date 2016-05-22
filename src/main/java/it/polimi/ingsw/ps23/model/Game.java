@@ -15,6 +15,7 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 public class Game {
 	
 	private HashMap<String, City> cities;
+	private CitiesGraph citiesGraph;
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
@@ -32,7 +33,14 @@ public class Game {
 	}
 
 	private void loadConnection() {
-						
+		List<String[]> rawCitiesConnections = new ArrayList<>();
+		try {
+			rawCitiesConnections = parseCSVFile(PATH + CONNECTIONS_CSV);
+		} catch (IOException e) {
+			System.out.println("Cannot load cities connections file.");
+		}
+		citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
+		System.out.println(citiesGraph);		
 	}
 
 	private List<String[]> parseCSVFile(String path) throws IOException {
