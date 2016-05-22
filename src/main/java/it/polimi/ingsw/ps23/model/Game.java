@@ -7,25 +7,22 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 
-import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
-import it.polimi.ingsw.ps23.model.map.PoliticDeck;
 
 public class Game {
 	
-	private final String capital = "Capital";
 	private ArrayList<City> cities;
 	private Deck politicDeck;
+	private Deck permissionDeck;
 	
 	public Game() {
-		cities = loadCities();
-		politicDeck = loadPoliticDeck();
+		loadCities();
+		loadPoliticDeck();
+		loadPermissionDeck();
 	}
-	
+
 	private List<String[]> parseCSVFile(String path) throws IOException {
 		CSVReader reader = new CSVReader(new FileReader(path));
 		List<String[]> read = reader.readAll();
@@ -33,45 +30,38 @@ public class Game {
 		return read;
 	}
 
-	private ArrayList<City> loadCities() {
+	private void loadCities() {
 		List<String[]> rawCities = new ArrayList<>();
-		ArrayList<City> citiesGoal = new ArrayList<>();
 		try {
-			rawCities = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/CSV/cities.csv");
+			rawCities = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/cities.csv");
 		} catch (IOException e) {
-			System.err.println("Cannot load cities.");
+			System.out.println("Cannot load cities.");
 		}
-		for(String[] rawCity : rawCities) {
-			if(!rawCity[3].equals(capital)) {
-				citiesGoal.add(new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
-			}
-			else {
-				citiesGoal.add(new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
-			}
-		}
-		System.out.println(citiesGoal);
-		return citiesGoal;
+		cities = new CitiesFactory().makeCities(rawCities);
+		System.out.println(cities);
 	}
 	
-	private PoliticDeck loadPoliticDeck() {
+	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new ArrayList<>();
-		ArrayList<Card> politicCards = new ArrayList<>();
 		try {
-			rawPoliticCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/CSV/politicDeck.csv");
+			rawPoliticCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/politicDeck.csv");
 		} catch (IOException e) {
 			System.out.println("Cannot load politic deck.");
 		}
-		for(String[] rawPoliticCard : rawPoliticCards) {
-			int sameColorPoliticNumber = Integer.parseInt(rawPoliticCard[0]);
-			for(int i = 0; i < sameColorPoliticNumber; i++) {
-				politicCards.add(new PoliticCard(GameColorFactory.makeColor(rawPoliticCard[2], rawPoliticCard[1])));
-			}
+		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
+		System.out.println(politicDeck.toString());
+	}
+	
+	private void loadPermissionDeck() {
+		List<String[]> rawPermissionCards = new ArrayList<>();
+		ArrayList<Card> permissionCards = new ArrayList<>();
+		try {
+			rawPermissionCards = parseCSVFile("src/main/java/it/polimi/ingsw/ps23/csv/permissionDeck.csv");
+		} catch (IOException e) {
+			System.out.println("Cannot load permission deck.");
 		}
-		System.out.println(politicCards);	
-		
-		PoliticDeck deck = new PoliticDeck(politicCards);
-		System.out.println(deck.toString());
-		return deck;
+		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCards);
+		System.out.println(permissionDeck);
 	}
 	
 }

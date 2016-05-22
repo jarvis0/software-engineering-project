@@ -6,7 +6,10 @@ public class PermissionDeck extends Deck {
 
 	public PermissionDeck(List<Card> cards) {
 		super(cards);
-		// TODO Auto-generated constructor stub
+	}
+	
+	public String toString() {
+		return this.getDeck().toString();
 	}
 	
 }
