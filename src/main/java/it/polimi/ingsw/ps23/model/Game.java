@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.opencsv.CSVReader;
@@ -12,7 +13,7 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 
 public class Game {
 	
-	private ArrayList<City> cities;
+	private HashMap<String, City> cities;
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
@@ -24,8 +25,13 @@ public class Game {
 	
 	public Game() {
 		loadCities();
+		loadConnection();
 		loadPoliticDeck();
 		loadPermissionDeck();
+	}
+
+	private void loadConnection() {
+						
 	}
 
 	private List<String[]> parseCSVFile(String path) throws IOException {

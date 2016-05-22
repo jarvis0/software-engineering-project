@@ -10,9 +10,8 @@ public class RewardToken {
 	
 	private ArrayList<Bonus> bonusToken;
 	
-	public RewardToken() {
-		bonusToken = new ArrayList<>();
-		//bonusToken.add(bonus);
+	public void addBonus(Bonus bonus) {
+		bonusToken.add(bonus);
 	}
 	
 	public void takeBonus(Player player) throws InsufficientResourcesException {
