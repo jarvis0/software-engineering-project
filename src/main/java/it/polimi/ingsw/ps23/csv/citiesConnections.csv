@@ -1,0 +1,15 @@
+a-c,b
+b-a,d,e
+c-a,f
+d-b,g
+e-b,h
+f-c,i
+g-d,j
+h-e,j,m
+i-f,j,k
+j-g,h,i,l
+k-i,n
+l-j,o
+m-h,o
+n-k,o
+o-l,m
