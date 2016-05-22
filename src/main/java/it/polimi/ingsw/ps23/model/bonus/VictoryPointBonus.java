@@ -6,7 +6,7 @@ public class VictoryPointBonus extends Bonus{
 
 	@Override
 	public void updateBonus(Player player) {
-		// TODO Auto-generated method stub
+		player.updateVictoryPoints(getValue());
 		
 	}
 

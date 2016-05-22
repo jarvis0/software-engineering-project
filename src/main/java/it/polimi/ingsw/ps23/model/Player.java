@@ -11,7 +11,7 @@ public class Player {
 	private String id;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
-	private int gold;
+	private int coin;
 	private int assistant;
 	private ArrayList<City> builtEmporiums;
 	//private ArrayList<PermissionHandDeck> permissionHand;
@@ -29,8 +29,8 @@ public class Player {
 		return nobilityTrackPoints;
 	}
 
-	public int getGold() {
-		return gold;
+	public int getCoin() {
+		return coin;
 	}
 
 	public int getAssistant() {
@@ -41,11 +41,11 @@ public class Player {
 		return builtEmporiums;
 	}
 	
-	public Player(String id, int gold,int assistant) {
+	public Player(String id, int coin,int assistant) {
 		this.id = id;
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
-		this.gold = gold;
+		this.coin = coin;
 		this.assistant = assistant;
 		builtEmporiums = new ArrayList<City>();
 		//permissionHand = new ArrayList<PermissionHandDeck>();
@@ -68,9 +68,9 @@ public class Player {
 		nobilityTrackPoints += value;
 	}
 	
-	public void updateGolds(int value) throws InsufficientResourcesException{
-		if(gold + value >= 0){
-			gold += value;
+	public void updateCoins(int value) throws InsufficientResourcesException{
+		if(coin + value >= 0){
+			coin += value;
 		}
 		else{
 			throw new InsufficientResourcesException();
