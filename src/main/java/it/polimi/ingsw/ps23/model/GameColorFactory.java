@@ -2,11 +2,14 @@ package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
 
-public class GameColorFactory {
+public final class GameColorFactory {
 	
-	private static ArrayList<GameColor> colors = new ArrayList<>();
+	private static final ArrayList<GameColor> colors = new ArrayList<>();
+
+	private GameColorFactory() {
+	}
 	
-	public static GameColor makeColor(String colorName, String colorHex) {
+	public static final GameColor makeColor(String colorName, String colorHex) {
 		for(GameColor color : colors) {
 			if(color.toString().equals(colorName)) {
 				return color;

@@ -1,13 +1,9 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
-import it.polimi.ingsw.ps23.model.Player;
+public class NobilityTrackStepBonus extends Bonus {
 
-public class NobilityTrackStepBonus extends Bonus{
-
-	@Override
-	public void updateBonus(Player player) {
-		// TODO Auto-generated method stub
-		
+	public NobilityTrackStepBonus() {
+		super.setId("nobilityTrackStepBonus");
 	}
-
+	
 }

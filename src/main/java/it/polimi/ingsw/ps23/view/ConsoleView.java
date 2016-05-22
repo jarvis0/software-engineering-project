@@ -18,7 +18,7 @@ public class ConsoleView extends View {
 	private void setPlayersNumber() {
 		output.println("Players number: ");
 		setChanged();
-		notifyObservers(scanner.nextInt());
+		notifyObservers(1/*scanner.nextInt()*/);
 	}
 	
 	@Override
