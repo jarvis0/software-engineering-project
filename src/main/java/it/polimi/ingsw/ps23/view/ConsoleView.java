@@ -16,7 +16,7 @@ public class ConsoleView extends View {
 	}	
 	
 	private void setPlayersNumber() {
-		output.println("Players number: ");
+		//output.println("Players number: ");
 		setChanged();
 		notifyObservers(1/*scanner.nextInt()*/);
 	}
@@ -25,7 +25,7 @@ public class ConsoleView extends View {
 	public void run() {
 		setPlayersNumber();
 		while(true){
-			output.println("Make a choice: ");
+			//output.println("Make a choice: ");
 			String text = scanner.next();
 			try {				
 				//Choice choice = Choice.parseInput(text);

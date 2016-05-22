@@ -13,7 +13,7 @@ public abstract class Region {
 	}
 
 	public Region() {
-		cities = new ArrayList<City>();
+		cities = new ArrayList<>();
 	}
 	
 	public void addCity(City city) throws InvalidCityException {

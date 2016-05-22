@@ -81,7 +81,6 @@ public class Game {
 		}
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		System.out.println(freeCouncillors);
-		 
 		
 	}
 }

@@ -8,8 +8,4 @@ public class PermissionDeck extends Deck {
 		super(cards);
 	}
 	
-	public String toString() {
-		return this.getDeck().toString();
-	}
-	
 }

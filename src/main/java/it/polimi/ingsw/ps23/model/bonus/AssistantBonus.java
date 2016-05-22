@@ -1,9 +1,17 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
-public class AssistantBonus extends Bonus {
-	
-	public AssistantBonus() {
-		super.setId("assistant");
-	}
+import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.Player;
+
+public class AssistantBonus extends Bonus {
+
+	public AssistantBonus(String id) {
+		super(id);
+	}
+	
+	@Override
+	public void updateBonus(Player player) throws InsufficientResourcesException {
+		player.updateAssistants(getValue());
+	}	
 }

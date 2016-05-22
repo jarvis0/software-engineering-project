@@ -18,11 +18,7 @@ public class PermissionCard extends Card {
 	
 	@Override
 	public String toString() {
-		String output = new String();
-		for(Bonus aBonus : bonus) {
-			output = output + " " + aBonus.getId() + " " + aBonus.getValue();
-		}
-		return output;
+		return bonus.toString();
 	}
 	
 }

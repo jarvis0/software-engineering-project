@@ -10,5 +10,9 @@ public class Councillor {
 		this.color=color;
 	}
 	
+	@Override
+	public String toString() {
+		return color.toString();
+	}
 
 }
