@@ -2,22 +2,30 @@ package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
 
+
 public class FreeCouncillors {
-	protected ArrayList<Councillor> freeCouncillors;
-	private FreeCouncillors(){
-		freeCouncillors = new ArrayList<Councillor>();
+	
+	private ArrayList<Councillor> freeCouncillors;
+	
+	public FreeCouncillors(ArrayList<Councillor> freeCouncillors){
+		this.freeCouncillors = freeCouncillors;
 	}
 	
-	public void insertNewFreeCouncillor(Councillor councillor){
-		freeCouncillors.add(councillor);
+	@Override
+	public String toString() {
+		return this.getFreeCouncillors().toString();
 	}
 
 	public ArrayList<Councillor> getFreeCouncillors() {
 		return freeCouncillors;
 	}
+	 
+	public Councillor remove(int i) {
+		return freeCouncillors.remove(i);
+	}
 	
 	public void selectCouncillor (int i, Council nameCouncil){
-		insertNewFreeCouncillor(nameCouncil.pushCouncillor(freeCouncillors.remove(i)));
+		freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
 	}
 	
 	

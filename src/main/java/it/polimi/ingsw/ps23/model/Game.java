@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.Council;
+import it.polimi.ingsw.ps23.model.map.CouncilFactory;
 import it.polimi.ingsw.ps23.model.map.Deck;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
 
 public class Game {
@@ -12,7 +15,11 @@ public class Game {
 	private HashMap<String, City> cities; //?
 	private Deck politicDeck;
 	private Deck permissionDeck;
-	
+	private FreeCouncillors freeCouncillors;
+	private Council seasideCouncil;
+	private Council hillCouncil;
+	private Council mountainCouncil;
+
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
@@ -26,6 +33,7 @@ public class Game {
 		loadConnection();
 		loadPoliticDeck();
 		loadPermissionDeck();
+		loadCouncillors();
 	}
 
 	private void loadConnection() {
@@ -53,5 +61,24 @@ public class Game {
 	
 	private void loadCouncillors() {
 		List<String[]> rawCouncillors = new RawObject(PATH + COUNCILLORS_CSV).getRawObject();
+		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
+		System.out.println(freeCouncillors);
 	}
+	
+	//the following method will be called by regions
+	/*private void createCouncils() {
+		seasideCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
+		hillCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
+		mountainCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
+		
+		System.out.println("sea " +seasideCouncil);
+		System.out.println("hill " +hillCouncil);
+		System.out.println("mountain " +mountainCouncil);
+		System.out.println(freeCouncillors);
+		freeCouncillors.selectCouncillor(2, seasideCouncil); //test change council
+		System.out.println("sea " +seasideCouncil);
+		System.out.println(freeCouncillors);
+	}
+	*/
+	
 }
