@@ -22,7 +22,7 @@ public abstract class Region {
 	}
 	
 	public void addCity(City city) throws InvalidCityException {
-		if(!cities.contains(city)){
+		if(!cities.contains(city)) {
 		cities.add(city);
 		}
 		else
@@ -34,4 +34,9 @@ public abstract class Region {
 	}
 	
 	public abstract void takeBonus(Player player);
+	
+	@Override
+	public String toString() {
+		return id + ": " + cities + " [Bonus: " + victoryPointsBonus + "]"; 
+	}
 }

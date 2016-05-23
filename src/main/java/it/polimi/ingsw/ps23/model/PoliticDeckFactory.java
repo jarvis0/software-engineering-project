@@ -12,7 +12,6 @@ public class PoliticDeckFactory extends DeckFactory {
 		super();
 	}
 	
-	@Override
 	public Deck makeDeck(List<String[]> rawPoliticCards) {
 		for(String[] rawPoliticCard : rawPoliticCards) {
 			int sameColorPoliticNumber = Integer.parseInt(rawPoliticCard[0]);

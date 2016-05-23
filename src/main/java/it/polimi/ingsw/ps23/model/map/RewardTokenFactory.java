@@ -18,8 +18,7 @@ public class RewardTokenFactory {
 		BonusCache.loadCache();
 		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
 		for(String[] rawRewardToken : rawRewardTokens) {
-			BonusSlot rewardToken = new RewardToken();
-			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, rewardToken));
+			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, new RewardToken()));
 		}
 		return new RewardTokens(rewardTokens).getRewardTokens();
 	}

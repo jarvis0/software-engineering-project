@@ -13,14 +13,19 @@ public class PermissionDeckFactory extends DeckFactory {
 		super();
 	}
 	
-	@Override
-	public Deck makeDeck(List<String[]> rawPermissionCards) {
+	public Deck makeDeck(List<String[]> rawPermissionCardsBonuses, List<String[]> rawPermissionCardsCities) {
 		BonusCache.loadCache();
-		String[] fields = rawPermissionCards.remove(rawPermissionCards.size() - 1);
-		for(String[] rawPermissionCard : rawPermissionCards) {
+		String[] fields = rawPermissionCardsBonuses.remove(rawPermissionCardsBonuses.size() - 1);
+		int i = 0;
+		for(String[] rawPermissionCard : rawPermissionCardsBonuses) {
 			PermissionCard permissionCard = new PermissionCard();
+			for(String rawCity : rawPermissionCardsCities.get(i)) {
+				permissionCard.addCity(rawCity);
+			}
 			getCards().add((PermissionCard) new BonusesFactory().makeBonuses(fields, rawPermissionCard, permissionCard));
+			i++;
 		}
 		return new PermissionDeck(getCards());
 	}
+	
 }
