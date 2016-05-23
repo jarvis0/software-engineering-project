@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.model.map;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-public interface BonusCard {
+public interface BonusSlot {
 		
 	public void addBonus(Bonus bonus);
 	
