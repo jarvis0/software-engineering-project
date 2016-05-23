@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-public class PermissionCard extends Card implements BonusSlot {
-
+public class RewardToken implements BonusSlot {
+	
 	private ArrayList<Bonus> bonus;
 	
-	public PermissionCard() {
+	public RewardToken() {
 		bonus = new ArrayList<>();
 	}
 	
@@ -20,4 +20,5 @@ public class PermissionCard extends Card implements BonusSlot {
 	public String toString() {
 		return bonus.toString();
 	}
+
 }
