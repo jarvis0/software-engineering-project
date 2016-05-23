@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 
 public class Game {
 	
-	private HashMap<String, City> cities;
+	private HashMap<String, City> cities; //?
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	
