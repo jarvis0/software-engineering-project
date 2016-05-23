@@ -25,7 +25,7 @@ public class Game {
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	
 	public Game() {
-		loadCities();
+		loadMap();
 		loadConnection();
 		loadPoliticDeck();
 		loadPermissionDeck();
@@ -38,7 +38,7 @@ public class Game {
 		System.out.println(citiesGraph);		
 	}
 	
-	private void loadCities() {
+	private void loadMap() {
 		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
 		cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);

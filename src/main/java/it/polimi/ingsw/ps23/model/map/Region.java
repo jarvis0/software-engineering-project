@@ -8,12 +8,12 @@ public abstract class Region {
 	
 	private ArrayList<City> cities;
 	
-	protected ArrayList<City> getCities() {
-		return cities;
-	}
-
 	public Region() {
 		cities = new ArrayList<>();
+	}
+	
+	protected ArrayList<City> getCities() {
+		return cities;
 	}
 	
 	public void addCity(City city) throws InvalidCityException {
@@ -24,10 +24,8 @@ public abstract class Region {
 			throw new InvalidCityException();
 	}
 	
-	public boolean canTakeBonus(Player player)
-	{
-		//return /*player.metodo per ottenere le città in cui ha già costruito.Contains(cities) || bonus già preso*/
-		return false;
+	public boolean canTakeBonus(Player player) {
+		return player.getBuiltEmporium().contains(cities);//&& bonus già preso
 	}
 	
 	public abstract void takeBonus(Player player);
