@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-public class RewardToken implements BonusCard {
+public class RewardToken implements BonusSlot {
 	
 	private ArrayList<Bonus> bonus;
 	

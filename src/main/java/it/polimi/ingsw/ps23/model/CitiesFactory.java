@@ -9,7 +9,7 @@ import java.util.Random;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.RewardToken;
-import it.polimi.ingsw.ps23.model.map.BonusCard;
+import it.polimi.ingsw.ps23.model.map.BonusSlot;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.NormalCity;
@@ -39,7 +39,7 @@ public class CitiesFactory {
 		BonusCache.loadCache();
 		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
 		for(String[] rawRewardToken : rawRewardTokens) {
-			BonusCard rewardToken = new RewardToken();
+			BonusSlot rewardToken = new RewardToken();
 			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, rewardToken));
 		}
 		return rewardTokens;
