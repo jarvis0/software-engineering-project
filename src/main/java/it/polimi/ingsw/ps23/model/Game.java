@@ -52,27 +52,27 @@ public class Game {
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
-		System.out.println(politicDeck);
+		System.out.println("\n" + politicDeck);
 	}
 	
 	private void loadPermissionDeck() {
 		List<String[]> rawPermissionCardsBonuses = new RawObject(PATH + PERMISSION_DECK_BONUSES_CSV).getRawObject();
 		List<String[]> rawPermissionCardsCities = new RawObject(PATH + PERMISSION_DECK_CITIES_CSV).getRawObject();
 		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCardsBonuses, rawPermissionCardsCities);
-		System.out.println(permissionDeck);
+		System.out.println("\n" + permissionDeck);
 	}
 	
 	private void loadCouncillors() {
 		List<String[]> rawCouncillors = new RawObject(PATH + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
-		System.out.println(freeCouncillors);
+		System.out.println("\n" + freeCouncillors);
 	}
 	
 	private void connectCouncillorsToGroupRegionalCity() {
 		for (GroupRegionalCity groupRegionalCity : regions) {
 			groupRegionalCity.addCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
 		}
-		System.out.println(regions);
+		System.out.println("\n" + regions);
 	}
 	
 	private void connectPermissionCardtoGroupRegionalCity() {

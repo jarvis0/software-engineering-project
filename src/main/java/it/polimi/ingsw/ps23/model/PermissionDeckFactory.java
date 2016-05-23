@@ -3,6 +3,8 @@ package it.polimi.ingsw.ps23.model;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
+import it.polimi.ingsw.ps23.model.map.BonusSlot;
+import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.PermissionDeck;
@@ -18,9 +20,9 @@ public class PermissionDeckFactory extends DeckFactory {
 		String[] fields = rawPermissionCardsBonuses.remove(rawPermissionCardsBonuses.size() - 1);
 		int i = 0;
 		for(String[] rawPermissionCard : rawPermissionCardsBonuses) {
-			PermissionCard permissionCard = new PermissionCard();
+			BonusSlot permissionCard = new PermissionCard();
 			for(String rawCity : rawPermissionCardsCities.get(i)) {
-				permissionCard.addCity(rawCity);
+				((PermissionCard) permissionCard).addCity(rawCity);
 			}
 			getCards().add((PermissionCard) new BonusesFactory().makeBonuses(fields, rawPermissionCard, permissionCard));
 			i++;
