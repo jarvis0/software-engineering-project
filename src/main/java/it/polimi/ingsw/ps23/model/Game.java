@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.CouncilFactory;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
@@ -16,9 +14,6 @@ public class Game {
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
-	private Council seasideCouncil;
-	private Council hillCouncil;
-	private Council mountainCouncil;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
