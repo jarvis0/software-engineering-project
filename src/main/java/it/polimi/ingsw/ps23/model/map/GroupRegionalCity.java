@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.map;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
 public class GroupRegionalCity extends Region{
 	
@@ -8,8 +9,8 @@ public class GroupRegionalCity extends Region{
 	//private Council council;
 	//private ArrayList<PermissionCard> permissionCard;
 	
-	public GroupRegionalCity() {
-		super();
+	public GroupRegionalCity(String id, VictoryPointBonus victoryPointBonus) {
+		super(id,victoryPointBonus);
 		//create bonus tile per regione
 	}
 

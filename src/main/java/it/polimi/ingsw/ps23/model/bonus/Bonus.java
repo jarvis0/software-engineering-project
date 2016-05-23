@@ -23,7 +23,7 @@ public abstract class Bonus implements Cloneable {
 		return value;
 	}
 	
-	void setValue(int value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 

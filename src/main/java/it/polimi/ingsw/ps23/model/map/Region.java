@@ -34,4 +34,9 @@ public abstract class Region {
 	}
 	
 	public abstract void takeBonus(Player player);
+	
+	@Override
+	public String toString() {
+		return id + ": " + cities + " [Bonus: " + victoryPointsBonus + "]"; 
+	}
 }

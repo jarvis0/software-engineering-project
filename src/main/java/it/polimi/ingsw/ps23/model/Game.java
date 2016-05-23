@@ -1,16 +1,20 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.Region;
 
 
 public class Game {
 	
 	private CitiesGraph citiesGraph;
+	private ArrayList<GroupRegionalCity> regions;
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
@@ -38,8 +42,9 @@ public class Game {
 		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
 		HashMap<String, City> cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
 		citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
-		
+		regions = new GroupRegionalCityFactory().makeRegions(rawRegion, cities);
 		System.out.println(citiesGraph);
+		System.out.println(regions);
 		
 	}
 
