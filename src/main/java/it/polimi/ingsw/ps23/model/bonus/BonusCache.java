@@ -10,6 +10,7 @@ import it.polimi.ingsw.ps23.model.bonus.NobilityTrackStepBonus;
 import it.polimi.ingsw.ps23.model.bonus.PoliticCardBonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
+//static? - flyweight
 public class BonusCache {
 
 	private static HashMap<String, Bonus> bonusMap  = new HashMap<>();

@@ -10,6 +10,10 @@ public class PoliticCard extends Card {
 		this.color = color;
 	}
 	
+	public GameColor getColor() {
+		return color;
+	}
+	
 	@Override
 	public String toString() {
 		return color.toString();
