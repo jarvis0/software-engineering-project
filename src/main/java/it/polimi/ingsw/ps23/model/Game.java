@@ -22,6 +22,7 @@ public class Game {
 	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
 	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
+	private static final String REGIONS = "regions.csv";
 	
 	public Game() {
 		loadMap();
@@ -34,8 +35,12 @@ public class Game {
 		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
-		citiesGraph = new CitiesGraph(rawCitiesConnections, (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens));
+		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
+		HashMap<String, City> cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
+		citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
+		
 		System.out.println(citiesGraph);
+		
 	}
 
 	private void loadPoliticDeck() {
