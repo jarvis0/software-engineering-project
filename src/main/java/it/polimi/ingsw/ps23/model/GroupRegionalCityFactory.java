@@ -8,7 +8,6 @@ import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.InvalidCityException;
-import it.polimi.ingsw.ps23.model.map.Region;
 
 public class GroupRegionalCityFactory {
 
