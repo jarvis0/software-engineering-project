@@ -3,13 +3,18 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.ArrayList;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
 public abstract class Region {
 	
+	private String id;
 	private ArrayList<City> cities;
+	VictoryPointBonus victoryPointsBonus;
 	
-	public Region() {
+	public Region(String id, VictoryPointBonus victoryPointBonus) {
 		cities = new ArrayList<>();
+		this.id = id;
+		this.victoryPointsBonus = victoryPointBonus;
 	}
 	
 	protected ArrayList<City> getCities() {
