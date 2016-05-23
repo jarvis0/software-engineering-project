@@ -25,16 +25,8 @@ public class FreeCouncillors {
 		return freeCouncillors.remove(i);
 	}
 	
-	public int getSize() {
-		return freeCouncillors.size();
-	}
-	
 	public void selectCouncillor (int i, Council nameCouncil){
-		insertNewFreeCouncillor(nameCouncil.pushCouncillor(freeCouncillors.remove(i)));
-	}
-	
-	public void insertNewFreeCouncillor(Councillor councillor){
-		freeCouncillors.add(councillor);
+		freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
 	}
 	
 	

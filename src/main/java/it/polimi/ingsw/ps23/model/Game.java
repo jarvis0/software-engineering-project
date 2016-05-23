@@ -11,6 +11,7 @@ import com.opencsv.CSVReader;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Council;
+import it.polimi.ingsw.ps23.model.map.CouncilFactory;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
@@ -20,9 +21,9 @@ public class Game {
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
-	private Council seasideCouncil = new Council();
-	private Council hillCouncil = new Council();
-	private Council mountainCouncil = new Council();
+	private Council seasideCouncil;
+	private Council hillCouncil;
+	private Council mountainCouncil;
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
@@ -83,22 +84,24 @@ public class Game {
 		try{
 			rawCouncillors = parseCSVFile(PATH + COUNCILLORS_CSV);		
 		} catch(IOException e) {
-			System.out.println("Cannot load permission deck.");
+			System.out.println("Cannot load councillors.");
 		}
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		System.out.println(freeCouncillors);
 	}
 	
 	private void createCouncils() {
-		seasideCouncil.createCouncil(freeCouncillors);
-		hillCouncil.createCouncil(freeCouncillors);
-		mountainCouncil.createCouncil(freeCouncillors);
+		seasideCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
+		hillCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
+		mountainCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
 		
-		/*System.out.println("sea " +seasideCouncil);
+		System.out.println("sea " +seasideCouncil);
 		System.out.println("hill " +hillCouncil);
 		System.out.println("mountain " +mountainCouncil);
 		System.out.println(freeCouncillors);
-		*/
-	}
+		freeCouncillors.selectCouncillor(2, seasideCouncil);
+		System.out.println("sea " +seasideCouncil);
+		System.out.println(freeCouncillors);
+		}
 	
 }

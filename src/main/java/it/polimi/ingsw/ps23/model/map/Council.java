@@ -5,12 +5,11 @@ import java.util.Random;
 	
 public class Council{
 	
-	private final int numberOfCouncillors = 4;
 	private final int lastPosition = 0;
 	private ArrayList<Councillor> councilComposition;
 	
-	public Council(){
-		councilComposition = new ArrayList<Councillor>(numberOfCouncillors);
+	public Council(ArrayList<Councillor> councilComposition){
+		this.councilComposition = councilComposition;
 	}
 	
 	@Override
@@ -20,13 +19,6 @@ public class Council{
 	
 	public ArrayList<Councillor> getCouncil() {
 		return councilComposition;
-	}
-	
-	public void createCouncil(FreeCouncillors freeCouncillors){
-		Random random = new Random();
-		for(int i = 0; i < numberOfCouncillors; i++) {
-				councilComposition.add(freeCouncillors.remove(random.nextInt(freeCouncillors.getSize())));
-		}
 	}
 	
 	public Councillor pushCouncillor(Councillor selectedCouncillor){
