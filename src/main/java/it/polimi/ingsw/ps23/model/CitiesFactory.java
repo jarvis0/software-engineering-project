@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.RewardToken;
@@ -21,14 +20,13 @@ public class CitiesFactory {
 	public Map<String, City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
-		Random random = new Random();
 		HashMap<String, City> cities = new HashMap<>();
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {
-				cities.put(rawCity[0], new NormalCity(GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(random.nextInt(rewardTokens.size()))));
+				cities.put(rawCity[0], new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
 			}
 			else {
-				cities.put(rawCity[0], new CapitalCity(GameColorFactory.makeColor(rawCity[2], rawCity[1])));
+				cities.put(rawCity[0], new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
 			}
 		}
 		return cities;

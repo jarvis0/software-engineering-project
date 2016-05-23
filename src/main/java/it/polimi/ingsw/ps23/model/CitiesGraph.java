@@ -14,13 +14,13 @@ public class CitiesGraph {
 	DirectedGraph<City, DefaultEdge> citiesGraph;
 	
 	public CitiesGraph(List<String[]> citiesConnections, HashMap<String, City> cities) {
-		citiesGraph = new DefaultDirectedGraph<City, DefaultEdge>(DefaultEdge.class);
+		citiesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 		for(String[] connections : citiesConnections) {
 			citiesGraph.addVertex(cities.get(connections[0]));
 		}
 		for(String[] connections : citiesConnections) {			
 			for(int i = 1 ; i < connections.length; i++){
-				citiesGraph.addEdge(cities.get(connections[0]), cities.get(connections[i]));				
+				citiesGraph.addEdge(cities.get(connections[0]), cities.get(connections[i]));
 			}
 		}
 	}
