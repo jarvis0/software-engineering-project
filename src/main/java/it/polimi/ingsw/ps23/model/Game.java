@@ -1,15 +1,11 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.opencsv.CSVReader;
-
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
+
 
 public class Game {
 	
@@ -35,60 +31,27 @@ public class Game {
 	private void loadConnection() {
 						
 	}
-
-	private static List<String[]> parseCSVFile(String path) throws IOException {
-		CSVReader reader = new CSVReader(new FileReader(path));
-		List<String[]> read = reader.readAll();
-		reader.close();
-		return read;
-	}
 	
 	private void loadCities() {
-		List<String[]> rawCities = new ArrayList<>();
-		List<String[]> rawRewardTokens = new ArrayList<>();
-		try {
-			rawCities = parseCSVFile(PATH + CITIES_CSV);
-		} catch (IOException e) {
-			System.out.println("Cannot load cities.");
-		}
-		try {
-			rawRewardTokens = parseCSVFile(PATH + REWARD_TOKENS_CSV);
-		} catch (IOException e) {
-			System.out.println("Cannot load reward tokens");
-		}
+		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
+		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
 		cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
 		System.out.println(cities);
 	}
-	
+
 	private void loadPoliticDeck() {
-		List<String[]> rawPoliticCards = new ArrayList<>();
-		try {
-			rawPoliticCards = parseCSVFile(PATH + POLITIC_DECK_CSV);
-		} catch (IOException e) {
-			System.out.println("Cannot load politic deck.");
-		}
+		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
 		System.out.println(politicDeck);
 	}
 	
 	private void loadPermissionDeck() {
-		List<String[]> rawPermissionCards = new ArrayList<>();
-		try {
-			rawPermissionCards = parseCSVFile(PATH + PERMISSION_DECK_CSV);
-		} catch (IOException e) {
-			System.out.println("Cannot load permission deck.");
-		}
+		List<String[]> rawPermissionCards = new RawObject(PATH + PERMISSION_DECK_CSV).getRawObject();
 		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCards);
 		System.out.println(permissionDeck);
 	}
 	
 	private void loadCouncillors() {
-		List<String[]> rawCouncillors = new ArrayList<>();
-		try{
-			rawCouncillors = parseCSVFile(PATH + COUNCILLORS_CSV);		
-		} catch(IOException e) {
-			System.out.println("Cannot load permission deck.");
-		}
-		
+		List<String[]> rawCouncillors = new RawObject(PATH + COUNCILLORS_CSV).getRawObject();
 	}
 }
