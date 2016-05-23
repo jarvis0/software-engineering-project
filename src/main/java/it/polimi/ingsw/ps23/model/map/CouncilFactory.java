@@ -1,17 +1,16 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class CouncilFactory {
 	
 	private final int numberOfCouncillors = 4;
-	private ArrayList<Councillor> councilComposition = new ArrayList<Councillor>(numberOfCouncillors);;
-	
+	//private ArrayList<Councillor> councilComposition = new ArrayList<Councillor>(numberOfCouncillors);;
+	private Queue<Councillor> councilComposition = new LinkedList<Councillor>();
 	public Council makeCouncil(FreeCouncillors freeCouncillors){
-		Random random = new Random();
 		for(int i = 0; i < numberOfCouncillors; i++) {
-				councilComposition.add(freeCouncillors.remove(random.nextInt(freeCouncillors.getFreeCouncillors().size())));
+				councilComposition.add(freeCouncillors.remove(freeCouncillors.getFreeCouncillors().size()-1));
 		}
 	return new Council(councilComposition);
 	}

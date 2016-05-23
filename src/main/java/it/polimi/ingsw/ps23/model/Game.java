@@ -111,7 +111,7 @@ public class Game {
 		System.out.println("hill " +hillCouncil);
 		System.out.println("mountain " +mountainCouncil);
 		System.out.println(freeCouncillors);
-		freeCouncillors.selectCouncillor(2, seasideCouncil);
+		freeCouncillors.selectCouncillor(2, seasideCouncil); //test change council
 		System.out.println("sea " +seasideCouncil);
 		System.out.println(freeCouncillors);
 		}

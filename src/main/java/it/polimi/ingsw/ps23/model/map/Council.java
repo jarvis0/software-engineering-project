@@ -1,14 +1,12 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.util.ArrayList;
-import java.util.Random;
-	
+import java.util.Queue;
+
 public class Council{
 	
-	private final int lastPosition = 0;
-	private ArrayList<Councillor> councilComposition;
+	private Queue<Councillor> councilComposition;
 	
-	public Council(ArrayList<Councillor> councilComposition){
+	public Council(Queue<Councillor> councilComposition){
 		this.councilComposition = councilComposition;
 	}
 	
@@ -17,12 +15,12 @@ public class Council{
 		return this.getCouncil().toString();
 	}
 	
-	public ArrayList<Councillor> getCouncil() {
+	public Queue<Councillor> getCouncil() {
 		return councilComposition;
 	}
 	
 	public Councillor pushCouncillor(Councillor selectedCouncillor){
-		Councillor removedCouncillor = councilComposition.remove(lastPosition);
+		Councillor removedCouncillor = councilComposition.remove();
 		councilComposition.add(selectedCouncillor); 
 		return removedCouncillor;
 	}
