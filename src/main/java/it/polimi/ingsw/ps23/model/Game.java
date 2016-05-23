@@ -10,7 +10,6 @@ import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
 public class Game {
 	
-	private HashMap<String, City> cities;
 	private CitiesGraph citiesGraph;
 	private Deck politicDeck;
 	private Deck permissionDeck;
@@ -26,23 +25,17 @@ public class Game {
 	
 	public Game() {
 		loadMap();
-		loadConnection();
 		loadPoliticDeck();
 		loadPermissionDeck();
 		loadCouncillors();
-	}
-
-	private void loadConnection() {
-		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
-		citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
-		System.out.println(citiesGraph);		
 	}
 	
 	private void loadMap() {
 		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
-		cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
-		System.out.println(cities);
+		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
+		citiesGraph = new CitiesGraph(rawCitiesConnections, (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens));
+		System.out.println(citiesGraph);
 	}
 
 	private void loadPoliticDeck() {
