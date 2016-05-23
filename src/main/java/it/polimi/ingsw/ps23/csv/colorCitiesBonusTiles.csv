@@ -1,6 +1,5 @@
-blueIronCities,5,0,0,0,0,0
-bronzeCities,8,0,0,0,0,0
-silverCities,12,0,0,0,0,0
-goldCieites,20,0,0,0,0,0
+iron,5,0,0,0,0,0
+bronze,8,0,0,0,0,0
+silver,12,0,0,0,0,0
+gold,20,0,0,0,0,0
 color,assistant,coin,victoryPoint,politicCard,additionalMainAction,nobilityTrackStep
-

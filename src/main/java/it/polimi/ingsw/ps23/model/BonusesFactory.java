@@ -18,4 +18,5 @@ public class BonusesFactory {
 		}
 		return bonusSlot;
 	}
+	
 }
