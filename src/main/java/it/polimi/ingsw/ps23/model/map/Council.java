@@ -24,7 +24,4 @@ public class Council{
 		councilComposition.add(selectedCouncillor); 
 		return removedCouncillor;
 	}
-	
-	
-	
 }
