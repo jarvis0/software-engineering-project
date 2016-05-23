@@ -6,7 +6,6 @@ import java.util.Queue;
 public class CouncilFactory {
 	
 	private final int numberOfCouncillors = 4;
-	//private ArrayList<Councillor> councilComposition = new ArrayList<Councillor>(numberOfCouncillors);;
 	private Queue<Councillor> councilComposition = new LinkedList<Councillor>();
 	public Council makeCouncil(FreeCouncillors freeCouncillors){
 		for(int i = 0; i < numberOfCouncillors; i++) {
