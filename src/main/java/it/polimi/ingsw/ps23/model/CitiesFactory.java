@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.RewardToken;
-import it.polimi.ingsw.ps23.model.map.BonusSlot;
+import it.polimi.ingsw.ps23.model.map.RewardTokenFactory;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.NormalCity;
@@ -18,7 +17,7 @@ public class CitiesFactory {
 	private static final String CAPITAL = "Capital";
 	
 	public Map<String, City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
-		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) makeRewardTokens(rawRewardTokens);
+		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
 		HashMap<String, City> cities = new HashMap<>();
 		for(String[] rawCity : rawCities) {
@@ -31,16 +30,5 @@ public class CitiesFactory {
 		}
 		return cities;
 	}
-	
-	private List<RewardToken> makeRewardTokens(List<String[]> rawRewardTokens) {
-		ArrayList<RewardToken> rewardTokens = new ArrayList<>();
-		BonusCache.loadCache();
-		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
-		for(String[] rawRewardToken : rawRewardTokens) {
-			BonusSlot rewardToken = new RewardToken();
-			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, rewardToken));
-		}
-		return rewardTokens;
-	}
-	
+
 }
