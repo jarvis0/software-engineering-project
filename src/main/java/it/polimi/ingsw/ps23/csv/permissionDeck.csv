@@ -1,0 +1,7 @@
+0,1,2,0,0,0,seaside,A,D,E
+1,0,0,3,0,0,seaside,B
+0,2,0,0,1,0,seaside,E
+1,0,3,0,0,0,seaside,C,D
+0,0,0,1,0,1,seaside,C,D,E
+
+assistant,coin,victoryPoint,politicCard,additionalMainAction,nobilityTrackStep

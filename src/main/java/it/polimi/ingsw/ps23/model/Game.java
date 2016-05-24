@@ -52,7 +52,6 @@ public class Game {
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
-		System.out.println("\n" + politicDeck);
 	}
 	
 	private void loadPermissionDeck() {
