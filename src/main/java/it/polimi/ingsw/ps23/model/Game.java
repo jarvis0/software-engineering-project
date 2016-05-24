@@ -34,7 +34,7 @@ public class Game {
 		loadPermissionDeck();
 		loadCouncillors();
 		connectCouncillorsToGroupRegionalCity();
-		connectPermissionCardtoGroupRegionalCity();
+		connectPermissionCardToGroupRegionalCity();
 	}
 	
 	private void loadMap() {
@@ -68,12 +68,12 @@ public class Game {
 	
 	private void connectCouncillorsToGroupRegionalCity() {
 		for (GroupRegionalCity groupRegionalCity : regions) {
-			groupRegionalCity.addCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
+			groupRegionalCity.setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
 		}
 		System.out.println(regions);
 	}
 	
-	private void connectPermissionCardtoGroupRegionalCity() {
+	private void connectPermissionCardToGroupRegionalCity() {
 		for (GroupRegionalCity groupRegionalCity : regions) {
 			//aggiungere le permission card per ogni regione
 		}
