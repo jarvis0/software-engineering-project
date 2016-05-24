@@ -13,10 +13,10 @@ import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Game {
 	
-	private CitiesGraph citiesGraph;
-	private ArrayList<GroupRegionalCity> regions;
+	private CitiesGraph citiesGraph;//toBeRemoved
+	private ArrayList<GroupRegionalCity> regions;//toBeRemoved
 	private Deck politicDeck;
-	private Deck permissionDeck;
+	private Deck permissionDeck;//toBeRemoved
 	private FreeCouncillors freeCouncillors;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
@@ -65,10 +65,9 @@ public class Game {
 	}
 	
 	private void loadPermissionDeck() {
-		/*List<String[]> rawPermissionCardsBonuses = new RawObject(PATH + PERMISSION_DECK_BONUSES_CSV).getRawObject();
-		List<String[]> rawPermissionCardsCities = new RawObject(PATH + PERMISSION_DECK_CITIES_CSV).getRawObject();
-		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCardsBonuses, rawPermissionCardsCities);
-		System.out.println("\n" + permissionDeck);*/
+		List<String[]> rawPermissionCards = new RawObject(PATH + PERMISSION_DECK_CSV).getRawObject();
+		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCards);
+		System.out.println("\n" + permissionDeck);
 	}
 	
 	private void loadCouncillors() {
