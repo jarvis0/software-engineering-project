@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
 public abstract class Region {
 	
@@ -23,7 +22,7 @@ public abstract class Region {
 	}
 	
 	public void addCity(City city) throws InvalidCityException {
-		if(!cities.contains(city)){
+		if(!cities.contains(city)) {
 		cities.add(city);
 		}
 		else
@@ -42,4 +41,10 @@ public abstract class Region {
 	}
 	
 	//public abstract void takeBonus(Player player);
+
+	
+	@Override
+	public String toString() {
+		return id + ": " + cities + " [Bonus: " + victoryPointsBonus + "]"; 
+	}
 }

@@ -7,13 +7,18 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+<<<<<<< HEAD
 
+=======
+import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
+>>>>>>> refs/remotes/origin/Mirco
 import it.polimi.ingsw.ps23.model.map.Region;
 
 
 public class Game {
 	
 	private CitiesGraph citiesGraph;
+	private ArrayList<GroupRegionalCity> regions;
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
@@ -33,7 +38,8 @@ public class Game {
 		loadPoliticDeck();
 		loadPermissionDeck();
 		loadCouncillors();
-		
+		connectCouncillorsToGroupRegionalCity();
+		connectPermissionCardToGroupRegionalCity();
 	}
 	
 	private void loadMap() {
@@ -42,11 +48,14 @@ public class Game {
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
 		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
 		ArrayList<City> cities = (ArrayList<City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
-		//citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
-		//System.out.println(citiesGraph);
 		List<String[]> rawColouredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
 		ArrayList<Region> colouredGroup  = new GroupColoredCityFactory().makeGroup(rawColouredCities,cities);
 		System.out.println(colouredGroup);
+		HashMap<String, City> citiesMap = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
+		citiesGraph = new CitiesGraph(rawCitiesConnections, citiesMap);
+		regions = new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
+		System.out.println(citiesGraph);		
+
 	}
 
 	private void loadPoliticDeck() {
@@ -66,22 +75,19 @@ public class Game {
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		System.out.println(freeCouncillors);
 	}
-	
-	
-	//the following method will be called by regions
-	/*private void createCouncils() {
-		seasideCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
-		hillCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
-		mountainCouncil = new CouncilFactory().makeCouncil(freeCouncillors);
-		
-		System.out.println("sea " +seasideCouncil);
-		System.out.println("hill " +hillCouncil);
-		System.out.println("mountain " +mountainCouncil);
-		System.out.println(freeCouncillors);
-		freeCouncillors.selectCouncillor(2, seasideCouncil); //test change council
-		System.out.println("sea " +seasideCouncil);
-		System.out.println(freeCouncillors);
+
+	private void connectCouncillorsToGroupRegionalCity() {
+		for (GroupRegionalCity groupRegionalCity : regions) {
+			groupRegionalCity.setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
+		}
+		System.out.println(regions);
+
 	}
-	*/
+	
+	private void connectPermissionCardToGroupRegionalCity() {
+		for (GroupRegionalCity groupRegionalCity : regions) {
+			//aggiungere le permission card per ogni regione
+		}
+	}
 	
 }

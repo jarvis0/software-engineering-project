@@ -8,6 +8,7 @@ public class GroupColoredCity extends Region {
 
 	private ArrayList<String> composition;
 	
+
 	public GroupColoredCity(String id, ArrayList<String> cities, Bonus victoryPointsBonus){
 		super(id, victoryPointsBonus);
 		composition = cities;

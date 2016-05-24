@@ -1,26 +1,37 @@
 package it.polimi.ingsw.ps23.model.map;
 
+
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
 public class GroupRegionalCity extends Region{
 	
-	private Arraylist<RegionalBonusTile> bonus;
+
 	private Council council;
-	private ArrayList<PermissionCard> permissionCard;
+	private Deck permissionDeckDown;
+	private Deck permissionDeckUp;
+
 	
-	public GroupRegionalCity() {
-		super();
-		//create bonus tile per regione
+	public GroupRegionalCity(String id, VictoryPointBonus victoryPointBonus) {
+		super(id,victoryPointBonus);
+	}
+	
+	public void setCouncil(Council council) {
+		this.council = council;
+	}
+	
+	public void setPermissionDeck(Deck permissionDeck) {
+		this.permissionDeckDown = permissionDeck;
 	}
 
+	//@Override
+	//public void takeBonus(Player player) {
+		//for(ogni bonus in bonus lo devo aggiungere al giocatore)
+	//}
+	
 	@Override
-	public void takeBonus(Player player) {
-		//for(ogni bonus in bonustile lo devo aggiungere al giocatore)
+	public String toString() {
+		return super.toString() + " [Council: " + council + "]";
 	}
-
-	
-	
-	
-	
 
 }
