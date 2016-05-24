@@ -7,11 +7,8 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
-<<<<<<< HEAD
-
-=======
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
->>>>>>> refs/remotes/origin/Mirco
+
 import it.polimi.ingsw.ps23.model.map.Region;
 
 
