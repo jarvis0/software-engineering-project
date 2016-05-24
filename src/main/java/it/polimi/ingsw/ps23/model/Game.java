@@ -14,7 +14,7 @@ import it.polimi.ingsw.ps23.model.map.Region;
 public class Game {
 	
 	private CitiesGraph citiesGraph;
-	private ArrayList<GroupRegionalCity> regions;
+	private ArrayList<Region> regions;
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
