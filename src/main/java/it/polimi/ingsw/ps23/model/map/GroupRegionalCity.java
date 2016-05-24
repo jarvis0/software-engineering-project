@@ -8,24 +8,24 @@ import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 public class GroupRegionalCity extends Region{
 	
 	private Council council;
-	private ArrayList<PermissionCard> permissionCard;
+	private Deck permissionDeckDown;
+	private Deck permissionDeckUp;
 	
 	public GroupRegionalCity(String id, VictoryPointBonus victoryPointBonus) {
 		super(id,victoryPointBonus);
-		permissionCard = new ArrayList<>();
 	}
 	
-	public void addCouncil(Council council) {
+	public void setCouncil(Council council) {
 		this.council = council;
 	}
 	
-	public void addPermissionCard(ArrayList<PermissionCard> permissionCards) {
-		this.permissionCard.addAll(permissionCards);
+	public void setPermissionDeck(Deck permissionDeck) {
+		this.permissionDeckDown = permissionDeck;
 	}
 
 	@Override
 	public void takeBonus(Player player) {
-		//for(ogni bonus in bonustile lo devo aggiungere al giocatore)
+		//for(ogni bonus in bonus lo devo aggiungere al giocatore)
 	}
 	
 	@Override
