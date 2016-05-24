@@ -1,15 +1,19 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.InvalidCityException;
+import it.polimi.ingsw.ps23.model.map.King;
+import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.NormalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 
@@ -19,6 +23,8 @@ public class Game {
 	private Deck politicDeck;
 	private Deck permissionDeck;
 	private FreeCouncillors freeCouncillors;
+	private King king;
+	private KingTiles kingTiles;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
@@ -36,25 +42,20 @@ public class Game {
 		loadMap();
 		loadPoliticDeck();
 		loadPermissionDeck();
+		loadKingTiles();
 	}
-	
+
 	private void loadMap() {
 		CitiesFactory citiesFactory = loadCities();
 		CitiesGraph citiesGraph = loadCitiesConnections(citiesFactory.getHashMap());
 		List<Region> groupRegionalCities = (ArrayList<Region>) loadRegions(citiesFactory.getHashMap());
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionCards(groupRegionalCities);
+		createKing(citiesFactory.getCities());
 		List<Region> groupColoredCities = (ArrayList<Region>) loadColoredRegions(citiesFactory.getCities());
 		gameMap = new GameMap(citiesFactory.getCities(), citiesFactory.getHashMap(), citiesGraph, groupRegionalCities, groupColoredCities);
-		/* per quando inzializzeremo il king copiare da qui c'è anche la prova della pop
-		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
-		KingTiles kingTile =  new KingTileFactory().makeTiles(rawKingTiles); 
-		System.out.println(kingTile);
-		kingTile.pop();
-		System.out.println(kingTile);	*/
-		System.out.println(gameMap);
 	}
-	
+
 	private CitiesFactory loadCities() {
 		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
@@ -107,6 +108,19 @@ public class Game {
 		for (Region region : regions) {
 			//aggiungere le permission card per ogni regione
 		}
+	}
+	
+	private void createKing(List<City> cities) {
+		for(City city : cities){
+			if(city instanceof CapitalCity) {  
+				king = new King(city);
+			}
+		}
+	}
+	
+	private void loadKingTiles() {
+		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
+		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
 	}
 	
 }

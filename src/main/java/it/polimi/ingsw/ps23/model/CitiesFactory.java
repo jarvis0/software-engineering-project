@@ -14,7 +14,7 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class CitiesFactory {
 	
-	private static final String CAPITAL = "Capital";
+	private static final String CAPITAL = "capital";
 	private List<City> cities;
 	
 	public CitiesFactory() {
