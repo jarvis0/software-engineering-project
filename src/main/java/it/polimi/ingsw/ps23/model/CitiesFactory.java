@@ -15,20 +15,32 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 public class CitiesFactory {
 	
 	private static final String CAPITAL = "Capital";
+	private List<City> cities;
 	
-	public Map<String, City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
+	public CitiesFactory() {
+		cities = new ArrayList<>();
+	}
+	
+	public List<City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
-		HashMap<String, City> cities = new HashMap<>();
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {
-				cities.put(rawCity[0], new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
+				cities.add(new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
 			}
 			else {
-				cities.put(rawCity[0], new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
+				cities.add(new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
 			}
 		}
 		return cities;
+	}
+	
+	public Map<String, City> toHashMap() {
+		Map<String, City> citiesMap = new HashMap<>();
+		for(City city : cities) {
+			citiesMap.put(city.getName(), city);
+		}
+		return citiesMap;
 	}
 
 }

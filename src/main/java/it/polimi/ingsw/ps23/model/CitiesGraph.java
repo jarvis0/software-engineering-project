@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.model;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -13,7 +14,7 @@ public class CitiesGraph {
 	
 	DirectedGraph<City, DefaultEdge> citiesGraph;
 	
-	public CitiesGraph(List<String[]> citiesConnections, HashMap<String, City> cities) {
+	public CitiesGraph(List<String[]> citiesConnections, Map<String, City> cities) {
 		citiesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 		for(String[] connections : citiesConnections) {
 			citiesGraph.addVertex(cities.get(connections[0]));
