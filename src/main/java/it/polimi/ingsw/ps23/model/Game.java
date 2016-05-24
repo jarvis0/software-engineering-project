@@ -1,11 +1,14 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+
+import it.polimi.ingsw.ps23.model.map.Region;
 
 
 public class Game {
@@ -23,12 +26,14 @@ public class Game {
 	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String REGIONS = "regions.csv";
+	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
 	
 	public Game() {
 		loadMap();
 		loadPoliticDeck();
 		loadPermissionDeck();
 		loadCouncillors();
+		
 	}
 	
 	private void loadMap() {
@@ -36,11 +41,12 @@ public class Game {
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
 		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
-		HashMap<String, City> cities = (HashMap<String, City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
-		citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
-		
-		System.out.println(citiesGraph);
-		
+		ArrayList<City> cities = (ArrayList<City>) new CitiesFactory().makeCities(rawCities, rawRewardTokens);
+		//citiesGraph = new CitiesGraph(rawCitiesConnections, cities);
+		//System.out.println(citiesGraph);
+		List<String[]> rawColouredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
+		ArrayList<Region> colouredGroup  = new GroupColoredCityFactory().makeGroup(rawColouredCities,cities);
+		System.out.println(colouredGroup);
 	}
 
 	private void loadPoliticDeck() {
@@ -60,6 +66,7 @@ public class Game {
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		System.out.println(freeCouncillors);
 	}
+	
 	
 	//the following method will be called by regions
 	/*private void createCouncils() {

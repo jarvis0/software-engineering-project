@@ -4,9 +4,9 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class GroupRegionalCity extends Region{
 	
-	//private Arraylist<RegionalBonusTile> bonus;
-	//private Council council;
-	//private ArrayList<PermissionCard> permissionCard;
+	private Arraylist<RegionalBonusTile> bonus;
+	private Council council;
+	private ArrayList<PermissionCard> permissionCard;
 	
 	public GroupRegionalCity() {
 		super();

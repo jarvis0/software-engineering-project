@@ -17,16 +17,16 @@ public class CitiesFactory {
 	
 	private static final String CAPITAL = "Capital";
 	
-	public Map<String, City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
+	public ArrayList<City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
-		HashMap<String, City> cities = new HashMap<>();
+		ArrayList<City> cities = new ArrayList<>();
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {
-				cities.put(rawCity[0], new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
+				cities.add(new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
 			}
 			else {
-				cities.put(rawCity[0], new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
+				cities.add(new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
 			}
 		}
 		return cities;
