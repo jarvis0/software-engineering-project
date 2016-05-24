@@ -7,6 +7,7 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.GroupColoredCity;
+import it.polimi.ingsw.ps23.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class GroupColoredCityFactory {
@@ -20,18 +21,21 @@ public class GroupColoredCityFactory {
 	public List<Region> makeGroup(List<String[]> rawIds, List<City> cities){
 		String[] fields = rawIds.remove(rawIds.size() - 1);
 		for(String[] rawId : rawIds) {
-			ArrayList<String> coloredGroupCities = new ArrayList<>();
 			String colorName = rawId[0];
 			Bonus bonus = new VictoryPointBonus(fields[1]);
 			bonus.setValue(Integer.parseInt(rawId[1]));
+			Region coloredGroup = new GroupColoredCity(colorName, (VictoryPointBonus) bonus);
 			for(City city : cities){
 				if(city.getColor().equals(colorName)){
-					coloredGroupCities.add(city.getName());
+					   try {
+						coloredGroup.addCity(city);
+					} catch (InvalidCityException e) {
+						e.printStackTrace();
+					}
 				}
+			coloredGroupCitiesList.add(coloredGroup);
 			}
-			coloredGroupCitiesList.add(new GroupColoredCity(colorName, coloredGroupCities, (VictoryPointBonus) bonus));
 		}
 		return coloredGroupCitiesList;
 	}
-
 }
