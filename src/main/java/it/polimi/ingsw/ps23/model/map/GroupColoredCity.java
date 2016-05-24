@@ -1,21 +1,23 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import it.polimi.ingsw.ps23.model.Player;
+import java.util.ArrayList;
 
-public class GroupColoredCity extends Region{
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-	//private Arraylist<ColorBonusTile> bonus;
+public class GroupColoredCity extends Region {
+
+	private ArrayList<String> composition;
 	
-	public GroupColoredCity(){
-		super();
-		//create bonus tile per regione
-		
+	public GroupColoredCity(String id, ArrayList<String> cities, Bonus victoryPointsBonus){
+		super(id, victoryPointsBonus);
+		composition = cities;
 	}
-
+	
 	@Override
-	public void takeBonus(Player player) {
-		//for(ogni bonus in bonustile lo devo aggiungere al giocatore)		
+	public String toString() {
+		return  getId() + " " + composition.toString() +" " + getBonus();
 	}
 	
-
+	
 }
+
