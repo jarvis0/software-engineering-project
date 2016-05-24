@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.model.bonus.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
@@ -25,6 +26,7 @@ public class Game {
 	private FreeCouncillors freeCouncillors;
 	private King king;
 	private KingTiles kingTiles;
+	private NobilityTrack nobilityTrack;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
@@ -33,9 +35,10 @@ public class Game {
 	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
 	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
-	private static final String REGIONS = "regions.csv";
+	private static final String REGIONS_CSV = "regions.csv";
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
+	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
 	public Game() {
 		loadCouncillors();
@@ -43,6 +46,8 @@ public class Game {
 		loadPoliticDeck();
 		loadPermissionDeck();
 		loadKingTiles();
+		loadNobilityTrack();
+		System.out.println(nobilityTrack);
 	}
 
 	private void loadMap() {
@@ -70,7 +75,7 @@ public class Game {
 	}
 
 	private List<Region> loadRegions(Map<String, City> citiesMap) {
-		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
+		List<String[]> rawRegion = new RawObject(PATH + REGIONS_CSV).getRawObject();
 		return new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
 	}
 	
@@ -78,8 +83,6 @@ public class Game {
 		List<String[]> rawColoredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
 		return new GroupColoredCityFactory().makeGroup(rawColoredCities, citiesList);
 	}
-	
-	
 	
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
@@ -123,4 +126,8 @@ public class Game {
 		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
 	}
 	
+	private void loadNobilityTrack() {
+		List<String[]> rawNobilityTrackSteps = new RawObject(PATH + NOBILY_TRACK_CSV).getRawObject();
+		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
+	}
 }

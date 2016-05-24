@@ -14,8 +14,8 @@ public class BonusesFactory {
 			if(bonusValue > 0) {
 				Bonus bonus = BonusCache.getBonus(fields[i], bonusValue);
 				((BonusSlot) bonusSlot).addBonus(bonus);
-				i++;
 			}
+			i++;
 		}
 		return (BonusSlot) bonusSlot;
 	}

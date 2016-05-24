@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 
 public class RewardTokenFactory {
 
-	private ArrayList<RewardToken> rewardTokens;
+	private List<RewardToken> rewardTokens;
 	
 	public RewardTokenFactory() {
 		rewardTokens = new ArrayList<>();
