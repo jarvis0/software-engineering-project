@@ -7,6 +7,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 
@@ -28,6 +29,7 @@ public class Game {
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String REGIONS = "regions.csv";
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
+	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	
 	public Game() {
 		loadMap();
@@ -55,13 +57,20 @@ public class Game {
 		
 		citiesGraph = new CitiesGraph(rawCitiesConnections, citiesMap);
 		regions = new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
-		System.out.println(citiesGraph);		
-
+		System.out.println(citiesGraph);	
+		
+		/* per quando inzializzeremo il king copiare da qui c'è anche la prova della pop
+		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
+		KingTiles kingTile =  new KingTileFactory().makeTiles(rawKingTiles); 
+		System.out.println(kingTile);
+		kingTile.pop();
+		System.out.println(kingTile);	*/
 	}
 
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
+		
 	}
 	
 	private void loadPermissionDeck() {
