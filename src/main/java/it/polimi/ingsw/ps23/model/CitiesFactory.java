@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.RewardToken;
-import it.polimi.ingsw.ps23.model.map.BonusSlot;
+import it.polimi.ingsw.ps23.model.map.RewardTokenFactory;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.NormalCity;
@@ -16,11 +15,15 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 public class CitiesFactory {
 	
 	private static final String CAPITAL = "Capital";
+	private List<City> cities;
 	
-	public ArrayList<City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
-		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) makeRewardTokens(rawRewardTokens);
+	public CitiesFactory() {
+		cities = new ArrayList<>();
+	}
+	
+	public List<City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
+		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
-		ArrayList<City> cities = new ArrayList<>();
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {
 				cities.add(new NormalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1]), rewardTokens.remove(rewardTokens.size() - 1)));
@@ -32,15 +35,12 @@ public class CitiesFactory {
 		return cities;
 	}
 	
-	private List<RewardToken> makeRewardTokens(List<String[]> rawRewardTokens) {
-		ArrayList<RewardToken> rewardTokens = new ArrayList<>();
-		BonusCache.loadCache();
-		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
-		for(String[] rawRewardToken : rawRewardTokens) {
-			BonusSlot rewardToken = new RewardToken();
-			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, rewardToken));
+	public Map<String, City> toHashMap() {
+		Map<String, City> citiesMap = new HashMap<>();
+		for(City city : cities) {
+			citiesMap.put(city.getName(), city);
 		}
-		return rewardTokens;
+		return citiesMap;
 	}
-	
+
 }

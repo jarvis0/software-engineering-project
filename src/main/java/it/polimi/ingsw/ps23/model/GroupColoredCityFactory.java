@@ -11,8 +11,13 @@ import it.polimi.ingsw.ps23.model.map.Region;
 
 public class GroupColoredCityFactory {
 	
-	ArrayList<Region> coloredGroupCitiesList = new ArrayList<>();
-	public ArrayList<Region> makeGroup(List<String[]> rawIds, ArrayList<City> cities){
+	List<Region> coloredGroupCitiesList;
+	
+	public GroupColoredCityFactory() {
+		coloredGroupCitiesList = new ArrayList<>();
+	}
+	
+	public List<Region> makeGroup(List<String[]> rawIds, List<City> cities){
 		String[] fields = rawIds.remove(rawIds.size() - 1);
 		for(String[] rawId : rawIds) {
 			ArrayList<String> coloredGroupCities = new ArrayList<>();

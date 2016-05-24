@@ -1,11 +1,19 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import it.polimi.ingsw.ps23.model.map.Deck;
+import it.polimi.ingsw.ps23.model.map.Card;
 
 public abstract class DeckFactory {
 
-	public abstract Deck makeDeck(List<String[]> rawCards);
-
+	private ArrayList<Card> cards;
+	
+	protected DeckFactory() {
+		cards = new ArrayList<>();
+	}
+	
+	protected ArrayList<Card> getCards() {
+		return cards;
+	}
+	
 }
