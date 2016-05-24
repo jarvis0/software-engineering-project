@@ -23,7 +23,7 @@ public abstract class Region {
 	
 	public void addCity(City city) throws InvalidCityException {
 		if(!cities.contains(city)) {
-		cities.add(city);
+			cities.add(city);
 		}
 		else
 			throw new InvalidCityException();
