@@ -6,17 +6,17 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class GroupColoredCity extends Region {
 
-	private ArrayList<String> composition;
+	private ArrayList<String> cities;
 	
 
 	public GroupColoredCity(String id, ArrayList<String> cities, Bonus victoryPointsBonus){
 		super(id, victoryPointsBonus);
-		composition = cities;
+		this.cities = cities;
 	}
 	
 	@Override
 	public String toString() {
-		return  getId() + " " + composition.toString() +" " + getBonus();
+		return getId() + ": " + cities + " [Bonus: " + getBonus() + "]"; 
 	}
 	
 	

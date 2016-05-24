@@ -21,7 +21,7 @@ public class CitiesFactory {
 		cities = new ArrayList<>();
 	}
 	
-	public List<City> makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
+	public void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
 		for(String[] rawCity : rawCities) {
@@ -32,10 +32,13 @@ public class CitiesFactory {
 				cities.add(new CapitalCity(rawCity[0], GameColorFactory.makeColor(rawCity[2], rawCity[1])));
 			}
 		}
-		return cities;
 	}
 	
-	public Map<String, City> toHashMap() {
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public Map<String, City> getHashMap() {
 		Map<String, City> citiesMap = new HashMap<>();
 		for(City city : cities) {
 			citiesMap.put(city.getName(), city);
