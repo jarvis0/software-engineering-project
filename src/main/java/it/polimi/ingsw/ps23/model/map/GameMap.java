@@ -13,7 +13,7 @@ public class GameMap {
 	private List<Region> groupRegionalCities;
 	private List<Region> groupColoredCities;
 	
-		public GameMap(List<City> citiesList, Map<String, City> citiesMap, CitiesGraph citiesGraph, List<Region> groupRegionalCities, List<Region> groupColoredCities) {
+	public GameMap(List<City> citiesList, Map<String, City> citiesMap, CitiesGraph citiesGraph, List<Region> groupRegionalCities, List<Region> groupColoredCities) {
 		this.citiesList = citiesList;
 		this.citiesMap = citiesMap;
 		this.citiesGraph = citiesGraph;
@@ -43,7 +43,8 @@ public class GameMap {
 	
 	@Override
 	public String toString() {
-		return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
+		//return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
+		return groupRegionalCities.toString();
 	}
 
 }

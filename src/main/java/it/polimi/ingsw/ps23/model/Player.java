@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
@@ -13,7 +14,7 @@ public class Player {
 	private int nobilityTrackPoints;
 	private int coin;
 	private int assistant;
-	private ArrayList<City> builtEmporiums;
+	private List<City> builtEmporiums;
 	//private ArrayList<PermissionHandDeck> permissionHand;
 	//private ArrayList<PoliticHandDeck> politicHand;	
 		
@@ -37,7 +38,7 @@ public class Player {
 		return assistant;
 	}
 
-	public ArrayList<City> getBuiltEmporium() {
+	public List<City> getBuiltEmporium() {
 		return builtEmporiums;
 	}
 	

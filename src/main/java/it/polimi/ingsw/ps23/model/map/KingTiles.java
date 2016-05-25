@@ -13,8 +13,9 @@ public class KingTiles {
 	}
 	
 	public void pop() {
-	  kingTiles.pop();
+		kingTiles.pop();
 	}
+	
 	@Override
 	public String toString() {
 		return kingTiles.toString();

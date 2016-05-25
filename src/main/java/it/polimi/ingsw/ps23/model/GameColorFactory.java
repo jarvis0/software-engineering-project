@@ -1,10 +1,11 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class GameColorFactory {
 	
-	private static final ArrayList<GameColor> colors = new ArrayList<>();
+	private static final List<GameColor> colors = new ArrayList<>();
 
 	private GameColorFactory() {
 	}
