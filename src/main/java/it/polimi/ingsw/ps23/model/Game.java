@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,17 +10,15 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.model.map.King;
 import it.polimi.ingsw.ps23.model.map.KingTiles;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Game {
-	
-	private GameMap gameMap;
+
 	private Deck politicDeck;
 	private FreeCouncillors freeCouncillors;
+	private GameMap gameMap;
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
@@ -65,6 +62,14 @@ public class Game {
 		return citiesFactory;
 	}
 	
+	private void createKing(List<City> cities) {
+		for(City city : cities){
+			if(city instanceof CapitalCity) {  
+				king = new King(city);
+			}
+		}
+	}
+	
 	private CitiesGraph loadCitiesConnections(Map<String, City> cities) {
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
 		return new CitiesGraph(rawCitiesConnections, cities);
@@ -97,9 +102,21 @@ public class Game {
 		List<String[]> rawColoredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
 		return new GroupColoredCityFactory().makeGroup(rawColoredCities, cities);
 	}
+	
 
+	private void loadKingTiles() {
+		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
+		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
+	}
+	
+	private void loadNobilityTrack() {
+		List<String[]> rawNobilityTrackSteps = new RawObject(PATH + NOBILY_TRACK_CSV).getRawObject();
+		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
+	}
+	
 	private void loadMap() {
 		CitiesFactory citiesFactory = loadCities();
+		createKing(citiesFactory.getCities());
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
 		List<Region> groupRegionalCities = loadRegions(citiesMap);
@@ -110,21 +127,5 @@ public class Game {
 		System.out.println(gameMap);
 	}
 
-	private void createKing(List<City> cities) {
-		for(City city : cities){
-			if(city instanceof CapitalCity) {  
-				king = new King(city);
-			}
-		}
-	}
-	
-	private void loadKingTiles() {
-		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
-		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
-	}
-	
-	private void loadNobilityTrack() {
-		List<String[]> rawNobilityTrackSteps = new RawObject(PATH + NOBILY_TRACK_CSV).getRawObject();
-		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
-	}
+
 }
