@@ -10,16 +10,13 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.model.map.King;
 import it.polimi.ingsw.ps23.model.map.KingTiles;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 
-
 public class Game {
-	
-	private Deck politicDeck;	
+
+	private Deck politicDeck;
 	private FreeCouncillors freeCouncillors;
 	private GameMap gameMap;
 	private King king;
@@ -56,7 +53,7 @@ public class Game {
 		List<String[]> rawCouncillors = new RawObject(PATH + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 	}
-
+	
 	private CitiesFactory loadCities() {
 		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
@@ -77,7 +74,7 @@ public class Game {
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
 		return new CitiesGraph(rawCitiesConnections, cities);
 	}
-	
+
 	private List<Region> loadRegions(Map<String, City> citiesMap) {
 		List<String[]> rawRegion = new RawObject(PATH + REGIONS_CSV).getRawObject();
 		return new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
@@ -93,7 +90,7 @@ public class Game {
 		List<String[]> rawPermissionCards = new RawObject(PATH + PERMISSION_DECK_CSV).getRawObject();
 		return new PermissionDecksFactory().makeDecks(rawPermissionCards, cities);
 	}
-	
+
 	private void regionalPermissionDecks(Map<String, City> cities, List<Region> regions) {
 		Map<String, Deck> permissionDeck = loadPermissionDecks(cities, regions);
 		for(Region region : regions) {
@@ -106,6 +103,7 @@ public class Game {
 		return new GroupColoredCityFactory().makeGroup(rawColoredCities, cities);
 	}
 	
+
 	private void loadKingTiles() {
 		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
 		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
