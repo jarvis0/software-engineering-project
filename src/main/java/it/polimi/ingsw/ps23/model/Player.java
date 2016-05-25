@@ -59,4 +59,9 @@ public class Player {
 			throw new InsufficientResourcesException();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return 	id + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString() + " " + politicHandDeck.toString();	
+	}
 }

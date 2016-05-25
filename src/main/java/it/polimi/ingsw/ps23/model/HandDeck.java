@@ -16,4 +16,9 @@ public abstract class HandDeck {
 	public void addCard(Card card) {
 		cards.add(card);
 	}
+	
+	@Override
+	public String toString() {
+		return cards.toString();
+	}
 }

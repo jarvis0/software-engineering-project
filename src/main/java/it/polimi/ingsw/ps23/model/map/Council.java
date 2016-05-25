@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.model.map;
 
 import java.util.Queue;
 
-public class Council{
+public class Council {
 	
 	private Queue<Councillor> councilComposition;
 	

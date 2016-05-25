@@ -7,7 +7,6 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.map.Councillor;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
-
 public class CouncillorsFactory {
 
 	public FreeCouncillors makeCouncillors(List<String[]> rawCouncillors) {
