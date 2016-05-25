@@ -39,12 +39,9 @@ public class PermissionDecksFactory extends DeckFactory {
 				((PermissionCard) permissionCard).addCity(cities.get(cityName));
 			}
 			
-			//attributo region di permissionCard non viene MAI usato
 			String regionName = rawPermissionCard[BONUSES_NUMBER];
-			((PermissionCard) permissionCard).setRegion(regionName);
 			if(!cardsMap.containsKey(regionName)) {
-				//uso improprio del metodo
-				cards = newCards();
+				cards = new ArrayList<>();
 				cardsMap.put(regionName, cards);
 			}
 			cardsMap.get(regionName).add((PermissionCard) new BonusesFactory().makeBonuses(fields, rawBonuses, permissionCard));
@@ -63,9 +60,5 @@ public class PermissionDecksFactory extends DeckFactory {
 		}
 		return rawBonuses;
 	}
-	
-	private List<Card> newCards() {
-		return new ArrayList<>();
-	}
-	
+
 }

@@ -8,12 +8,10 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 public class PermissionCard extends Card implements BonusSlot {
 
 	private List<Bonus> bonuses;
-	private String region;
 	private List<City> cities;
 	
 	public PermissionCard() {
 		bonuses = new ArrayList<>();
-		region = new String();
 		cities = new ArrayList<>();
 	}
 	
@@ -25,13 +23,9 @@ public class PermissionCard extends Card implements BonusSlot {
 		this.cities.add(city);
 	}
 	
-	public void setRegion(String region) {
-		this.region = region;
-	}
-	
 	@Override
 	public String toString() {
-		return bonuses.toString() + cities.toString() + region.toUpperCase();
+		return bonuses.toString() + cities.toString();
 	}
 
 	
