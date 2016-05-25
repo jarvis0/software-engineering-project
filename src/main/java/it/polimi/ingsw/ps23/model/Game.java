@@ -1,21 +1,30 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.model.bonus.NobilityTrack;
+import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.InvalidCityException;
+import it.polimi.ingsw.ps23.model.map.King;
+import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.NormalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
-
 
 public class Game {
 	
 	private GameMap gameMap;
 	private Deck politicDeck;
 	private FreeCouncillors freeCouncillors;
+	private King king;
+	private KingTiles kingTiles;
+	private NobilityTrack nobilityTrack;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
@@ -24,14 +33,18 @@ public class Game {
 	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
 	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
-	private static final String REGIONS = "regions.csv";
+	private static final String REGIONS_CSV = "regions.csv";
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
+	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
 	public Game() {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
+		loadKingTiles();
+		loadNobilityTrack();
+		System.out.println(nobilityTrack);
 	}
 	
 	private void loadPoliticDeck() {
@@ -56,12 +69,12 @@ public class Game {
 		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
 		return new CitiesGraph(rawCitiesConnections, cities);
 	}
-	
-	private List<Region> loadRegions(Map<String, City> cities) {
-		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
-		return new GroupRegionalCityFactory().makeRegions(rawRegion, cities);
-	}
 
+	private List<Region> loadRegions(Map<String, City> citiesMap) {
+		List<String[]> rawRegion = new RawObject(PATH + REGIONS_CSV).getRawObject();
+		return new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
+	}
+	
 	private void regionalCouncils(List<Region> regions) {
 		for(Region region : regions) {
 			((GroupRegionalCity) region).setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
@@ -97,4 +110,21 @@ public class Game {
 		System.out.println(gameMap);
 	}
 
+	private void createKing(List<City> cities) {
+		for(City city : cities){
+			if(city instanceof CapitalCity) {  
+				king = new King(city);
+			}
+		}
+	}
+	
+	private void loadKingTiles() {
+		List<String[]> rawKingTiles = new RawObject(PATH + KING_BONUS_TILE_CSV).getRawObject();
+		kingTiles =  new KingTileFactory().makeTiles(rawKingTiles); 
+	}
+	
+	private void loadNobilityTrack() {
+		List<String[]> rawNobilityTrackSteps = new RawObject(PATH + NOBILY_TRACK_CSV).getRawObject();
+		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
+	}
 }
