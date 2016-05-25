@@ -1,22 +1,20 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 
 public class Game {
 	
-	private CitiesGraph citiesGraph;//toBeRemoved
-	private ArrayList<GroupRegionalCity> regions;//toBeRemoved
+	private GameMap gameMap;
 	private Deck politicDeck;
-	private Deck permissionDeck;//toBeRemoved
 	private FreeCouncillors freeCouncillors;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
@@ -28,65 +26,75 @@ public class Game {
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String REGIONS = "regions.csv";
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
+	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	
 	public Game() {
-		loadMap();
 		loadPoliticDeck();
-		loadPermissionDeck();
 		loadCouncillors();
-		connectCouncillorsToGroupRegionalCity();
-		connectPermissionCardToGroupRegionalCity();
+		loadMap();
 	}
 	
-	private void loadMap() {
-		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
-		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
-		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
-		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
-		CitiesFactory citiesFactory = new CitiesFactory();
-		List<City> cities = (ArrayList<City>) citiesFactory.makeCities(rawCities, rawRewardTokens);
-		
-		List<String[]> rawColouredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
-		ArrayList<Region> colouredGroup  = (ArrayList<Region>) new GroupColoredCityFactory().makeGroup(rawColouredCities, cities);
-		System.out.println(colouredGroup);
-		
-		HashMap<String, City> citiesMap = (HashMap<String, City>) citiesFactory.toHashMap();
-		System.out.println(citiesMap);
-		
-		citiesGraph = new CitiesGraph(rawCitiesConnections, citiesMap);
-		regions = new GroupRegionalCityFactory().makeRegions(rawRegion, citiesMap);
-		System.out.println(citiesGraph);		
-
-	}
-
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
-		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
-	}
-	
-	private void loadPermissionDeck() {
-		List<String[]> rawPermissionCards = new RawObject(PATH + PERMISSION_DECK_CSV).getRawObject();
-		permissionDeck = new PermissionDeckFactory().makeDeck(rawPermissionCards);
-		System.out.println("\n" + permissionDeck);
+		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);	
 	}
 	
 	private void loadCouncillors() {
 		List<String[]> rawCouncillors = new RawObject(PATH + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
-		System.out.println("\n" + freeCouncillors);
+	}
+	
+	private CitiesFactory loadCities() {
+		List<String[]> rawCities = new RawObject(PATH + CITIES_CSV).getRawObject();
+		List<String[]> rawRewardTokens = new RawObject(PATH + REWARD_TOKENS_CSV).getRawObject();
+		CitiesFactory citiesFactory = new CitiesFactory();
+		citiesFactory.makeCities(rawCities, rawRewardTokens);
+		return citiesFactory;
+	}
+	
+	private CitiesGraph loadCitiesConnections(Map<String, City> cities) {
+		List<String[]> rawCitiesConnections = new RawObject(PATH + CONNECTIONS_CSV).getRawObject();
+		return new CitiesGraph(rawCitiesConnections, cities);
+	}
+	
+	private List<Region> loadRegions(Map<String, City> cities) {
+		List<String[]> rawRegion = new RawObject(PATH + REGIONS).getRawObject();
+		return new GroupRegionalCityFactory().makeRegions(rawRegion, cities);
 	}
 
-	private void connectCouncillorsToGroupRegionalCity() {
-		for (GroupRegionalCity groupRegionalCity : regions) {
-			groupRegionalCity.setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
-		}
-		System.out.println("\n" + regions);
-	}
-	
-	private void connectPermissionCardToGroupRegionalCity() {
-		for (GroupRegionalCity groupRegionalCity : regions) {
-			//aggiungere le permission card per ogni regione
+	private void regionalCouncils(List<Region> regions) {
+		for(Region region : regions) {
+			((GroupRegionalCity) region).setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
 		}
 	}
+
+	private Map<String, Deck> loadPermissionDecks(Map<String, City> cities, List<Region> regions) {
+		List<String[]> rawPermissionCards = new RawObject(PATH + PERMISSION_DECK_CSV).getRawObject();
+		return new PermissionDecksFactory().makeDecks(rawPermissionCards, cities);
+	}
 	
+	private void regionalPermissionDecks(Map<String, City> cities, List<Region> regions) {
+		Map<String, Deck> permissionDeck = loadPermissionDecks(cities, regions);
+		for(Region region : regions) {
+			((GroupRegionalCity) region).setPermissionDeck(permissionDeck.get(region.getId()));
+		}
+	}
+
+	private List<Region> loadColoredRegions(List<City> cities) {
+		List<String[]> rawColoredCities = new RawObject(PATH + GROUP_COLORED_CSV).getRawObject();
+		return new GroupColoredCityFactory().makeGroup(rawColoredCities, cities);
+	}
+
+	private void loadMap() {
+		CitiesFactory citiesFactory = loadCities();
+		Map<String, City> citiesMap = citiesFactory.getHashMap();
+		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
+		List<Region> groupRegionalCities = loadRegions(citiesMap);
+		regionalCouncils(groupRegionalCities);
+		regionalPermissionDecks(citiesMap, groupRegionalCities);
+		List<Region> groupColoredCities = loadColoredRegions(citiesFactory.getCities());
+		gameMap = new GameMap(citiesFactory.getCities(), citiesFactory.getHashMap(), citiesGraph, groupRegionalCities, groupColoredCities);
+		System.out.println(gameMap);
+	}
+
 }

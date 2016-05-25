@@ -1,30 +1,38 @@
 package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class PermissionCard extends Card implements BonusSlot {
 
-	private ArrayList<Bonus> bonuses;
-	private ArrayList<String> citiesNames;
-	private ArrayList<String> regionsNames;
+	private List<Bonus> bonuses;
+	private String region;
+	private List<City> cities;
 	
 	public PermissionCard() {
 		bonuses = new ArrayList<>();
-		citiesNames = new ArrayList<>();
+		region = new String();
+		cities = new ArrayList<>();
 	}
 	
 	public void addBonus(Bonus bonus) {
 		this.bonuses.add(bonus);
 	}
 	
-	public void addCity(String cityName) {
-		this.citiesNames.add(cityName);
+	public void addCity(City city) {
+		this.cities.add(city);
+	}
+	
+	public void setRegion(String region) {
+		this.region = region;
 	}
 	
 	@Override
 	public String toString() {
-		return bonuses.toString() + citiesNames.toString();
+		return bonuses.toString() + cities.toString() + region.toUpperCase();
 	}
+
+	
 }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.ps23.model;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.BonusSlot;
-import it.polimi.ingsw.ps23.model.map.Card;
 
 public class BonusesFactory {
 	
@@ -14,8 +13,8 @@ public class BonusesFactory {
 			if(bonusValue > 0) {
 				Bonus bonus = BonusCache.getBonus(fields[i], bonusValue);
 				((BonusSlot) bonusSlot).addBonus(bonus);
-				i++;
 			}
+			i++;
 		}
 		return (BonusSlot) bonusSlot;
 	}

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class FreeCouncillors {
 	
-	private ArrayList<Councillor> freeCouncillors;
+	private List<Councillor> freeCouncillors;
 	
-	public FreeCouncillors(ArrayList<Councillor> freeCouncillors){
+	public FreeCouncillors(List<Councillor> freeCouncillors){
 		this.freeCouncillors = freeCouncillors;
 	}
 	
@@ -16,7 +16,7 @@ public class FreeCouncillors {
 		return this.getFreeCouncillors().toString();
 	}
 
-	public ArrayList<Councillor> getFreeCouncillors() {
+	public List<Councillor> getFreeCouncillors() {
 		return freeCouncillors;
 	}
 	 
