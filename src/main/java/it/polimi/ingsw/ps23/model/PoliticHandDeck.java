@@ -1,0 +1,15 @@
+package it.polimi.ingsw.ps23.model;
+
+import java.util.List;
+
+import it.polimi.ingsw.ps23.model.map.Card;
+
+public class PoliticHandDeck extends HandDeck {
+
+	public PoliticHandDeck(List<Card> politicHandCards) {
+		super();
+		for (Card card : politicHandCards) {
+			addCard(card);
+		}
+	}
+}

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.controller;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,11 +19,11 @@ public class Controller implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o != view || !(arg instanceof Integer)){
+		if(o != view || !(arg instanceof List<?>)){
 			throw new IllegalArgumentException();
 		}
-		model.setPlayersNumber(((int) arg));
-		model.getGame();
+		model.setModel((List<String>) arg);
+		model.newGame();
 	}
 
 }
