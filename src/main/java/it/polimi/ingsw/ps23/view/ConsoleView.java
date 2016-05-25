@@ -3,6 +3,8 @@ package it.polimi.ingsw.ps23.view;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView extends View {
@@ -16,9 +18,22 @@ public class ConsoleView extends View {
 	}	
 	
 	private void setPlayersNumber() {
-		//output.println("Players number: ");
+		output.println("Players number: ");
+		int playersNumber = scanner.nextInt();
+		scanner.nextLine();
 		setChanged();
-		notifyObservers(1/*scanner.nextInt()*/);
+		try {
+			notifyObservers(playersNumber);
+		} catch (Exception e) {
+			System.out.println("error");
+		}
+		List<String> playersID = new ArrayList<>();
+		for(int i = 0; i < playersNumber; i++) {
+			output.println("Name Player " + (i + 1) + ": ");
+			playersID.add(scanner.nextLine());
+		}
+		setChanged();
+		notifyObservers(playersID);
 	}
 	
 	@Override

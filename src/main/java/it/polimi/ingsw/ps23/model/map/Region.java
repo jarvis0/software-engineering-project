@@ -30,15 +30,11 @@ public abstract class Region {
 			throw new InvalidCityException();
 	}
 	
-	public boolean canTakeBonus(Player player) {
-		return player.getBuiltEmporium().contains(cities);//&& bonus già preso
-	}
-	
 	protected Bonus getBonus() {
 		return victoryPointsBonus;
 	}
 	
-	public String getId() {
+	public String getID() {
 		return id;
 	}
 	
