@@ -10,49 +10,26 @@ import it.polimi.ingsw.ps23.model.map.City;
 public class Player {
 	
 	private String id;
+	private int coin; //esiste un limite massimo? nel gioco è 20
+	private int assistant;
+	private BuiltEmporiums builtEmporiums;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
-	private int coin;
-	private int assistant;
-	private List<City> builtEmporiums;
-	//private ArrayList<PermissionHandDeck> permissionHand;
-	//private ArrayList<PoliticHandDeck> politicHand;	
-		
-	public String getId() {
-		return id;
-	}
+	private HandDeck permissionHandDeck;
+	private HandDeck politicHandDeck;	
 
-	public int getVictoryPoints() {
-		return victoryPoints;
-	}
-
-	public int getNobilityTrackPoints() {
-		return nobilityTrackPoints;
-	}
-
-	public int getCoin() {
-		return coin;
-	}
-
-	public int getAssistant() {
-		return assistant;
-	}
-
-	public List<City> getBuiltEmporium() {
-		return builtEmporiums;
-	}
-	
-	public Player(String id, int coin,int assistant) {
+	public Player(String id, int coin, int assistant, HandDeck politicHandDeck) {
 		this.id = id;
-		victoryPoints = 0;
-		nobilityTrackPoints = 0;
 		this.coin = coin;
 		this.assistant = assistant;
-		builtEmporiums = new ArrayList<City>();
-		//permissionHand = new ArrayList<PermissionHandDeck>();
-		//politicHand = new ArrayList<PoliticHandDeck>();
+		this.politicHandDeck = politicHandDeck;
+		victoryPoints = 0;
+		nobilityTrackPoints = 0;
+		builtEmporiums = new BuiltEmporiums();
+		permissionHandDeck = new PermissionHandDeck();
+		
 	}
-	
+	/*
 	public void showPlayerStatus(){
 		
 	}
@@ -60,7 +37,7 @@ public class Player {
 	public void pickCard(){
 		
 	}
-	
+	*/
 	public void updateVictoryPoints(int value){
 		victoryPoints += value;
 	}
@@ -86,11 +63,4 @@ public class Player {
 			throw new InsufficientResourcesException();
 		}
 	}
-	
-	public int remaingEmporium() {
-		return builtEmporiums.size();// - tutte le città della mappa
-	}
-	
-	
-
 }

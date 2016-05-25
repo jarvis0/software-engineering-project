@@ -3,6 +3,8 @@ package it.polimi.ingsw.ps23.model;
 import java.util.List;
 import java.util.Map;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import it.polimi.ingsw.ps23.model.bonus.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
@@ -22,6 +24,7 @@ public class Game {
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
+	private GamePlayers gamePlayers;
 
 	private static final String PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
 	private static final String CITIES_CSV = "cities.csv";
@@ -35,15 +38,18 @@ public class Game {
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
-	public Game() {
+	private static final int STARTING_COINS = 10;
+	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
+	
+	public Game(int playersNumber, List<String> playersID) {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
 		loadKingTiles();
 		loadNobilityTrack();
-		System.out.println(nobilityTrack);
+		loadPlayer(playersNumber, playersID);
 	}
-	
+
 	private void loadPoliticDeck() {
 		List<String[]> rawPoliticCards = new RawObject(PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);	
@@ -94,7 +100,7 @@ public class Game {
 	private void regionalPermissionDecks(Map<String, City> cities, List<Region> regions) {
 		Map<String, Deck> permissionDeck = loadPermissionDecks(cities, regions);
 		for(Region region : regions) {
-			((GroupRegionalCity) region).setPermissionDeck(permissionDeck.get(region.getId()));
+			((GroupRegionalCity) region).setPermissionDeck(permissionDeck.get(region.getID()));
 		}
 	}
 
@@ -124,6 +130,12 @@ public class Game {
 		regionalPermissionDecks(citiesMap, groupRegionalCities);
 		List<Region> groupColoredCities = loadColoredRegions(citiesFactory.getCities());
 		gameMap = new GameMap(citiesFactory.getCities(), citiesFactory.getHashMap(), citiesGraph, groupRegionalCities, groupColoredCities);
-		System.out.println(gameMap);
+	}
+	
+	private void loadPlayer(int playersNumber, List<String> playersID) {
+		gamePlayers = new GamePlayers();
+		for(int i = 0; i < playersNumber; i++) {
+			gamePlayers.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
+		}
 	}
 }
