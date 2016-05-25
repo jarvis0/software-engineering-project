@@ -1,11 +1,12 @@
-package it.polimi.ingsw.ps23.model.bonus;
+package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.BonusSlot;
 
-public class NobilityTrackStep implements BonusSlot{
+public class NobilityTrackStep implements BonusSlot {
 
 	private List<Bonus> bonus;
 	

@@ -6,9 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class BuildingPermitBonus extends Bonus {
 
-	public BuildingPermitBonus(String id) {
-		super(id);
-		// TODO Auto-generated constructor stub
+	public BuildingPermitBonus(String name) {
+		super(name);
 	}
 
 	@Override

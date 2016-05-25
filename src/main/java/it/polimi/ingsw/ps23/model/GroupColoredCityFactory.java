@@ -10,21 +10,21 @@ import it.polimi.ingsw.ps23.model.map.GroupColoredCity;
 import it.polimi.ingsw.ps23.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.model.map.Region;
 
+//generalizzare i bonus? - nome?
 public class GroupColoredCityFactory {
 	
-	List<Region> coloredGroupCities;
-	
-	public GroupColoredCityFactory() {
-		coloredGroupCities = new ArrayList<>();
-	}
-	
-	public List<Region> makeGroup(List<String[]> rawIds, List<City> cities){
-		String[] fields = rawIds.remove(rawIds.size() - 1);
-		for(String[] rawId : rawIds) {
-			String colorName = rawId[0];
-			Bonus bonus = new VictoryPointBonus(fields[1]);
-			bonus.setValue(Integer.parseInt(rawId[1]));
-			Region coloredGroup = new GroupColoredCity(colorName, (VictoryPointBonus) bonus);
+	private static final int COLOR_POSITION = 0;
+	private static final int BONUS_VALUE_POSITION = 1;
+	private static final int BONUS_NAME_POSITION = 0;
+
+	public List<Region> makeGroup(List<String[]> rawColoredCities, List<City> cities) {
+		List<Region> coloredGroupCities = new ArrayList<>();
+		String[] fields = rawColoredCities.remove(rawColoredCities.size() - 1);
+		for(String[] rawColoredCity : rawColoredCities) {
+			String colorName = rawColoredCity[COLOR_POSITION];
+			Bonus bonus = new VictoryPointBonus(fields[BONUS_NAME_POSITION]);
+			bonus.setValue(Integer.parseInt(rawColoredCity[BONUS_VALUE_POSITION]));
+			Region coloredGroup = new GroupColoredCity(colorName, bonus);
 			for(City city : cities){
 				if(city.getColor().equals(colorName)){
 					   try {

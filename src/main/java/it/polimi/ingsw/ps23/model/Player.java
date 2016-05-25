@@ -5,7 +5,7 @@ import javax.naming.InsufficientResourcesException;
 
 public class Player {
 	
-	private String id;
+	private String name;
 	private int coin; //esiste un limite massimo? nel gioco è 20
 	private int assistant;
 	private BuiltEmporiums builtEmporiums;
@@ -14,8 +14,8 @@ public class Player {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;	
 
-	public Player(String id, int coin, int assistant, HandDeck politicHandDeck) {
-		this.id = id;
+	public Player(String name, int coin, int assistant, HandDeck politicHandDeck) {
+		this.name = name;
 		this.coin = coin;
 		this.assistant = assistant;
 		this.politicHandDeck = politicHandDeck;
@@ -62,6 +62,6 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	id + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString() + " " + politicHandDeck.toString();	
+		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString() + " " + politicHandDeck.toString();	
 	}
 }

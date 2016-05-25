@@ -6,8 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class CoinBonus extends Bonus {
 
-	public CoinBonus(String id) {
-		super(id);
+	public CoinBonus(String name) {
+		super(name);
 	}
 
 	@Override

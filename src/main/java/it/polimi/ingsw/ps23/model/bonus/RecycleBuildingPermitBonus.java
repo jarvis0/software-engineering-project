@@ -6,9 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class RecycleBuildingPermitBonus extends Bonus {
 
-	public RecycleBuildingPermitBonus(String id) {
-		super(id);
-		// TODO Auto-generated constructor stub
+	public RecycleBuildingPermitBonus(String name) {
+		super(name);
 	}
 
 	@Override

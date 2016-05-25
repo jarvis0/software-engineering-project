@@ -22,4 +22,9 @@ public class GamePlayers {
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}
+	
+	public String toString() {
+		return players.toString();
+	}
+	
 }
