@@ -126,5 +126,4 @@ public class Game {
 		gameMap = new GameMap(citiesFactory.getCities(), citiesFactory.getHashMap(), citiesGraph, groupRegionalCities, groupColoredCities);
 		System.out.println(gameMap);
 	}
-
 }
