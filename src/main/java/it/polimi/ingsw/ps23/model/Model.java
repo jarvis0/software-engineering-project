@@ -5,19 +5,17 @@ import java.util.Observable;
 
 public class Model extends Observable implements Cloneable {
 	
-	private int playersNumber;
 	private List<String> playersID; 
 	private Game game;
 	
 	public void setModel(List<String> playersID) {
-		this.playersNumber = playersID.size();
 		this.playersID = playersID;
 		game = newGame();
 		
 	}
 
 	public Game newGame() {
-		game = new Game(playersNumber, playersID);
+		game = new Game(playersID);
 		return game;
 	}
 }

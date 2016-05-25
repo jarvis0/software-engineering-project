@@ -41,13 +41,13 @@ public class Game {
 	private static final int STARTING_COINS = 10;
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
-	public Game(int playersNumber, List<String> playersID) {
+	public Game(List<String> playersID) {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
 		loadKingTiles();
 		loadNobilityTrack();
-		loadPlayer(playersNumber, playersID);
+		loadPlayer(playersID);
 	}
 
 	private void loadPoliticDeck() {
@@ -132,8 +132,9 @@ public class Game {
 		gameMap = new GameMap(citiesFactory.getCities(), citiesFactory.getHashMap(), citiesGraph, groupRegionalCities, groupColoredCities);
 	}
 	
-	private void loadPlayer(int playersNumber, List<String> playersID) {
+	private void loadPlayer(List<String> playersID) {
 		gamePlayers = new GamePlayers();
+		int playersNumber = playersID.size();
 		for(int i = 0; i < playersNumber; i++) {
 			gamePlayers.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
 		}

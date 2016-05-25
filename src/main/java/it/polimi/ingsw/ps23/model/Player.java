@@ -1,11 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
-
-import it.polimi.ingsw.ps23.model.map.City;
 
 public class Player {
 	
