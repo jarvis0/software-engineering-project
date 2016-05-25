@@ -12,10 +12,10 @@ import it.polimi.ingsw.ps23.model.map.Region;
 
 public class GroupColoredCityFactory {
 	
-	List<Region> coloredGroupCitiesList;
+	List<Region> coloredGroupCities;
 	
 	public GroupColoredCityFactory() {
-		coloredGroupCitiesList = new ArrayList<>();
+		coloredGroupCities = new ArrayList<>();
 	}
 	
 	public List<Region> makeGroup(List<String[]> rawIds, List<City> cities){
@@ -33,9 +33,9 @@ public class GroupColoredCityFactory {
 						e.printStackTrace();
 					}
 				}
-			coloredGroupCitiesList.add(coloredGroup);
+			coloredGroupCities.add(coloredGroup);
 			}
 		}
-		return coloredGroupCitiesList;
+		return coloredGroupCities;
 	}
 }

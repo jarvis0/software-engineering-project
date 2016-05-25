@@ -22,7 +22,7 @@ public class KingTileFactory {
 			bonus.setValue(Integer.parseInt(tile[0]));
 			tilesStack.push(bonus);
 		}
-		return kingTiles = new KingTiles(tilesStack);
+		return new KingTiles(tilesStack);
 	}
 
 }

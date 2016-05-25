@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
@@ -8,7 +9,7 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 public abstract class Region {
 	
 	private String id;
-	private ArrayList<City> cities;
+	private List<City> cities;
 	private Bonus victoryPointsBonus;
 	
 	public Region(String id, Bonus victoryPointBonus) {
@@ -17,7 +18,7 @@ public abstract class Region {
 		this.victoryPointsBonus = victoryPointBonus;
 	}
 	
-	protected ArrayList<City> getCities() {
+	protected List<City> getCities() {
 		return cities;
 	}
 	
@@ -36,7 +37,8 @@ public abstract class Region {
 	protected Bonus getBonus() {
 		return victoryPointsBonus;
 	}
-	protected String getId() {
+	
+	public String getId() {
 		return id;
 	}
 	
@@ -45,6 +47,6 @@ public abstract class Region {
 	
 	@Override
 	public String toString() {
-		return id + ": " + cities + " [Bonus: " + victoryPointsBonus + "]"; 
+		return id + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
 	}
 }

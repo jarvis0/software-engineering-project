@@ -22,7 +22,7 @@ public class CitiesFactory {
 	}
 	
 	public void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
-		ArrayList<RewardToken> rewardTokens = (ArrayList<RewardToken>) new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
+		List<RewardToken> rewardTokens = new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		Collections.shuffle(rewardTokens);
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[3].equals(CAPITAL)) {

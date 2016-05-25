@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 public class CouncillorsFactory {
 
 	public FreeCouncillors makeCouncillors(List<String[]> rawCouncillors) {
-		ArrayList<Councillor> councillors = new ArrayList<>();
+		List<Councillor> councillors = new ArrayList<>();
 		for(String[] rawCouncillor : rawCouncillors) {
 			int sameColorCouncillorNumber = Integer.parseInt(rawCouncillor[0]);
 			for(int i = 0; i < sameColorCouncillorNumber; i++) {

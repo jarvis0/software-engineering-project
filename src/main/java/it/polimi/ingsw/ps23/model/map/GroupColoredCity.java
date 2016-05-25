@@ -8,4 +8,3 @@ public class GroupColoredCity extends Region {
 		super(id, victoryPointsBonus);
 	}
 }
-
