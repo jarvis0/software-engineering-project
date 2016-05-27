@@ -2,12 +2,7 @@ package it.polimi.ingsw.ps23;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
-import it.polimi.ingsw.ps23.model.Model;
 
 public class TestInitialization {
 

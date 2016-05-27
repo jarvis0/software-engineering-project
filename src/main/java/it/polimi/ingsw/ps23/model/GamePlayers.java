@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model;
 import java.util.ArrayList;
 import java.util.List;
 
+//forse meglio HashMap ?
 public class GamePlayers {
 	
 	private List<Player> players;
@@ -23,6 +24,7 @@ public class GamePlayers {
 		return players.get(index);
 	}
 	
+	@Override
 	public String toString() {
 		return players.toString();
 	}

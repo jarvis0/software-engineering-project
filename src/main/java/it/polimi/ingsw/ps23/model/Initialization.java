@@ -30,7 +30,7 @@ public class Initialization {
 	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
 	private static final int STARTING_COINS = 10;
-	private static final int STARTING_ASSISTANT = 1;
+	private static final int STARTING_ASSISTANTS = 1;
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private Deck politicDeck;
@@ -48,6 +48,7 @@ public class Initialization {
 		createKing();
 		loadKingTiles();
 		loadNobilityTrack();
+		System.out.println(gameMap.getGroupColoredCity());
 		loadPlayers(playersID);
 	}
 	
@@ -104,7 +105,7 @@ public class Initialization {
 
 	private List<Region> loadRegions(Map<String, City> citiesMap) {
 		List<String[]> rawRegions = new RawObject(CONFIGURATIONS_PATH + REGIONS_CSV).getRawObject();
-		return new GroupRegionalCityFactory().makeRegions(rawRegions, citiesMap);
+		return new GroupRegionalCitiesFactory().makeRegions(rawRegions, citiesMap);
 	}
 	
 	private void regionalCouncils(List<Region> regions) {
@@ -121,13 +122,13 @@ public class Initialization {
 	private void regionalPermissionDecks(Map<String, City> cities, List<Region> regions) {
 		Map<String, Deck> permissionDeck = loadPermissionDecks(cities);
 		for(Region region : regions) {
-			((GroupRegionalCity) region).setPermissionDeck(permissionDeck.get(region.getID()));
+			((GroupRegionalCity) region).setPermissionDeck(permissionDeck.get(region.getName()));
 		}
 	}
 
 	private List<Region> loadColoredRegions(List<City> cities) {
 		List<String[]> rawColoredCities = new RawObject(CONFIGURATIONS_PATH + GROUP_COLORED_CSV).getRawObject();
-		return new GroupColoredCityFactory().makeGroup(rawColoredCities, cities);
+		return new GroupColoredCitiesFactory().makeGroup(rawColoredCities, cities);
 	}
 
 	private void loadMap() {
@@ -167,7 +168,8 @@ public class Initialization {
 		gamePlayers = new GamePlayers();
 		int playersNumber = playersID.size();
 		for(int i = 0; i < playersNumber; i++) {
-			gamePlayers.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANT + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
+			gamePlayers.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
 		}
 	}
+	
 }

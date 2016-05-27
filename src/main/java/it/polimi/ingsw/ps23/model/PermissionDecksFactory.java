@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.model.map.BonusSlot;
@@ -48,7 +49,8 @@ public class PermissionDecksFactory extends DeckFactory {
 
 	private Map<String, Deck> toDecks(Map<String, List<Card>> cardsMap) {
 		Map<String, Deck> permissionDecks = new HashMap<>();
-		for(Entry<String, List<Card>> decks : cardsMap.entrySet()) {
+		Set<Entry<String, List<Card>>> cardsMapEntrySet = cardsMap.entrySet();
+		for(Entry<String, List<Card>> decks : cardsMapEntrySet) {
 			permissionDecks.put(decks.getKey(), new PermissionDeck(decks.getValue()));
 		}
 		return permissionDecks;
