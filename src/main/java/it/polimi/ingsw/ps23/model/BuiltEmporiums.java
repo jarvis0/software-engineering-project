@@ -11,6 +11,7 @@ public class BuiltEmporiums {
 	
 	public BuiltEmporiums() {
 		builtEmporiums = new ArrayList<>();
+		
 	}
 	
 	public void addBuiltEmporium(City city) throws InvalidPositionException {
