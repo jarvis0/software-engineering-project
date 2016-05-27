@@ -8,11 +8,11 @@ import com.opencsv.CSVReader;
 
 public class RawObject {
 	
-	private List<String[]> rawObject;
+	private List<String[]> raw;
 	
 	public RawObject(String path) {
 		try {
-			this.rawObject = parseCSVFile(path);
+			this.raw = parseCSVFile(path);
 		} catch (IOException e) {
 			System.out.println("Error loading " + path + "file.");
 		}
@@ -26,7 +26,7 @@ public class RawObject {
 	}
 	
 	public List<String[]> getRawObject() {
-		return rawObject;
+		return raw;
 	}
 	
 }
