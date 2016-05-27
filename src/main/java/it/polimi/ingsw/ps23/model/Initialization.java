@@ -45,7 +45,7 @@ public class Initialization {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
-		king = createKing();
+		createKing();
 		loadKingTiles();
 		loadNobilityTrack();
 		loadPlayers(playersID);
@@ -132,20 +132,22 @@ public class Initialization {
 
 	private void loadMap() {
 		CitiesFactory citiesFactory = loadCities();
+		List<City> citiesList = citiesFactory.getCities();
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
 		List<Region> groupRegionalCities = loadRegions(citiesMap);
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionDecks(citiesMap, groupRegionalCities);
-		List<Region> groupColoredCities = loadColoredRegions(citiesFactory.getCities());
-		gameMap = new GameMap(citiesFactory.getCities(), citiesMap, citiesGraph, groupRegionalCities, groupColoredCities);
+		List<Region> groupColoredCities = loadColoredRegions(citiesList);
+		gameMap = new GameMap(citiesList, citiesMap, citiesGraph, groupRegionalCities, groupColoredCities);
 	}
 	
-	private King createKing() throws NoCapitalException {
+	private void createKing() throws NoCapitalException {
 		List<City> cities = gameMap.getCitiesList();
 		for(City city : cities){
 			if(city instanceof CapitalCity) {  
-				return new King(city, new CouncilFactory().makeCouncil(freeCouncillors));
+				king = new King(city, new CouncilFactory().makeCouncil(freeCouncillors));
+				return;
 			}
 		}
 		throw new NoCapitalException();

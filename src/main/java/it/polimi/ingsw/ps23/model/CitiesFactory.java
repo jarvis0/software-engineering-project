@@ -19,33 +19,33 @@ public class CitiesFactory {
 	private static final int CITY_TYPE_POSITION = 3;
 	private static final String CAPITAL = "capital";
 	
-	private List<City> cities;
+	private List<City> citiesList;
+	private Map<String, City> citiesMap;
 	
 	public CitiesFactory() {
-		cities = new ArrayList<>();
+		citiesList = new ArrayList<>();
+		citiesMap = new HashMap<>();
 	}
 	
 	public void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		RewardTokens rewardTokens = new RewardTokenFactory().makeRewardTokens(rawRewardTokens);
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[CITY_TYPE_POSITION].equals(CAPITAL)) {
-				cities.add(new NormalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION], rawCity[CITY_COLOR_HEX_POSITION]), rewardTokens.removeRewardToken(rewardTokens.rewardTokenSize() - 1)));
+				citiesList.add(new NormalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION], rawCity[CITY_COLOR_HEX_POSITION]), rewardTokens.removeRewardToken(rewardTokens.rewardTokenSize() - 1)));
+				citiesMap.put(citiesList.get(citiesList.size() - 1).getName(), citiesList.get(citiesList.size() - 1));
 			}
 			else {
-				cities.add(new CapitalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION], rawCity[CITY_COLOR_HEX_POSITION])));
+				citiesList.add(new CapitalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION], rawCity[CITY_COLOR_HEX_POSITION])));
+				citiesMap.put(citiesList.get(citiesList.size() - 1).getName(), citiesList.get(citiesList.size() - 1));
 			}
 		}
 	}
 	
 	public List<City> getCities() {
-		return cities;
+		return citiesList;
 	}
 
 	public Map<String, City> getHashMap() {
-		Map<String, City> citiesMap = new HashMap<>();
-		for(City city : cities) {
-			citiesMap.put(city.getName(), city);
-		}
 		return citiesMap;
 	}
 
