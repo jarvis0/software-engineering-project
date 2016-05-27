@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model.bonus;
+package it.polimi.ingsw.ps23.model.map;
 
 import java.util.List;
 

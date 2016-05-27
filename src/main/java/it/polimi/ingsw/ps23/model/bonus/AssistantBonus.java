@@ -6,8 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class AssistantBonus extends Bonus {
 
-	public AssistantBonus(String id) {
-		super(id);
+	public AssistantBonus(String name) {
+		super(name);
 	}
 	
 	@Override

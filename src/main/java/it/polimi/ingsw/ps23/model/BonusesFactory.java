@@ -12,11 +12,11 @@ public class BonusesFactory {
 			int bonusValue = Integer.parseInt(rawSlotField);
 			if(bonusValue > 0) {
 				Bonus bonus = BonusCache.getBonus(fields[i], bonusValue);
-				((BonusSlot) bonusSlot).addBonus(bonus);
+				bonusSlot.addBonus(bonus);
 			}
 			i++;
 		}
-		return (BonusSlot) bonusSlot;
+		return bonusSlot;
 	}
 	
 }

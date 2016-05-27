@@ -4,10 +4,10 @@ import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Player;
 
-public class NobilityTrackStepBonus extends Bonus{
+public class NobilityTrackStepBonus extends Bonus {
 	
-	public NobilityTrackStepBonus(String id) {
-		super(id);
+	public NobilityTrackStepBonus(String name) {
+		super(name);
 	}
 
 	@Override

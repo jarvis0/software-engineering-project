@@ -18,4 +18,13 @@ public class GamePlayers {
 	public List<Player> getPlayers() {
 		return players;
 	}
+	
+	public Player getPlayer(int index) {
+		return players.get(index);
+	}
+	
+	public String toString() {
+		return players.toString();
+	}
+	
 }

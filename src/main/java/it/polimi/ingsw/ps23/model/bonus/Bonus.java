@@ -6,17 +6,17 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public abstract class Bonus implements Cloneable {
 
-	private String id;
+	private String name;
 	private int value;
 	
-	public Bonus(String id) {
-		this.id = id;
+	public Bonus(String name) {
+		this.name = name;
 	}
 	
 	public abstract void updateBonus(Player player) throws InsufficientResourcesException;
 
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 	
 	protected int getValue() {
@@ -29,7 +29,7 @@ public abstract class Bonus implements Cloneable {
 
 	@Override
 	public String toString() {
-		return id + " " + value;
+		return name + " " + value;
 	}
 	
 	@Override

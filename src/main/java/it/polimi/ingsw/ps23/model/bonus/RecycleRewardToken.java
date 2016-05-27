@@ -6,9 +6,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class RecycleRewardToken extends Bonus {
 
-	public RecycleRewardToken(String id) {
-		super(id);
-		// TODO Auto-generated constructor stub
+	public RecycleRewardToken(String name) {
+		super(name);
 	}
 
 	@Override

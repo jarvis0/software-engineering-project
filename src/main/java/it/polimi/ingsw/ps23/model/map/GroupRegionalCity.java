@@ -1,6 +1,6 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class GroupRegionalCity extends Region {
 	
@@ -9,8 +9,8 @@ public class GroupRegionalCity extends Region {
 	private Deck permissionDeckUp;
 
 	
-	public GroupRegionalCity(String id, VictoryPointBonus victoryPointBonus) {
-		super(id,victoryPointBonus);
+	public GroupRegionalCity(String id, Bonus bonus) {
+		super(id,bonus);
 	}
 	
 	public void setCouncil(Council council) {
@@ -22,11 +22,6 @@ public class GroupRegionalCity extends Region {
 	}
 
 	//pick 2 from deckDown -> deckUp
-	
-	//@Override
-	//public void takeBonus(Player player) {
-		//for(ogni bonus in bonus lo devo aggiungere al giocatore)
-	//}
 	
 	@Override
 	public String toString() {

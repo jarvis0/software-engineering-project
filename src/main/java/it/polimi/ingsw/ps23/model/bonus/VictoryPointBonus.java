@@ -4,8 +4,8 @@ import it.polimi.ingsw.ps23.model.Player;
 
 public class VictoryPointBonus extends Bonus {
 
-	public VictoryPointBonus(String id) {
-		super(id);
+	public VictoryPointBonus(String name) {
+		super(name);
 	}
 	
 	@Override

@@ -1,25 +1,24 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.model.map.KingTiles;
 
+//generalizzare i bonus? - nome?
 public class KingTileFactory {
 	
-	KingTiles kingTiles;
-	Stack<Bonus> tilesStack;
+	private static final int BONUS_VALUE_POSITION = 0;
+	private static final int BONUS_NAME_POSITION = 0;
 	
-	public KingTileFactory() {
-		tilesStack = new Stack<>();
-	}
-	
-	public KingTiles makeTiles(List<String[]> rawTiles) {
-		String[] fields = rawTiles.remove(rawTiles.size() - 1);
-		for(String[] tile: rawTiles) {
-			Bonus bonus = new VictoryPointBonus(fields[0]);
-			bonus.setValue(Integer.parseInt(tile[0]));
+	public KingTiles makeTiles(List<String[]> rawKingTiles) {
+		Deque<Bonus> tilesStack = new LinkedList<>();
+		String[] fields = rawKingTiles.remove(rawKingTiles.size() - 1);
+		for(String[] rawTile: rawKingTiles) {
+			Bonus bonus = new VictoryPointBonus(fields[BONUS_NAME_POSITION]);
+			bonus.setValue(Integer.parseInt(rawTile[BONUS_VALUE_POSITION]));
 			tilesStack.push(bonus);
 		}
 		return new KingTiles(tilesStack);

@@ -3,7 +3,6 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public abstract class Region {
@@ -37,9 +36,6 @@ public abstract class Region {
 	public String getID() {
 		return id;
 	}
-	
-	//public abstract void takeBonus(Player player);
-
 	
 	@Override
 	public String toString() {

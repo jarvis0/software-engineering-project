@@ -18,7 +18,7 @@ public class ConsoleView extends View {
 	}	
 	
 	private void setPlayersNumber() {
-		output.println("Players number: ");
+		/*output.println("Players number: ");
 		int playersNumber = scanner.nextInt();
 		scanner.nextLine();
 		setChanged();
@@ -31,7 +31,10 @@ public class ConsoleView extends View {
 		for(int i = 0; i < playersNumber; i++) {
 			output.println("Name Player " + (i + 1) + ": ");
 			playersID.add(scanner.nextLine());
-		}
+		}*/
+		List<String> playersID = new ArrayList<>();
+		playersID.add("Mirco");
+		playersID.add("ERBA");
 		setChanged();
 		notifyObservers(playersID);
 	}

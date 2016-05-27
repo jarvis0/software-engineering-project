@@ -10,9 +10,9 @@ import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 public class CouncilFactory {
 	
 	private static final int COUNCILLORS_NUMBER = 4;
-	private Queue<Councillor> councilComposition = new LinkedList<>();
 	
-	public Council makeCouncil(FreeCouncillors freeCouncillors){
+	public Council makeCouncil(FreeCouncillors freeCouncillors) {
+		Queue<Councillor> councilComposition = new LinkedList<>();
 		for(int i = 0; i < COUNCILLORS_NUMBER; i++) {
 				councilComposition.add(freeCouncillors.remove(freeCouncillors.getFreeCouncillors().size() - 1));
 		}

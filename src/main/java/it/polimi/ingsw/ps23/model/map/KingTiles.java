@@ -1,14 +1,14 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.util.Stack;
+import java.util.Deque;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class KingTiles {
 	
-	private Stack<Bonus> kingTiles;
+	private Deque<Bonus> kingTiles;
 	
-	public KingTiles(Stack<Bonus> tilesStack) {
+	public KingTiles(Deque<Bonus> tilesStack) {
 		this.kingTiles = tilesStack;
 	}
 	

@@ -8,8 +8,8 @@ public class PoliticHandDeck extends HandDeck {
 
 	public PoliticHandDeck(List<Card> politicHandCards) {
 		super();
-		for (Card card : politicHandCards) {
-			addCard(card);
+		for (Card politicHandCard : politicHandCards) {
+			addCard(politicHandCard);
 		}
 	}
 }

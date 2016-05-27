@@ -23,6 +23,9 @@ public class BonusCache {
 	private static final String RECYCLE_REWARD_TOKEN = "recycleRewardToken";
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
+
+	private BonusCache() {
+	}
 	
 	public static Bonus getBonus(String bonusId, int value) {
 		Bonus cachedBonus = bonusMap.get(bonusId);
@@ -31,7 +34,7 @@ public class BonusCache {
 		return bonus;
 	}
 	private static void putBonus(Bonus bonus) {
-		bonusMap.put(bonus.getId(), bonus);
+		bonusMap.put(bonus.getName(), bonus);
 	}
 	
 	public static void loadCache() {

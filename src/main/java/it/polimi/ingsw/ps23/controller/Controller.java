@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -33,7 +32,6 @@ public class Controller implements Observer {
 			else {
 				if(arg instanceof List<?>) {
 					model.setModel((List<String>) arg);
-					model.newGame();
 				}
 				else {
 					throw new IllegalArgumentException();
