@@ -5,18 +5,18 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
 
-public class BuiltEmporiums {
+public class BuiltEmporiumSet {
 	
-	private List<City> builtEmporiums;
+	private List<City> builtEmporiumSet;
 	
-	public BuiltEmporiums() {
-		builtEmporiums = new ArrayList<>();
+	public BuiltEmporiumSet() {
+		builtEmporiumSet = new ArrayList<>();
 		
 	}
 	
 	public void addBuiltEmporium(City city) throws InvalidPositionException {
-		if(!builtEmporiums.contains(city)) {
-			builtEmporiums.add(city);
+		if(!builtEmporiumSet.contains(city)) {
+			builtEmporiumSet.add(city);
 		}
 		else {
 			throw new InvalidPositionException();

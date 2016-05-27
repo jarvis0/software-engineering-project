@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 //forse meglio HashMap ?
-public class GamePlayers {
+public class GamePlayerSet {
 	
 	private List<Player> players;
 
-	public GamePlayers() {
+	public GamePlayerSet() {
 		players = new ArrayList<>();
 	}
 	

@@ -18,7 +18,7 @@ public class Game {
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayers gamePlayers;
+	private GamePlayerSet gamePlayerSet;
 
 	public Game(List<String> playersID) throws NoCapitalException {
 		Initialization init = new Initialization(playersID);
@@ -28,7 +28,7 @@ public class Game {
 		king = init.getKing();
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
-		gamePlayers = init.getGamePlayers();
+		gamePlayerSet = init.getGamePlayerSet();
 	}
 	
 }

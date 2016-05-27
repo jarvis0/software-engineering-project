@@ -39,7 +39,7 @@ public class Initialization {
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayers gamePlayers;
+	private GamePlayerSet gamePlayerSet;
 	
 	public Initialization(List<String> playersID) throws NoCapitalException {
 		loadPoliticDeck();
@@ -48,7 +48,6 @@ public class Initialization {
 		createKing();
 		loadKingTiles();
 		loadNobilityTrack();
-		System.out.println(gameMap.getGroupColoredCity());
 		loadPlayers(playersID);
 	}
 	
@@ -76,8 +75,8 @@ public class Initialization {
 		return nobilityTrack;
 	}
 
-	public GamePlayers getGamePlayers() {
-		return gamePlayers;
+	public GamePlayerSet getGamePlayerSet() {
+		return gamePlayerSet;
 	}
 	
 	private void loadPoliticDeck() {
@@ -165,10 +164,10 @@ public class Initialization {
 	}
 
 	private void loadPlayers(List<String> playersID) {
-		gamePlayers = new GamePlayers();
+		gamePlayerSet = new GamePlayerSet();
 		int playersNumber = playersID.size();
 		for(int i = 0; i < playersNumber; i++) {
-			gamePlayers.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
+			gamePlayerSet.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
 		}
 	}
 	

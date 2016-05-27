@@ -8,7 +8,7 @@ public class Player {
 	private String name;
 	private int coin; //esiste un limite massimo? nel gioco è 20
 	private int assistant;
-	private BuiltEmporiums builtEmporiums;
+	private BuiltEmporiumSet builtEmporiumSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
 	private HandDeck permissionHandDeck;
@@ -21,7 +21,7 @@ public class Player {
 		this.politicHandDeck = politicHandDeck;
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
-		builtEmporiums = new BuiltEmporiums();
+		builtEmporiumSet = new BuiltEmporiumSet();
 		permissionHandDeck = new PermissionHandDeck();
 		
 	}
