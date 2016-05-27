@@ -12,8 +12,13 @@ public class GameColor {
 		color = Color.decode(colorHex);
 	}
 	
+	public Color getHex() {
+		return color;
+	}
+	
 	@Override
 	public String toString() {
 		return colorName;
 	}
+	
 }
