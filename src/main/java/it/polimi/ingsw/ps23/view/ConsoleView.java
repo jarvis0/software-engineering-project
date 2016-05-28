@@ -27,10 +27,10 @@ public class ConsoleView extends View {
 		} catch (Exception e) {
 			System.out.println("error");
 		}
-		List<String> playersID = new ArrayList<>();
+		List<String> playersName = new ArrayList<>();
 		for(int i = 0; i < playersNumber; i++) {
 			output.println("Name Player " + (i + 1) + ": ");
-			playersID.add(scanner.nextLine());
+			playersName.add(scanner.nextLine());
 		}*/
 		List<String> playersID = new ArrayList<>();
 		playersID.add("Mirco");

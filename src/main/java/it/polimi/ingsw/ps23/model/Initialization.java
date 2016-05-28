@@ -41,14 +41,14 @@ public class Initialization {
 	private NobilityTrack nobilityTrack;
 	private GamePlayerSet gamePlayerSet;
 	
-	public Initialization(List<String> playersID) throws NoCapitalException {
+	public Initialization(List<String> playersName) throws NoCapitalException {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
 		createKing();
 		loadKingTiles();
 		loadNobilityTrack();
-		loadPlayers(playersID);
+		loadPlayers(playersName);
 	}
 	
 	public Deck getPoliticDeck() {
@@ -136,6 +136,7 @@ public class Initialization {
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
 		List<Region> groupRegionalCities = loadRegions(citiesMap);
+		//hashmap regions
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionDecks(citiesMap, groupRegionalCities);
 		List<Region> groupColoredCities = loadColoredRegions(citiesList);
