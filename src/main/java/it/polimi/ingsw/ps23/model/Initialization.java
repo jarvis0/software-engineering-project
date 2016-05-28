@@ -49,6 +49,7 @@ public class Initialization {
 		loadKingTiles();
 		loadNobilityTrack();
 		loadPlayers(playersID);
+		System.out.println(gameMap.getGroupColoredCity());
 	}
 	
 	Deck getPoliticDeck() {
