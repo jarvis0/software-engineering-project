@@ -1,29 +1,30 @@
 package it.polimi.ingsw.ps23.model.map;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public abstract class Region {
 	
-	private String id;
-	private List<City> cities;
+	private String name;
+	private Map<String, City> cities;
 	private Bonus victoryPointsBonus;
 	
-	public Region(String id, Bonus victoryPointBonus) {
-		cities = new ArrayList<>();
-		this.id = id;
+	public Region(String name, Bonus victoryPointBonus) {
+		cities = new HashMap<>();
+		this.name = name;
 		this.victoryPointsBonus = victoryPointBonus;
 	}
 	
-	protected List<City> getCities() {
+	protected Map<String, City> getCities() {
 		return cities;
 	}
 	
 	public void addCity(City city) throws InvalidCityException {
-		if(!cities.contains(city)) {
-			cities.add(city);
+		String cityName = city.getName();
+		if(!cities.containsKey(cityName)) {
+			cities.put(cityName, city);
 		}
 		else
 			throw new InvalidCityException();
@@ -33,12 +34,12 @@ public abstract class Region {
 		return victoryPointsBonus;
 	}
 	
-	public String getID() {
-		return id;
+	public String getName() {
+		return name;
 	}
 	
 	@Override
 	public String toString() {
-		return id + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
+		return name + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
 	}
 }

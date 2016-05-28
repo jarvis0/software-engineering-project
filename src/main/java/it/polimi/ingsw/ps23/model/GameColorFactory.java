@@ -22,4 +22,5 @@ public final class GameColorFactory {
 		COLORS.add(color);
 		return color;
 	}
+	
 }

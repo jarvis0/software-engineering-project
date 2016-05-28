@@ -3,11 +3,12 @@ package it.polimi.ingsw.ps23.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GamePlayers {
+//forse meglio HashMap ?
+public class GamePlayerSet {
 	
 	private List<Player> players;
 
-	public GamePlayers() {
+	public GamePlayerSet() {
 		players = new ArrayList<>();
 	}
 	
@@ -23,6 +24,7 @@ public class GamePlayers {
 		return players.get(index);
 	}
 	
+	@Override
 	public String toString() {
 		return players.toString();
 	}

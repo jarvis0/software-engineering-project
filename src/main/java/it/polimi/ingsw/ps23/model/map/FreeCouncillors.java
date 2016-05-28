@@ -24,7 +24,7 @@ public class FreeCouncillors {
 		return freeCouncillors.remove(i);
 	}
 	
-	public void selectCouncillor (int i, Council nameCouncil){
+	public void selectCouncillor(int i, Council nameCouncil){
 		freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
 	}
 	

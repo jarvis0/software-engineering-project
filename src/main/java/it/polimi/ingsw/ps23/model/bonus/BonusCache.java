@@ -23,6 +23,7 @@ public class BonusCache {
 	private static final String RECYCLE_REWARD_TOKEN = "recycleRewardToken";
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
+	private static final String NULL_BONUS = "nullBonus";
 
 	private BonusCache() {
 	}
@@ -41,29 +42,33 @@ public class BonusCache {
 		AssistantBonus assistantBonus = new AssistantBonus(ASSISTANT);
 		putBonus(assistantBonus);
 		
-		CoinBonus coinBonus = new CoinBonus(COIN);
+		Bonus coinBonus = new CoinBonus(COIN);
 		putBonus(coinBonus);
 		
-		VictoryPointBonus victoryPointBonus = new VictoryPointBonus(VICTORY_POINT);
+		Bonus victoryPointBonus = new VictoryPointBonus(VICTORY_POINT);
 		putBonus(victoryPointBonus);
 		
-		PoliticCardBonus politicCardBonus = new PoliticCardBonus(POLITIC_CARD);
+		Bonus politicCardBonus = new PoliticCardBonus(POLITIC_CARD);
 		putBonus(politicCardBonus);
 		
-		AdditionalMainActionBonus additionalMainActionBonus = new AdditionalMainActionBonus(ADDITIONAL_MAIN_ACTION);
+		Bonus additionalMainActionBonus = new AdditionalMainActionBonus(ADDITIONAL_MAIN_ACTION);
 		putBonus(additionalMainActionBonus);
 		
-		NobilityTrackStepBonus nobilityTrackStepBonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
+		Bonus nobilityTrackStepBonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
 		putBonus(nobilityTrackStepBonus);
 		
-		RecycleRewardToken recycleRewardToken = new RecycleRewardToken(RECYCLE_REWARD_TOKEN);
+		Bonus recycleRewardToken = new RecycleRewardToken(RECYCLE_REWARD_TOKEN);
 		putBonus(recycleRewardToken);
 		
-		BuildingPermitBonus buildingPermitBonus = new BuildingPermitBonus(BUILDING_PERMIT);
+		Bonus buildingPermitBonus = new BuildingPermitBonus(BUILDING_PERMIT);
 		putBonus(buildingPermitBonus);
 		
-		RecycleBuildingPermitBonus recycleBuildingPermitBonus = new RecycleBuildingPermitBonus(RECYCLE_BUILDING_PERMIT);
+		Bonus recycleBuildingPermitBonus = new RecycleBuildingPermitBonus(RECYCLE_BUILDING_PERMIT);
 		putBonus(recycleBuildingPermitBonus);
+		
+		Bonus nullBonus = new NullBonus(NULL_BONUS);
+		putBonus(nullBonus);
+		
 	}
 	
 }

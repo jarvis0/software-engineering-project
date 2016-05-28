@@ -11,8 +11,7 @@ import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.model.map.Region;
 
-//generalizzare i bonus? - nome?
-public class GroupRegionalCityFactory {
+public class GroupRegionalCitiesFactory {
 
 	private static final int REGION_NAME_POSITION = 0;
 	private static final int BONUS_VALUE_POSITION = 1;

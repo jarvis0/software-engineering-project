@@ -9,8 +9,8 @@ public class GroupRegionalCity extends Region {
 	private Deck permissionDeckUp;
 
 	
-	public GroupRegionalCity(String id, Bonus bonus) {
-		super(id,bonus);
+	public GroupRegionalCity(String name, Bonus bonus) {
+		super(name, bonus);
 	}
 	
 	public void setCouncil(Council council) {
@@ -21,6 +21,10 @@ public class GroupRegionalCity extends Region {
 		this.permissionDeckDown = permissionDeck;
 	}
 
+	public Deck getPermissionDeck() {
+		return permissionDeckDown;
+	}
+	
 	//pick 2 from deckDown -> deckUp
 	
 	@Override
