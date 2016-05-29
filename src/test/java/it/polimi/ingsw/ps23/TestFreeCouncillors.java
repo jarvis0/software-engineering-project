@@ -50,9 +50,13 @@ public class TestFreeCouncillors {
 		freeCouncillors1.remove(1);
 		
 		assertTrue(freeCouncillors1.toString().equals("[White]"));
-				
-		freeCouncillors1.selectCouncillor(0, council);
-
+		System.out.println(freeCouncillors);
+		System.out.println(council);
+		
+		freeCouncillors1.electCouncillor("White", council);
+		System.out.println(freeCouncillors);
+		System.out.println(council);
+		
 		assertTrue(council.toString().equals("[Purple, White, White]"));
 		
 		assertTrue(freeCouncillors1.toString().equals("[Green]"));

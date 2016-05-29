@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.model.Model;
 import it.polimi.ingsw.ps23.view.View;
 
 public class Controller implements Observer {
-	private  Action action;
+
 	private final Model model;
 	private View view;
 	
@@ -18,24 +18,7 @@ public class Controller implements Observer {
 	}
 	
 	@Override
-	public void update(Observable o, Integer choice) {
-		if(o != view) {
-			throw new IllegalArgumentException();
-		}
-		
-		switch(choice){
-		case 1:
-			  action = new ElectCouncillor();
-			break;
-		default:
-			break;
-		}
-		model.setAction(action);
-		
-	}
-	
-	@Override
-	public void update() {
+	public void update(Observable o, Object arg) {
 		if(o != view) {
 			throw new IllegalArgumentException();
 		}

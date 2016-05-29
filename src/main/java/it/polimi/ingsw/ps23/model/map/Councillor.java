@@ -10,6 +10,10 @@ public class Councillor {
 		this.color=color;
 	}
 	
+	public String getColorName() {
+		return color.getName();
+	}
+	
 	@Override
 	public String toString() {
 		return color.toString();
