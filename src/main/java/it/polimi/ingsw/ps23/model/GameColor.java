@@ -20,5 +20,9 @@ public class GameColor {
 	public String toString() {
 		return colorName;
 	}
+
+	public String getName() {
+		return colorName;
+	}
 	
 }

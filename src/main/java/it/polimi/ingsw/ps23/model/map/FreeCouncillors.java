@@ -24,8 +24,14 @@ public class FreeCouncillors {
 		return freeCouncillors.remove(i);
 	}
 	
-	public void selectCouncillor(int i, Council nameCouncil){
-		freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
+	public void electCouncillor(String councillorColor, Council nameCouncil){
+		for(Councillor freeCouncillor: freeCouncillors)
+			if(freeCouncillor.getColorName().equals(councillorColor)) {
+				int i = freeCouncillors.indexOf(freeCouncillor);
+				freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
+				return;
+			}
+		
 	}
 	
 	

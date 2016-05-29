@@ -25,6 +25,9 @@ public class GroupRegionalCity extends Region {
 		return permissionDeckDown;
 	}
 	
+	public Council getCouncil() {
+		return council;
+	}
 	//pick 2 from deckDown -> deckUp
 	
 	@Override

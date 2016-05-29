@@ -49,6 +49,9 @@ public class Initialization {
 		loadKingTiles();
 		loadNobilityTrack();
 		loadPlayers(playersID);
+		System.out.println(freeCouncillors);
+		System.out.println(((GroupRegionalCity) gameMap.getGroupRegionalCity().get(0)).getCouncil());
+		
 	}
 	
 	public Deck getPoliticDeck() {
