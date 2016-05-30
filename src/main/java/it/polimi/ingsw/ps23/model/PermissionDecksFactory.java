@@ -15,7 +15,7 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.PermissionDeck;
 
-public class PermissionDecksFactory extends DeckFactory {
+public class PermissionDecksFactory  {
 
 	private static final int BONUSES_NUMBER = 6;
 	

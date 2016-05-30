@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 //static? - flyweight
 public class BonusCache {
 
-	private static HashMap<String, Bonus> bonusMap  = new HashMap<>();
+	private static HashMap<String, Bonus> bonusesMap = new HashMap<>();
 	private static final String ASSISTANT = "assistant";
 	private static final String COIN = "coin";
 	private static final String VICTORY_POINT = "victoryPoint";
@@ -29,13 +29,13 @@ public class BonusCache {
 	}
 	
 	public static Bonus getBonus(String bonusId, int value) {
-		Bonus cachedBonus = bonusMap.get(bonusId);
+		Bonus cachedBonus = bonusesMap.get(bonusId);
 		Bonus bonus = (Bonus) cachedBonus.clone();
 		bonus.setValue(value);
 		return bonus;
 	}
 	private static void putBonus(Bonus bonus) {
-		bonusMap.put(bonus.getName(), bonus);
+		bonusesMap.put(bonus.getName(), bonus);
 	}
 	
 	public static void loadCache() {

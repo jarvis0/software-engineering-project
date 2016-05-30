@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.Card;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.PoliticCard;
 import it.polimi.ingsw.ps23.model.map.PoliticDeck;
 
-public class PoliticDeckFactory extends DeckFactory {
+public class PoliticDeckFactory {
 	
 	private static final int SAME_COLOR_CARDS_POSITION = 0;
 	private static final int CARD_COLOR_HEX_POSITION = 1;
@@ -18,7 +19,7 @@ public class PoliticDeckFactory extends DeckFactory {
 	}
 	
 	public Deck makeDeck(List<String[]> rawPoliticCards) {
-		List<Card> cards = getCards();
+		List<Card> cards = new ArrayList<>();
 		for(String[] rawPoliticCard : rawPoliticCards) {
 			int sameColorCardsNumber = Integer.parseInt(rawPoliticCard[SAME_COLOR_CARDS_POSITION]);
 			for(int i = 0; i < sameColorCardsNumber; i++) {

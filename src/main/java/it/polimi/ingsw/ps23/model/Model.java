@@ -1,35 +1,40 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.List;
-import java.util.Observable;
 
-import it.polimi.ingsw.ps23.controller.Action;
+import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
+import it.polimi.ingsw.ps23.model.state.Context;
+import it.polimi.ingsw.ps23.model.state.StartRoundState;
 
-public class Model extends Observable implements Cloneable {
+public class Model extends ModelObservable implements Cloneable {
 	
-	private List<String> playersID; 
+	private List<String> playersName;
 	private Game game;
-	private Action currentAction;
+	private Context context;
 
-	
-	public void setModel(List<String> playersID) {
-		this.playersID = playersID;
-		game = newGame();
+	public Game getGame() {
+		return game;
 	}
-
-	public Game newGame() {
+	
+	private Game newGame() {
 		try {
-			game = new Game(playersID);
+			game = new Game(playersName);
 		} catch (NoCapitalException e) {
 			e.printStackTrace();
 		}
 		return game;
 	}
 	
-	public void setAction(Action action) {
-		currentAction = action;
-		setChanged();
-		notifyObservers(currentAction);
+	public void setModel(List<String> playersName) {
+		this.playersName = playersName;
+		game = newGame();
+		setState(game);
+	}
+	
+	public void newRound() {
+		context = new Context(game);
+		StartRoundState startRoundState = new StartRoundState();
+		startRoundState.changeState(context);
 	}
 	
 }

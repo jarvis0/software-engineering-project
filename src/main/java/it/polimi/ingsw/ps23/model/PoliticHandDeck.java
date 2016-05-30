@@ -12,4 +12,5 @@ public class PoliticHandDeck extends HandDeck {
 			addCard(politicHandCard);
 		}
 	}
+	
 }

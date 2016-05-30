@@ -7,14 +7,12 @@ import it.polimi.ingsw.ps23.model.CitiesGraph;
 
 public class GameMap {
 	
-	private List<City> citiesList;
 	private Map<String, City> citiesMap;
 	private CitiesGraph citiesGraph;	
 	private List<Region> groupRegionalCities;
 	private List<Region> groupColoredCities;
 	
-	public GameMap(List<City> citiesList, Map<String, City> citiesMap, CitiesGraph citiesGraph, List<Region> groupRegionalCities, List<Region> groupColoredCities) {
-		this.citiesList = citiesList;
+	public GameMap(Map<String, City> citiesMap, CitiesGraph citiesGraph, List<Region> groupRegionalCities, List<Region> groupColoredCities) {
 		this.citiesMap = citiesMap;
 		this.citiesGraph = citiesGraph;
 		this.groupRegionalCities = groupRegionalCities;
@@ -29,10 +27,6 @@ public class GameMap {
 		return citiesMap;
 	}
 
-	public List<City> getCitiesList() {
-		return citiesList;
-	}
-
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;
 	}
@@ -44,7 +38,7 @@ public class GameMap {
 	@Override
 	public String toString() {
 		//return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
-		return groupRegionalCities.toString();
+		return "Stampo la mappa";
 	}
 
 }

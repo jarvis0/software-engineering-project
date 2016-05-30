@@ -24,7 +24,7 @@ public class GroupColoredCitiesFactory {
 			Bonus bonus = new VictoryPointBonus(fields[BONUS_NAME_POSITION]);
 			bonus.setValue(Integer.parseInt(rawColoredCity[BONUS_VALUE_POSITION]));
 			Region coloredGroup = new GroupColoredCity(colorName, bonus);
-			for(City city : cities){
+			for(City city : cities) {
 				if(city.getColor().equals(colorName)) {
 					try {
 						coloredGroup.addCity(city);

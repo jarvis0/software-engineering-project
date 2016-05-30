@@ -15,12 +15,15 @@ public class Main {
 	
 	public Main() {
 		model = new Model();
-		modelView = new ModelView();
+		//ricordati il clone modelview
 		view = new ConsoleView(System.in, System.out);
-		controller = new Controller(model, view);
-		view.addObserver(controller);
-		model.addObserver(modelView);
-		modelView.addObserver(view);
+		controller = new Controller(model);
+		view.attach(controller);
+		model.attach(view);
+	}
+
+	private void run() {
+		view.run();
 	}
 	
 	public static void main(String[] args) {
@@ -28,7 +31,4 @@ public class Main {
 		main.run();
 	}
 	
-	private void run() {
-		view.run();
-	}
 }

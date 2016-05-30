@@ -1,6 +1,4 @@
-package it.polimi.ingsw.ps23.controller;
-
-
+package it.polimi.ingsw.ps23.model.actions;
 
 import java.util.List;
 
@@ -15,6 +13,10 @@ public class ElectCouncillor extends MainAction {
 	
 	private Councillor councillorColor;
 	private Region region;
+	
+	public ElectCouncillor(String name) {
+		super(name);
+	}
 	
 	@Override
 	public void setParameters(List<String> parameters) {

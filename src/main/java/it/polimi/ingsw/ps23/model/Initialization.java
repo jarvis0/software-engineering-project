@@ -2,6 +2,8 @@ package it.polimi.ingsw.ps23.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
@@ -39,7 +41,7 @@ public class Initialization {
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayerSet gamePlayerSet;
+	private GamePlayersSet gamePlayerSet;
 	
 	public Initialization(List<String> playersName) throws NoCapitalException {
 		loadPoliticDeck();
@@ -75,7 +77,7 @@ public class Initialization {
 		return nobilityTrack;
 	}
 
-	public GamePlayerSet getGamePlayerSet() {
+	public GamePlayersSet getGamePlayerSet() {
 		return gamePlayerSet;
 	}
 	
@@ -136,18 +138,20 @@ public class Initialization {
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
 		List<Region> groupRegionalCities = loadRegions(citiesMap);
-		//hashmap regions
+		//hashmap regions - citiesList -> hashmap coloredRegions
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionDecks(citiesMap, groupRegionalCities);
 		List<Region> groupColoredCities = loadColoredRegions(citiesList);
-		gameMap = new GameMap(citiesList, citiesMap, citiesGraph, groupRegionalCities, groupColoredCities);
+		gameMap = new GameMap(citiesMap, citiesGraph, groupRegionalCities, groupColoredCities);
 	}
 	
 	private void createKing() throws NoCapitalException {
-		List<City> cities = gameMap.getCitiesList();
-		for(City city : cities){
-			if(city instanceof CapitalCity) {  
-				king = new King(city, new CouncilFactory().makeCouncil(freeCouncillors));
+		Map<String, City> cities = gameMap.getCitiesMap();		
+		Set<Entry<String, City>> citiesMapEntrySet = cities.entrySet();
+		for(Entry<String, City> city : citiesMapEntrySet) {
+			City currentCity = city.getValue();
+			if(currentCity instanceof CapitalCity) {  
+				king = new King(currentCity, new CouncilFactory().makeCouncil(freeCouncillors));
 				return;
 			}
 		}
@@ -156,7 +160,7 @@ public class Initialization {
 	
 	private void loadKingTiles() {
 		List<String[]> rawKingTiles = new RawObject(CONFIGURATIONS_PATH + KING_BONUS_TILE_CSV).getRawObject();
-		kingTiles = new KingTileFactory().makeTiles(rawKingTiles); 
+		kingTiles = new KingTileFactory().makeTiles(rawKingTiles);
 	}
 	
 	private void loadNobilityTrack() {
@@ -165,7 +169,7 @@ public class Initialization {
 	}
 
 	private void loadPlayers(List<String> playersID) {
-		gamePlayerSet = new GamePlayerSet();
+		gamePlayerSet = new GamePlayersSet();
 		int playersNumber = playersID.size();
 		for(int i = 0; i < playersNumber; i++) {
 			gamePlayerSet.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));

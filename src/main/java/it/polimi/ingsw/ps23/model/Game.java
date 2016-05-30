@@ -18,18 +18,25 @@ public class Game  {
 	private King king;
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayerSet gamePlayerSet;
+	private GamePlayersSet gamePlayersSet;
 
-	public Game(List<String> playersID) throws NoCapitalException {
-		Initialization init = new Initialization(playersID);
+	public Game(List<String> playersName) throws NoCapitalException {
+		Initialization init = new Initialization(playersName);
 		politicDeck = init.getPoliticDeck();
 		freeCouncillors = init.getFreeCouncillors();
 		gameMap = init.getGameMap();
 		king = init.getKing();
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
-		gamePlayerSet = init.getGamePlayerSet();
+		gamePlayersSet = init.getGamePlayerSet();
 	}
 	
+	public GameMap getGameMap() {
+		return gameMap;
+	}
 	
+	public GamePlayersSet getGamePlayersSet() {
+		return gamePlayersSet;
+	}
+
 }
