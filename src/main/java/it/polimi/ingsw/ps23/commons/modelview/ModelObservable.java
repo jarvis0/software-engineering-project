@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.state.Context;
 
 public class ModelObservable {
 	
@@ -27,13 +29,13 @@ public class ModelObservable {
 		}
 	}
 	
-	public void setState(Game game) {
-		notifyAllObservers(game);
+	public void setState(Context context) {
+		notifyAllObservers(context);
 	}
 	
-	public void notifyAllObservers(Game game) {
+	public void notifyAllObservers(Context context) {
 		for(ViewObserver observer : observers) {
-			observer.update(game);
+			observer.update(context);
 		}
 	}
 	

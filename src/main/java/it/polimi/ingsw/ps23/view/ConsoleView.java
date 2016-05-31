@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.model.state.Context;
+import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
 
 public class ConsoleView extends View {
 	
 	private Scanner scanner;
 	private PrintStream output;
+	private Context context;
 	
 	public ConsoleView(InputStream inputStream, OutputStream output) {
 		this.scanner = new Scanner(inputStream);
@@ -31,23 +33,20 @@ public class ConsoleView extends View {
 		setState(playersName);
 	}
 	
-	private void doMainAction() {
-		int choice;
-		output.println("Choose a Main action for your turn:\n1. Elect a Councillor\n ");
-		choice = scanner.nextInt();	
-	}
-
 	@Override
 	public void run() {
 		setPlayersNumber();
 		while(true) {
-			doMainAction();
-		}		
+			context.getState().acceptView(new ViewVisitor(scanner, output));
+			setState();
+			context.getState().acceptView(new ViewVisitor(scanner, output));
+			break;
+		}
 	}
 
 	@Override
-	public void update(Game game) {
-		output.println(game.toString());
+	public void update(Context context) {
+		this.context = context;
 	}
 		
 }

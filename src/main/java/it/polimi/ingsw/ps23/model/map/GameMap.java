@@ -37,8 +37,8 @@ public class GameMap {
 	
 	@Override
 	public String toString() {
-		//return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
-		return "Stampo la mappa";
+		return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
+		//return "Stampo la mappa";
 	}
 
 }

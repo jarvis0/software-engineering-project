@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.viewcontroller.ControllerObserver;
 import it.polimi.ingsw.ps23.model.Model;
+import it.polimi.ingsw.ps23.model.state.Context;
 
 public class Controller implements ControllerObserver {
 
@@ -15,8 +16,17 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(List<String> playersName) {
-		model.setModel(playersName);
+		model.setUpModel(playersName);
+	}
+	
+	public void update() {
+		model.setPlayerTurn();
 	}
 
+	@Override
+	public void update(Context context) {
+
+	}
+	
 	
 }

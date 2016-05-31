@@ -19,6 +19,7 @@ public class Game  {
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
 	private GamePlayersSet gamePlayersSet;
+	private Player currentPlayer;
 
 	public Game(List<String> playersName) throws NoCapitalException {
 		Initialization init = new Initialization(playersName);
@@ -39,4 +40,16 @@ public class Game  {
 		return gamePlayersSet;
 	}
 
+	public Deck getPoliticDeck() {
+		return politicDeck;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
 }

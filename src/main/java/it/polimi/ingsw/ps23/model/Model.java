@@ -4,11 +4,13 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.model.state.Context;
-import it.polimi.ingsw.ps23.model.state.StartRoundState;
+import it.polimi.ingsw.ps23.model.state.GameStatusState;
+import it.polimi.ingsw.ps23.model.state.StartTurnState;
 
 public class Model extends ModelObservable implements Cloneable {
 	
 	private List<String> playersName;
+	private int currentPlayerIndex;
 	private Game game;
 	private Context context;
 
@@ -16,25 +18,41 @@ public class Model extends ModelObservable implements Cloneable {
 		return game;
 	}
 	
-	private Game newGame() {
+	private void newGame() {
 		try {
 			game = new Game(playersName);
 		} catch (NoCapitalException e) {
 			e.printStackTrace();
 		}
-		return game;
 	}
-	
-	public void setModel(List<String> playersName) {
+
+	public void setUpModel(List<String> playersName) {
 		this.playersName = playersName;
-		game = newGame();
-		setState(game);
+		currentPlayerIndex = 0;
+		newGame();
+		context = new Context();
+		GameStatusState gameStatusState = new GameStatusState();
+		gameStatusState.changeState(context, game);
+		setState(context);
 	}
 	
-	public void newRound() {
-		context = new Context(game);
-		StartRoundState startRoundState = new StartRoundState();
-		startRoundState.changeState(context);
+	private Player setCurrentPlayer() {
+		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
+		currentPlayer.pickCard(game.getPoliticDeck(), 1);
+		if(currentPlayerIndex < playersName.size() - 1) 
+			currentPlayerIndex++;
+		else
+			currentPlayerIndex = 0;
+		return currentPlayer;
+	}
+	
+	public void setPlayerTurn() {
+		//nel visitor: setState(setCurrentPlayer());
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState();
+		game.setCurrentPlayer(setCurrentPlayer());
+		startTurnState.changeState(context, game);
+		setState(context);
 	}
 	
 }

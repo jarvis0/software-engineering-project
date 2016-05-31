@@ -3,6 +3,8 @@ package it.polimi.ingsw.ps23.model;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.map.Deck;
+
 public class Player {
 	
 	private String name;
@@ -25,25 +27,21 @@ public class Player {
 		permissionHandDeck = new PermissionHandDeck();
 		
 	}
-	/*
-	public void showPlayerStatus(){
-		
+
+	public void pickCard(Deck politicDeck, int cardsNumber) {
+		((PoliticHandDeck) politicHandDeck).addCards(politicDeck.pickCards(cardsNumber));
 	}
 	
-	public void pickCard(){
-		
-	}
-	*/
-	public void updateVictoryPoints(int value){
+	public void updateVictoryPoints(int value) {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value){
+	public void updateNobilityPoints(int value) {
 		nobilityTrackPoints += value;
 	}
 	
-	public void updateCoins(int value) throws InsufficientResourcesException{
-		if(coin + value >= 0){
+	public void updateCoins(int value) throws InsufficientResourcesException {
+		if(coin + value >= 0) {
 			coin += value;
 		}
 		else{
@@ -51,7 +49,7 @@ public class Player {
 		}
 	}
 	
-	public void updateAssistants(int value) throws InsufficientResourcesException{
+	public void updateAssistants(int value) throws InsufficientResourcesException {
 		if(assistant + value >= 0){
 			assistant += value;
 		}
@@ -60,8 +58,15 @@ public class Player {
 		}
 	}
 	
-	@Override
-	public String toString() {
-		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString() + " " + politicHandDeck.toString();	
+	public String showPublicStatus() {
+		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString();	
+	}
+
+	public String showSecretStatus() {
+		return " " + politicHandDeck.toString();
+	}
+	
+	public String getName() {
+		return name;
 	}
 }
