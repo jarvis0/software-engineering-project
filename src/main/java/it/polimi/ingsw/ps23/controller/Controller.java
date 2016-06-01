@@ -4,6 +4,8 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.viewcontroller.ControllerObserver;
 import it.polimi.ingsw.ps23.model.Model;
+import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.state.State;
 
 public class Controller implements ControllerObserver {
 
@@ -15,8 +17,22 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(List<String> playersName) {
-		model.setModel(playersName);
+		model.setUpModel(playersName);
+	}
+	
+	public void update() {
+		model.setPlayerTurn();
 	}
 
+	@Override
+	public void update(State state) {
+		model.setActionState(state);
+	}
+
+	@Override
+	public void update(Action action) {
+		model.doAction(action);
+	}
+	
 	
 }

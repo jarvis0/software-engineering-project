@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.NobilityTrack;
+import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GameMap;
@@ -19,6 +20,7 @@ public class Game  {
 	private KingTiles kingTiles;
 	private NobilityTrack nobilityTrack;
 	private GamePlayersSet gamePlayersSet;
+	private Player currentPlayer;
 
 	public Game(List<String> playersName) throws NoCapitalException {
 		Initialization init = new Initialization(playersName);
@@ -29,6 +31,7 @@ public class Game  {
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
 		gamePlayersSet = init.getGamePlayerSet();
+		StateCache.loadCache();
 	}
 	
 	public GameMap getGameMap() {
@@ -39,4 +42,23 @@ public class Game  {
 		return gamePlayersSet;
 	}
 
+	public Deck getPoliticDeck() {
+		return politicDeck;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public FreeCouncillors getFreeCouncillors() {
+		return freeCouncillors;
+	}
+	
+	public King getKing() {
+		return king;
+	}
 }

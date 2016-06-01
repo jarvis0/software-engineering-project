@@ -3,38 +3,71 @@ package it.polimi.ingsw.ps23.model;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
+import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.state.Context;
-import it.polimi.ingsw.ps23.model.state.StartRoundState;
+import it.polimi.ingsw.ps23.model.state.GameStatusState;
+import it.polimi.ingsw.ps23.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.model.state.State;
 
 public class Model extends ModelObservable implements Cloneable {
 	
 	private List<String> playersName;
+	private int currentPlayerIndex;
 	private Game game;
 	private Context context;
+	private TurnHandler turnHandler;
 
 	public Game getGame() {
 		return game;
 	}
 	
-	private Game newGame() {
+	private void newGame() {
 		try {
 			game = new Game(playersName);
 		} catch (NoCapitalException e) {
 			e.printStackTrace();
 		}
-		return game;
 	}
-	
-	public void setModel(List<String> playersName) {
+
+	public void setUpModel(List<String> playersName) {
 		this.playersName = playersName;
-		game = newGame();
-		setState(game);
+		currentPlayerIndex = 0;
+		newGame();
+		setGameStatusState();
 	}
 	
-	public void newRound() {
-		context = new Context(game);
-		StartRoundState startRoundState = new StartRoundState();
-		startRoundState.changeState(context);
+	private Player setCurrentPlayer() {
+		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
+		currentPlayer.pickCard(game.getPoliticDeck(), 1);
+		currentPlayerIndex = (currentPlayerIndex + 1) % (playersName.size() - 1);
+		return currentPlayer;
 	}
 	
+	public void setPlayerTurn() {
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState();
+		game.setCurrentPlayer(setCurrentPlayer());
+		startTurnState.changeState(context, game);
+		turnHandler = new TurnHandler();
+		//clonare startTurnState
+		wakeUp(startTurnState);
+	}
+	
+	public void setActionState(State state) {
+		context = new Context();
+		state.changeState(context, game);
+		wakeUp(state);
+	}
+	
+	public void doAction(Action action) {
+		action.doAction(game, turnHandler);
+		setGameStatusState();
+	}
+	
+	private void setGameStatusState() {
+		context = new Context();
+		GameStatusState gameStatusState = new GameStatusState();
+		gameStatusState.changeState(context, game);
+		wakeUp(gameStatusState);
+	}
 }

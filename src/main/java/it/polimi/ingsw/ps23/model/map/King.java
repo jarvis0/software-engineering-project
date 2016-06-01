@@ -14,4 +14,8 @@ public class King {
 	public String toString() {
 		return "King's position: " + position.toString() + "\n" + council.toString();
 	}
+	
+	public Council getCouncil() {
+		return council;
+	}
 }
