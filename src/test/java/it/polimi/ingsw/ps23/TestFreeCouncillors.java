@@ -16,6 +16,8 @@ import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 
 public class TestFreeCouncillors {
 
+	
+	
 	@Test
 	public void test() {
 		
@@ -50,11 +52,11 @@ public class TestFreeCouncillors {
 		freeCouncillors1.remove(1);
 		
 		assertTrue(freeCouncillors1.toString().equals("[White]"));
-		System.out.println(freeCouncillors);
+		System.out.println(freeCouncillors1);
 		System.out.println(council);
 		
 		freeCouncillors1.electCouncillor("White", council);
-		System.out.println(freeCouncillors);
+		System.out.println(freeCouncillors1);
 		System.out.println(council);
 		
 		assertTrue(council.toString().equals("[Purple, White, White]"));
