@@ -3,7 +3,8 @@ package it.polimi.ingsw.ps23.commons.viewcontroller;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.state.Context;
+import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.state.State;
 
 public class ViewObservable {
 	
@@ -17,35 +18,44 @@ public class ViewObservable {
 		observers.add(observer);
 	}
 
-	public void setState(List<String> state) {
+	public void wakeUp(List<String> state) {
 		notifyAllObservers(state);
 	}
 	
 	//all ?
-	public void notifyAllObservers(List<String> state) {
+	private void notifyAllObservers(List<String> state) {
 		for(ControllerObserver observer : observers) {
 			observer.update(state);
 		}
 	}
 	
-	public void setState() {
+	public void wakeUp() {
 		notifyAllObservers();
 	}
 	
-	public void notifyAllObservers() {
+	private void notifyAllObservers() {
 		for(ControllerObserver observer : observers) {
 			observer.update();
 		}
 	}
 	
-	public void setState(Context context) {
-		notifyAllObservers(context);
+	public void wakeUp(State state) {
+		notifyAllObservers(state);
 	}
 	
-	public void notifyAllObservers(Context context) {
+	private void notifyAllObservers(State state) {
 		for(ControllerObserver observer : observers) {
-			observer.update(context);
+			observer.update(state);
 		}
 	}
 	
+	public void wakeUp(Action action) {
+		notifyAllObservers(action);
+	}
+	
+	private void notifyAllObservers(Action action) {
+		for(ControllerObserver observer : observers) {
+			observer.update(action);
+		}
+	}
 }

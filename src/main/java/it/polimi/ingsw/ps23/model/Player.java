@@ -58,7 +58,8 @@ public class Player {
 		}
 	}
 	
-	public String showPublicStatus() {
+	@Override
+	public String toString() {
 		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString();	
 	}
 

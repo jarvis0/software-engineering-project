@@ -2,7 +2,6 @@ package it.polimi.ingsw.ps23.model.state;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.visitor.ActionVisitor;
 import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
 
 public class StartTurnState implements State {
