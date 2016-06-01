@@ -15,6 +15,4 @@ public class Context {
 	public State getState() {
 		return state;
 	}
-	
-	
 }

@@ -1,29 +1,33 @@
 package it.polimi.ingsw.ps23.model.actions;
 
-import java.util.List;
+import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.TurnHandler;
+import it.polimi.ingsw.ps23.model.map.Council;
 
 public class ElectCouncillor extends MainAction {
 	
-	private final static int COLOR_NAME_POSITION = 0;
-	private final static int REGION_NAME_POSITION = 0;
+	private static final int EARNED_COINS = 4;
 	
-	private Councillor councillorColor;
-	private Region region;
-	
-	public ElectCouncillor(String name) {
-		super(name);
-	}
-	
-	@Override
-	public void setParameters(List<String> parameters) {
+	private String councillor;
+	private Council council;
 		
-		//for(Councillor freeCouncillors : freeCouncillorsList)
-			
-		return;
+	public ElectCouncillor(String councillor, Council council) {
+		this.councillor = councillor;
+		this.council = council;
 	}
 
+	@Override
+	public void doAction(Game game, TurnHandler turnHandler) {
+		game.getFreeCouncillors().electCouncillor(councillor, council);
+		try {
+			game.getCurrentPlayer().updateCoins(EARNED_COINS);
+		} catch (InsufficientResourcesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		turnHandler.useMainAction();
+	}
 }

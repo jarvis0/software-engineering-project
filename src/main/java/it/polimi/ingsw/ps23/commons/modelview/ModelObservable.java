@@ -3,9 +3,7 @@ package it.polimi.ingsw.ps23.commons.modelview;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.state.Context;
+import it.polimi.ingsw.ps23.model.state.State;
 
 public class ModelObservable {
 	
@@ -19,23 +17,23 @@ public class ModelObservable {
 		observers.add(observer);
 	}
 
-	public void setState() {
+	public void wakeUp() {
 		notifyAllObservers();
 	}
 	
-	public void notifyAllObservers() {
+	private void notifyAllObservers() {
 		for(ViewObserver observer : observers) {
 			observer.update();
 		}
 	}
 	
-	public void setState(Context context) {
-		notifyAllObservers(context);
+	public void wakeUp(State state) {
+		notifyAllObservers(state);
 	}
 	
-	public void notifyAllObservers(Context context) {
+	private void notifyAllObservers(State state) {
 		for(ViewObserver observer : observers) {
-			observer.update(context);
+			observer.update(state);
 		}
 	}
 	
