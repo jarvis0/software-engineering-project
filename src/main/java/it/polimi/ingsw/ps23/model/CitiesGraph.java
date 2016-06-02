@@ -13,6 +13,9 @@ public class CitiesGraph {
 		this.citiesGraph = citiesGraph;
 	}
 	
+	public DirectedGraph<City, DefaultEdge> getGraph() {
+		return citiesGraph;
+	}
 	@Override
 	public String toString() {
  		return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");

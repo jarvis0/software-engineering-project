@@ -10,6 +10,8 @@ import it.polimi.ingsw.ps23.model.map.PoliticCard;
 
 public class PoliticHandDeck extends HandDeck {
 
+	private static final String MULTI = "multi";
+
 	public PoliticHandDeck(List<Card> politicHandCards) {
 		super();
 		addCards(politicHandCards);
@@ -21,6 +23,40 @@ public class PoliticHandDeck extends HandDeck {
 		}
 	}
 	
+	public int removeCards(List<String> removedCards) {
+		int cost = 0;
+		for (String string : removedCards) {
+			if(MULTI.equals(string)){
+				cost--;
+			}
+		}
+		switch (removedCards.size()) {
+		case 1:
+			cost = cost-10;
+		case 2:
+			cost = cost-7;
+		case 3:
+			cost = cost-4;
+		case 4:
+			
+		default:
+		
+		}
+		/*for (String removeCard : removedCards) {
+			boolean found = false;
+			for (Card card : getCards()) {
+				if((((PoliticCard) card).getColor().getName().equals(removeCard)) && !found) {
+					removeCard(card);
+					found = true;
+				}
+			}
+		}*/
+		
+		return cost;
+	}					
+
+
+
 	public HandDeck getAvailableCards(Council council) {
 		List<Card> returnCards = getColoredCards(council);
 		try {
@@ -58,4 +94,6 @@ public class PoliticHandDeck extends HandDeck {
 		return cards;
 	}
 	
+
+
 }

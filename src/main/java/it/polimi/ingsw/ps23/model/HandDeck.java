@@ -29,4 +29,8 @@ public abstract class HandDeck {
 	public String toString() {
 		return cards.toString();
 	}
+
+	public void removeCard(Card card) {
+		cards.remove(card);
+	}
 }

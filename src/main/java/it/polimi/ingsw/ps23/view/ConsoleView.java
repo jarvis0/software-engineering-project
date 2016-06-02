@@ -12,6 +12,7 @@ import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.model.state.AssistantToElectCouncillorState;
+import it.polimi.ingsw.ps23.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
@@ -58,7 +59,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(GameStatusState currentState) {
-		output.println("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString());
+		output.println("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString()+"\nKings's Council: " +currentState.getKingCouncil().toString());
 		wakeUp();
 		//stampa altre robe
 	}
@@ -92,7 +93,6 @@ public class ConsoleView extends View implements ViewVisitor {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void visit(EngageAnAssistantState currentState) {
 		wakeUp(currentState.createAction());
 		
@@ -105,7 +105,9 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("Choose the tile to remove: \n1 for the first tile \n2 for the second tile");
 		int chosenTile = Integer.parseInt(scanner.nextLine()) - 1;
 		wakeUp(currentState.createAction(chosenRegion, chosenTile));
-=======
+	}
+	
+	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
 		String chosenCouncillor = scanner.nextLine();
@@ -118,8 +120,24 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(AdditionalMainActionState currentState) {
 		// non so cosa dobbiamo scrivere
 		wakeUp(currentState.createAction());	
+	}
+
+	@Override
+	public void visit(BuildEmporiumKingState currentState) {
+		List<String> removedCards = new ArrayList<>();
+		output.println("chose the number of cards you want for satisfy the King Council: "+currentState.getAvailableCardsNumber());
+		int numberOfCards = Integer.parseInt(scanner.nextLine());
+		output.println("player hand deck:" +currentState.getDeck());
+		for (int i=0; i<numberOfCards; i++) {
+			output.println("Choose a politic card you want to use from this list: " +currentState.getAvailableCards());
+			String chosenCard = scanner.nextLine();
+			removedCards.add(chosenCard);
+		}
+		output.println("please insert the route for the king.[king's initial position: " +currentState.getKingPosition()+"]");
+		output.println("insert the arrival city: ");
+		String arrivalCity = scanner.nextLine().toUpperCase();
+		wakeUp(currentState.createAction(removedCards, arrivalCity));
 		
->>>>>>> refs/remotes/origin/Mirco
 	}
 		
 }

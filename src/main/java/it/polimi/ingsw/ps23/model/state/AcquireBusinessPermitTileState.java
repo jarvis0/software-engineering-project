@@ -5,7 +5,6 @@ import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.HandDeck;
-import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.map.Council;
