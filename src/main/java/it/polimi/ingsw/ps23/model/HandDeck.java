@@ -17,7 +17,7 @@ public abstract class HandDeck {
 		cards.add(card);
 	}
 	
-	protected List<Card> getCards() {
+	public List<Card> getCards() {
 		return cards;
 	}
 	

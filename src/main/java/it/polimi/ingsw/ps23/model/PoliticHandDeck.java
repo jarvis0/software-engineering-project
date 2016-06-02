@@ -33,7 +33,8 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	private List<Card> getColoredCards(Council council) {
-		List<Card> cards = getCards();
+		List<Card> cards = new ArrayList<>();
+		cards.addAll(getCards());
 		List<Card> returnCards = new ArrayList<>();
 		for (Councillor councillor : council.getCouncil()) {
 			boolean found = false;
@@ -48,7 +49,8 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	private List<Card> getJollyCards() {
-		List<Card> cards = getCards();
+		List<Card> cards = new ArrayList<>();
+		cards.addAll(getCards());
 		for(int i = 0; i < cards.size(); i++) {
 			if(!((PoliticCard)(cards.get(i))).isJolly()) {
 				cards.remove(i);
