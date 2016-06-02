@@ -19,20 +19,28 @@ public class GroupRegionalCity extends Region {
 	
 	public void setPermissionDeck(Deck permissionDeck) {
 		this.permissionDeckDown = permissionDeck;
+		permissionDeckUp = new Deck(permissionDeckDown.pickCards(2));
 	}
 
 	public Deck getPermissionDeck() {
 		return permissionDeckDown;
 	}
 	
+	public Deck getPermissionDeckUp() {
+		return permissionDeckUp;
+	}
 	public Council getCouncil() {
 		return council;
 	}
-	//pick 2 from deckDown -> deckUp
+	
+	public void changePermitTile(int index) {
+		permissionDeckDown.getDeck().add(permissionDeckUp.getDeck().get(index));
+		permissionDeckUp.getDeck().set(index, permissionDeckDown.pickCard());
+	}
 	
 	@Override
 	public String toString() {
-		return super.toString() + "[Council: " + council + "]" + "\n" + "permissionDeckDown: " + permissionDeckDown + "\n";
+		return super.toString() + "[Council: " + council + "]" + "\n" + "permissionDeck UP: " + permissionDeckUp + "\n";
 	}
 
 }

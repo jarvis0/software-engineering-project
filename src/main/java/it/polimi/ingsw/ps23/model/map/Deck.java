@@ -29,5 +29,9 @@ public class Deck {
 		}
 		return pickedCards;
 	}
+
+	public Card pickCard() {
+		return cards.remove(0);
+	}
 	
 }

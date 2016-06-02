@@ -42,4 +42,5 @@ public abstract class Region {
 	public String toString() {
 		return name + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
 	}
+
 }

@@ -33,6 +33,5 @@ public class Controller implements ControllerObserver {
 	public void update(Action action) {
 		model.doAction(action);
 	}
-	
-	
+
 }
