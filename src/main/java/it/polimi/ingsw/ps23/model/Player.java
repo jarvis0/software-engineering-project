@@ -70,4 +70,8 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	
+	public HandDeck getPoliticHandDeck() {
+		return politicHandDeck;
+	}
 }

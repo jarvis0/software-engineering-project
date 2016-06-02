@@ -17,6 +17,10 @@ public abstract class HandDeck {
 		cards.add(card);
 	}
 	
+	protected List<Card> getCards() {
+		return cards;
+	}
+	
 	@Override
 	public String toString() {
 		return cards.toString();
