@@ -17,7 +17,6 @@ public class ElectCouncillorState extends ActionState {
 	private FreeCouncillors freeCouncillors;
 	private Map<String, Council> councilsMap;
 	
-
 	public ElectCouncillorState(String name) {
 		super(name);
 		councilsMap = new HashMap<>();

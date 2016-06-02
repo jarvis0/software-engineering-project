@@ -30,6 +30,16 @@ public class GameMap {
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;
 	}
+	
+	public Region getRegion(String regionName) {
+		Region selectedRegion = null;
+		for (Region region : groupRegionalCities) {
+			if (region.getName().equals(regionName)) {
+				selectedRegion = region;
+			}
+		}
+		return selectedRegion;	
+	}
 
 	public List<Region> getGroupColoredCity() {
 		return groupColoredCities;

@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
+import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
@@ -62,7 +64,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
 		output.println("Current player: " + player.toString() + player.showSecretStatus());
-		output.println("Choose an action to perform? \nMain Action:\n Elect Councillor");
+		output.println("Choose an action to perform? \nMain Action:\n Elect Councillor \nQuick Action:\n Engage Assistant\n Change Permit Tile\n");
 		wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
 	}
 
@@ -74,6 +76,21 @@ public class ConsoleView extends View implements ViewVisitor {
 		String chosenBalcony = scanner.nextLine();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 		
+	}
+
+	@Override
+	public void visit(EngageAnAssistantState currentState) {
+		wakeUp(currentState.createAction());
+		
+	}
+
+	@Override
+	public void visit(ChangePermitsTileState currentState) {
+		output.println("Choose a region:" +currentState.getPermitsMap());
+		String chosenRegion = scanner.nextLine();
+		output.println("Chose the tile to remove: \n1 for the first tile \n2 for the second tile");
+		int chosenTile = scanner.nextInt()-1;
+		wakeUp(currentState.createAction(chosenRegion, chosenTile));
 	}
 		
 }
