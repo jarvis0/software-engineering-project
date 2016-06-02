@@ -30,28 +30,19 @@ public class PoliticHandDeck extends HandDeck {
 				cost--;
 			}
 		}
-		switch (removedCards.size()) {
-		case 1:
-			cost = cost-10;
-		case 2:
-			cost = cost-7;
-		case 3:
-			cost = cost-4;
-		case 4:
-			
-		default:
-		
+		if(removedCards.size() != 4) {
+			cost = cost - (1 + 3 * (4 - removedCards.size()));
 		}
-		/*for (String removeCard : removedCards) {
+	 
+		for (String removeCard : removedCards) {
 			boolean found = false;
-			for (Card card : getCards()) {
-				if((((PoliticCard) card).getColor().getName().equals(removeCard)) && !found) {
-					removeCard(card);
+			for(int i = 0; i < getCards().size() && !found; i++) {
+				if(((PoliticCard)getCards().get(i)).getColor().getName().equals(removeCard)) {
+					getCards().remove(i);
 					found = true;
 				}
 			}
-		}*/
-		
+		}
 		return cost;
 	}					
 
@@ -69,7 +60,8 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	private List<Card> getColoredCards(Council council) {
-		List<Card> cards = getCards();
+		List<Card> cards = new ArrayList<>();
+		cards.addAll(getCards());
 		List<Card> returnCards = new ArrayList<>();
 		for (Councillor councillor : council.getCouncil()) {
 			boolean found = false;
@@ -84,7 +76,8 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	private List<Card> getJollyCards() {
-		List<Card> cards = getCards();
+		List<Card> cards = new ArrayList<>();
+		cards.addAll(getCards());
 		for(int i = 0; i < cards.size(); i++) {
 			if(!((PoliticCard)(cards.get(i))).isJolly()) {
 				cards.remove(i);
