@@ -21,6 +21,10 @@ public abstract class HandDeck {
 		return cards;
 	}
 	
+	public int getHandSize() {
+		return cards.size();
+	}
+	
 	@Override
 	public String toString() {
 		return cards.toString();
