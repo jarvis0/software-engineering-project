@@ -36,8 +36,9 @@ public class Player {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value) {
+	public void updateNobilityPoints(int value, TurnHandler turnHandler) {
 		nobilityTrackPoints += value;
+		
 	}
 	
 	public void updateCoins(int value) throws InsufficientResourcesException {
@@ -60,7 +61,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString();	
+		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString();	
 	}
 
 	public String showSecretStatus() {

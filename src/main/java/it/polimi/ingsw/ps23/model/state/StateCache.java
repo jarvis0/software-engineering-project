@@ -40,6 +40,5 @@ public class StateCache {
 		
 		ChangePermitsTileState changePermitsTileState = new ChangePermitsTileState(CHANGE_PERMIT_TILE);
 		putAction(changePermitsTileState);
-
 	}
 }

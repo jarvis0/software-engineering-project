@@ -86,7 +86,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
 		String chosenCouncil = scanner.nextLine();
 		output.println("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
-		int numberOfCards = scanner.nextInt();
+		int numberOfCards = Integer.parseInt(scanner.nextLine());
 		boolean finished = false;
 		for(int i = 0; i < numberOfCards && !finished; i++) {
 			output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
@@ -94,7 +94,7 @@ public class ConsoleView extends View implements ViewVisitor {
 			//aggiungere un metodo per rimuovere le carte già scelte
 		}
 		output.print("Choose a permission card: "+ currentState.getAvailablePermitTile(chosenCouncil));
-		String chosenCard = scanner.nextLine();
+		int chosenCard = Integer.parseInt(scanner.nextLine());
 		
 	}
 

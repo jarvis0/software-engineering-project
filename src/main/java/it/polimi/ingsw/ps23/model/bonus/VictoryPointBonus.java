@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class VictoryPointBonus extends Bonus {
 
@@ -9,7 +10,7 @@ public class VictoryPointBonus extends Bonus {
 	}
 	
 	@Override
-	public void updateBonus(Player player) {
+	public void updateBonus(Player player, TurnHandler turnHandler) {
 		player.updateVictoryPoints(getValue());
 	}
 }
