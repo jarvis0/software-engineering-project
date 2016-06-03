@@ -23,6 +23,12 @@ public class BuiltEmporiumSet {
 		}
 	}
 	
+	
+	
+	public List<City> getBuiltEmporiumSet() {
+		return builtEmporiumSet;
+	}
+
 	@Override
 	public String toString() {
 		return builtEmporiumSet.toString();

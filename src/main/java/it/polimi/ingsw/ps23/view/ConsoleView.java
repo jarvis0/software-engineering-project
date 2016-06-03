@@ -125,9 +125,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(ChangePermitsTileState currentState) {
 		output.println("Choose a region:" +currentState.getPermitsMap());
 		String chosenRegion = scanner.nextLine();
-		output.println("Choose the tile to remove: \n1 for the first tile \n2 for the second tile");
-		int chosenTile = Integer.parseInt(scanner.nextLine()) - 1;
-		wakeUp(currentState.createAction(chosenRegion, chosenTile));
+		wakeUp(currentState.createAction(chosenRegion));
 	}
 	
 

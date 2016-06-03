@@ -1,8 +1,16 @@
 package it.polimi.ingsw.ps23.model;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graphs;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
+import org.mockito.cglib.transform.impl.AddDelegateTransformer;
+
+import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 
 public class CitiesGraph {
@@ -18,7 +26,44 @@ public class CitiesGraph {
 	}
 	@Override
 	public String toString() {
- 		return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");
+		List<String> cities = new ArrayList<>();
+		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(citiesGraph);
+		while(iterator.hasNext()){
+			 cities.add(iterator.next().toString());
+		}
+		return cities.toString(); 		//return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");
 	}
 	
-}
+
+	public void getBonuses(Player player, City arriveCity) {
+	List<City> citiesContainingPlayer = new ArrayList<>();
+	citiesContainingPlayer.add(arriveCity);
+	List<City> playerCityList = new ArrayList<>();
+	playerCityList.addAll(player.getEmporiums().getBuiltEmporiumSet());
+	searchCities(citiesContainingPlayer, playerCityList, player);
+	}
+
+	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Player player) {
+		for(int i=0; i < citiesContainingPlayer.size(); i++) {
+			City cityAnalyzed = citiesContainingPlayer.get(i);
+			List<City> successors = Graphs.successorListOf(citiesGraph, cityAnalyzed);
+			successors.remove(cityAnalyzed);
+			citiesContainingPlayer.remove(cityAnalyzed);
+			for (City city1 : playerCityList) {
+				if(successors.contains(city1)) {
+					citiesContainingPlayer.add(city1);
+				}
+			}
+			if(!(cityAnalyzed instanceof CapitalCity) ){
+				player.
+			}
+			playerCityList.remove(cityAnalyzed);
+			}
+		if(!citiesContainingPlayer.isEmpty()){
+			searchCities(citiesContainingPlayer, playerCityList);
+			}
+		}
+		
+	}
+
+

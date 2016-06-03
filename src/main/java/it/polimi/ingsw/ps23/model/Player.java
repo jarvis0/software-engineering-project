@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.model;
 
 
+import java.util.List;
+
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.map.City;
@@ -82,5 +84,9 @@ public class Player {
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public BuiltEmporiumSet getEmporiums(){
+		return builtEmporiumSet;
 	}
 }
