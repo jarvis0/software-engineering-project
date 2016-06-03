@@ -5,8 +5,13 @@ import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
+import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.NobilityTrack;
+import it.polimi.ingsw.ps23.model.map.PermissionCard;
+import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
 	
@@ -35,12 +40,19 @@ public class Player {
 		((PoliticHandDeck) politicHandDeck).addCards(politicDeck.pickCards(cardsNumber));
 	}
 	
+	public void pickPermitCard(Region region, int index, TurnHandler turnHandler) {
+		Card permissionCard = ((GroupRegionalCity)region).pickPermissionCard(index);
+		((PermissionCard)permissionCard).useBonus(this, turnHandler);
+		((PermissionHandDeck) permissionHandDeck).addCard(permissionCard);
+	}
+	
 	public void updateVictoryPoints(int value) {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value) {
+	public void updateNobilityPoints(int value, TurnHandler turnHandler) {
 		nobilityTrackPoints += value;
+		//dovremmo ora spostare il player nella nuova casella...ma è un po impossibile non avendo il riferimento al nobility track
 	}
 	
 	public void updateCoins(int value) throws InsufficientResourcesException {
@@ -63,7 +75,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	name + " " + coin + " " + assistant + " " + victoryPoints + " " + permissionHandDeck.toString() + "Built Emporiums " +builtEmporiumSet.toString();	
+		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 	public String showSecretStatus() {

@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class AdditionalMainAction extends QuickAction {
 
-	private static final int ASSISTANTS_COST = -1;
+	private static final int ASSISTANTS_COST = -3;
 	
 	public AdditionalMainAction() {
 	}
