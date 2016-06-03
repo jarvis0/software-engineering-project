@@ -22,5 +22,10 @@ public class BuiltEmporiumSet {
 			throw new InvalidPositionException();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return builtEmporiumSet.toString();
+	}
 
 }

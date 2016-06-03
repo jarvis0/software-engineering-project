@@ -15,5 +15,6 @@ public class NormalCity extends City {
 	public String toString() {
 		return getName() + " " + getColor() + " " + rewardToken;
 	}
-
+	
+	
 }

@@ -15,7 +15,15 @@ public class King {
 		return "King's position: " + position.toString() + "\n" + council.toString();
 	}
 	
+	public City getPosition(){
+		return position;
+	}
+	
 	public Council getCouncil() {
 		return council;
+	}
+
+	public void setNewPosition(City arriveCity) {
+		position = arriveCity;		
 	}
 }
