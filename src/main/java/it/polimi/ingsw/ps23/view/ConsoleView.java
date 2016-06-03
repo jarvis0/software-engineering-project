@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 
 import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
@@ -71,16 +70,21 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
 		output.println("Current player: " + player.toString() + player.showSecretStatus());
-		output.println("Choose an action to perform? \nMain Action:\n Elect Councillor \nQuick Action:\n Engage Assistant\n Change Permit Tile\n");
-		wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
+		output.println("Choose an action to perform? " + currentState.getAvaiableAction());
+		try {
+			wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
+		}
+		catch(NullPointerException e) {
+			wakeUp();
+		}
 	}
 	
 	@Override
 	public void visit(ElectCouncillorState currentState) {
 		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
-		String chosenCouncillor = scanner.nextLine();
+		String chosenCouncillor = scanner.nextLine().toLowerCase();
 		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
-		String chosenBalcony = scanner.nextLine();
+		String chosenBalcony = scanner.nextLine().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 		
 	}
@@ -89,13 +93,13 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		List<String> removedCards = new ArrayList<>();
 		output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
-		String chosenCouncil = scanner.nextLine();
+		String chosenCouncil = scanner.nextLine().toLowerCase();
 		output.println("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
 		int numberOfCards = Integer.parseInt(scanner.nextLine());
 		boolean finished = false;
 		for(int i = 0; i < numberOfCards && !finished; i++) {
 			output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
-			String chosenCard = scanner.nextLine();
+			String chosenCard = scanner.nextLine().toLowerCase();
 			removedCards.add(chosenCard);
 			//aggiungere un metodo per rimuovere le carte già scelte
 		}
@@ -108,9 +112,9 @@ public class ConsoleView extends View implements ViewVisitor {
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
-		String chosenCouncillor = scanner.nextLine();
+		String chosenCouncillor = scanner.nextLine().toLowerCase();
 		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
-		String chosenBalcony = scanner.nextLine();
+		String chosenBalcony = scanner.nextLine().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
 	}
 
@@ -130,6 +134,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("Choose a region:" +currentState.getPermitsMap());
 		String chosenRegion = scanner.nextLine();
 		wakeUp(currentState.createAction(chosenRegion));
+
 	}
 	
 
@@ -141,7 +146,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("player hand deck:" +currentState.getDeck());
 		for (int i=0; i<numberOfCards; i++) {
 			output.println("Choose a politic card you want to use from this list: " +currentState.getAvailableCards());
-			String chosenCard = scanner.nextLine();
+			String chosenCard = scanner.nextLine().toLowerCase();
 			removedCards.add(chosenCard);
 		}
 		output.println("please insert the route for the king.[king's initial position: " +currentState.getKingPosition()+"]");

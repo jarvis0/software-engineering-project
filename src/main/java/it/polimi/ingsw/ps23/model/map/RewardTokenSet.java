@@ -3,12 +3,6 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.Collections;
 import java.util.List;
 
-import javax.naming.InsufficientResourcesException;
-
-import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
-
 //cambiare nome -> deck?
 public class RewardTokenSet {
 
