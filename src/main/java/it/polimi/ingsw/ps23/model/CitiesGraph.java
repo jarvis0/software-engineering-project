@@ -8,10 +8,9 @@ import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
-import org.mockito.cglib.transform.impl.AddDelegateTransformer;
-
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class CitiesGraph {
 	
@@ -55,15 +54,15 @@ public class CitiesGraph {
 				}
 			}
 			if(!(cityAnalyzed instanceof CapitalCity) ){
-				player.
+				((NormalCity)cityAnalyzed).useRewardToken(player);
 			}
-			playerCityList.remove(cityAnalyzed);
-			}
-		if(!citiesContainingPlayer.isEmpty()){
-			searchCities(citiesContainingPlayer, playerCityList);
-			}
+				playerCityList.remove(cityAnalyzed);
 		}
-		
+		if(!citiesContainingPlayer.isEmpty()){
+			searchCities(citiesContainingPlayer, playerCityList, player);
+		}
 	}
+		
+}
 
 

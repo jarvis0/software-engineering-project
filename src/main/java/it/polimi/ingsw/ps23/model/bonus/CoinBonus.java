@@ -15,4 +15,10 @@ public class CoinBonus extends Bonus {
 	public void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException {
 		player.updateCoins(getValue());
 	}
+
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+		player.updateCoins(getValue());
+		
+	}
 }

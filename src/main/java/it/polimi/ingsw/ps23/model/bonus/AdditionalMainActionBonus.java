@@ -16,4 +16,9 @@ public class AdditionalMainActionBonus extends Bonus {
 		turnHandler.addMainAction();		
 	}
 
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+				
+	}
+
 }

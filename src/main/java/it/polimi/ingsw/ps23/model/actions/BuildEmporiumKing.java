@@ -3,13 +3,8 @@ package it.polimi.ingsw.ps23.model.actions;
 import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
-
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.traverse.DepthFirstIterator;
-import org.jgrapht.traverse.GraphIterator;
-
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
@@ -44,14 +39,13 @@ public class BuildEmporiumKing extends MainAction {
 			}
 			
 			try {
-				game.getKing().setNewPosition(arriveCity);
-				game.getCurrentPlayer().updateEmporiumSet(arriveCity);
-				game.getCurrentPlayer().updateAssistants(assistantsCost);
 				game.getCurrentPlayer().updateCoins(cost);
+				game.getCurrentPlayer().updateAssistants(assistantsCost);
+				game.getKing().setNewPosition(arriveCity);
+				game.getCurrentPlayer().updateEmporiumSet(arriveCity, game.getGameMap().getCitiesGraph());
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
-			game.getGameMap().getCitiesGraph().getBonuses(game.getCurrentPlayer(), arriveCity);
 			
 		turnHandler.useMainAction();
 	}

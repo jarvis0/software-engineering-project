@@ -16,5 +16,11 @@ public class PoliticCardBonus extends Bonus {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

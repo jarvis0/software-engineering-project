@@ -13,8 +13,13 @@ public class NobilityTrackStepBonus extends Bonus {
 
 	@Override
 	public void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException {
-		player.updateNobilityPoints(getValue(), turnHandler);
+		player.updateNobilityPoints(getValue());
 		
+	}
+
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+		player.updateNobilityPoints(getValue()); //--> serve davvero turnHAndler nella chiamata?	
 	}
 	
 }

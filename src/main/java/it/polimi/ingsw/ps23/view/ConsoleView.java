@@ -15,6 +15,7 @@ import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.BuildEmporiumKingState;
+import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
@@ -135,7 +136,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		List<String> removedCards = new ArrayList<>();
-		output.println("chose the number of cards you want for satisfy the King Council: "+currentState.getAvailableCardsNumber());
+		output.println("Choose the number of cards you want for satisfy the King Council: "+currentState.getAvailableCardsNumber());
 		int numberOfCards = Integer.parseInt(scanner.nextLine());
 		output.println("player hand deck:" +currentState.getDeck());
 		for (int i=0; i<numberOfCards; i++) {
@@ -147,5 +148,14 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("insert the arrival city: ");
 		String arrivalCity = scanner.nextLine().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
+	}
+	
+	@Override
+	public void visit(BuildEmporiumPermitTileState currentState) {
+		output.println("Choose the permit tile that you want to use for build an Emporium: (numerical input) " +currentState.getAvaibleCards());
+		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
+		output.println("Choose the city where you what to build an emporium: " +currentState.getChosenCard(chosenCard));
+		String chosenCity = scanner.nextLine().toUpperCase();
+		wakeUp(currentState.createAction(chosenCity, chosenCard));
 	}
 }

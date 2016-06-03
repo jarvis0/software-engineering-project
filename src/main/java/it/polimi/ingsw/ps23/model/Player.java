@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
@@ -14,7 +15,7 @@ import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
-	
+	private final static List<Card> EMPTY_HAND_DECK = new ArrayList<>();
 	private String name;
 	private int coin; //esiste un limite massimo? nel gioco è 20
 	private int assistant;
@@ -22,7 +23,8 @@ public class Player {
 	private int victoryPoints;
 	private int nobilityTrackPoints;
 	private HandDeck permissionHandDeck;
-	private HandDeck politicHandDeck;	
+	private HandDeck politicHandDeck;
+	private HandDeck permissionUsedHandDeck;
 
 	public Player(String name, int coin, int assistant, HandDeck politicHandDeck) {
 		this.name = name;
@@ -32,7 +34,8 @@ public class Player {
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
 		builtEmporiumSet = new BuiltEmporiumSet();
-		permissionHandDeck = new PermissionHandDeck();
+		permissionHandDeck = new PermissionHandDeck(EMPTY_HAND_DECK);
+		permissionUsedHandDeck = new PermissionHandDeck(EMPTY_HAND_DECK);
 		
 	}
 
@@ -50,7 +53,7 @@ public class Player {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value, TurnHandler turnHandler) {
+	public void updateNobilityPoints(int value) { // TurnHandler turnHandler
 		nobilityTrackPoints += value;
 		//dovremmo ora spostare il player nella nuova casella...ma è un po impossibile non avendo il riferimento al nobility track
 	}
@@ -89,10 +92,16 @@ public class Player {
 	public HandDeck getPoliticHandDeck() {
 		return politicHandDeck;
 	}
+	
 
-	public void updateEmporiumSet(City city) {
+	public HandDeck getPermissionHandDeck() {
+		return permissionHandDeck;
+	}
+
+	public void updateEmporiumSet(City city, CitiesGraph citiesGraph ) {
 		try {
 			builtEmporiumSet.addBuiltEmporium(city);
+			citiesGraph.getBonuses(this, city);	
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}
@@ -100,5 +109,10 @@ public class Player {
 	
 	public BuiltEmporiumSet getEmporiums(){
 		return builtEmporiumSet;
+	}
+
+	public void usePermissionCard(int chosenCard) {
+		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));
+		
 	}
 }
