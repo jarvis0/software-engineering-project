@@ -17,6 +17,14 @@ public abstract class HandDeck {
 		cards.add(card);
 	}
 	
+	public List<Card> getCards() {
+		return cards;
+	}
+	
+	public int getHandSize() {
+		return cards.size();
+	}
+	
 	@Override
 	public String toString() {
 		return cards.toString();

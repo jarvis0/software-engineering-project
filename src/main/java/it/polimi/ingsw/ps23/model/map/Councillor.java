@@ -10,6 +10,10 @@ public class Councillor {
 		this.color=color;
 	}
 	
+	public GameColor getColor() {
+		return color;
+	}
+	
 	public String getColorName() {
 		return color.getName();
 	}
