@@ -29,8 +29,15 @@ public class GroupRegionalCity extends Region {
 	public Deck getPermissionDeckUp() {
 		return permissionDeckUp;
 	}
+	
 	public Council getCouncil() {
 		return council;
+	}
+	
+	public Card pickPermissionCard(int index) {
+		Card card = permissionDeckUp.getDeck().get(index);
+		permissionDeckUp.getDeck().set(index, permissionDeckDown.pickCard());
+		return card;
 	}
 	
 	public void changePermitTile(int index) {

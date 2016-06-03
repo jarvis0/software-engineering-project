@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.map.PoliticCard;
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
@@ -85,6 +86,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
+		List<String> removedCards = new ArrayList<>();
 		output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
 		String chosenCouncil = scanner.nextLine();
 		output.println("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
@@ -93,10 +95,12 @@ public class ConsoleView extends View implements ViewVisitor {
 		for(int i = 0; i < numberOfCards && !finished; i++) {
 			output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
 			String chosenCard = scanner.nextLine();
+			removedCards.add(chosenCard);
 			//aggiungere un metodo per rimuovere le carte già scelte
 		}
-		output.print("Choose a permission card: "+ currentState.getAvailablePermitTile(chosenCouncil));
-		int chosenCard = Integer.parseInt(scanner.nextLine());
+		output.print("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
+		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
+		wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));
 		
 	}
 
@@ -111,7 +115,6 @@ public class ConsoleView extends View implements ViewVisitor {
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		// non so cosa dobbiamo scrivere
 		wakeUp(currentState.createAction());
 	}
 
@@ -147,5 +150,4 @@ public class ConsoleView extends View implements ViewVisitor {
 		String arrivalCity = scanner.nextLine().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
 	}
-		
 }

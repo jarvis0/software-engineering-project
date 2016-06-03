@@ -18,9 +18,9 @@ import it.polimi.ingsw.ps23.model.map.City;
 public class BuildEmporiumKing extends MainAction {
 
 	private static final double ROAD_COST = -2;
-	City arriveCity;
-	List<String> removedCards;
-	City kingPosition;
+	private City arriveCity;
+	private List<String> removedCards;
+	private City kingPosition;
 	
 	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
 		this.removedCards = removedCards;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -8,8 +9,6 @@ import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.model.actions.Action;
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
@@ -17,13 +16,11 @@ import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
 public class AcquireBusinessPermitTileState extends ActionState {
 
 	private HandDeck politicHandDeck;
-	private Map<String, Council> councilsMap;
-	private Map<String, Deck> buildingPermits;
+	private Map<String, Region> regionsMap;
 	
 	public AcquireBusinessPermitTileState(String name) {
 		super(name);
-		councilsMap = new HashMap<>();
-		buildingPermits = new HashMap<>();
+		regionsMap = new HashMap<>();
 	}
 
 	@Override
@@ -31,8 +28,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 		context.setState(this);
 		politicHandDeck = new PoliticHandDeck(game.getCurrentPlayer().getPoliticHandDeck().getCards());
 		for (Region region : game.getGameMap().getGroupRegionalCity()) {
-			councilsMap.put(region.getName(), ((GroupRegionalCity) region).getCouncil());
-			buildingPermits.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeck());
+			regionsMap.put(region.getName(), (GroupRegionalCity) region);
 		}
 	}
 
@@ -41,16 +37,16 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	}
 	
 	public String getCouncilsMap() {
-		return councilsMap.toString();
+		return regionsMap.toString();
 	}
 	
 	public int getAvailablePoliticCardsNumber(String chosenCouncil) {
-		politicHandDeck = ((PoliticHandDeck)politicHandDeck).getAvailableCards(councilsMap.get(chosenCouncil));
+		politicHandDeck = ((PoliticHandDeck)politicHandDeck).getAvailableCards(((GroupRegionalCity)regionsMap.get(chosenCouncil)).getCouncil());
 		return politicHandDeck.getHandSize();
 	}
 		
 	public String getAvailablePermitTile(String chosenCouncil) {
-		return buildingPermits.get(chosenCouncil).toString();
+		return ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getPermissionDeckUp().toString();
 	}
 	
 	@Override
@@ -58,8 +54,8 @@ public class AcquireBusinessPermitTileState extends ActionState {
 		view.visit(this);
 	}
 	
-	public Action createAction() {
-		return new AcquireBusinessPermitTile();
+	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) {
+		return new AcquireBusinessPermitTile(removedPoliticCards, ((GroupRegionalCity)regionsMap.get(chosenCouncil)), chosenPermissionCard);
 	}
 
 }
