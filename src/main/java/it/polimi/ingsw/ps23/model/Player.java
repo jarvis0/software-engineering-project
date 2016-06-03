@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 
 public class Player {
@@ -61,7 +62,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString();	
+		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 	public String showSecretStatus() {
@@ -74,5 +75,13 @@ public class Player {
 	
 	public HandDeck getPoliticHandDeck() {
 		return politicHandDeck;
+	}
+
+	public void updateEmporiumSet(City city) {
+		try {
+			builtEmporiumSet.addBuiltEmporium(city);
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
 	}
 }

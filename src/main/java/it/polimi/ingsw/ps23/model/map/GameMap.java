@@ -26,6 +26,7 @@ public class GameMap {
 	public Map<String, City> getCitiesMap() {
 		return citiesMap;
 	}
+	
 
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;

@@ -13,7 +13,8 @@ public class StateCache {
 	private static final String ADDITIONAL_MAIN_ACTION = "additional main action";
 	private static final String ENGAGE_ASSITANT= "engage assistant";
 	private static final String CHANGE_PERMIT_TILE= "change permit tile";
-	
+	private static final String BUILD_EMPORIUM_KING= "build emporium king";
+
 	public static ActionState getAction(String actionStateName) {
 		return (ActionState) stateMap.get(actionStateName).clone();
 	}
@@ -25,7 +26,16 @@ public class StateCache {
 	public static void loadCache() {
 		ElectCouncillorState electCouncillorState = new ElectCouncillorState(ELECT_COUNCILLOR);
 		putAction(electCouncillorState);
+
+		EngageAnAssistantState engageAnAssistantState = new EngageAnAssistantState(ENGAGE_ASSITANT);
+		putAction(engageAnAssistantState);
 		
+		ChangePermitsTileState changePermitsTileState = new ChangePermitsTileState(CHANGE_PERMIT_TILE);
+		putAction(changePermitsTileState);
+		
+		BuildEmporiumKingState buildEmporiumKingState = new BuildEmporiumKingState(BUILD_EMPORIUM_KING);
+		putAction(buildEmporiumKingState);
+
 		AcquireBusinessPermitTileState acquireBusinessPermitTileStatus = new AcquireBusinessPermitTileState(ACQUIRE_BUSINESS_PERMIT_TILE);
 		putAction(acquireBusinessPermitTileStatus);
 		
@@ -34,11 +44,6 @@ public class StateCache {
 		
 		AdditionalMainActionState additionalMainActionState = new AdditionalMainActionState(ADDITIONAL_MAIN_ACTION);
 		putAction(additionalMainActionState);
-		
-		EngageAnAssistantState engageAnAssistantState = new EngageAnAssistantState(ENGAGE_ASSITANT);
-		putAction(engageAnAssistantState);
-		
-		ChangePermitsTileState changePermitsTileState = new ChangePermitsTileState(CHANGE_PERMIT_TILE);
-		putAction(changePermitsTileState);
+
 	}
 }
