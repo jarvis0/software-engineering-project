@@ -27,6 +27,7 @@ public class Model extends ModelObservable implements Cloneable {
 		} catch (NoCapitalException e) {
 			e.printStackTrace();
 		}
+		changePlayer();
 	}
 
 	public void setUpModel(List<String> playersName) {
@@ -39,16 +40,17 @@ public class Model extends ModelObservable implements Cloneable {
 	private Player setCurrentPlayer() {
 		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
 		currentPlayer.pickCard(game.getPoliticDeck(), 1);
-		currentPlayerIndex = (currentPlayerIndex + 1) % (playersName.size() - 1);
+		currentPlayerIndex = (currentPlayerIndex + 1) % playersName.size();
 		return currentPlayer;
 	}
 	
 	public void setPlayerTurn() {
 		context = new Context();
-		StartTurnState startTurnState = new StartTurnState();
-		game.setCurrentPlayer(setCurrentPlayer());
+		if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && context.getState() instanceof StartTurnState))) {
+			changePlayer();
+		}
+		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
-		turnHandler = new TurnHandler();
 		//clonare startTurnState
 		wakeUp(startTurnState);
 	}
@@ -69,5 +71,10 @@ public class Model extends ModelObservable implements Cloneable {
 		GameStatusState gameStatusState = new GameStatusState();
 		gameStatusState.changeState(context, game);
 		wakeUp(gameStatusState);
+	}
+	
+	private void changePlayer() {
+		turnHandler = new TurnHandler();
+		game.setCurrentPlayer(setCurrentPlayer());
 	}
 }
