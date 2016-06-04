@@ -1,12 +1,9 @@
 package it.polimi.ingsw.ps23.view;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
@@ -22,47 +19,24 @@ import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
 
-public class ConsoleView extends View implements ViewVisitor {
+public abstract class ConsoleView extends View implements ViewVisitor {
 	
 	private Scanner scanner;
 	private PrintStream output;
-	private State state;
 	
-	public ConsoleView(InputStream inputStream, OutputStream output) {
-		this.scanner = new Scanner(inputStream);
-		this.output = new PrintStream(output);
-	}	
-
-	private void setPlayersNumber() {
-		output.println("Players number: ");
-		int playersNumber = scanner.nextInt();
-		scanner.nextLine();
-		List<String> playersName = new ArrayList<>();
-		for(int i = 0; i < playersNumber; i++) {
-			output.println("Name Player " + (i + 1) + ": ");
-			playersName.add(scanner.nextLine());
-		}
-		wakeUp(playersName);
+	public ConsoleView(Scanner scanner, PrintStream output) {
+		this.scanner = scanner;
+		this.output = output;
 	}
 	
-	@Override
-	public void run() {
-		setPlayersNumber();
-		while(true) {
-			state.acceptView(this);
-		}
-	}
-
-	@Override
-	public void update(State state) {
-		this.state = state;
-	}
+	public abstract void update(State state);
+	
+	protected abstract void showMap(String msg);
 	
 	@Override
 	public void visit(GameStatusState currentState) {
-		output.println("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString()+"\nKings's Council: " +currentState.getKingCouncil().toString());
+		showMap("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString()+"\nKings's Council: " +currentState.getKingCouncil().toString());
 		wakeUp();
-		//stampa altre robe
 	}
 
 	@Override
@@ -72,7 +46,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("Choose an action to perform? \nMain Action:\n Elect Councillor \nQuick Action:\n Engage Assistant\n Change Permit Tile\n");
 		wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
 	}
-	
+
 	@Override
 	public void visit(ElectCouncillorState currentState) {
 		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
@@ -82,7 +56,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 		
 	}
-	
+
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
@@ -129,7 +103,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		int chosenTile = Integer.parseInt(scanner.nextLine()) - 1;
 		wakeUp(currentState.createAction(chosenRegion, chosenTile));
 	}
-	
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
@@ -147,5 +120,5 @@ public class ConsoleView extends View implements ViewVisitor {
 		String arrivalCity = scanner.nextLine().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
 	}
-		
+
 }

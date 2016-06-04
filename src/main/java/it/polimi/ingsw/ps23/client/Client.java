@@ -1,47 +1,51 @@
 package it.polimi.ingsw.ps23.client;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
-
-import it.polimi.ingsw.ps23.view.View;
+import java.util.Scanner;
 
 public class Client {
 
 	private static final int PORT_NUMBER = 12345;
 	
-	private View consoleView;
-	private final Socket socket;
-	private BufferedReader socketIn;
-	private BufferedWriter socketOut;
+	private Scanner scanner;
+	private PrintStream output;
+	
+	private Socket socket;
+	private Scanner socketIn;
+	private PrintStream socketOut;
 	
 	private Client(int portNumber) throws IOException {
 		this.socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
+		try {
+			socketIn = new Scanner(socket.getInputStream());
+			socketIn.useDelimiter("EOM");
+			socketOut = new PrintStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		scanner = new Scanner(System.in);
+		output = new PrintStream(System.out);
+	}
+	
+	private void send(String message) {
+		socketOut.print(message + "EOM");
+		socketOut.flush();
+	}
+	
+	private String receive() {
+		return socketIn.next();
 	}
 
 	private void run() {
-		System.out.println(readFromServer());
-		//consoleView = new ConsoleView(System.in, System.out);
-		//consoleView.attach(controller);
-		//model.attach(consoleView);
-		//consoleView = new ConsoleView(System.in, System.out);
-		//consoleView.run();
-	}
-	
-	private String readFromServer() {
-		String message = null;
-		try {
-			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			//while(!socketIn.ready());
-			message = socketIn.readLine();
-			socketIn.close();
-		} catch (IOException e) {
-			System.out.println("Server error.");
+		output.println(receive()); //ricevo l'ora di creazione
+		output.println(receive()); 
+		send(scanner.nextLine()); 
+		while(true) {
+			output.println(receive()); 
 		}
-		return message;
 	}
 	
 	public static void main(String[] args) {
@@ -50,7 +54,7 @@ public class Client {
 			client = new Client(PORT_NUMBER);
 			client.run();
 		} catch(IOException e) {
-			System.out.println("Cannot connect to given Server.");
+			System.out.println("Cannot connect to server.");
 		}
 	}
 

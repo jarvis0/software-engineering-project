@@ -17,16 +17,6 @@ public class ModelObservable {
 		observers.add(observer);
 	}
 
-	public void wakeUp() {
-		notifyAllObservers();
-	}
-	
-	private void notifyAllObservers() {
-		for(ViewObserver observer : observers) {
-			observer.update();
-		}
-	}
-	
 	public void wakeUp(State state) {
 		notifyAllObservers(state);
 	}
