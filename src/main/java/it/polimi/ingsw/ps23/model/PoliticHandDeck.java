@@ -31,7 +31,7 @@ public class PoliticHandDeck extends HandDeck {
 			}
 		}
 		if(removedCards.size() != 4) {
-			cost = cost - (1 + 3 * (4 - removedCards.size()));
+			cost += -(1 + 3 * (4 - removedCards.size()));
 		}
 	 
 		for (String removeCard : removedCards) {

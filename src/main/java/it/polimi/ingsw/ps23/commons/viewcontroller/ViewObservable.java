@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.state.State;
 
 public class ViewObservable {
@@ -56,6 +57,16 @@ public class ViewObservable {
 	private void notifyAllObservers(Action action) {
 		for(ControllerObserver observer : observers) {
 			observer.update(action);
+		}
+	}
+	
+	public void wakeUp(MarketObject marketObject) {
+		notifyAllObservers(marketObject);
+	}
+	
+	private void notifyAllObservers(MarketObject marketObject) {
+		for(ControllerObserver observer : observers) {
+			observer.update(marketObject);
 		}
 	}
 }

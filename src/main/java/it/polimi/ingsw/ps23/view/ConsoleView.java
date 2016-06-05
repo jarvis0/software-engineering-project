@@ -18,6 +18,8 @@ import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
+import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
+import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
@@ -131,7 +133,7 @@ public class ConsoleView extends View implements ViewVisitor {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		output.println("Choose a region:" +currentState.getPermitsMap());
+		output.println("Choose a region:" + currentState.getPermitsMap());
 		String chosenRegion = scanner.nextLine();
 		wakeUp(currentState.createAction(chosenRegion));
 
@@ -143,13 +145,13 @@ public class ConsoleView extends View implements ViewVisitor {
 		List<String> removedCards = new ArrayList<>();
 		output.println("Choose the number of cards you want for satisfy the King Council: "+currentState.getAvailableCardsNumber());
 		int numberOfCards = Integer.parseInt(scanner.nextLine());
-		output.println("player hand deck:" +currentState.getDeck());
+		output.println("player hand deck:" + currentState.getDeck());
 		for (int i=0; i<numberOfCards; i++) {
-			output.println("Choose a politic card you want to use from this list: " +currentState.getAvailableCards());
+			output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 			String chosenCard = scanner.nextLine().toLowerCase();
 			removedCards.add(chosenCard);
 		}
-		output.println("please insert the route for the king.[king's initial position: " +currentState.getKingPosition()+"]");
+		output.println("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"]");
 		output.println("insert the arrival city: ");
 		String arrivalCity = scanner.nextLine().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
@@ -157,10 +159,49 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		output.println("Choose the permit tile that you want to use for build an Emporium: (numerical input) " +currentState.getAvaibleCards());
+		output.println("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
 		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
-		output.println("Choose the city where you what to build an emporium: " +currentState.getChosenCard(chosenCard));
+		output.println("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 		String chosenCity = scanner.nextLine().toUpperCase();
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
+	}
+
+	@Override
+	public void visit(MarketOfferPhaseState currentState) {
+		List<Integer> chosenPoliticCards = new ArrayList<>();
+		List<Integer> chosenPermissionCards = new ArrayList<>();
+		output.println("It's" + currentState.getCurrentPlayer() + " market phase turn.");
+		output.println("How many politic cards do you want to use? ");
+		int numberOfCards = Integer.parseInt(scanner.nextLine());
+		for(int i = 0; i < numberOfCards; i++) {
+			output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
+			chosenPoliticCards.add(Integer.parseInt(scanner.nextLine()));
+		}
+		output.println("How many permission cards do you want to use? ");
+		numberOfCards = Integer.parseInt(scanner.nextLine());
+		for(int i = 0; i < numberOfCards; i++) {
+			output.println("Select a card from this list: " + currentState.getPermissionHandDeck());
+			chosenPermissionCards.add(Integer.parseInt(scanner.nextLine()));
+		}
+		output.println("Select the number of assistants " + currentState.getAssistants());
+		int chosenAssistants = Integer.parseInt(scanner.nextLine());
+		output.println("Choose the price for your offer: ");
+		int cost = Integer.parseInt(scanner.nextLine());
+		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+	}
+
+	@Override
+	public void visit(MarketBuyPhaseState currentState) {
+		output.println("Market turn, current Player: " + currentState.getCurrentPlayer());
+		if(currentState.canBuy()) {
+			output.println("Avaible offers: " + currentState.getAvaiableOffers());
+			int selectedItem = Integer.parseInt(scanner.nextLine());
+			//costruisco azione market
+		}
+		else {
+			output.println("You can buy nothing");
+			//wakeUp
+		}
+		
 	}
 }

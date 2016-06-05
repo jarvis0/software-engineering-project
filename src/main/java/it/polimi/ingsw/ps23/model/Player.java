@@ -17,8 +17,8 @@ import it.polimi.ingsw.ps23.model.map.Region;
 public class Player {
 	private final static List<Card> EMPTY_HAND_DECK = new ArrayList<>();
 	private String name;
-	private int coin; //esiste un limite massimo? nel gioco è 20
-	private int assistant;
+	private int coins; //esiste un limite massimo? nel gioco è 20
+	private int assistants;
 	private BuiltEmporiumSet builtEmporiumSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
@@ -26,10 +26,10 @@ public class Player {
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
 
-	public Player(String name, int coin, int assistant, HandDeck politicHandDeck) {
+	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
-		this.coin = coin;
-		this.assistant = assistant;
+		this.coins = coins;
+		this.assistants = assistants;
 		this.politicHandDeck = politicHandDeck;
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
@@ -59,8 +59,8 @@ public class Player {
 	}
 	
 	public void updateCoins(int value) throws InsufficientResourcesException {
-		if(coin + value >= 0) {
-			coin += value;
+		if(coins + value >= 0) {
+			coins += value;
 		}
 		else{
 			throw new InsufficientResourcesException();
@@ -68,8 +68,8 @@ public class Player {
 	}
 	
 	public void updateAssistants(int value) throws InsufficientResourcesException {
-		if(assistant + value >= 0){
-			assistant += value;
+		if(assistants + value >= 0){
+			assistants += value;
 		}
 		else{
 			throw new InsufficientResourcesException();
@@ -78,7 +78,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 	public String showSecretStatus() {
@@ -109,6 +109,14 @@ public class Player {
 	
 	public BuiltEmporiumSet getEmporiums(){
 		return builtEmporiumSet;
+	}
+	
+	public int getAssistants() {
+		return assistants;
+	}
+	
+	public int getCoins() {
+		return coins;
 	}
 
 	public void usePermissionCard(int chosenCard) {
