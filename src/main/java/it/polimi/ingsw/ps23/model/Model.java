@@ -45,10 +45,10 @@ public class Model extends ModelObservable implements Cloneable {
 	}
 	
 	public void setPlayerTurn() {
-		context = new Context();
-		if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && context.getState() instanceof StartTurnState))) {
+		if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
 			changePlayer();
 		}
+		context = new Context();
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
 		//clonare startTurnState

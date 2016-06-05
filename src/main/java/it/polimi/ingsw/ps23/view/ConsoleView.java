@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 
 import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
