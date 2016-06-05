@@ -17,7 +17,6 @@ public class AdditionalMainAction extends QuickAction {
 		try {
 			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		turnHandler.addMainAction();

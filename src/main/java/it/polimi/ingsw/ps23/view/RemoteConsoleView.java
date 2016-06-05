@@ -21,10 +21,10 @@ public class RemoteConsoleView extends ConsoleView implements RemoteObserver {
 		//connection.asyncSend("msg da remoteconsoleview"); ?????????
 	}
 
-	protected void showMap(String msg) {
-		connection.send(msg);
+	protected void showMap(String message) {
+		connection.send(message);
 	}
-	
+
 	@Override
 	public void remoteUpdate() {
 		state.acceptView(this);

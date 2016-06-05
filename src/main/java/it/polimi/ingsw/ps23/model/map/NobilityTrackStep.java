@@ -23,7 +23,6 @@ public class NobilityTrackStep implements BonusSlot {
 			try {
 				bonus.updateBonus(player, turnHandler);
 			} catch (InsufficientResourcesException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -7,4 +7,5 @@ public interface State {
 	
 	public abstract void changeState(Context context, Game game);
 	public abstract void acceptView(ViewVisitor view);
+	
 }

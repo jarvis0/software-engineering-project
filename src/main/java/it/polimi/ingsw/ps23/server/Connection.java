@@ -31,14 +31,6 @@ public class Connection extends RemoteObservable implements Runnable {
 			output.println("Error while initializating connection.");
 		}
 		output = new PrintStream(System.out);
-		online = false;
-	}
-	
-	private synchronized boolean isOnline() {
-		return online;
-	}
-	
-	public void setOnline() {
 		online = true;
 	}
 	
@@ -51,15 +43,19 @@ public class Connection extends RemoteObservable implements Runnable {
 		return socketIn.next();
 	}
 	
-	public void asyncSend(final String message){
+	private synchronized boolean isOnline() {
+		return online;
+	}
+	
+	/*public void asyncSend(final String message){
 		new Thread(new Runnable() {			
 			@Override
 			public void run() {
 				send(message);
 			}
 		}).start();
-	}
-	
+	}*/
+
 	public synchronized void closeConnection() {		
 		send("Connection ended.");
 		try {
@@ -76,16 +72,18 @@ public class Connection extends RemoteObservable implements Runnable {
 		server.deregisterConnection(this);
 	}
 	
-	@Override
-	public void run(){
-		send("Connection established at " + new Date().toString());
-		send("Welcome, what's your name?");
-		server.rendezvous(this, receive());
-		while(!isOnline()); //mettere in wait this thread fintanto che non viene creata una vera partita
+	public void startGame() {
 		while(isOnline()) {
 			remoteWakeUp(); //mi fa andare sulla remote console view
 		}
 		close();
+	}
+	
+	@Override
+	public void run() {
+		send("Connection established at " + new Date().toString());
+		send("Welcome, what's your name?");
+		server.joinToWaitingList(this, receive());
 	}
 	
 }

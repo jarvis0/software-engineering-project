@@ -24,7 +24,6 @@ public class ElectCouncillor extends MainAction {
 		try {
 			game.getCurrentPlayer().updateCoins(EARNED_COINS);
 		} catch (InsufficientResourcesException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		turnHandler.useMainAction();

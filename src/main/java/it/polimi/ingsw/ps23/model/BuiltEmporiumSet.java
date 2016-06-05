@@ -7,16 +7,16 @@ import it.polimi.ingsw.ps23.model.map.City;
 
 public class BuiltEmporiumSet {
 	
-	private List<City> builtEmporiumSet;
+	private List<City> builtEmporiums;
 	
 	public BuiltEmporiumSet() {
-		builtEmporiumSet = new ArrayList<>();
+		builtEmporiums = new ArrayList<>();
 		
 	}
 	
 	public void addBuiltEmporium(City city) throws InvalidPositionException {
-		if(!builtEmporiumSet.contains(city)) {
-			builtEmporiumSet.add(city);
+		if(!builtEmporiums.contains(city)) {
+			builtEmporiums.add(city);
 		}
 		else {
 			throw new InvalidPositionException();
@@ -26,12 +26,12 @@ public class BuiltEmporiumSet {
 	
 	
 	public List<City> getBuiltEmporiumSet() {
-		return builtEmporiumSet;
+		return builtEmporiums;
 	}
 
 	@Override
 	public String toString() {
-		return builtEmporiumSet.toString();
+		return builtEmporiums.toString();
 	}
 
 }

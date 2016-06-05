@@ -81,7 +81,7 @@ public class PoliticHandDeck extends HandDeck {
 		for(int i = 0; i < cards.size(); i++) {
 			if(!((PoliticCard)(cards.get(i))).isJolly()) {
 				cards.remove(i);
-				i--;
+				i--; //??????
 			}
 		}
 		return cards;

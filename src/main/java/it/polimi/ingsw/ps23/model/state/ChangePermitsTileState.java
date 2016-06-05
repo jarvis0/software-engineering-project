@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;

@@ -19,7 +19,6 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	
 	public BuildEmporiumPermitTileState(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -41,9 +40,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	}
 	
 	public String getChosenCard(int index){
-		List<Card> avaibleCardsList = avaibleCards.getCards();
-		String chosenCard = avaibleCardsList.get(index).toString();
-		return chosenCard;
+		return avaibleCards.getCards().get(index).toString();
 	}
 
 	public BuildEmporiumPermitTile createAction(String chosenCity, int chosenCard) {

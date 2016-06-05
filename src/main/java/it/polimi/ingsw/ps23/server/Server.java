@@ -15,19 +15,22 @@ import java.util.concurrent.Executors;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
+import it.polimi.ingsw.ps23.server.Reminder;
 import it.polimi.ingsw.ps23.view.RemoteConsoleView;
 
 public class Server {
 	
 	private static final int PORT = 12345;
+	private static final int TIMEOUT = 6;
 	
-	private ExecutorService executor = Executors.newFixedThreadPool(128);
+	private ExecutorService executor;
+	private ExecutorService timer;
 	
 	private ServerSocket serverSocket;
 
-	private List<Connection> connections = new ArrayList<>();
-	private Map<String, Connection> waitingConnection = new HashMap<>();
-	private Map<String, Connection> playingConnection = new HashMap<>();
+	private List<Connection> connections;
+	private Map<String, Connection> waitingConnections;
+	private Map<String, Connection> playingConnections;
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -38,52 +41,61 @@ public class Server {
 	
 	private Server() throws IOException {
 		serverSocket = new ServerSocket(PORT);
+		executor = Executors.newCachedThreadPool();
+		timer = Executors.newSingleThreadExecutor();
+		connections = new ArrayList<>();
+		waitingConnections = new HashMap<>();
+		playingConnections = new HashMap<>();
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
 	}
 	
-	private synchronized void registerConnection(Connection c){
+	private synchronized void registerConnection(Connection c) {
 		connections.add(c);
 	}
 	
-	public synchronized void deregisterConnection(Connection c){
+	public synchronized void deregisterConnection(Connection c) {
 		connections.remove(c);
-		Connection enemy = playingConnection.get(c);
-		if(enemy != null)
-			enemy.closeConnection();
-		playingConnection.remove(c);
-		playingConnection.remove(enemy);
-		Iterator<String> iterator = waitingConnection.keySet().iterator();
-		while(iterator.hasNext()){
-			if(waitingConnection.get(iterator.next()) == c){
+		Connection connection = playingConnections.get(c);
+		if(connection != null)
+			connection.closeConnection();
+		playingConnections.remove(c);
+		playingConnections.remove(connection);
+		Iterator<String> iterator = waitingConnections.keySet().iterator();
+		while(iterator.hasNext()) {
+			if(waitingConnections.get(iterator.next()) == c) {
 				iterator.remove();
 			}
 		}
 	}
 	
-	public synchronized void rendezvous(Connection c, String name) {
+	public synchronized void joinToWaitingList(Connection c, String name) {
 		output.println("Player " + name + " has been added to the waiting list.");
-		waitingConnection.put(name, c);
-		if(waitingConnection.size() == 2) {
-			//inizio a contare 20 secondi se ho 2 giocatori --> poi faccio le istruzioni seguenti
-			model = new Model();
-			controller = new Controller(model);
-			List<String> keys = new ArrayList<>(waitingConnection.keySet());
-			Connection c1 = waitingConnection.get(keys.get(0));
-			Connection c2 = waitingConnection.get(keys.get(1));
-			playingConnection.put(keys.get(0), c1);
-			playingConnection.put(keys.get(1), c2);
-			remoteConsoleView = new ArrayList<>();
-			remoteConsoleView.add(new RemoteConsoleView(scanner, output, c1));
-			remoteConsoleView.add(new RemoteConsoleView(scanner, output, c2));
-			model.attach(remoteConsoleView.get(0));
-			model.attach(remoteConsoleView.get(1));
-			remoteConsoleView.get(0).attach(controller);
-			remoteConsoleView.get(1).attach(controller);
-			waitingConnection.clear();
-			model.setUpModel(keys);
-			c1.setOnline();
-			c2.setOnline();
+		waitingConnections.put(name, c);
+		if(waitingConnections.size() == 2) {
+			output.print("A new game is starting in " + TIMEOUT + " seconds...");
+			Reminder reminder = new Reminder(this, TIMEOUT);
+			timer.submit(reminder);
+		}
+	}
+	
+	public synchronized void startGame() {
+		model = new Model();
+		controller = new Controller(model);
+		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
+		List<Connection> readyConnections = new ArrayList<>();
+		remoteConsoleView = new ArrayList<>();
+		for(int i = 0; i < playersName.size(); i++) {
+			readyConnections.add(waitingConnections.get(playersName.get(i)));
+			playingConnections.put(playersName.get(i), readyConnections.get(i));
+			remoteConsoleView.add(new RemoteConsoleView(scanner, output, readyConnections.get(i)));
+			model.attach(remoteConsoleView.get(i));
+			remoteConsoleView.get(i).attach(controller);
+		}
+		model.setUpModel(new ArrayList<>(playingConnections.keySet()));
+		waitingConnections.clear();
+		for(Connection connection : connections) {
+			connection.startGame();
 		}
 	}
 	
@@ -100,7 +112,7 @@ public class Server {
 		}
 	}
 	
-	public void run(){
+	public void run() {
 		while(true) {
 			newConnection();
 		}

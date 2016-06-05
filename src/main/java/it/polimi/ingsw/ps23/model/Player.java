@@ -10,12 +10,12 @@ import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
-	private final static List<Card> EMPTY_HAND_DECK = new ArrayList<>();
+	
+	private static final List<Card> EMPTY_HAND_DECK = new ArrayList<>();
 	private String name;
 	private int coin; //esiste un limite massimo? nel gioco è 20
 	private int assistant;
