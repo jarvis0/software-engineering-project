@@ -17,4 +17,10 @@ public class RecycleBuildingPermitBonus extends Bonus {
 		
 	}
 
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

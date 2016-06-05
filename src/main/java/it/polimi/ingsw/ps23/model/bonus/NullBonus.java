@@ -15,5 +15,10 @@ public class NullBonus extends Bonus {
 	public void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException {
 				
 	}
+
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
+		
+	}
 	
 }

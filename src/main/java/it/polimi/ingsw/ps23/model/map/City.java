@@ -28,13 +28,13 @@ public abstract class City {
 	}
 	
 	public int buildEmporium(Player player) throws AlreadyBuiltHereException { 
-		int cost = 0;	
+		int assitantsCost = 0;	
 		if(emporiumList.size() != EMPTY){
-			cost =	emporiumList.size();
+			assitantsCost =	-emporiumList.size();
 		}
 		
 		emporiumList.add(player); 
-		return cost;
+		return assitantsCost;
 	}
 
 	public List<Player> getEmporiums() {

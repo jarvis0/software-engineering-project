@@ -50,4 +50,13 @@ public class GroupRegionalCity extends Region {
 		return super.toString() + "[Council: " + council + "]" + "\n" + "permissionDeck UP: " + permissionDeckUp + "\n";
 	}
 
+	public void changePermitTiles() {
+		int i=0;
+		for (Card card : permissionDeckUp.getDeck()) {
+			permissionDeckDown.getDeck().add(card);
+			permissionDeckUp.getDeck().set(i, permissionDeckDown.pickCard());
+			i++;
+		}
+	}
+
 }

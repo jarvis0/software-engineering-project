@@ -12,9 +12,8 @@ public class ChangePermitsTile  extends QuickAction {
 	String regionName;
 	int tileIndex;
 	
-	public ChangePermitsTile(String regionName, int tileIndex) {
+	public ChangePermitsTile(String regionName) {
 		this.regionName = regionName;
-		this.tileIndex =tileIndex;
 	}
 
 	@Override
@@ -24,7 +23,7 @@ public class ChangePermitsTile  extends QuickAction {
 		} catch (InsufficientResourcesException e) {
 			e.printStackTrace();
 		}
-		 ((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTile(tileIndex);
+		 ((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();
 		 turnHandler.useQuickAction();
 	}
 

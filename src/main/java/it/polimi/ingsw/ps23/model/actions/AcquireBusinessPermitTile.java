@@ -27,7 +27,6 @@ public class AcquireBusinessPermitTile extends MainAction {
 		try {
 			game.getCurrentPlayer().updateCoins(cost);
 		} catch (InsufficientResourcesException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		game.getCurrentPlayer().pickPermitCard(chosenRegion, chosenPermissionCard, turnHandler);

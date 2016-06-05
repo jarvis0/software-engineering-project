@@ -27,7 +27,7 @@ public class StartTurnState implements State {
 	public String getAvaiableAction() {
 		String avaiableAction = new String();
 		if(turnHandler.isAvailableMainAction()) {
-			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium\nBuild Emporium King";
+			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";
 		}
 		if(turnHandler.isAvailableQuickAction()) {
 			avaiableAction += "\n--Quick Action--\nEngage Assistant\nChange Permit Tile\nAssistant To Elect Councillor\nAdditional Main Action";

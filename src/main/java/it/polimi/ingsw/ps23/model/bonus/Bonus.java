@@ -15,6 +15,9 @@ public abstract class Bonus implements Cloneable {
 	}
 	
 	public abstract void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException;
+	public abstract void updateBonusReward(Player player) throws InsufficientResourcesException;
+		
+	
 
 	public String getName() {
 		return name;

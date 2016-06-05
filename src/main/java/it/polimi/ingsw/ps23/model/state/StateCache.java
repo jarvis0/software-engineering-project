@@ -14,6 +14,7 @@ public class StateCache {
 	private static final String ENGAGE_ASSITANT= "engage assistant";
 	private static final String CHANGE_PERMIT_TILE= "change permit tile";
 	private static final String BUILD_EMPORIUM_KING= "build emporium king";
+	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
 
 	public static ActionState getAction(String actionStateName) {
 		return (ActionState) stateMap.get(actionStateName).clone();
@@ -35,6 +36,9 @@ public class StateCache {
 		
 		BuildEmporiumKingState buildEmporiumKingState = new BuildEmporiumKingState(BUILD_EMPORIUM_KING);
 		putAction(buildEmporiumKingState);
+		
+		BuildEmporiumPermitTileState buildEmporiumPermitTileState = new BuildEmporiumPermitTileState(BUILD_EMPORIUM_TILE);
+		putAction(buildEmporiumPermitTileState);
 
 		AcquireBusinessPermitTileState acquireBusinessPermitTileStatus = new AcquireBusinessPermitTileState(ACQUIRE_BUSINESS_PERMIT_TILE);
 		putAction(acquireBusinessPermitTileStatus);
