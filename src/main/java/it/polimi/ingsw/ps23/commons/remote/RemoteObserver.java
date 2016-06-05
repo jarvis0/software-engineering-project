@@ -1,7 +1,8 @@
 package it.polimi.ingsw.ps23.commons.remote;
 
+@FunctionalInterface
 public interface RemoteObserver {
 
-	public void update();
+	public void remoteUpdate();
 	
 }

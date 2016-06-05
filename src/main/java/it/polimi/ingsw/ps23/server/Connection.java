@@ -10,7 +10,6 @@ import it.polimi.ingsw.ps23.commons.remote.RemoteObservable;
 
 public class Connection extends RemoteObservable implements Runnable {
 	
-	private Scanner scanner;
 	private PrintStream output;
 	
 	private Server server;
@@ -31,7 +30,6 @@ public class Connection extends RemoteObservable implements Runnable {
 		} catch(IOException e) {
 			output.println("Error while initializating connection.");
 		}
-		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
 		online = false;
 	}

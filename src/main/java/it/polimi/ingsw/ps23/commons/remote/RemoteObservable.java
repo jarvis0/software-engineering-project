@@ -22,7 +22,7 @@ public class RemoteObservable {
 	protected void remoteWakeUp(){
 		synchronized (observers) {
 			for(RemoteObserver observer : observers){
-				observer.update();
+				observer.remoteUpdate();
 			}
 		}
 	}
