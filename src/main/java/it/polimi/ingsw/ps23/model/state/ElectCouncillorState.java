@@ -46,6 +46,10 @@ public class ElectCouncillorState extends ActionState {
 	}
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
-		return new ElectCouncillor(chosenCouncillor, councilsMap.get(chosenBalcony));
+		return new ElectCouncillor(chosenCouncillor, getCouncilMap(chosenBalcony));
+	}
+	
+	Council getCouncilMap(String chosenBalcony) {
+		return councilsMap.get(chosenBalcony);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Deck {
 	
+	private static final int TOP_CARD = 0;
 	private List<Card> cards;
 	
 	public Deck(List<Card> cards) {
@@ -31,7 +32,7 @@ public class Deck {
 	}
 
 	public Card pickCard() {
-		return cards.remove(0);
+		return cards.remove(TOP_CARD);
 	}
 	
 }

@@ -31,6 +31,14 @@ public abstract class HandDeck {
 	}
 
 	public void removeCard(Card card) {
-		cards.remove(card);
+		 cards.remove(card);
 	}
+
+	public Card getAndRemove(int chosenCard) {
+		Card removedCard = cards.get(chosenCard);
+		removeCard(removedCard);
+		return removedCard;
+	}
+
+
 }

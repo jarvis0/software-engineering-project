@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -33,11 +34,12 @@ public class ChangePermitsTileState extends ActionState {
 		view.visit(this);	
 	}
 
-	public Action createAction(String chosenRegionTile, int chosenPermissionTile) {
-		return new ChangePermitsTile(chosenRegionTile, chosenPermissionTile);
+	public Action createAction(String chosenRegionTile) {
+		return new ChangePermitsTile(chosenRegionTile);
 	}
 	
 	public String getPermitsMap() {
 		return permitsMap.toString();
-	}	
+	}
+
 }

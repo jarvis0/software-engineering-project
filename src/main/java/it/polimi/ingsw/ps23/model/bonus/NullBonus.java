@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model.bonus;
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class NullBonus extends Bonus {
 	
@@ -11,8 +12,12 @@ public class NullBonus extends Bonus {
 	}
 
 	@Override
-	public void updateBonus(Player player) throws InsufficientResourcesException {
-		// TODO Auto-generated method stub
+	public void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException {
+				
+	}
+
+	@Override
+	public void updateBonusReward(Player player) throws InsufficientResourcesException {
 		
 	}
 	

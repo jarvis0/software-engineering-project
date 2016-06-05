@@ -16,9 +16,9 @@ import it.polimi.ingsw.ps23.model.map.City;
 public class BuildEmporiumKing extends MainAction {
 
 	private static final double ROAD_COST = -2;
-	City arriveCity;
-	List<String> removedCards;
-	City kingPosition;
+	private City arriveCity;
+	private List<String> removedCards;
+	private City kingPosition;
 	
 	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
 		this.removedCards = removedCards;
@@ -28,32 +28,26 @@ public class BuildEmporiumKing extends MainAction {
 
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
+		int assistantsCost = 0;
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedCards);
 		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), kingPosition , arriveCity);
 		cost = cost + (int) (ROAD_COST*dijkstraShortestPath.getPathLength());
-		City city = game.getGameMap().getCitiesMap().get(arriveCity.getName());
-		
 			try {
-				cost = cost + city.buildEmporium(game.getCurrentPlayer());
+				assistantsCost = arriveCity.buildEmporium(game.getCurrentPlayer());
 				
 			} catch (AlreadyBuiltHereException e) {
 				e.printStackTrace();
 			}
 			
 			try {
-				game.getKing().setNewPosition(arriveCity);
-				game.getCurrentPlayer().updateEmporiumSet(arriveCity);
 				game.getCurrentPlayer().updateCoins(cost);
+				game.getCurrentPlayer().updateAssistants(assistantsCost);
+				game.getKing().setNewPosition(arriveCity);
+				game.getCurrentPlayer().updateEmporiumSet(arriveCity, game.getGameMap().getCitiesGraph());
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
-		
-		
-		//GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(game.getGameMap().getCitiesGraph().getGraph(),arriveCity);
-		//City visitedCity;
-		//while(visitedCity.getEmporiums().contains(game.getCurrentPlayer()) == true) {	
 			
-		
 		turnHandler.useMainAction();
 	}
 

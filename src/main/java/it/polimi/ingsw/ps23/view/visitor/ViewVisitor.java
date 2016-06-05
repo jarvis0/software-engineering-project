@@ -21,6 +21,7 @@ public interface ViewVisitor {
 	public void visit(AssistantToElectCouncillorState currentState);
 	public void visit(AdditionalMainActionState currentState);
 	public void visit(BuildEmporiumKingState currentState);
+	public void visit(BuildEmporiumPermitTileState currentState);
 
 
 }
