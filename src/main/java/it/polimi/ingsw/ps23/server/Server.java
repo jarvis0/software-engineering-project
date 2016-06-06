@@ -10,12 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.server.Reminder;
 import it.polimi.ingsw.ps23.view.RemoteConsoleView;
 
 public class Server {
@@ -24,7 +24,8 @@ public class Server {
 	private static final int TIMEOUT = 6;
 	
 	private ExecutorService executor;
-	private ExecutorService timer;
+	private Timer timer;
+	private boolean timerEnd;
 	
 	private ServerSocket serverSocket;
 
@@ -42,7 +43,8 @@ public class Server {
 	private Server() throws IOException {
 		serverSocket = new ServerSocket(PORT);
 		executor = Executors.newCachedThreadPool();
-		timer = Executors.newSingleThreadExecutor();
+		timer = new Timer();
+		timerEnd = false;
 		connections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
 		playingConnections = new HashMap<>();
@@ -69,13 +71,24 @@ public class Server {
 		}
 	}
 	
+	public synchronized void setTimerEnd() {
+		notifyAll();
+	}
+	
 	public synchronized void joinToWaitingList(Connection c, String name) {
 		output.println("Player " + name + " has been added to the waiting list.");
 		waitingConnections.put(name, c);
 		if(waitingConnections.size() == 2) {
-			output.print("A new game is starting in " + TIMEOUT + " seconds...");
-			Reminder reminder = new Reminder(this, TIMEOUT);
-			timer.submit(reminder);
+			output.println("A new game is starting in " + TIMEOUT + " seconds...");
+			timerEnd = false;
+			timer.schedule(new RemindTask(this, TIMEOUT), 6, 1000L);
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			timer.cancel();
+			startGame();
 		}
 	}
 	
