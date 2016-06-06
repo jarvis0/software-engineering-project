@@ -7,11 +7,11 @@ import it.polimi.ingsw.ps23.model.map.Card;
 
 public class MarketObject {
 	
-	Player player;
-	List<Card> permissionCards;
-	List<Card> politicCards;
-	int assistants;
-	int cost;
+	private Player player;
+	private List<Card> permissionCards;
+	private List<Card> politicCards;
+	private int assistants;
+	private int cost;
 	
 	public MarketObject(Player player, List<Card> permissionCards, List<Card> politicCards, int assistants, int cost) {
 		this.player = player;

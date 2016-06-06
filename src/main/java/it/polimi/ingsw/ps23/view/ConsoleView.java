@@ -170,7 +170,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(MarketOfferPhaseState currentState) {
 		List<Integer> chosenPoliticCards = new ArrayList<>();
 		List<Integer> chosenPermissionCards = new ArrayList<>();
-		output.println("It's" + currentState.getCurrentPlayer() + " market phase turn.");
+		output.println("It's " + currentState.getCurrentPlayer() + " market phase turn.");
 		output.println("How many politic cards do you want to use? ");
 		int numberOfCards = Integer.parseInt(scanner.nextLine());
 		for(int i = 0; i < numberOfCards; i++) {
@@ -195,13 +195,11 @@ public class ConsoleView extends View implements ViewVisitor {
 		output.println("Market turn, current Player: " + currentState.getCurrentPlayer());
 		if(currentState.canBuy()) {
 			output.println("Avaible offers: " + currentState.getAvaiableOffers());
-			int selectedItem = Integer.parseInt(scanner.nextLine());
-			//costruisco azione market
+			wakeUp(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
 		}
 		else {
 			output.println("You can buy nothing");
-			//wakeUp
+			wakeUp(currentState.createTransation());
 		}
-		
 	}
 }

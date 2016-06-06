@@ -7,9 +7,8 @@ import it.polimi.ingsw.ps23.model.map.Card;
 
 public class PermissionHandDeck extends HandDeck {
 	
-	public PermissionHandDeck(List<Card> returnCards) {
+	public PermissionHandDeck() {
 		super();
-		addCards(returnCards);
 	}
 	
 	
@@ -22,7 +21,9 @@ public class PermissionHandDeck extends HandDeck {
 	public HandDeck getAvaiblePermissionCards() {
 		List<Card> returnCards = new ArrayList<>();
 		returnCards.addAll(getCards());
-		return new PermissionHandDeck(returnCards);
+		PermissionHandDeck returnHandDeck = new PermissionHandDeck();
+		returnHandDeck.addCards(returnCards);
+		return returnHandDeck;
 	}
 	
 }

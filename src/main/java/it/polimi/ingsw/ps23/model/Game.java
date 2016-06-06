@@ -65,7 +65,7 @@ public class Game  {
 	}
 	
 	public void createNewMarket() {
-		currentMarket = new Market();
+		currentMarket = new Market(gamePlayersSet);
 	}
 	
 	public int getNumberOfPlayer() {
