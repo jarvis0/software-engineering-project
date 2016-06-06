@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ElectCouncillorState extends ActionState {
 	

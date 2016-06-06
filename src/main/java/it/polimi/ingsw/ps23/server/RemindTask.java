@@ -17,7 +17,12 @@ class RemindTask extends TimerTask {
 	@Override
 	public void run() {
 		if(i != seconds) {
-			System.out.println("A new game is starting in " + (seconds - i) + " seconds...");
+			if(seconds - i > 1) {
+				System.out.println("A new game is starting in " + (seconds - i) + " seconds...");
+			}
+			else {
+				System.out.println("A new game is starting in " + (seconds - i) + " second...");
+			}
 			i++;
 		}
 		else {

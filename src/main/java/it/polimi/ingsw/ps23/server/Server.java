@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.view.RemoteConsoleView;
 
 public class Server {
 	
@@ -25,13 +24,12 @@ public class Server {
 	
 	private ExecutorService executor;
 	private Timer timer;
-	private boolean timerEnd;
 	
 	private ServerSocket serverSocket;
 
-	private List<Connection> connections;
+	private List<Connection> connections; //ridondante
 	private Map<String, Connection> waitingConnections;
-	private Map<String, Connection> playingConnections;
+	private Map<String, Connection> playingConnections; //ridondante++
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -43,8 +41,6 @@ public class Server {
 	private Server() throws IOException {
 		serverSocket = new ServerSocket(PORT);
 		executor = Executors.newCachedThreadPool();
-		timer = new Timer();
-		timerEnd = false;
 		connections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
 		playingConnections = new HashMap<>();
@@ -57,6 +53,7 @@ public class Server {
 	}
 	
 	public synchronized void deregisterConnection(Connection c) {
+		//player in game ??
 		connections.remove(c);
 		Connection connection = playingConnections.get(c);
 		if(connection != null)
@@ -74,42 +71,46 @@ public class Server {
 	public synchronized void setTimerEnd() {
 		notifyAll();
 	}
-	
-	public synchronized void joinToWaitingList(Connection c, String name) {
-		output.println("Player " + name + " has been added to the waiting list.");
-		waitingConnections.put(name, c);
+
+	private synchronized void startCountdown() {
 		if(waitingConnections.size() == 2) {
 			output.println("A new game is starting in " + TIMEOUT + " seconds...");
-			timerEnd = false;
-			timer.schedule(new RemindTask(this, TIMEOUT), 6, 1000L);
+			timer = new Timer();
+			timer.schedule(new RemindTask(this, TIMEOUT), TIMEOUT, 1000L);
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			timer.cancel();
-			startGame();
+			for(Connection connection : connections) {
+				connection.setStarted();
+			}
 		}
 	}
 	
-	public synchronized void startGame() {
+	public void joinToWaitingList(Connection c, String name) {
+		output.println("Player " + name + " has been added to the waiting list.");
+		waitingConnections.put(name, c);
+		startCountdown();
+	}
+	
+	public synchronized void initializeGame() {
 		model = new Model();
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
-		List<Connection> readyConnections = new ArrayList<>();
 		remoteConsoleView = new ArrayList<>();
-		for(int i = 0; i < playersName.size(); i++) {
-			readyConnections.add(waitingConnections.get(playersName.get(i)));
-			playingConnections.put(playersName.get(i), readyConnections.get(i));
-			remoteConsoleView.add(new RemoteConsoleView(scanner, output, readyConnections.get(i)));
+		for(int i = 0; i < playersName.size(); i++) {			
+			playingConnections.put(playersName.get(i), waitingConnections.get(playersName.get(i)));
+			remoteConsoleView.add(new RemoteConsoleView(scanner, output, waitingConnections.get(playersName.get(i))));
 			model.attach(remoteConsoleView.get(i));
 			remoteConsoleView.get(i).attach(controller);
 		}
-		model.setUpModel(new ArrayList<>(playingConnections.keySet()));
-		waitingConnections.clear();
-		for(Connection connection : connections) {
+		model.setUpModel(playersName);
+		for(Connection connection : waitingConnections.values()) {
 			connection.startGame();
 		}
+		waitingConnections.clear();
 	}
 	
 	private void newConnection() {

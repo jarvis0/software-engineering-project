@@ -1,6 +1,7 @@
-package it.polimi.ingsw.ps23.view;
+package it.polimi.ingsw.ps23.server;
 
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.view.ConsoleView;
 
 import java.io.PrintStream;
 import java.util.Scanner;

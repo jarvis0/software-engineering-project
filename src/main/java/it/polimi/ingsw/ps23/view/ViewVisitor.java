@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.view.visitor;
+package it.polimi.ingsw.ps23.view;
 
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
@@ -23,6 +23,5 @@ public interface ViewVisitor {
 	public void visit(AdditionalMainActionState currentState);
 	public void visit(BuildEmporiumKingState currentState);
 	public void visit(BuildEmporiumPermitTileState currentState);
-
 
 }

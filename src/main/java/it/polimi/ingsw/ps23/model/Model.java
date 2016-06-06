@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 
-public class Model extends ModelObservable implements Cloneable {
+public class Model extends ModelObservable {
 	
 	private List<String> playersName;
 	private int currentPlayerIndex;
@@ -77,4 +77,5 @@ public class Model extends ModelObservable implements Cloneable {
 		turnHandler = new TurnHandler();
 		game.setCurrentPlayer(setCurrentPlayer());
 	}
+	
 }
