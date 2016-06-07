@@ -63,9 +63,8 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(GameStatusState currentState) {
-		output.println("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString()+"\nKings's Council: " +currentState.getKingCouncil().toString());
+		output.println(currentState.getStatus());
 		wakeUp();
-		//stampa altre robe
 	}
 
 	@Override
@@ -168,7 +167,7 @@ public class ConsoleView extends View implements ViewVisitor {
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
-		List<Integer> chosenPoliticCards = new ArrayList<>();
+		List<String> chosenPoliticCards = new ArrayList<>();
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		output.println("It's " + currentState.getCurrentPlayer() + " market phase turn.");
 		if(currentState.canSellPoliticCards()) {
@@ -176,7 +175,7 @@ public class ConsoleView extends View implements ViewVisitor {
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
 			for(int i = 0; i < numberOfCards; i++) {
 				output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
-				chosenPoliticCards.add(Integer.parseInt(scanner.nextLine()));
+				chosenPoliticCards.add(scanner.nextLine());
 			}
 		}
 		if(currentState.canSellPoliticCards()) {

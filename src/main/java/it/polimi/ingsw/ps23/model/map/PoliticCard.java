@@ -4,7 +4,7 @@ import it.polimi.ingsw.ps23.model.GameColor;
 
 public class PoliticCard extends Card {
 	
-	private static final String JOLLY = "multi";
+	private static final String MULTI = "multi";
 	
 	private GameColor color;
 	
@@ -17,7 +17,7 @@ public class PoliticCard extends Card {
 	}
 	
 	public boolean isJolly () {
-		return color.getName().equals(JOLLY);
+		return color.getName().equals(MULTI);
 	}
 	
 	@Override

@@ -19,18 +19,11 @@ public class GameStatusState implements State {
 		this.gamePlayersSet = game.getGamePlayersSet();
 		this.kingCouncil = game.getKing().getCouncil();
 	}
-	
-	public GameMap getGameMap() {
-		return gameMap;
+		
+	public String getStatus() {
+		return "Map: " + gameMap + "\nPlayers: " + gamePlayersSet + "\n King Council: " + kingCouncil;
 	}
 	
-	public GamePlayersSet getGamePlayersSet() {
-		return gamePlayersSet;
-	}
-
-	public Council getKingCouncil(){
-		return kingCouncil;
-	}
 	@Override
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);

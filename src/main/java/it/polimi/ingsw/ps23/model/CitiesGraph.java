@@ -14,19 +14,19 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class CitiesGraph {
 	
-	private DirectedGraph<City, DefaultEdge> citiesGraph;
+	private DirectedGraph<City, DefaultEdge> graph;
 	
-	public CitiesGraph(DirectedGraph<City, DefaultEdge> citiesGraph) {
-		this.citiesGraph = citiesGraph;
+	public CitiesGraph(DirectedGraph<City, DefaultEdge> graph) {
+		this.graph = graph;
 	}
 	
 	public DirectedGraph<City, DefaultEdge> getGraph() {
-		return citiesGraph;
+		return graph;
 	}
 	@Override
 	public String toString() {
 		List<String> cities = new ArrayList<>();
-		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(citiesGraph);
+		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
 		while(iterator.hasNext()){
 			 cities.add(iterator.next().toString());
 		}
@@ -44,7 +44,7 @@ public class CitiesGraph {
 	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Game game, TurnHandler turnHandler) {
 		for(int i=0; i < citiesContainingPlayer.size(); i++) {
 			City cityAnalyzed = citiesContainingPlayer.get(i);
-			List<City> successors = Graphs.successorListOf(citiesGraph, cityAnalyzed);
+			List<City> successors = Graphs.successorListOf(graph, cityAnalyzed);
 			successors.remove(cityAnalyzed);
 			citiesContainingPlayer.remove(cityAnalyzed);
 			for (City city1 : playerCityList) {

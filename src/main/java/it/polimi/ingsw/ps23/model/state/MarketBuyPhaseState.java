@@ -35,7 +35,7 @@ public class MarketBuyPhaseState implements State{
 		String avaiableOffers = new String();
 		for(MarketObject marketObject : market.getMarketObject()) {
 			if(marketObject.getPlayer() != currentPlayer && marketObject.getCost() < currentPlayer.getCoins()) {
-				avaiableOffers += marketObject.toString() + "\n";
+				avaiableOffers += "\n" + marketObject.toString();
 			}
 		}
 		return avaiableOffers;
