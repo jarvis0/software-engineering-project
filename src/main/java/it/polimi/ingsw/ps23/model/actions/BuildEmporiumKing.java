@@ -6,6 +6,7 @@ import javax.naming.InsufficientResourcesException;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.model.Model;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
@@ -18,11 +19,14 @@ public class BuildEmporiumKing extends MainAction {
 	private City arriveCity;
 	private List<String> removedCards;
 	private City kingPosition;
+	private int initialNobilityTrackPoints;
+	private int finalNobilityTrackPoints;
 	
-	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
+	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition, int initialNobilityTrackPoints) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;
 		this.kingPosition = kingPosition;
+		this.initialNobilityTrackPoints = initialNobilityTrackPoints;
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class BuildEmporiumKing extends MainAction {
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
-			
+		finalNobilityTrackPoints =	game.getCurrentPlayer().getNobilityTrackPoints();
 		turnHandler.useMainAction();
 	}
 

@@ -3,7 +3,6 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.Collections;
 import java.util.List;
 
-//cambiare nome -> deck?
 public class RewardTokenSet {
 
 	private List<RewardToken> rewardTokenSet;

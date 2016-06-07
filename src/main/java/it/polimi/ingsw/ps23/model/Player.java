@@ -53,9 +53,8 @@ public class Player {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value) { // TurnHandler turnHandler
+	public void updateNobilityPoints(int value) { 
 		nobilityTrackPoints += value;
-		//dovremmo ora spostare il player nella nuova casella...ma è un po impossibile non avendo il riferimento al nobility track
 	}
 	
 	public void updateCoins(int value) throws InsufficientResourcesException {
@@ -101,7 +100,7 @@ public class Player {
 	public void updateEmporiumSet(City city, CitiesGraph citiesGraph ) {
 		try {
 			builtEmporiumSet.addBuiltEmporium(city);
-			citiesGraph.getBonuses(this, city);	
+			citiesGraph.getRewardTokenBonuses(this, city);	
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}
@@ -113,6 +112,19 @@ public class Player {
 
 	public void usePermissionCard(int chosenCard) {
 		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));
+		
+	}
+
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
+
+	public HandDeck getPermissionUsedHandDeck() {
+		return permissionUsedHandDeck;
+	}
+
+	public void pickPoliticCard(int value) {
+		
 		
 	}
 }

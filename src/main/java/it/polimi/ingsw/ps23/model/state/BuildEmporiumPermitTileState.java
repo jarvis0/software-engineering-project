@@ -6,6 +6,7 @@ import java.util.Map;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PermissionHandDeck;
+import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
@@ -16,6 +17,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	HandDeck avaibleCards;
 	Map<String, City> citiesMap;
 	List<Card> permissionCards;
+	int initialNobilityTrackPoints;
 	
 	public BuildEmporiumPermitTileState(String name) {
 		super(name);
@@ -28,6 +30,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		avaibleCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
 		citiesMap = game.getGameMap().getCitiesMap();
 		permissionCards = game.getCurrentPlayer().getPermissionHandDeck().getCards();
+		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 	}
 
 	@Override
@@ -46,8 +49,8 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		return chosenCard;
 	}
 
-	public BuildEmporiumPermitTile createAction(String chosenCity, int chosenCard) {
-		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard);
+	public Action createAction(String chosenCity, int chosenCard) {
+		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard, initialNobilityTrackPoints);
 	}
 	
 

@@ -18,12 +18,11 @@ public class NobilityTrackStep implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
-	public void useBonus(Player player, TurnHandler turnHandler) {
+	public void useBonus(Player player, TurnHandler turnHandler, List<Bonus> superBonus) {
 		for (Bonus bonus : bonuses) {
 			try {
-				bonus.updateBonus(player, turnHandler);
+				bonus.updateBonus(player, turnHandler, superBonus);
 			} catch (InsufficientResourcesException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -33,7 +32,7 @@ public class NobilityTrackStep implements BonusSlot {
 	public void addBonus(Bonus bonus) {
 		bonuses.add(bonus);		
 	}
-	
+		
 	@Override
 	public String toString() {
 		return bonuses.toString();

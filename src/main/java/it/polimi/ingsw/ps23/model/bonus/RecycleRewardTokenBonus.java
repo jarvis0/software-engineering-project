@@ -1,19 +1,21 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
+import java.util.List;
+
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 
-public class RecycleRewardToken extends Bonus {
+public class RecycleRewardTokenBonus extends Bonus {
 
-	public RecycleRewardToken(String name) {
+	public RecycleRewardTokenBonus(String name) {
 		super(name);
 	}
 
 	@Override
-	public void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException {
-		// TODO Auto-generated method stub
+	public void updateBonus(Player player, TurnHandler turnHandler, List<Bonus> superBonus) throws InsufficientResourcesException {
+		superBonus.add(this);
 		
 	}
 
@@ -22,5 +24,6 @@ public class RecycleRewardToken extends Bonus {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

@@ -14,11 +14,14 @@ public class AcquireBusinessPermitTile extends MainAction {
 	private List<String> removedPoliticCards;
 	private Region chosenRegion;
 	private int chosenPermissionCard;
+	private int initialNobilityTrackPoints;
+	private int finalNobilityTrackPoints;
 	
-	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard) {
+	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard, int initialNobilityTrackPoints) {
 		this.removedPoliticCards = removedPoliticCards;
 		this.chosenRegion = chosenRegion;
 		this.chosenPermissionCard = chosenPermissionCard;
+		this.initialNobilityTrackPoints = initialNobilityTrackPoints;
 	}
 	
 	@Override

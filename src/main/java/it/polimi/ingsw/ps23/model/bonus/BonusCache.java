@@ -20,10 +20,10 @@ public class BonusCache {
 	private static final String POLITIC_CARD = "politicCard";
 	private static final String ADDITIONAL_MAIN_ACTION = "additionalMainAction";
 	private static final String NOBILITY_TRACK_STEP = "nobilityTrackStep";
+	private static final String NULL_BONUS = "nullBonus";
 	private static final String RECYCLE_REWARD_TOKEN = "recycleRewardToken";
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
-	private static final String NULL_BONUS = "nullBonus";
 
 	private BonusCache() {
 	}
@@ -34,6 +34,7 @@ public class BonusCache {
 		bonus.setValue(value);
 		return bonus;
 	}
+	
 	private static void putBonus(Bonus bonus) {
 		bonusesMap.put(bonus.getName(), bonus);
 	}
@@ -56,8 +57,11 @@ public class BonusCache {
 		
 		Bonus nobilityTrackStepBonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
 		putBonus(nobilityTrackStepBonus);
+			
+		Bonus nullBonus = new NullBonus(NULL_BONUS);
+		putBonus(nullBonus);
 		
-		Bonus recycleRewardToken = new RecycleRewardToken(RECYCLE_REWARD_TOKEN);
+		Bonus recycleRewardToken = new RecycleRewardTokenBonus(RECYCLE_REWARD_TOKEN);
 		putBonus(recycleRewardToken);
 		
 		Bonus buildingPermitBonus = new BuildingPermitBonus(BUILDING_PERMIT);
@@ -65,9 +69,6 @@ public class BonusCache {
 		
 		Bonus recycleBuildingPermitBonus = new RecycleBuildingPermitBonus(RECYCLE_BUILDING_PERMIT);
 		putBonus(recycleBuildingPermitBonus);
-		
-		Bonus nullBonus = new NullBonus(NULL_BONUS);
-		putBonus(nullBonus);
 		
 	}
 	

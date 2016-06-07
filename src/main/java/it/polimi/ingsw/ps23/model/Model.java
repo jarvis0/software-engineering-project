@@ -4,10 +4,13 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.map.RewardToken;
 import it.polimi.ingsw.ps23.model.state.Context;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
+import it.polimi.ingsw.ps23.model.state.SuperBonusState;
 
 public class Model extends ModelObservable implements Cloneable {
 	
@@ -62,10 +65,26 @@ public class Model extends ModelObservable implements Cloneable {
 	}
 	
 	public void doAction(Action action) {
+		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
+		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
+		if(initialNobilityTrackPoints != finalNobilityTrackPoints) {
+			List<Bonus> superBonus = updateNobliltyTrackPoints(initialNobilityTrackPoints, finalNobilityTrackPoints, game.getCurrentPlayer(), turnHandler);	
+			if(!superBonus.isEmpty()) {
+				setSuperBonusState(superBonus);
+				return;
+			}
+		}
 		setGameStatusState();
 	}
 	
+	private void setSuperBonusState(List<Bonus> superBonus) {
+		context = new Context();
+		SuperBonusState superBonusState = new SuperBonusState(superBonus); //non posso
+		superBonusState.changeState(context, game);
+		wakeUp(superBonusState);
+	}
+
 	private void setGameStatusState() {
 		context = new Context();
 		GameStatusState gameStatusState = new GameStatusState();
@@ -77,4 +96,10 @@ public class Model extends ModelObservable implements Cloneable {
 		turnHandler = new TurnHandler();
 		game.setCurrentPlayer(setCurrentPlayer());
 	}
+	
+	public List<Bonus> updateNobliltyTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Player player, TurnHandler turnHandler) {
+		List<Bonus> superBonus = game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, player, turnHandler);
+		return superBonus;
+	}
+
 }

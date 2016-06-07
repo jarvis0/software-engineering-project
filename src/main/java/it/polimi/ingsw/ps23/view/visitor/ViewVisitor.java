@@ -23,6 +23,4 @@ public interface ViewVisitor {
 	public void visit(AdditionalMainActionState currentState);
 	public void visit(BuildEmporiumKingState currentState);
 	public void visit(BuildEmporiumPermitTileState currentState);
-
-
 }

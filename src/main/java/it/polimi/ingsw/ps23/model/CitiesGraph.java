@@ -34,16 +34,16 @@ public class CitiesGraph {
 	}
 	
 
-	public void getBonuses(Player player, City arriveCity) {
-	List<City> citiesContainingPlayer = new ArrayList<>();
-	citiesContainingPlayer.add(arriveCity);
-	List<City> playerCityList = new ArrayList<>();
-	playerCityList.addAll(player.getEmporiums().getBuiltEmporiumSet());
-	searchCities(citiesContainingPlayer, playerCityList, player);
+	public void getRewardTokenBonuses(Player player, City arriveCity) {
+		List<City> citiesContainingPlayer = new ArrayList<>();
+		citiesContainingPlayer.add(arriveCity);
+		List<City> playerCityList = new ArrayList<>();
+		playerCityList.addAll(player.getEmporiums().getBuiltEmporiumSet());
+		searchCities(citiesContainingPlayer, playerCityList, player);
 	}
 
 	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Player player) {
-		for(int i=0; i < citiesContainingPlayer.size(); i++) {
+		for(int i = 0; i < citiesContainingPlayer.size(); i++) {
 			City cityAnalyzed = citiesContainingPlayer.get(i);
 			List<City> successors = Graphs.successorListOf(citiesGraph, cityAnalyzed);
 			successors.remove(cityAnalyzed);
@@ -53,12 +53,12 @@ public class CitiesGraph {
 					citiesContainingPlayer.add(city1);
 				}
 			}
-			if(!(cityAnalyzed instanceof CapitalCity) ){
+			if(!(cityAnalyzed instanceof CapitalCity)) {
 				((NormalCity)cityAnalyzed).useRewardToken(player);
 			}
-				playerCityList.remove(cityAnalyzed);
+			playerCityList.remove(cityAnalyzed);
 		}
-		if(!citiesContainingPlayer.isEmpty()){
+		if(!citiesContainingPlayer.isEmpty()) {
 			searchCities(citiesContainingPlayer, playerCityList, player);
 		}
 	}

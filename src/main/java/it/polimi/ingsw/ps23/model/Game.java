@@ -61,4 +61,9 @@ public class Game  {
 	public King getKing() {
 		return king;
 	}
+
+	public NobilityTrack getNobilityTrack() {
+		return nobilityTrack;
+	}
+
 }

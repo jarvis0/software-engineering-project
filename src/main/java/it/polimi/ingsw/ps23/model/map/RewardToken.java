@@ -16,6 +16,7 @@ public class RewardToken implements BonusSlot {
 		bonus = new ArrayList<>();
 	}
 	
+	@Override
 	public void addBonus(Bonus bonus) {
 		this.bonus.add(bonus);
 	}
