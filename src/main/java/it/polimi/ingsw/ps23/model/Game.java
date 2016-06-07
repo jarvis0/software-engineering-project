@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.model.map.King;
 import it.polimi.ingsw.ps23.model.map.KingTiles;
 import it.polimi.ingsw.ps23.model.Initialization;
 
-public class Game  {
+public class Game {
 
 	private Deck politicDeck;
 	private FreeCouncillors freeCouncillors;

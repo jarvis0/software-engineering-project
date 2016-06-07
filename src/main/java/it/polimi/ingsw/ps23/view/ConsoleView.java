@@ -171,20 +171,27 @@ public class ConsoleView extends View implements ViewVisitor {
 		List<Integer> chosenPoliticCards = new ArrayList<>();
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		output.println("It's " + currentState.getCurrentPlayer() + " market phase turn.");
-		output.println("How many politic cards do you want to use? ");
-		int numberOfCards = Integer.parseInt(scanner.nextLine());
-		for(int i = 0; i < numberOfCards; i++) {
-			output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
-			chosenPoliticCards.add(Integer.parseInt(scanner.nextLine()));
+		if(currentState.canSellPoliticCards()) {
+			output.println("How many politic cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			for(int i = 0; i < numberOfCards; i++) {
+				output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
+				chosenPoliticCards.add(Integer.parseInt(scanner.nextLine()));
+			}
 		}
-		output.println("How many permission cards do you want to use? ");
-		numberOfCards = Integer.parseInt(scanner.nextLine());
-		for(int i = 0; i < numberOfCards; i++) {
-			output.println("Select a card from this list: " + currentState.getPermissionHandDeck());
-			chosenPermissionCards.add(Integer.parseInt(scanner.nextLine()));
+		if(currentState.canSellPoliticCards()) {
+			output.println("How many permission cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			for(int i = 0; i < numberOfCards; i++) {
+				output.println("Select a card from this list: " + currentState.getPermissionHandDeck());
+				chosenPermissionCards.add(Integer.parseInt(scanner.nextLine()));
+			}
 		}
-		output.println("Select the number of assistants " + currentState.getAssistants());
-		int chosenAssistants = Integer.parseInt(scanner.nextLine());
+		int chosenAssistants = 0;
+		if(currentState.canSellAssistants()) {
+			output.println("Select the number of assistants " + currentState.getAssistants());
+			chosenAssistants = Integer.parseInt(scanner.nextLine());
+		}
 		output.println("Choose the price for your offer: ");
 		int cost = Integer.parseInt(scanner.nextLine());
 		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));

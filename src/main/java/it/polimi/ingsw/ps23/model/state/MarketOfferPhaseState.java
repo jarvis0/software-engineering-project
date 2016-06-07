@@ -34,6 +34,18 @@ public class MarketOfferPhaseState implements State{
 	public String getAssistants() {
 		  return "Assistants: " + currentPlayer.getAssistants();
 	}
+	
+	public boolean canSellPoliticCards() {
+		return currentPlayer.getPoliticHandDeck().getHandSize() == 0;
+	}
+	
+	public boolean canSellPermissionCards() {
+		return currentPlayer.getPermissionHandDeck().getHandSize() == 0;
+	}
+	
+	public boolean canSellAssistants() {
+		return currentPlayer.getAssistants() == 0;
+	}
 
 	@Override
 	public void acceptView(ViewVisitor view) {

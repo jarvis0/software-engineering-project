@@ -15,7 +15,7 @@ public class BuildEmporiumPermitTile extends MainAction {
 
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
-		game.getCurrentPlayer().updateEmporiumSet(buildInThisCity, game.getGameMap().getCitiesGraph());
+		game.getCurrentPlayer().updateEmporiumSet(game, turnHandler, buildInThisCity);
 		game.getCurrentPlayer().usePermissionCard(chosenCard);
 		turnHandler.useMainAction();
 	}

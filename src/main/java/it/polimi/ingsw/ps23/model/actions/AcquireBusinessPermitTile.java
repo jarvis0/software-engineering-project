@@ -29,7 +29,7 @@ public class AcquireBusinessPermitTile extends MainAction {
 		} catch (InsufficientResourcesException e) {
 			e.printStackTrace();
 		}
-		game.getCurrentPlayer().pickPermitCard(chosenRegion, chosenPermissionCard, turnHandler);
+		game.getCurrentPlayer().pickPermitCard(game, turnHandler, chosenRegion, chosenPermissionCard);
 		turnHandler.useMainAction();
 	}
 }

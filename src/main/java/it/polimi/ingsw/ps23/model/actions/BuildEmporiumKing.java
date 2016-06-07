@@ -42,7 +42,7 @@ public class BuildEmporiumKing extends MainAction {
 				game.getCurrentPlayer().updateCoins(cost);
 				game.getCurrentPlayer().updateAssistants(assistantsCost);
 				game.getKing().setNewPosition(arriveCity);
-				game.getCurrentPlayer().updateEmporiumSet(arriveCity, game.getGameMap().getCitiesGraph());
+				game.getCurrentPlayer().updateEmporiumSet(game, turnHandler, arriveCity);
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}

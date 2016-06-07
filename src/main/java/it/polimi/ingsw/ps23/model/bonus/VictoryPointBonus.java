@@ -1,8 +1,6 @@
 package it.polimi.ingsw.ps23.model.bonus;
 
-import javax.naming.InsufficientResourcesException;
-
-import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class VictoryPointBonus extends Bonus {
@@ -12,13 +10,8 @@ public class VictoryPointBonus extends Bonus {
 	}
 	
 	@Override
-	public void updateBonus(Player player, TurnHandler turnHandler) {
-		player.updateVictoryPoints(getValue());
+	public void updateBonus(Game game, TurnHandler turnHandler) {
+		game.getCurrentPlayer().updateVictoryPoints(getValue());
 	}
-
-	@Override
-	public void updateBonusReward(Player player) throws InsufficientResourcesException {
-		player.updateVictoryPoints(getValue());
-		
-	}
+	
 }

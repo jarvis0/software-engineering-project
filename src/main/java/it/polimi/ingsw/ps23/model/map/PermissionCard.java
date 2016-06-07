@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
@@ -27,10 +27,10 @@ public class PermissionCard extends Card implements BonusSlot {
 		this.cities.add(city);
 	}
 	
-	public void useBonus(Player player, TurnHandler turnHandler) {
+	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
-		bonus.updateBonus(player, turnHandler);
+		bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

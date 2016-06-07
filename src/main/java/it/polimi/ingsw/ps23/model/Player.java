@@ -7,14 +7,13 @@ import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
 
 	private String name;
-	private int coins; //esiste un limite massimo? nel gioco è 20
+	private int coins;
 	private int assistants;
 	private BuiltEmporiumSet builtEmporiumSet;
 	private int victoryPoints;
@@ -40,9 +39,9 @@ public class Player {
 		((PoliticHandDeck) politicHandDeck).addCards(politicDeck.pickCards(cardsNumber));
 	}
 	
-	public void pickPermitCard(Region region, int index, TurnHandler turnHandler) {
+	public void pickPermitCard(Game game, TurnHandler turnHandler, Region region, int index) {
 		Card permissionCard = ((GroupRegionalCity)region).pickPermissionCard(index);
-		((PermissionCard)permissionCard).useBonus(this, turnHandler);
+		((PermissionCard)permissionCard).useBonus(game, turnHandler);
 		((PermissionHandDeck) permissionHandDeck).addCard(permissionCard);
 	}
 	
@@ -93,10 +92,10 @@ public class Player {
 		return permissionHandDeck;
 	}
 
-	public void updateEmporiumSet(City city, CitiesGraph citiesGraph ) {
+	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		try {
 			builtEmporiumSet.addBuiltEmporium(city);
-			citiesGraph.getBonuses(this, city);	
+			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}

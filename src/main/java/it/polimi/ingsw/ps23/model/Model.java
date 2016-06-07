@@ -14,7 +14,7 @@ import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 
-public class Model extends ModelObservable implements Cloneable {
+public class Model extends ModelObservable {
 	
 	private int currentPlayerIndex;
 	private Game game;
