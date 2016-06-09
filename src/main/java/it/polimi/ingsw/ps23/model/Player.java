@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

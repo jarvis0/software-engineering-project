@@ -9,34 +9,34 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
+import it.polimi.ingsw.ps23.view.ConsoleView;
 
 public class Server {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 6;
+	private static final int TIMEOUT = 1;
 	
 	private ExecutorService executor;
+	
 	private Timer timer;
 	
 	private ServerSocket serverSocket;
 
 	private List<Connection> connections; //ridondante
 	private Map<String, Connection> waitingConnections;
-	private Map<String, Connection> playingConnections; //ridondante++
+	private Map<String, Connection> playingConnections; //super-ridondante
 	
-	private Scanner scanner;
 	private PrintStream output;
-	
-	private List<RemoteConsoleView> remoteConsoleView;
-	private Controller controller;
+
 	private Model model;
+	private List<ConsoleView> consoleViews;
+	private Controller controller;
 	
 	private Server() throws IOException {
 		serverSocket = new ServerSocket(PORT);
@@ -44,7 +44,6 @@ public class Server {
 		connections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
 		playingConnections = new HashMap<>();
-		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
 	}
 	
@@ -53,7 +52,7 @@ public class Server {
 	}
 	
 	public synchronized void deregisterConnection(Connection c) {
-		//player in game ??
+		//player in un certo specifico game ??
 		connections.remove(c);
 		Connection connection = playingConnections.get(c);
 		if(connection != null)
@@ -99,12 +98,16 @@ public class Server {
 		model = new Model();
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
-		remoteConsoleView = new ArrayList<>();
+		consoleViews = new ArrayList<>();
 		for(int i = 0; i < playersName.size(); i++) {			
 			playingConnections.put(playersName.get(i), waitingConnections.get(playersName.get(i)));
-			remoteConsoleView.add(new RemoteConsoleView(scanner, output, waitingConnections.get(playersName.get(i))));
-			model.attach(remoteConsoleView.get(i));
-			remoteConsoleView.get(i).attach(controller);
+			consoleViews.add(new ConsoleView(playersName.get(i), waitingConnections.get(playersName.get(i)), output));
+			connections.get(i).setConsoleView(consoleViews.get(i));
+			model.attach(consoleViews.get(i));
+			consoleViews.get(i).attach(controller);
+		}
+		for(ConsoleView consoleView : consoleViews) {
+			consoleView.setOtherViews(consoleViews);
 		}
 		model.setUpModel(playersName);
 		for(Connection connection : waitingConnections.values()) {
@@ -125,6 +128,14 @@ public class Server {
 			output.println("Connection error.");
 		}
 	}
+
+	public synchronized void resumeView(List<ConsoleView> consoleViews, ConsoleView currentConsoleView) {
+		for(ConsoleView consoleView : consoleViews) {
+			if(consoleView != currentConsoleView) {
+				consoleView.threadWakeUp();
+			}
+		}
+	}
 	
 	public void run() {
 		while(true) {
@@ -141,5 +152,5 @@ public class Server {
 			System.out.println("Cannot initialize Server.");
 		}		
 	}
-	
+
 }

@@ -19,6 +19,6 @@ public class CoinBonus extends Bonus {
 	@Override
 	public void updateBonusReward(Player player) throws InsufficientResourcesException {
 		player.updateCoins(getValue());
-		
 	}
+	
 }

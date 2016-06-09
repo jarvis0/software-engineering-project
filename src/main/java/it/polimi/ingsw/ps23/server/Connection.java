@@ -6,57 +6,49 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
 
-import it.polimi.ingsw.ps23.commons.remote.RemoteObservable;
+import it.polimi.ingsw.ps23.view.ConsoleView;
 
-public class Connection extends RemoteObservable implements Runnable {
+public class Connection implements Runnable {
 	
 	private PrintStream output;
 	
 	private Server server;
 	private Socket socket;
-	private Scanner socketIn;
-	private PrintStream socketOut;
+	private Scanner textIn;
+	private PrintStream textOut;
 	
-	private boolean online;
 	private boolean started;
+
+	private ConsoleView consoleView;
 	
 	public Connection(Server server, Socket socket) {
 		super();
 		this.server = server;
 		this.socket = socket;
 		try {
-			socketIn = new Scanner(socket.getInputStream());
-			socketIn.useDelimiter("EOM");
-			socketOut = new PrintStream(socket.getOutputStream());
+			textIn = new Scanner(socket.getInputStream());
+			textIn.useDelimiter("EOM");
+			textOut = new PrintStream(socket.getOutputStream());
+			
 		} catch(IOException e) {
 			output.println("Error while initializating connection.");
 		}
 		output = new PrintStream(System.out);
 		started = false;
-		online = true;
+	}
+	
+	public Server getServer() {
+		return server;
 	}
 	
 	public void send(String message) {
-		socketOut.print(message + "EOM");
-		socketOut.flush();
-	}
-	
-	public String receive() {
-		return socketIn.next();
-	}
-	
-	private synchronized boolean isOnline() {
-		return online;
-	}
-	
-	/*public void asyncSend(final String message){
-		new Thread(new Runnable() {			
-			@Override
-			public void run() {
-				send(message);
-			}
-		}).start();
-	}*/
+ 		textOut.print(message + "EOM");
+ 		textOut.flush();
+ 	}
+ 	
+ 	public String receive() {
+ 		return textIn.next();
+ 	}
 
 	public synchronized void closeConnection() {		
 		send("Connection ended.");
@@ -65,7 +57,6 @@ public class Connection extends RemoteObservable implements Runnable {
 		} catch(IOException e) {
 			output.println("Unable to close the connection.");
 		}
-		online = false;
 	}
 	
 	private void close() {
@@ -92,19 +83,23 @@ public class Connection extends RemoteObservable implements Runnable {
 		}
 		else {
 			server.initializeGame();
+			output.println("A new game has been started.");
 		}
+	}
+
+	public void setConsoleView(ConsoleView consoleView) {
+		this.consoleView = consoleView;
 	}
 	
 	@Override
 	public void run() {
 		send("Connection established at " + new Date().toString());
-		send("Welcome, what's your name?");
+		send("Welcome, what's your name? ");
 		server.joinToWaitingList(this, receive());
 		initialization();
-		while(isOnline()) {
-			remoteWakeUp();
-		}
+		//remoteWakeUp();
+		consoleView.run();
 		close();
 	}
-	
+
 }

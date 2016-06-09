@@ -16,9 +16,6 @@ public class Client {
 	private Socket socket;
 	private Scanner textIn;
 	private PrintStream textOut;
-	//private ObjectInputStream objectIn;
-	
-	private boolean online;
 	
 	private Client(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
@@ -27,50 +24,24 @@ public class Client {
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
-		//objectIn = new ObjectInputStream(socket.getInputStream());
-		online = true;
-	}
-	
-	private void sendText(String message) {
-		textOut.print(message + "EOM");
-		textOut.flush();
-	}
-	
-	private String receiveText() {
-		return textIn.next();
 	}
 
-	/*private State receiveObject() {
-		State object = null;
-		try {
-			object = objectIn.readObject();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-		return object;
-	}*/
-	
-	/*private void visit(StartTurnState currentState) {
-		Player player = currentState.getCurrentPlayer();
-		output.println("Current player: " + player.toString() + player.showSecretStatus());
-		output.println("Choose an action to perform? " + currentState.getAvaiableAction());
-		try {
-			wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
-		}
-		catch(NullPointerException e) {
-			wakeUp();
-		}
-	}*/
+	public void send(String message) {
+ 		textOut.print(message + "EOM");
+ 		textOut.flush();
+ 	}
+ 	
+ 	public String receive() {
+ 		return textIn.next();
+ 	}
 	
 	private void run() {
-		output.println(receiveText()); //ricevo l'ora di creazione
-		output.println(receiveText());
-		sendText(scanner.nextLine()); // invio il nome del giocatore
+		output.println(receive());
+		output.print(receive());
+		send(scanner.nextLine());
 		output.println("Waiting others players to connect...");
-		while(online) {
-			output.println(receiveText()); //ricevo lo stato della mappa
-			//visit(receiveObject());
-		}
+		RemoteConsoleView remoteConsoleView = new RemoteConsoleView(this, scanner, output);
+		remoteConsoleView.run();
 	}
 
 	public static void main(String[] args) {

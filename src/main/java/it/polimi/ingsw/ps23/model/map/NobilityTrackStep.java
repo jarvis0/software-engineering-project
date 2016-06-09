@@ -19,7 +19,7 @@ public class NobilityTrackStep implements BonusSlot {
 	}
 	
 	public void useBonus(Player player, TurnHandler turnHandler) {
-		for (Bonus bonus : bonuses) {
+		for(Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(player, turnHandler);
 			} catch (InsufficientResourcesException e) {
