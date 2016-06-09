@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.BuildingPermitBonus;
 import it.polimi.ingsw.ps23.model.bonus.SuperBonus;
 import it.polimi.ingsw.ps23.model.bonus.SuperBonusGiver;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class SuperBonusState implements State {
 	

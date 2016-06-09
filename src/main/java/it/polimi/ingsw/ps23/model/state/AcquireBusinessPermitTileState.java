@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class AcquireBusinessPermitTileState extends ActionState {
 

@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.model.PermissionHandDeck;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {
 

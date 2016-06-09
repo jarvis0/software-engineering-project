@@ -26,7 +26,7 @@ import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.model.state.SuperBonusState;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ConsoleView extends View implements ViewVisitor {
 	

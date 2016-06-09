@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumKing;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class BuildEmporiumKingState extends ActionState{
 	

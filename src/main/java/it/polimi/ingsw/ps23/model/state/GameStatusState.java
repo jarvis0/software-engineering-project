@@ -5,7 +5,7 @@ import it.polimi.ingsw.ps23.model.GamePlayersSet;
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.GameMap;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class GameStatusState implements State {
 
