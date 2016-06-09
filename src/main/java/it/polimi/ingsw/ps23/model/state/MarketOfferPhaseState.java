@@ -1,10 +1,12 @@
 package it.polimi.ingsw.ps23.model.state;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
@@ -52,11 +54,15 @@ public class MarketOfferPhaseState implements State{
 		view.visit(this);
 	}
 	
-	public MarketObject createMarketObject(List<Integer> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
+	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();		
-		for (int index : chosenPoliticCards) {
-			politicCards.add(currentPlayer.getPoliticHandDeck().getCardInPosition(index));
+		for (String card : chosenPoliticCards) {
+			try {
+				politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		for (int index : chosenPermissionCards) {
 			permissionCards.add(currentPlayer.getPermissionHandDeck().getCardInPosition(index));

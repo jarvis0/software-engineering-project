@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +33,11 @@ public class PoliticHandDeck extends HandDeck {
 		}
 		if(removedCards.size() != 4) {
 			cost += -(1 + 3 * (4 - removedCards.size()));
-		}
-	 
+		}	 
 		for (String removeCard : removedCards) {
 			boolean found = false;
 			for(int i = 0; i < getCards().size() && !found; i++) {
-				if(((PoliticCard)getCards().get(i)).getColor().getName().equals(removeCard)) {
+				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard)) {
 					getCards().remove(i);
 					found = true;
 				}
@@ -46,16 +46,9 @@ public class PoliticHandDeck extends HandDeck {
 		return cost;
 	}					
 
-
-
 	public HandDeck getAvailableCards(Council council) {
 		List<Card> returnCards = getColoredCards(council);
-		try {
-			returnCards.addAll(getJollyCards());
-		}
-		catch (NullPointerException e) {
-			//il player non ha carte multi
-		}
+		returnCards.addAll(getJollyCards());
 		return new PoliticHandDeck(returnCards);
 	}
 	
@@ -78,15 +71,21 @@ public class PoliticHandDeck extends HandDeck {
 	private List<Card> getJollyCards() {
 		List<Card> cards = new ArrayList<>();
 		cards.addAll(getCards());
-		for(int i = 0; i < cards.size(); i++) {
+		for(int i = cards.size() - 1; i >= 0; i--) {
 			if(!((PoliticCard)(cards.get(i))).isJolly()) {
 				cards.remove(i);
-				i--;
 			}
 		}
 		return cards;
 	}
 	
-
+	public Card getCardFromName(String name) throws IOException {
+		for (Card card : getCards()) {
+			if(((PoliticCard)card).getColor().isSameColor(name)) {
+				return card;
+			}
+		}
+		throw new IOException();
+	}
 
 }

@@ -25,4 +25,8 @@ public class GameColor {
 		return colorName;
 	}
 	
+	public boolean isSameColor(String other) {
+		return other.equals(colorName);
+	}
+	
 }

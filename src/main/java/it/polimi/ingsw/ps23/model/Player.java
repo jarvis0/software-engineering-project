@@ -23,8 +23,8 @@ public class Player {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
-	private HandDeck permissionTotalHandDeck;
-
+	private BonusTile bonusTile;
+	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
 		this.coins = coins;
@@ -35,7 +35,7 @@ public class Player {
 		builtEmporiumSet = new BuiltEmporiumSet();
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
-		
+		bonusTile = new BonusTile();		
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
@@ -100,7 +100,7 @@ public class Player {
 		return permissionHandDeck;
 	}
 	public HandDeck getPermissionTotalHandeck() {
-		permissionTotalHandDeck = new PermissionHandDeck();
+		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
 		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
 		return permissionHandDeck;
@@ -125,6 +125,10 @@ public class Player {
 	
 	public int getCoins() {
 		return coins;
+	}
+	
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
 	}
 
 	public void usePermissionCard(int chosenCard) {
@@ -155,9 +159,7 @@ public class Player {
 		}
 	}
 
-	public int getNobilityTrackPoints() {
-		return nobilityTrackPoints;
-	}
+
 
 	public HandDeck getPermissionUsedHandDeck() {
 		return permissionUsedHandDeck;
@@ -167,4 +169,15 @@ public class Player {
 		return builtEmporiumSet.getCitiesForRecycleRewardTokens();
 	}
 
+	public boolean hasFinished() {
+		return builtEmporiumSet.containsTenEmporium();
+	}
+	
+	public void addBonusTile(Bonus bonus) {
+		bonusTile.addTile(bonus);
+	}
+
+	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
+		bonusTile.useBonus(game, turnHandler);
+	}
 }

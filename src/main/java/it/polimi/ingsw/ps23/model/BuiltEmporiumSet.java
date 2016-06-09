@@ -8,6 +8,8 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class BuiltEmporiumSet {
 	
+	private static final int MAX_EMPORIUMS = 10;
+	
 	private List<City> builtEmporiumSet;
 	
 	public BuiltEmporiumSet() {
@@ -22,6 +24,10 @@ public class BuiltEmporiumSet {
 		else {
 			throw new InvalidPositionException();
 		}
+	}
+	
+	public boolean containsTenEmporium() {
+		return builtEmporiumSet.size() == MAX_EMPORIUMS;
 	}
 	
 	
