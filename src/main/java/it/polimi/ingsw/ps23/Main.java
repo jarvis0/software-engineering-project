@@ -2,20 +2,17 @@ package it.polimi.ingsw.ps23;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.model.ModelView;
 import it.polimi.ingsw.ps23.view.ConsoleView;
 import it.polimi.ingsw.ps23.view.View;
 
 public class Main {
 	
 	private Model model;
-	private ModelView modelView;
 	private View view;
 	private Controller controller;
 	
 	public Main() {
 		model = new Model();
-		//ricordati il clone modelview
 		view = new ConsoleView(System.in, System.out);
 		controller = new Controller(model);
 		view.attach(controller);

@@ -2,7 +2,6 @@ package it.polimi.ingsw.ps23.model.map;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class NormalCity extends City {
