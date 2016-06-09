@@ -18,6 +18,7 @@ import it.polimi.ingsw.ps23.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
+import it.polimi.ingsw.ps23.model.state.EndGameState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
@@ -240,6 +241,12 @@ public class ConsoleView extends View implements ViewVisitor {
 			}	
 		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
 		}
+		
+	}
+
+	@Override
+	public void visit(EndGameState currentState) {
+		output.println(currentState.getWinner());
 		
 	}
 }
