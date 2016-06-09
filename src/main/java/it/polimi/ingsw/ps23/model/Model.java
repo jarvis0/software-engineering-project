@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
+import it.polimi.ingsw.ps23.model.state.SuperBonusState;
 
 public class Model extends ModelObservable {
 	
@@ -81,10 +83,26 @@ public class Model extends ModelObservable {
 	}
 	
 	public void doAction(Action action) {
+		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
+		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
+		if(initialNobilityTrackPoints != finalNobilityTrackPoints) {
+			updateNobliltyTrackPoints(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);	
+			if(turnHandler.startSuperTurnState()) {
+				setSuperBonusState();
+				return;
+			}
+		}
 		setGameStatusState();
 	}
 	
+	private void setSuperBonusState() {
+		context = new Context();
+		SuperBonusState superBonusState = new SuperBonusState(turnHandler); 
+		superBonusState.changeState(context, game);
+		wakeUp(superBonusState);
+	}
+
 	private void setGameStatusState() {
 		context = new Context();
 		GameStatusState gameStatusState = new GameStatusState();
@@ -139,6 +157,15 @@ public class Model extends ModelObservable {
 	
 	private void setStartingPlayerIndex() {
 		currentPlayerIndex = -1;
+	}
+	
+	public void updateNobliltyTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
+		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
+	}
+
+	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) {
+		superBonusGiver.values(game, turnHandler);
+		setGameStatusState();
 	}
 	
 }

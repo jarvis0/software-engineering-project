@@ -19,6 +19,7 @@ public class PermissionCard extends Card implements BonusSlot {
 		cities = new ArrayList<>();
 	}
 	
+	@Override
 	public void addBonus(Bonus bonus) {
 		this.bonuses.add(bonus);
 	}
@@ -26,11 +27,11 @@ public class PermissionCard extends Card implements BonusSlot {
 	public void addCity(City city) {
 		this.cities.add(city);
 	}
-	
+
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
-		bonus.updateBonus(game, turnHandler);
+				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
@@ -41,6 +42,5 @@ public class PermissionCard extends Card implements BonusSlot {
 	public String toString() {
 		return bonuses.toString() + cities.toString();
 	}
-
 	
 }

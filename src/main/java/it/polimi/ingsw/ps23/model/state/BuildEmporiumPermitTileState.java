@@ -5,6 +5,7 @@ import java.util.Map;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PermissionHandDeck;
+import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
@@ -39,7 +40,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		return availableCards.getCards().get(index).toString();
 	}
 
-	public BuildEmporiumPermitTile createAction(String chosenCity, int chosenCard) {
+	public Action createAction(String chosenCity, int chosenCard) {
 		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard);
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.bonus.SuperBonus;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
@@ -24,7 +25,7 @@ public class Player {
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
 	private BonusTile bonusTile;
-
+	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
 		this.coins = coins;
@@ -52,7 +53,8 @@ public class Player {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value) {
+
+	public void updateNobilityPoints(int value) { 
 		nobilityTrackPoints += value;
 	}
 	
@@ -74,6 +76,10 @@ public class Player {
 		}
 	}
 	
+	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) {
+		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
+	}
+	
 	@Override
 	public String toString() {
 		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
@@ -92,6 +98,12 @@ public class Player {
 	}
 
 	public HandDeck getPermissionHandDeck() {
+		return permissionHandDeck;
+	}
+	public HandDeck getPermissionTotalHandeck() {
+		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
+		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
+		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
 		return permissionHandDeck;
 	}
 
@@ -147,7 +159,17 @@ public class Player {
 			permissionHandDeck.addCard(card);
 		}
 	}
+
+
+
+	public HandDeck getPermissionUsedHandDeck() {
+		return permissionUsedHandDeck;
+	}
 	
+	public BuiltEmporiumSet getEmporiumForRecycleRewardToken() {
+		return builtEmporiumSet.getCitiesForRecycleRewardTokens();
+	}
+
 	public boolean hasFinished() {
 		return builtEmporiumSet.containsTenEmporium();
 	}

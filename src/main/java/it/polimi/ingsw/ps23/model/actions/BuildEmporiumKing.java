@@ -20,7 +20,7 @@ public class BuildEmporiumKing extends MainAction {
 	private List<String> removedCards;
 	private City kingPosition;
 	
-	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
+	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition, int initialNobilityTrackPoints) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;
 		this.kingPosition = kingPosition;
@@ -47,7 +47,6 @@ public class BuildEmporiumKing extends MainAction {
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
-			
 		turnHandler.useMainAction();
 	}
 

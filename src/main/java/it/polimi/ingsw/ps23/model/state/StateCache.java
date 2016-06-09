@@ -52,6 +52,5 @@ public class StateCache {
 		
 		AdditionalMainActionState additionalMainActionState = new AdditionalMainActionState(ADDITIONAL_MAIN_ACTION);
 		putAction(additionalMainActionState);
-
 	}
 }

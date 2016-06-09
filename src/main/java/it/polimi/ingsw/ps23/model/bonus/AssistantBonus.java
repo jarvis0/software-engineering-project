@@ -14,6 +14,7 @@ public class AssistantBonus extends Bonus {
 	@Override
 	public void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
 		game.getCurrentPlayer().updateAssistants(getValue());
+
 	}
 
 }

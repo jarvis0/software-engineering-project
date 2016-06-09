@@ -8,6 +8,7 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.bonus.NobilityTrackStepBonus;
 
 public class RewardToken implements BonusSlot {
 	
@@ -17,6 +18,7 @@ public class RewardToken implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
+	@Override
 	public void addBonus(Bonus bonus) {
 		this.bonuses.add(bonus);
 	}
@@ -34,6 +36,15 @@ public class RewardToken implements BonusSlot {
 	@Override
 	public String toString() {
 		return bonuses.toString();
+	}
+
+	public boolean hasNobilityTrackBonus() {
+		for (Bonus bonus : bonuses) {
+			if(bonus instanceof NobilityTrackStepBonus) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 

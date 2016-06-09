@@ -8,9 +8,11 @@ public class BuildEmporiumPermitTile extends MainAction {
 
 	City buildInThisCity;
 	private int chosenCard;
+	
 	public BuildEmporiumPermitTile(City city, int chosenCard) {
 		this.buildInThisCity = city;
 		this.chosenCard = chosenCard;
+		
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class AcquireBusinessPermitTile extends MainAction {
 	private Region chosenRegion;
 	private int chosenPermissionCard;
 	
-	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard) {
+	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard, int initialNobilityTrackPoints) {
 		this.removedPoliticCards = removedPoliticCards;
 		this.chosenRegion = chosenRegion;
 		this.chosenPermissionCard = chosenPermissionCard;

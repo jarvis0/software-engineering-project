@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model.map;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.CitiesGraph;
@@ -44,6 +45,21 @@ public class GameMap {
 
 	public List<Region> getGroupColoredCity() {
 		return groupColoredCities;
+	}
+	
+	public Map<String, Region> getRegionMap() {
+		Map<String, Region> regionMap = new HashMap<>();
+		for(Region region : getGroupRegionalCity()) {
+			regionMap.put(region.getName(), (GroupRegionalCity) region);
+		}
+		return regionMap;
+	}
+	public Map<String, Deck> getPermitMap() {
+	Map<String, Deck> permitsMap = new HashMap<>();
+		for(Region region : getGroupRegionalCity()) {
+			permitsMap.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeckUp());
+		}
+		return permitsMap;
 	}
 	
 	@Override

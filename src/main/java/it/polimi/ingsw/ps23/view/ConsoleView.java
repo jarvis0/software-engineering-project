@@ -2,15 +2,18 @@ package it.polimi.ingsw.ps23.view;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
-import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
@@ -20,6 +23,8 @@ import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.model.state.SuperBonusState;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ConsoleView extends View implements ViewVisitor {
 	
@@ -132,7 +137,6 @@ public class ConsoleView extends View implements ViewVisitor {
 			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
 			String chosenCard = receive().toLowerCase();
 			removedCards.add(chosenCard);
-			//aggiungere un metodo per rimuovere le carte già scelte
 		}
 		sendWithInput("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
 		int chosenCard = Integer.parseInt(receive()) - 1;
@@ -237,4 +241,36 @@ public class ConsoleView extends View implements ViewVisitor {
 		}
 	}
 	
+	@Override
+	public void visit(SuperBonusState currentState) {
+		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
+		while(currentState.hasNext()) {
+			Bonus currentBonus = currentState.getCurrentBonus();
+			String chosenRegion = null;
+			int numberOfCurrentBonus = currentBonus.getValue();
+			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
+					sendWithInput(currentState.useBonus(currentBonus));
+					chosenRegion = receive().toLowerCase();
+					currentState.analyzeInput(chosenRegion, currentBonus);
+				}
+				sendWithInput(currentState.useBonus(currentBonus));
+				List<String> bonusesSelections = new ArrayList<>();
+				if (selectedBonuses.get(currentBonus) != null) {			
+					bonusesSelections = selectedBonuses.get(currentBonus);
+					
+				}	
+				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
+					bonusesSelections.add(chosenRegion);
+					bonusesSelections.add(receive());
+				}
+				else {
+					bonusesSelections.add(receive());
+					selectedBonuses.put(currentBonus, bonusesSelections);
+				}
+			}	
+		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+		}
+		
+	}
 }
