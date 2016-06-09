@@ -152,16 +152,19 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
+		resume();
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
 		wakeUp(currentState.createAction());
+		resume();
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		wakeUp(currentState.createAction());
+		resume();
 	}
 
 	@Override
@@ -169,7 +172,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a region:" + currentState.getPermitsMap());
 		String chosenRegion = receive();
 		wakeUp(currentState.createAction(chosenRegion));
-
+		resume();
 	}
 
 	@Override
@@ -186,6 +189,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
 		String arrivalCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
+		resume();
 	}
 	
 	@Override
@@ -195,6 +199,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 		String chosenCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
+		resume();
 	}
 
 	@Override
@@ -226,6 +231,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose the price for your offer: ");
 		int cost = Integer.parseInt(receive());
 		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+		resume();
 	}
 
 	@Override
@@ -239,6 +245,7 @@ public class ConsoleView extends View implements ViewVisitor {
 			sendNoInput("You can buy nothing");
 			wakeUp(currentState.createTransation());
 		}
+		resume();
 	}
 	
 	@Override
@@ -269,8 +276,8 @@ public class ConsoleView extends View implements ViewVisitor {
 					selectedBonuses.put(currentBonus, bonusesSelections);
 				}
 			}	
-		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+			wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+			resume();
 		}
-		
 	}
 }
