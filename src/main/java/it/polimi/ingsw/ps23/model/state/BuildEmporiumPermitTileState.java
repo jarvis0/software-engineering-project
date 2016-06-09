@@ -17,7 +17,6 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	HandDeck avaibleCards;
 	Map<String, City> citiesMap;
 	List<Card> permissionCards;
-	int initialNobilityTrackPoints;
 	
 	public BuildEmporiumPermitTileState(String name) {
 		super(name);
@@ -30,7 +29,6 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		avaibleCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
 		citiesMap = game.getGameMap().getCitiesMap();
 		permissionCards = game.getCurrentPlayer().getPermissionHandDeck().getCards();
-		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 	}
 
 	@Override
@@ -50,7 +48,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	}
 
 	public Action createAction(String chosenCity, int chosenCard) {
-		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard, initialNobilityTrackPoints);
+		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard);
 	}
 	
 

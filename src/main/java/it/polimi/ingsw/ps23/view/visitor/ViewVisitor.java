@@ -9,7 +9,10 @@ import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
+import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
+import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.model.state.SuperBonusState;
 
 public interface ViewVisitor {
 	
@@ -23,4 +26,8 @@ public interface ViewVisitor {
 	public void visit(AdditionalMainActionState currentState);
 	public void visit(BuildEmporiumKingState currentState);
 	public void visit(BuildEmporiumPermitTileState currentState);
+	public void visit(MarketOfferPhaseState currentState);
+	public void visit(MarketBuyPhaseState currentState);
+	public void visit(SuperBonusState superBonusState);
+
 }

@@ -31,19 +31,19 @@ public class CitiesGraph {
 			 cities.add(iterator.next().toString());
 		}
 		return cities.toString(); 		//return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");
-	}
-	
+	}	
 
-	public void getRewardTokenBonuses(Player player, City arriveCity) {
+	public void getBonuses(Game game, TurnHandler turnHandler, City arriveCity) {
 		List<City> citiesContainingPlayer = new ArrayList<>();
 		citiesContainingPlayer.add(arriveCity);
 		List<City> playerCityList = new ArrayList<>();
-		playerCityList.addAll(player.getEmporiums().getBuiltEmporiumSet());
-		searchCities(citiesContainingPlayer, playerCityList, player);
+		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
+		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
+
 	}
 
-	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Player player) {
-		for(int i = 0; i < citiesContainingPlayer.size(); i++) {
+	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Game game, TurnHandler turnHandler) {
+		for(int i=0; i < citiesContainingPlayer.size(); i++) {
 			City cityAnalyzed = citiesContainingPlayer.get(i);
 			List<City> successors = Graphs.successorListOf(citiesGraph, cityAnalyzed);
 			successors.remove(cityAnalyzed);
@@ -53,13 +53,14 @@ public class CitiesGraph {
 					citiesContainingPlayer.add(city1);
 				}
 			}
-			if(!(cityAnalyzed instanceof CapitalCity)) {
-				((NormalCity)cityAnalyzed).useRewardToken(player);
+
+			if(!(cityAnalyzed instanceof CapitalCity) ){
+				((NormalCity)cityAnalyzed).useRewardToken(game, turnHandler);
 			}
 			playerCityList.remove(cityAnalyzed);
 		}
-		if(!citiesContainingPlayer.isEmpty()) {
-			searchCities(citiesContainingPlayer, playerCityList, player);
+		if(!citiesContainingPlayer.isEmpty()){
+			searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 		}
 	}
 		

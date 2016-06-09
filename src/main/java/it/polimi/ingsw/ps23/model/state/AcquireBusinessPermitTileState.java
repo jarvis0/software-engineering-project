@@ -29,9 +29,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 		context.setState(this);
 		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		politicHandDeck = new PoliticHandDeck(game.getCurrentPlayer().getPoliticHandDeck().getCards());
-		for (Region region : game.getGameMap().getGroupRegionalCity()) {
-			regionsMap.put(region.getName(), (GroupRegionalCity) region);
-		}
+		regionsMap = game.getGameMap().getRegionMap();
 	}
 
 	public String getPoliticHandDeck() {

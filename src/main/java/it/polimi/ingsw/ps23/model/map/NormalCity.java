@@ -1,7 +1,8 @@
 package it.polimi.ingsw.ps23.model.map;
 
+import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class NormalCity extends City {
 	
@@ -12,8 +13,12 @@ public class NormalCity extends City {
 		this.rewardToken = rewardToken;
 	}
 	
-	public void useRewardToken(Player player) {
-		rewardToken.useBonus(player);
+	public void useRewardToken(Game game, TurnHandler turnHandler) {
+		rewardToken.useBonus(game, turnHandler);
+	}
+	
+	public boolean hasNobilityTrackPoints() {
+		return rewardToken.hasNobilityTrackBonus();
 	}
 	
 	@Override

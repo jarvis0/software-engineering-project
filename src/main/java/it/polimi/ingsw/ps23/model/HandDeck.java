@@ -39,6 +39,10 @@ public abstract class HandDeck {
 		removeCard(removedCard);
 		return removedCard;
 	}
+	
+	public Card getCardInPosition(int index) {
+		return cards.get(index);
+	}
 
 	public Card get(int chosenCard) {
 		return cards.get(chosenCard);

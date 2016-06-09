@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.BonusSlot;
@@ -18,10 +18,11 @@ public class NobilityTrackStep implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
-	public void useBonus(Player player, TurnHandler turnHandler, List<Bonus> superBonus) {
+
+	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
-				bonus.updateBonus(player, turnHandler, superBonus);
+				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
