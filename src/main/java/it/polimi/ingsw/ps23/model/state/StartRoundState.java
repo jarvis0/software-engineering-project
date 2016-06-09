@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class StartRoundState implements State {
 	

@@ -19,7 +19,7 @@ import it.polimi.ingsw.ps23.model.map.Region;
 public class Initialization {
 	
 	//è corretto organizzare così le costanti?
-	private static final String CONFIGURATIONS_PATH = "src/main/java/it/polimi/ingsw/ps23/csv/";
+	private static final String CONFIGURATIONS_PATH = "src/main/java/it/polimi/ingsw/ps23/model/csv/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String COUNCILLORS_CSV = "councillors.csv";

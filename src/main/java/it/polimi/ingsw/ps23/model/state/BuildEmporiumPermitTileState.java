@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.model.state;
 
-import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -8,15 +7,13 @@ import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PermissionHandDeck;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumPermitTile;
-import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
+import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {
 
-	HandDeck avaibleCards;
-	Map<String, City> citiesMap;
-	List<Card> permissionCards;
+	private HandDeck availableCards;
+	private Map<String, City> citiesMap;
 	
 	public BuildEmporiumPermitTileState(String name) {
 		super(name);
@@ -25,9 +22,8 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		avaibleCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
+		availableCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
 		citiesMap = game.getGameMap().getCitiesMap();
-		permissionCards = game.getCurrentPlayer().getPermissionHandDeck().getCards();
 	}
 
 	@Override
@@ -37,12 +33,11 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	}
 
 	public String getAvaibleCards() {
-		return avaibleCards.toString();
+		return availableCards.toString();
 	}
 	
 	public String getChosenCard(int index){
-		List<Card> avaibleCardsList = avaibleCards.getCards();
-		return avaibleCardsList.get(index).toString();
+		return availableCards.getCards().get(index).toString();
 	}
 
 	public Action createAction(String chosenCity, int chosenCard) {
