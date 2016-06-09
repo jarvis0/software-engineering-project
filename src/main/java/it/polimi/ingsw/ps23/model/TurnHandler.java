@@ -45,7 +45,12 @@ public class TurnHandler {
 		superBonusSet.add(superBonus);
 	}
 	
-	public Bonus getSuperBonus(int index) {
-		return superBonusSet.get(index);
+	public boolean startSuperTurnState() {
+		return !superBonusSet.isEmpty();
+		
+	}
+	
+	public List<Bonus> getSuperBonuses() {
+		return superBonusSet;
 	}
 }

@@ -7,8 +7,6 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.view.visitor.ViewVisitor;
 
 public class ChangePermitsTileState extends ActionState {
@@ -23,9 +21,7 @@ public class ChangePermitsTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		for(Region region : game.getGameMap().getGroupRegionalCity()) {
-			permitsMap.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeckUp());
-		}
+		game.getGameMap().getPermitMap();
 	}
 
 	@Override

@@ -39,6 +39,7 @@ public class CitiesGraph {
 		List<City> playerCityList = new ArrayList<>();
 		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
 		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
+
 	}
 
 	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Game game, TurnHandler turnHandler) {
@@ -52,10 +53,11 @@ public class CitiesGraph {
 					citiesContainingPlayer.add(city1);
 				}
 			}
+
 			if(!(cityAnalyzed instanceof CapitalCity) ){
 				((NormalCity)cityAnalyzed).useRewardToken(game, turnHandler);
 			}
-				playerCityList.remove(cityAnalyzed);
+			playerCityList.remove(cityAnalyzed);
 		}
 		if(!citiesContainingPlayer.isEmpty()){
 			searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);

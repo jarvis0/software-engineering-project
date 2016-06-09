@@ -40,4 +40,5 @@ public abstract class City {
 	public List<Player> getEmporiums() {
 		return emporiumList;
 	}
+
 }

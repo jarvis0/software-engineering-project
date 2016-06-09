@@ -18,6 +18,7 @@ public class BuildEmporiumKingState extends ActionState{
 	City kingPosition;
 	HandDeck deck;
 	Map<String, City> citiesMap;
+	int initialNobilityTrackPoints;
 	
 	public BuildEmporiumKingState(String name) {
 		super(name);
@@ -26,6 +27,7 @@ public class BuildEmporiumKingState extends ActionState{
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
+		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		kingPosition = game.getKing().getPosition();
 		kingCouncil = game.getKing().getCouncil();
 		deck = game.getCurrentPlayer().getPoliticHandDeck();
@@ -56,7 +58,7 @@ public class BuildEmporiumKingState extends ActionState{
 	}
 
 	public Action createAction(List<String> removedCards, String arrivalCity) {
-		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
+		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition, initialNobilityTrackPoints);
 	}
 	
 }

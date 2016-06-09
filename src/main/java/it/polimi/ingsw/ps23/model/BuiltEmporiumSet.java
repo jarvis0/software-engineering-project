@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class BuiltEmporiumSet {
 	
@@ -40,4 +41,23 @@ public class BuiltEmporiumSet {
 		return builtEmporiumSet.toString();
 	}
 
+	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
+		BuiltEmporiumSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumSet();
+		for (City city : builtEmporiumSet) {
+			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackPoints()) {
+					citiesWithoutNobilityTrackPoints.builtEmporiumSet.add(city);
+			}
+		}
+		return citiesWithoutNobilityTrackPoints;				
+	}
+
+	public NormalCity get(String cityName) {
+		for(City city : builtEmporiumSet ) {
+			if (city.getName().equals(cityName)) {
+				return (NormalCity) city;
+			}	
+		}
+		return null;
+	}
+	
 }

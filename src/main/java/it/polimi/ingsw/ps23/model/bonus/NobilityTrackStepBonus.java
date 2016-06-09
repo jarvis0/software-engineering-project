@@ -14,7 +14,6 @@ public class NobilityTrackStepBonus extends Bonus {
 	@Override
 	public void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
 		game.getCurrentPlayer().updateNobilityPoints(getValue());
-		
 	}
 	
 }

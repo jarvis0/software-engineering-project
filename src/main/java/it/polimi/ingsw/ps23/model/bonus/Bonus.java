@@ -20,7 +20,7 @@ public abstract class Bonus implements Cloneable {
 		return name;
 	}
 	
-	protected int getValue() {
+	public int getValue() {
 		return value;
 	}
 	

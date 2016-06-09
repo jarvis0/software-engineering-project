@@ -18,6 +18,7 @@ public class NobilityTrackStep implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
+
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
@@ -32,7 +33,7 @@ public class NobilityTrackStep implements BonusSlot {
 	public void addBonus(Bonus bonus) {
 		bonuses.add(bonus);		
 	}
-	
+		
 	@Override
 	public String toString() {
 		return bonuses.toString();
