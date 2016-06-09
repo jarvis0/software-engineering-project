@@ -40,11 +40,6 @@ public class GroupRegionalCity extends Region {
 		return card;
 	}
 	
-	public void changePermitTile(int index) {
-		permissionDeckDown.getDeck().add(permissionDeckUp.getDeck().get(index));
-		permissionDeckUp.getDeck().set(index, permissionDeckDown.pickCard());
-	}
-	
 	@Override
 	public String toString() {
 		return super.toString() + "[Council: " + council + "]" + "\n" + "permissionDeck UP: " + permissionDeckUp + "\n";

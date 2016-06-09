@@ -14,7 +14,7 @@ public class NobilityTrack {
 	}
 	
 	public void takeBonus(int index, Player player, TurnHandler turnHandler) {
-		steps.get(index).useBonus(player, turnHandler);
+		//steps.get(index).useBonus(player, turnHandler);
 	}
 	
 	@Override

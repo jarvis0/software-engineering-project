@@ -24,6 +24,10 @@ public class GamePlayersSet {
 		return players.get(index);
 	}
 	
+	public int numberOfPlayer() {
+		return players.size();
+	}
+	
 	@Override
 	public String toString() {
 		return players.toString();

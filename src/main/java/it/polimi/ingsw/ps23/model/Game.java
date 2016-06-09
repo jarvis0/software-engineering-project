@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.model;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.NobilityTrack;
+import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
@@ -11,7 +12,7 @@ import it.polimi.ingsw.ps23.model.map.King;
 import it.polimi.ingsw.ps23.model.map.KingTiles;
 import it.polimi.ingsw.ps23.model.Initialization;
 
-public class Game  {
+public class Game {
 
 	private Deck politicDeck;
 	private FreeCouncillors freeCouncillors;
@@ -21,6 +22,7 @@ public class Game  {
 	private NobilityTrack nobilityTrack;
 	private GamePlayersSet gamePlayersSet;
 	private Player currentPlayer;
+	private Market currentMarket;
 
 	public Game(List<String> playersName) throws NoCapitalException {
 		Initialization init = new Initialization(playersName);
@@ -60,5 +62,17 @@ public class Game  {
 	
 	public King getKing() {
 		return king;
+	}
+	
+	public void createNewMarket() {
+		currentMarket = new Market(gamePlayersSet);
+	}
+	
+	public int getNumberOfPlayer() {
+		return gamePlayersSet.numberOfPlayer();
+	}
+	
+	public Market getMarket() {
+		return currentMarket;
 	}
 }

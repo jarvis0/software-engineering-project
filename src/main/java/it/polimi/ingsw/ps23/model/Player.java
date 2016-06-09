@@ -1,10 +1,10 @@
 package it.polimi.ingsw.ps23.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
@@ -14,37 +14,37 @@ import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
 	
-	private static final List<Card> EMPTY_HAND_DECK = new ArrayList<>();
 	private String name;
-	private int coin; //esiste un limite massimo? nel gioco è 20
-	private int assistant;
+	private int coins;
+	private int assistants;
 	private BuiltEmporiumSet builtEmporiumSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
+	private BonusTile bonusTile;
 
-	public Player(String name, int coin, int assistant, HandDeck politicHandDeck) {
+	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
-		this.coin = coin;
-		this.assistant = assistant;
+		this.coins = coins;
+		this.assistants = assistants;
 		this.politicHandDeck = politicHandDeck;
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
 		builtEmporiumSet = new BuiltEmporiumSet();
-		permissionHandDeck = new PermissionHandDeck(EMPTY_HAND_DECK);
-		permissionUsedHandDeck = new PermissionHandDeck(EMPTY_HAND_DECK);
-		
+		permissionHandDeck = new PermissionHandDeck();
+		permissionUsedHandDeck = new PermissionHandDeck();
+		bonusTile = new BonusTile();		
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
 		((PoliticHandDeck) politicHandDeck).addCards(politicDeck.pickCards(cardsNumber));
 	}
 	
-	public void pickPermitCard(Region region, int index, TurnHandler turnHandler) {
+	public void pickPermitCard(Game game, TurnHandler turnHandler, Region region, int index) {
 		Card permissionCard = ((GroupRegionalCity)region).pickPermissionCard(index);
-		((PermissionCard)permissionCard).useBonus(this, turnHandler);
+		((PermissionCard)permissionCard).useBonus(game, turnHandler);
 		((PermissionHandDeck) permissionHandDeck).addCard(permissionCard);
 	}
 	
@@ -52,14 +52,13 @@ public class Player {
 		victoryPoints += value;
 	}
 	
-	public void updateNobilityPoints(int value) { // TurnHandler turnHandler
+	public void updateNobilityPoints(int value) {
 		nobilityTrackPoints += value;
-		//dovremmo ora spostare il player nella nuova casella...ma è un po impossibile non avendo il riferimento al nobility track
 	}
 	
 	public void updateCoins(int value) throws InsufficientResourcesException {
-		if(coin + value >= 0) {
-			coin += value;
+		if(coins + value >= 0) {
+			coins += value;
 		}
 		else{
 			throw new InsufficientResourcesException();
@@ -67,8 +66,8 @@ public class Player {
 	}
 	
 	public void updateAssistants(int value) throws InsufficientResourcesException {
-		if(assistant + value >= 0){
-			assistant += value;
+		if(assistants + value >= 0){
+			assistants += value;
 		}
 		else{
 			throw new InsufficientResourcesException();
@@ -77,7 +76,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coin + " assistants: " + assistant + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 	public String showSecretStatus() {
@@ -91,16 +90,15 @@ public class Player {
 	public HandDeck getPoliticHandDeck() {
 		return politicHandDeck;
 	}
-	
 
 	public HandDeck getPermissionHandDeck() {
 		return permissionHandDeck;
 	}
 
-	public void updateEmporiumSet(City city, CitiesGraph citiesGraph ) {
+	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		try {
 			builtEmporiumSet.addBuiltEmporium(city);
-			citiesGraph.getBonuses(this, city);	
+			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}
@@ -109,9 +107,56 @@ public class Player {
 	public BuiltEmporiumSet getEmporiums(){
 		return builtEmporiumSet;
 	}
+	
+	public int getAssistants() {
+		return assistants;
+	}
+	
+	public int getCoins() {
+		return coins;
+	}
+	
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
 
 	public void usePermissionCard(int chosenCard) {
-		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));
-		
+		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));	
+	}
+	
+	public void soldPoliticCards(List<Card> cards) {
+		for (Card card : cards) {
+			politicHandDeck.removeCard(card);
+		}		
+	}
+	
+	public void soldPermissionCards(List<Card> cards) {
+		for (Card card : cards) {
+			permissionHandDeck.removeCard(card);
+		}
+	}
+	
+	public void buyPoliticCards(List<Card> cards) {
+		for (Card card : cards) {
+			politicHandDeck.addCard(card);
+		}		
+	}
+	
+	public void buyPermissionCards(List<Card> cards) {
+		for (Card card : cards) {
+			permissionHandDeck.addCard(card);
+		}
+	}
+	
+	public boolean hasFinished() {
+		return builtEmporiumSet.containsTenEmporium();
+	}
+	
+	public void addBonusTile(Bonus bonus) {
+		bonusTile.addTile(bonus);
+	}
+
+	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
+		bonusTile.useBonus(game, turnHandler);
 	}
 }

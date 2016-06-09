@@ -14,6 +14,8 @@ import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
+import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
+import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
@@ -84,7 +86,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(GameStatusState currentState) {
-		sendNoInput("Map: " + currentState.getGameMap().toString() + "\nPlayers: " + currentState.getGamePlayersSet().toString()+"\nKings's Council: " +currentState.getKingCouncil().toString());
+		sendNoInput(currentState.getStatus());
 		wakeUp();
 	}
 
@@ -160,7 +162,7 @@ public class ConsoleView extends View implements ViewVisitor {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		sendWithInput("Choose a region:" +currentState.getPermitsMap());
+		sendWithInput("Choose a region:" + currentState.getPermitsMap());
 		String chosenRegion = receive();
 		wakeUp(currentState.createAction(chosenRegion));
 
@@ -184,11 +186,55 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		sendWithInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " +currentState.getAvaibleCards());
+		sendWithInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
 		int chosenCard = Integer.parseInt(receive()) - 1;
 		sendWithInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 		String chosenCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
+	}
+
+	@Override
+	public void visit(MarketOfferPhaseState currentState) {
+		List<String> chosenPoliticCards = new ArrayList<>();
+		List<Integer> chosenPermissionCards = new ArrayList<>();
+		sendNoInput("It's " + currentState.getCurrentPlayer() + " market phase turn.");
+		if(currentState.canSellPoliticCards()) {
+			sendWithInput("How many politic cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards; i++) {
+				sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
+				chosenPoliticCards.add(receive());
+			}
+		}
+		if(currentState.canSellPoliticCards()) {
+			sendWithInput("How many permission cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards; i++) {
+				sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
+				chosenPermissionCards.add(Integer.parseInt(receive()));
+			}
+		}
+		int chosenAssistants = 0;
+		if(currentState.canSellAssistants()) {
+			sendWithInput("Select the number of assistants " + currentState.getAssistants());
+			chosenAssistants = Integer.parseInt(receive());
+		}
+		sendWithInput("Choose the price for your offer: ");
+		int cost = Integer.parseInt(receive());
+		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+	}
+
+	@Override
+	public void visit(MarketBuyPhaseState currentState) {
+		sendNoInput("Market turn, current Player: " + currentState.getCurrentPlayer());
+		if(currentState.canBuy()) {
+			sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
+			wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+		}
+		else {
+			sendNoInput("You can buy nothing");
+			wakeUp(currentState.createTransation());
+		}
 	}
 	
 }

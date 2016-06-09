@@ -14,38 +14,37 @@ import it.polimi.ingsw.ps23.model.map.NormalCity;
 
 public class CitiesGraph {
 	
-	private DirectedGraph<City, DefaultEdge> citiesGraph;
+	private DirectedGraph<City, DefaultEdge> graph;
 	
-	public CitiesGraph(DirectedGraph<City, DefaultEdge> citiesGraph) {
-		this.citiesGraph = citiesGraph;
+	public CitiesGraph(DirectedGraph<City, DefaultEdge> graph) {
+		this.graph = graph;
 	}
 	
 	public DirectedGraph<City, DefaultEdge> getGraph() {
-		return citiesGraph;
+		return graph;
 	}
 	@Override
 	public String toString() {
 		List<String> cities = new ArrayList<>();
-		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(citiesGraph);
+		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
 		while(iterator.hasNext()){
 			 cities.add(iterator.next().toString());
 		}
 		return cities.toString(); 		//return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");
-	}
-	
+	}	
 
-	public void getBonuses(Player player, City arriveCity) {
-	List<City> citiesContainingPlayer = new ArrayList<>();
-	citiesContainingPlayer.add(arriveCity);
-	List<City> playerCityList = new ArrayList<>();
-	playerCityList.addAll(player.getEmporiums().getBuiltEmporiumSet());
-	searchCities(citiesContainingPlayer, playerCityList, player);
+	public void getBonuses(Game game, TurnHandler turnHandler, City arriveCity) {
+		List<City> citiesContainingPlayer = new ArrayList<>();
+		citiesContainingPlayer.add(arriveCity);
+		List<City> playerCityList = new ArrayList<>();
+		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
+		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 	}
 
-	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Player player) {
+	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Game game, TurnHandler turnHandler) {
 		for(int i=0; i < citiesContainingPlayer.size(); i++) {
 			City cityAnalyzed = citiesContainingPlayer.get(i);
-			List<City> successors = Graphs.successorListOf(citiesGraph, cityAnalyzed);
+			List<City> successors = Graphs.successorListOf(graph, cityAnalyzed);
 			successors.remove(cityAnalyzed);
 			citiesContainingPlayer.remove(cityAnalyzed);
 			for (City city1 : playerCityList) {
@@ -54,12 +53,12 @@ public class CitiesGraph {
 				}
 			}
 			if(!(cityAnalyzed instanceof CapitalCity) ){
-				((NormalCity)cityAnalyzed).useRewardToken(player);
+				((NormalCity)cityAnalyzed).useRewardToken(game, turnHandler);
 			}
 				playerCityList.remove(cityAnalyzed);
 		}
 		if(!citiesContainingPlayer.isEmpty()){
-			searchCities(citiesContainingPlayer, playerCityList, player);
+			searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 		}
 	}
 		

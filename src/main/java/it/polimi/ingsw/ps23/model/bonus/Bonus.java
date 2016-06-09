@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.model.bonus;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public abstract class Bonus implements Cloneable {
@@ -14,12 +14,8 @@ public abstract class Bonus implements Cloneable {
 		this.name = name;
 	}
 	
-	public abstract void updateBonus(Player player, TurnHandler turnHandler) throws InsufficientResourcesException;
-	
-	public abstract void updateBonusReward(Player player) throws InsufficientResourcesException;
+	public abstract void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException;
 
-	
-	
 	public String getName() {
 		return name;
 	}
