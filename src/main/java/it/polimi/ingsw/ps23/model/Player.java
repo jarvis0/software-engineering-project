@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
@@ -21,6 +22,7 @@ public class Player {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
+	private BonusTile bonusTile;
 
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
@@ -32,7 +34,7 @@ public class Player {
 		builtEmporiumSet = new BuiltEmporiumSet();
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
-		
+		bonusTile = new BonusTile();		
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
@@ -112,6 +114,10 @@ public class Player {
 	public int getCoins() {
 		return coins;
 	}
+	
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
 
 	public void usePermissionCard(int chosenCard) {
 		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));	
@@ -139,5 +145,17 @@ public class Player {
 		for (Card card : cards) {
 			permissionHandDeck.addCard(card);
 		}
+	}
+	
+	public boolean hasFinished() {
+		return builtEmporiumSet.containsTenEmporium();
+	}
+	
+	public void addBonusTile(Bonus bonus) {
+		bonusTile.addTile(bonus);
+	}
+
+	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
+		bonusTile.useBonus(game, turnHandler);
 	}
 }
