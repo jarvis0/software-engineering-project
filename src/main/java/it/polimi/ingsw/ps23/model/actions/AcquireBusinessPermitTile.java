@@ -15,7 +15,7 @@ public class AcquireBusinessPermitTile implements Action {
 	private Region chosenRegion;
 	private int chosenPermissionCard;
 	
-	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard, int initialNobilityTrackPoints) {
+	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard) {
 		this.removedPoliticCards = removedPoliticCards;
 		this.chosenRegion = chosenRegion;
 		this.chosenPermissionCard = chosenPermissionCard;

@@ -189,4 +189,21 @@ public class Player {
 	public int getNumberOfPoliticCard() {
 		return politicHandDeck.getHandSize();
 	}
+
+	public void checkEmporiumsGroups(Game game) {
+		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumSet);
+		if(completedRegion != null) {
+			bonusTile.addTile(completedRegion.getBonusTile());
+			if(!(game.getKingTileSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTileSet().pop());
+			}
+		}
+		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumSet);
+		if(completedRegion != null) {
+			bonusTile.addTile(completedRegion.getBonusTile());
+			if(!(game.getKingTileSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTileSet().pop());
+			}
+		}
+	}
 }

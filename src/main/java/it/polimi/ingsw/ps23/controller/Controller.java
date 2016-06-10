@@ -23,6 +23,7 @@ public class Controller implements ControllerObserver {
 		model.setUpModel(playersName);
 	}
 	
+	@Override
 	public void update() {
 		model.setPlayerTurn();
 	}

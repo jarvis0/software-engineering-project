@@ -55,7 +55,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	}
 	
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) {
-		return new AcquireBusinessPermitTile(removedPoliticCards, (GroupRegionalCity)regionsMap.get(chosenCouncil), chosenPermissionCard, initialNobilityTrackPoints);
+		return new AcquireBusinessPermitTile(removedPoliticCards, (GroupRegionalCity)regionsMap.get(chosenCouncil), chosenPermissionCard);
 	}
 
 }

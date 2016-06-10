@@ -27,7 +27,7 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 		if(!currentPlayer.getPermissionTotalHandeck().getCards().isEmpty()){
 		return  "You have encountred a Recycle Building Permit Bonus on Nobility Track \nchoose the used permit tile for take bonuses: " +currentPlayer.getPermissionTotalHandeck().toString();
 		}
-	return "Impossible using Recycle Building Permit Bonus because your Permission Hand Deck is empty (0 for skip)";
+	return "Impossible using Recycle Building Permit Bonus because your Permission Hand Deck is empty (0 to skip)";
 	}	
 
 	@Override

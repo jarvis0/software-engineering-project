@@ -19,6 +19,7 @@ public class BuildEmporiumPermitTile implements Action {
 	public void doAction(Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().updateEmporiumSet(game, turnHandler, buildInThisCity);
 		game.getCurrentPlayer().usePermissionCard(chosenCard);
+		game.getCurrentPlayer().checkEmporiumsGroups(game);
 		turnHandler.useMainAction();
 	}
 

@@ -12,8 +12,12 @@ public class KingTileSet {
 		this.kingTiles = tilesStack;
 	}
 	
-	public void pop() {
-		kingTiles.pop();
+	public Bonus pop() {
+		return kingTiles.pop();
+	}
+	
+	public boolean isEmpty() {
+		return kingTiles.isEmpty();
 	}
 	
 	@Override

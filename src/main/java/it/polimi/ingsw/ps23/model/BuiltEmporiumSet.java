@@ -58,7 +58,6 @@ public class BuiltEmporiumSet {
 			}	
 		}
 		return null;
-		//TODO remove return null
 	}
 	
 }

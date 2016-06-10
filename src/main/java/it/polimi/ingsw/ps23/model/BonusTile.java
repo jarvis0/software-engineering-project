@@ -16,7 +16,7 @@ public class BonusTile {
 	}
 	
 	public void addTile(Bonus bonus) {
-		bonuses.add(bonus);
+			bonuses.add(bonus);
 	}
 	
 	public void useBonus(Game game, TurnHandler turnHandler) {

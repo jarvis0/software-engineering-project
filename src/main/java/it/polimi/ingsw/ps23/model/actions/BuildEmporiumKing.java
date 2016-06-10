@@ -46,6 +46,7 @@ public class BuildEmporiumKing implements Action {
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}
+		game.getCurrentPlayer().checkEmporiumsGroups(game);
 		turnHandler.useMainAction();
 	}
 

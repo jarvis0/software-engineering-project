@@ -4,6 +4,7 @@ import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class GroupRegionalCity extends Region {
 	
+	private static final int CARDS_NUMBER_UP = 2;
 	private Council council;
 	private Deck permissionDeckDown;
 	private Deck permissionDeckUp;
@@ -19,7 +20,7 @@ public class GroupRegionalCity extends Region {
 	
 	public void setPermissionDeck(Deck permissionDeck) {
 		this.permissionDeckDown = permissionDeck;
-		permissionDeckUp = new Deck(permissionDeckDown.pickCards(2));
+		permissionDeckUp = new Deck(permissionDeckDown.pickCards(CARDS_NUMBER_UP));
 	}
 
 	public Deck getPermissionDeck() {

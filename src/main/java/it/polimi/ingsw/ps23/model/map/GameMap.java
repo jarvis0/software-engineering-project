@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.model.BuiltEmporiumSet;
 import it.polimi.ingsw.ps23.model.CitiesGraph;
 
 public class GameMap {
@@ -69,6 +70,24 @@ public class GameMap {
 			print += region.toString();
 		}
 		return print;
+	}
+
+	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+		for (Region region : groupRegionalCities) {
+			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+				return region;
+			}
+		}
+		return null;
+	}
+
+	public Region groupColoredCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+		for (Region region : groupColoredCities) {
+			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+				return region;
+			}
+		}
+		return null;
 	}
 
 }
