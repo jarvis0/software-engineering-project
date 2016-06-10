@@ -9,6 +9,7 @@ import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.model.state.Context;
+import it.polimi.ingsw.ps23.model.state.EndGameState;
 import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
@@ -52,7 +53,12 @@ public class Model extends ModelObservable {
 	public void setPlayerTurn() {
 		if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
 			if(++currentPlayerIndex < game.getNumberOfPlayer()) {
-				changePlayer();
+				if(new EndGame().isGameEnded(game, turnHandler)) {
+					setEndGameState();
+				}
+				else {
+					changePlayer();
+				}
 			}
 			else {
 				setUpMarket();
@@ -62,6 +68,14 @@ public class Model extends ModelObservable {
 		setStartTurnState();
 	}
 	
+	private void setEndGameState() {
+		context = new Context();
+		EndGameState endGameState = new EndGameState();	
+		endGameState.changeState(context, game);
+		wakeUp(endGameState);
+		
+	}
+
 	private void setUpMarket() {
 		setStartingPlayerIndex();
 		game.createNewMarket();
