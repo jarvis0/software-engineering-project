@@ -26,7 +26,7 @@ public class RewardToken implements BonusSlot {
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
-		bonus.updateBonus(game, turnHandler);
+				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
 				e.printStackTrace();
 			}

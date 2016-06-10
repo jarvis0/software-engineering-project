@@ -29,9 +29,7 @@ public class BuiltEmporiumSet {
 	public boolean containsTenEmporium() {
 		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
-	
-	
-	
+
 	public List<City> getBuiltEmporiumSet() {
 		return builtEmporiums;
 	}

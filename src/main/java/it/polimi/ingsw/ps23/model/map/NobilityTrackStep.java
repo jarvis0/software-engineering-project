@@ -18,7 +18,6 @@ public class NobilityTrackStep implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
-
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
