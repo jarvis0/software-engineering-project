@@ -93,7 +93,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 		
 	}
-	
+	//TODO remove this comment
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		List<String> removedCards = new ArrayList<>();
