@@ -22,7 +22,7 @@ public class AssistantToElectCouncillor implements Action {
 	public void doAction(Game game, TurnHandler turnHandler) {
 		game.getFreeCouncillors().electCouncillor(councillor, council);
 		try {
-			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);;
+			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
 			e.printStackTrace();
 		}
