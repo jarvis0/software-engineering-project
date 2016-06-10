@@ -5,23 +5,23 @@ import java.util.List;
 
 public class RewardTokenSet {
 
-	private List<RewardToken> rewardTokenSet;
+	private List<RewardToken> rewardTokens;
 	
 	public RewardTokenSet(List<RewardToken> rewardTokenSet) {
 		Collections.shuffle(rewardTokenSet);
-		this.rewardTokenSet = rewardTokenSet;
+		this.rewardTokens = rewardTokenSet;
 	}
 
 	public List<RewardToken> getRewardTokenSet() {
-		return rewardTokenSet;
+		return rewardTokens;
 	}
 	
 	public int rewardTokenSize() {
-		return rewardTokenSet.size();
+		return rewardTokens.size();
 	}
 	
 	public RewardToken removeRewardToken(int index) {
-		return rewardTokenSet.remove(index);
+		return rewardTokens.remove(index);
 	}
 	
 	@Override

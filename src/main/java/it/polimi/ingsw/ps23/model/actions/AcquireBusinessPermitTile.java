@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.Region;
 
-public class AcquireBusinessPermitTile extends MainAction {
+public class AcquireBusinessPermitTile implements Action {
 
 	private List<String> removedPoliticCards;
 	private Region chosenRegion;

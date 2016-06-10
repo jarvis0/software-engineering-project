@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.model.map;
 
 import it.polimi.ingsw.ps23.model.GameColor;
 
-public class PoliticCard extends Card {
+public class PoliticCard implements Card {
 	
 	private static final String MULTI = "multi";
 	

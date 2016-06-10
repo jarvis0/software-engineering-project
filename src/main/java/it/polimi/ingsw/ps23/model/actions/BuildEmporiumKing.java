@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.model.map.City;
 
 
-public class BuildEmporiumKing extends MainAction {
+public class BuildEmporiumKing implements Action {
 
 	private static final double ROAD_COST = -2;
 	private City arriveCity;

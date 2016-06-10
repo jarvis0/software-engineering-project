@@ -9,11 +9,11 @@ import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorSet;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.King;
-import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.KingTileSet;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Initialization {
@@ -36,10 +36,10 @@ public class Initialization {
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private Deck politicDeck;
-	private FreeCouncillors freeCouncillors;
+	private FreeCouncillorSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTiles kingTiles;
+	private KingTileSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private GamePlayersSet gamePlayerSet;
 	
@@ -57,7 +57,7 @@ public class Initialization {
 		return politicDeck;
 	}
 
-	public FreeCouncillors getFreeCouncillors() {
+	public FreeCouncillorSet getFreeCouncillors() {
 		return freeCouncillors;
 	}
 
@@ -69,7 +69,7 @@ public class Initialization {
 		return king;
 	}
 
-	public KingTiles getKingTiles() {
+	public KingTileSet getKingTiles() {
 		return kingTiles;
 	}
 

@@ -4,7 +4,7 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.City;
 
-public class BuildEmporiumPermitTile extends MainAction {
+public class BuildEmporiumPermitTile implements Action {
 
 	City buildInThisCity;
 	private int chosenCard;
