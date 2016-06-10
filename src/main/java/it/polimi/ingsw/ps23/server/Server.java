@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
@@ -21,6 +23,7 @@ public class Server {
 	
 	private static final int PORT = 12345;
 	private static final int TIMEOUT = 1;
+	private static final String LOGGER_NAME = "Exception logger";
 	
 	private ExecutorService executor;
 	
@@ -33,18 +36,25 @@ public class Server {
 	private Map<String, Connection> playingConnections; //super-ridondante
 	
 	private PrintStream output;
+	private Logger logger;
 
 	private Model model;
 	private List<ConsoleView> consoleViews;
 	private Controller controller;
 	
-	private Server() throws IOException {
-		serverSocket = new ServerSocket(PORT);
+	private Server() {
+		output = new PrintStream(System.out);
+		logger = Logger.getLogger(LOGGER_NAME);
+		try {
+			serverSocket = new ServerSocket(PORT);
+		} catch (IOException e) {
+			output.println("Cannot initialize the server connection socket. The program ends.");
+			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
+		}
 		executor = Executors.newCachedThreadPool();
 		connections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
 		playingConnections = new HashMap<>();
-		output = new PrintStream(System.out);
 	}
 	
 	private synchronized void registerConnection(Connection c) {
@@ -79,7 +89,8 @@ public class Server {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				output.println("Cannot wait new game countdown. The server ends.");
+				logger.log(Level.SEVERE, "Cannot wait new game countdown.", e);
 			}
 			timer.cancel();
 			for(Connection connection : connections) {
@@ -125,7 +136,8 @@ public class Server {
 			registerConnection(connection);
 			executor.submit(connection);
 		} catch (IOException e) {
-			output.println("Connection error.");
+			output.println("Cannot create a new connection socket. The server ends.");
+			logger.log(Level.SEVERE, "Cannot create a new connection socket.", e);
 		}
 	}
 
@@ -145,12 +157,8 @@ public class Server {
 	
 	public static void main(String[] args) {
 		Server server;
-		try {
-			server = new Server();
-			server.run();
-		} catch (IOException e) {
-			System.out.println("Cannot initialize Server.");
-		}		
+		server = new Server();
+		server.run();
 	}
 
 }
