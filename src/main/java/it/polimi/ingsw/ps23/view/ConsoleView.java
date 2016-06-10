@@ -1,13 +1,10 @@
 package it.polimi.ingsw.ps23.view;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
@@ -26,191 +23,232 @@ import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.model.state.State;
 import it.polimi.ingsw.ps23.model.state.StateCache;
+import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.model.state.SuperBonusState;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ConsoleView extends View implements ViewVisitor {
 	
-	private Scanner scanner;
-	private PrintStream output;
+	private static final String NO_INPUT = "NOINPUTNEEDED";
+	
+	private Connection connection;
+
+	private String clientName;
+
+	private List<ConsoleView> consoleViews;
+
 	private State state;
 	
-	public ConsoleView(InputStream inputStream, OutputStream output) {
-		this.scanner = new Scanner(inputStream);
-		this.output = new PrintStream(output);
-	}	
-
-	private void setPlayersNumber() {
-		output.print("Players number: ");
-		int playersNumber = scanner.nextInt();
-		scanner.nextLine();
-		List<String> playersName = new ArrayList<>();
-		for(int i = 0; i < playersNumber; i++) {
-			output.print("Name Player " + (i + 1) + ": ");
-			playersName.add(scanner.nextLine());
-		}
-		wakeUp(playersName);
+	private PrintStream output;
+	
+	public ConsoleView(String clientName, Connection connection, PrintStream output) {
+		this.connection = connection;
+		this.output = output;
+		this.clientName = clientName;
 	}
 	
+	public void setOtherViews(List<ConsoleView> consoleViews) {
+		this.consoleViews = consoleViews;
+	}
+	
+	public void update(State state) {
+		this.state = state;
+	}
+
 	@Override
-	public void run() {
-		setPlayersNumber();
+	public synchronized void run() {
 		while(true) {
 			state.acceptView(this);
 		}
 	}
-
-	@Override
-	public void update(State state) {
-		this.state = state;
+	
+	private void sendNoInput(String message) {
+		connection.send(NO_INPUT + message);
+	}
+	
+	private void sendWithInput(String message) {
+		connection.send(message);
+	}
+	
+	private String receive() {
+		return connection.receive();
+	}
+	
+	private synchronized void pause() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public synchronized void threadWakeUp() {
+		notifyAll();
+	}
+	
+	private synchronized void resume() {
+		connection.getServer().resumeView(consoleViews, this);
 	}
 	
 	@Override
 	public void visit(GameStatusState currentState) {
-		output.println(currentState.getStatus());
+		sendNoInput(currentState.getStatus());
 		wakeUp();
 	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
-		output.println("CURRENT PLAYER: " + player.toString() + player.showSecretStatus());
-		output.print(currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
-		try {
-			wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
+		output.println("Current player: " + player.getName());
+		if(player.getName().equals(clientName)) {
+			sendWithInput("Current player: " + player.toString() + player.showSecretStatus() + "\nChoose an action to perform? " + currentState.getAvaiableAction());
+			try {
+				wakeUp(StateCache.getAction(receive().toLowerCase()));
+			}
+			catch(NullPointerException e) {
+				wakeUp();
+			}
 		}
-		catch(NullPointerException e) {
+		else {
+			sendNoInput("It's player " + player.getName() + " turn.");
+			pause();
 			wakeUp();
 		}
 	}
-	
+
 	@Override
 	public void visit(ElectCouncillorState currentState) {
-		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
-		String chosenCouncillor = scanner.nextLine().toLowerCase();
-		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
-		String chosenBalcony = scanner.nextLine().toLowerCase();
+		sendWithInput("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
+		String chosenCouncillor = receive().toLowerCase();
+		sendWithInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
+		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
-		
+		resume();
 	}
-	
+
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		List<String> removedCards = new ArrayList<>();
-		output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
-		String chosenCouncil = scanner.nextLine().toLowerCase();
-		output.println("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
-		int numberOfCards = Integer.parseInt(scanner.nextLine());
+		sendWithInput("Choose a council to satisfy: " + currentState.getCouncilsMap());
+		String chosenCouncil = receive().toLowerCase();
+		sendWithInput("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
+		int numberOfCards = Integer.parseInt(receive());
 		boolean finished = false;
 		for(int i = 0; i < numberOfCards && !finished; i++) {
-			output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
-			String chosenCard = scanner.nextLine().toLowerCase();
+			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
+			String chosenCard = receive().toLowerCase();
 			removedCards.add(chosenCard);
 		}
-		output.print("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
-		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
+		sendWithInput("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
+		int chosenCard = Integer.parseInt(receive()) - 1;
 		wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));
+		resume();
 		
 	}
 
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
-		output.println("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
-		String chosenCouncillor = scanner.nextLine().toLowerCase();
-		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
-		String chosenBalcony = scanner.nextLine().toLowerCase();
+		sendWithInput("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
+		String chosenCouncillor = receive().toLowerCase();
+		sendWithInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
+		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
+		resume();
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
 		wakeUp(currentState.createAction());
+		resume();
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		wakeUp(currentState.createAction());
-		
+		resume();
 	}
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		output.println("Choose a region:" + currentState.getPermitsMap());
-		String chosenRegion = scanner.nextLine();
+		sendWithInput("Choose a region:" + currentState.getPermitsMap());
+		String chosenRegion = receive();
 		wakeUp(currentState.createAction(chosenRegion));
-
+		resume();
 	}
-	
+
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		List<String> removedCards = new ArrayList<>();
-		output.println("Choose the number of cards you want for satisfy the King Council: "+currentState.getAvailableCardsNumber());
-		int numberOfCards = Integer.parseInt(scanner.nextLine());
-		output.println("player hand deck:" + currentState.getDeck());
+		sendWithInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
+		int numberOfCards = Integer.parseInt(receive());
+		sendWithInput("player hand deck:" + currentState.getDeck());
 		for (int i=0; i<numberOfCards; i++) {
-			output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
-			String chosenCard = scanner.nextLine().toLowerCase();
+			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
+			String chosenCard = receive().toLowerCase();
 			removedCards.add(chosenCard);
 		}
-		output.println("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"]");
-		output.println("insert the arrival city: ");
-		String arrivalCity = scanner.nextLine().toUpperCase();
+		sendWithInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
+		String arrivalCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
+		resume();
 	}
 	
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		output.println("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
-		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
-		output.println("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
-		String chosenCity = scanner.nextLine().toUpperCase();
+		sendWithInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
+		int chosenCard = Integer.parseInt(receive()) - 1;
+		sendWithInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
+		String chosenCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
+		resume();
 	}
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		List<Integer> chosenPermissionCards = new ArrayList<>();
-		output.println("It's " + currentState.getCurrentPlayer() + " market phase turn.");
+		sendNoInput("It's " + currentState.getCurrentPlayer() + " market phase turn.");
 		if(currentState.canSellPoliticCards()) {
-			output.println("How many politic cards do you want to use? ");
-			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			sendWithInput("How many politic cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(receive());
 			for(int i = 0; i < numberOfCards; i++) {
-				output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
-				chosenPoliticCards.add(scanner.nextLine());
+				sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
+				chosenPoliticCards.add(receive());
 			}
 		}
 		if(currentState.canSellPoliticCards()) {
-			output.println("How many permission cards do you want to use? ");
-			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			sendWithInput("How many permission cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(receive());
 			for(int i = 0; i < numberOfCards; i++) {
-				output.println("Select a card from this list: " + currentState.getPermissionHandDeck());
-				chosenPermissionCards.add(Integer.parseInt(scanner.nextLine()));
+				sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
+				chosenPermissionCards.add(Integer.parseInt(receive()));
 			}
 		}
 		int chosenAssistants = 0;
 		if(currentState.canSellAssistants()) {
-			output.println("Select the number of assistants " + currentState.getAssistants());
-			chosenAssistants = Integer.parseInt(scanner.nextLine());
+			sendWithInput("Select the number of assistants " + currentState.getAssistants());
+			chosenAssistants = Integer.parseInt(receive());
 		}
-		output.println("Choose the price for your offer: ");
-		int cost = Integer.parseInt(scanner.nextLine());
+		sendWithInput("Choose the price for your offer: ");
+		int cost = Integer.parseInt(receive());
 		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+		resume();
 	}
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
-		output.println("Market turn, current Player: " + currentState.getCurrentPlayer());
+		sendNoInput("Market turn, current Player: " + currentState.getCurrentPlayer());
 		if(currentState.canBuy()) {
-			output.println("Avaible offers: " + currentState.getAvaiableOffers());
-			wakeUp(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
+			sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
+			wakeUp(currentState.createTransation(Integer.parseInt(receive())));
 		}
 		else {
-			output.println("You can buy nothing");
+			sendNoInput("You can buy nothing");
 			wakeUp(currentState.createTransation());
 		}
+		resume();
 	}
-
+	
 	@Override
 	public void visit(SuperBonusState currentState) {
 		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
@@ -220,11 +258,11 @@ public class ConsoleView extends View implements ViewVisitor {
 			int numberOfCurrentBonus = currentBonus.getValue();
 			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
-					output.println(currentState.useBonus(currentBonus));
-					chosenRegion = scanner.nextLine().toLowerCase();
+					sendWithInput(currentState.useBonus(currentBonus));
+					chosenRegion = receive().toLowerCase();
 					currentState.analyzeInput(chosenRegion, currentBonus);
 				}
-				output.println(currentState.useBonus(currentBonus));
+				sendWithInput(currentState.useBonus(currentBonus));
 				List<String> bonusesSelections = new ArrayList<>();
 				if (selectedBonuses.get(currentBonus) != null) {			
 					bonusesSelections = selectedBonuses.get(currentBonus);
@@ -232,20 +270,22 @@ public class ConsoleView extends View implements ViewVisitor {
 				}	
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
 					bonusesSelections.add(chosenRegion);
-					bonusesSelections.add(scanner.nextLine());
+					bonusesSelections.add(receive());
 				}
 				else {
-					bonusesSelections.add(scanner.nextLine());
+					bonusesSelections.add(receive());
 				}
 				selectedBonuses.put(currentBonus, bonusesSelections);
 			}	
 		}
 		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+		resume();
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
-		output.println(currentState.getWinner());
-		
+		sendNoInput(currentState.getWinner());
+		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
 	}
+	
 }

@@ -53,7 +53,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);
 	}
-	
+
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) {
 		return new AcquireBusinessPermitTile(removedPoliticCards, (GroupRegionalCity)regionsMap.get(chosenCouncil), chosenPermissionCard);
 	}

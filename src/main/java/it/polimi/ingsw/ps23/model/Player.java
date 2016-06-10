@@ -14,7 +14,7 @@ import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
-
+	
 	private String name;
 	private int coins;
 	private int assistants;

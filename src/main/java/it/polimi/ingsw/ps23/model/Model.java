@@ -181,5 +181,5 @@ public class Model extends ModelObservable {
 		superBonusGiver.values(game, turnHandler);
 		setGameStatusState();
 	}
-
+	
 }
