@@ -6,7 +6,6 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.NobilityTrackStep;
 
-//valori null ?
 public class NobilityTrackFactory {
 
 	public NobilityTrack makeNobilityTrack(List<String[]> rawNobilityTrackSteps) {
