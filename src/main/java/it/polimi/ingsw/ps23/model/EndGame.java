@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class EndGame {
@@ -38,66 +39,49 @@ public class EndGame {
 	}
 	
 	private void getVictoryPointsForNobilityTrack() {
-		List<Player> firstPlace = new ArrayList<>();
-		List<Player> secondPlace = new ArrayList<>();
-		for (Player player : game.getGamePlayersSet().getPlayers()) {
-			if (!firstPlace.isEmpty()) {
-				if(player.getNobilityTrackPoints() >= firstPlace.get(0).getNobilityTrackPoints()) {
-					if(player.getNobilityTrackPoints() > firstPlace.get(0).getNobilityTrackPoints()) {
-						secondPlace.clear();
-						secondPlace.addAll(firstPlace);
-						firstPlace.clear();
-					}
-					firstPlace.add(player);
-				}
-				else {
-					if(!secondPlace.isEmpty()) {
-						if(player.getNobilityTrackPoints() >= secondPlace.get(0).getNobilityTrackPoints()) {
-							if(player.getNobilityTrackPoints() > secondPlace.get(0).getNobilityTrackPoints()) {
-								secondPlace.clear();
-							}
-							secondPlace.add(player);
-						}
-					}
-					else {
-						secondPlace.add(player);
-					}
-				}
+		List<Player> players = new ArrayList<>();
+		players.addAll(game.getGamePlayersSet().getPlayers());
+		Collections.sort(players, new NobilityTrackComparator());
+		players = takeFirstPlace(players);
+		takeSecondPlace(players);
+	}
+	
+	private List<Player> takeFirstPlace(List<Player> players) {
+		int max = players.get(0).getAssistants();
+		players.remove(players.size() - 1).updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
+		for(int i = players.size(); i >= 0; i--) {
+			if(players.get(i).getAssistants() == max) {
+				players.remove(i).updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
 			}
 			else {
-				firstPlace.add(player);
+				return players;
 			}
 		}
-		if(firstPlace.size() > 1) {
-			for(Player player : firstPlace) {
-				player.updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
+		return players;
+	}
+	
+	private void takeSecondPlace(List<Player> players) {
+		int max = players.get(0).getAssistants();
+		players.remove(players.size() - 1).updateVictoryPoints(NOBILITY_TRACK_POINTS_SECOND_PLACE);
+		for(int i = players.size(); i >= 0; i--) {
+			if(players.get(i).getAssistants() == max) {
+				players.remove(i).updateVictoryPoints(NOBILITY_TRACK_POINTS_SECOND_PLACE);
 			}
-		}
-		else {
-			firstPlace.get(0).updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
-			for(Player player : secondPlace) {
-				player.updateVictoryPoints(NOBILITY_TRACK_POINTS_SECOND_PLACE);
+			else {
+				return;
 			}
 		}
 	}
 
 	private void getVictoryPointsForPermissionHandDeck() {
-		List<Player> firstPlace = new ArrayList<>();
+		List<Player> players = new ArrayList<>();
+		Collections.sort(players, new PermissionTileComparator());
+		players.get(0).updateVictoryPoints(PERMISSION_CARD_POINTS);
+		int max = players.remove(0).getNumberOfPermissionCard();
 		for(Player player : game.getGamePlayersSet().getPlayers()) {
-			if(!firstPlace.isEmpty()) {
-				if(player.getNobilityTrackPoints() > firstPlace.get(0).getNobilityTrackPoints()) {
-					firstPlace.clear();
-					firstPlace.add(player);
-				}
-				if(player.getNobilityTrackPoints() == firstPlace.get(0).getNobilityTrackPoints()) {
-					firstPlace.add(player);
-				}				
+			if(player.getNumberOfPermissionCard() < max) {
+				return;
 			}
-			else {
-				firstPlace.add(player);
-			}
-		}
-		for(Player player : firstPlace) {
 			player.updateVictoryPoints(PERMISSION_CARD_POINTS);
 		}
 	}

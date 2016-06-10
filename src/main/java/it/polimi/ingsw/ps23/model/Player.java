@@ -50,8 +50,7 @@ public class Player {
 	
 	public void updateVictoryPoints(int value) {
 		victoryPoints += value;
-	}
-	
+	}	
 
 	public void updateNobilityPoints(int value) { 
 		nobilityTrackPoints += value;
@@ -130,6 +129,10 @@ public class Player {
 	public int getNobilityTrackPoints() {
 		return nobilityTrackPoints;
 	}
+	
+	public int getVictoryPoints() {
+		return victoryPoints;
+	}
 
 	public void usePermissionCard(int chosenCard) {
 		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));	
@@ -177,5 +180,13 @@ public class Player {
 
 	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
 		bonusTile.useBonus(game, turnHandler);
+	}
+	
+	public int getNumberOfPermissionCard() {
+		return permissionHandDeck.getHandSize() + permissionUsedHandDeck.getHandSize();
+	}
+	
+	public int getNumberOfPoliticCard() {
+		return politicHandDeck.getHandSize();
 	}
 }
