@@ -32,7 +32,6 @@ public abstract class City {
 		if(emporiumList.size() != EMPTY){
 			assitantsCost =	-emporiumList.size();
 		}
-		
 		emporiumList.add(player); 
 		return assitantsCost;
 	}
@@ -41,4 +40,11 @@ public abstract class City {
 		return emporiumList;
 	}
 
+	protected List<String> getEmporiumsPlayersList() {
+		List<String> emporiumsPlayersList = new ArrayList<>();
+		for(Player emporium : emporiumList) {
+			emporiumsPlayersList.add(emporium.getName());
+		}
+		return emporiumsPlayersList;
+	}
 }

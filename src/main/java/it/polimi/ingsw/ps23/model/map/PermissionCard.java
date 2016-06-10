@@ -40,16 +40,10 @@ public class PermissionCard implements Card, BonusSlot {
 	
 	@Override
 	public String toString() {
-		String print = bonuses.toString() + " ";
-		boolean firstCity = true;
-		for(City city : cities) {
-			if(!firstCity) {
-				print += " ~ " + city.getName();
-			}
-			else {
-				print += city.getName();
-				firstCity = false;
-			}
+		String print = bonuses.toString() + " ~ ";
+		print += cities.get(0).getName();
+		for(int i = 1; i < cities.size(); i++) {
+			print += "/" + cities.get(i).getName();
 		}
 		return print;
 	}

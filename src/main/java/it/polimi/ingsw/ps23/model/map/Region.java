@@ -51,12 +51,12 @@ public abstract class Region {
 	
 	@Override
 	public String toString() {
-		String print = "\n> " + name + ":\n\n";
+		String print = "> " + name + ":\n";
 		print += "\t- CITIES:\n";
 		for(City city : citiesList) {
 			print += "\t\t» " + city.toString();
 		}
-		print += "\n\t- REGIONAL BONUS TILE: " + bonusTile;
+		print += "\t- REGIONAL BONUS TILE: " + bonusTile;
 		if(alreadyAcquiredBonusTile) {
 			print += " (Already acquired)";
 		}

@@ -23,7 +23,7 @@ public class NormalCity extends City {
 	
 	@Override
 	public String toString() {
-		return getName() + " " + getColor() + " " + rewardToken + "\n";
+		return getName() + " " + getColor() + " " + rewardToken + " " + getEmporiumsPlayersList() + "\n";
 	}
 	
 	
