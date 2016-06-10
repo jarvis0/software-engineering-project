@@ -6,8 +6,8 @@ public class Councillor {
 	
 	GameColor color;
 	
-	public Councillor (GameColor color) {
-		this.color=color;
+	public Councillor(GameColor color) {
+		this.color = color;
 	}
 	
 	public GameColor getColor() {

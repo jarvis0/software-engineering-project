@@ -1,4 +1,5 @@
 package it.polimi.ingsw.ps23.model;
+
 import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
@@ -76,11 +77,6 @@ public class Player {
 	
 	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) {
 		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
-	}
-	
-	@Override
-	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 	public String showSecretStatus() {
@@ -188,5 +184,10 @@ public class Player {
 	
 	public int getNumberOfPoliticCard() {
 		return politicHandDeck.getHandSize();
+	}	
+	@Override
+	public String toString() {
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
+
 }

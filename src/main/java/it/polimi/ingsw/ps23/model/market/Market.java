@@ -3,22 +3,22 @@ package it.polimi.ingsw.ps23.model.market;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.GamePlayersSet;
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.PlayersSet;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 
 public class Market {
 
 	private List<MarketObject> marketObjectSet;
-	private GamePlayersSet gamePlayersSet;
+	private PlayersSet playersSet;
 	
-	public Market(GamePlayersSet gamePlayersSet) {
+	public Market(PlayersSet playersSet) {
 		marketObjectSet = new ArrayList<>();
-		this.gamePlayersSet = new MarketPlayersSet();
-		for(Player player : gamePlayersSet.getPlayers()) {
-			this.gamePlayersSet.addPlayer(player);
+		this.playersSet = new MarketPlayersSet();
+		for(Player player : playersSet.getPlayers()) {
+			this.playersSet.addPlayer(player);
 		}
-		((MarketPlayersSet)this.gamePlayersSet).shufflePlayer();
+		((MarketPlayersSet)this.playersSet).shufflePlayer();
 	}
 		
 	public List<MarketObject> getMarketObject() {
@@ -34,10 +34,10 @@ public class Market {
 	}
 	
 	public boolean continueMarket() {
-		return !((MarketPlayersSet)gamePlayersSet).isEmpty();
+		return !((MarketPlayersSet)playersSet).isEmpty();
 	}
 	
 	public Player selectPlayer() {
-		return ((MarketPlayersSet)gamePlayersSet).getCurrentPlayer();
+		return ((MarketPlayersSet)playersSet).getCurrentPlayer();
 	}
 }

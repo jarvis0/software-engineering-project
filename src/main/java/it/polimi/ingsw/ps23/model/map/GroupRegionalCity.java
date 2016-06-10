@@ -51,8 +51,10 @@ public class GroupRegionalCity extends Region {
 	
 	@Override
 	public String toString() {
-		String print = super.toString() + "\n\n\t- REGIONAL COUNCIL: " + council + "\n\n\t" + "- PERMISSION DECKS UP: ";
-		print += permissionDeckUp.getDeck().get(0).toString() + "\n\t\t\t       " + permissionDeckUp.getDeck().get(1).toString();
+		String print = super.toString() + "\n\t- REGIONAL COUNCIL: " + council + "\n\t" + "- PERMISSION DECKS UP:";
+		for(int i = 0; i < permissionDeckUp.getDeck().size(); i++) {
+			print += "\n\t\t» " + permissionDeckUp.getDeck().get(i).toString();
+		}
 		return print;
 	}
 

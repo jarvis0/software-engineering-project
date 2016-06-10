@@ -7,14 +7,14 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.ElectCouncillor;
 import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorSet;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ElectCouncillorState extends ActionState {
 	
-	private FreeCouncillorSet freeCouncillors;
+	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;
 	
 	public ElectCouncillorState(String name) {

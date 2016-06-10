@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.GamePlayersSet;
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.PlayersSet;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.NobilityTrack;
@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.view.ViewVisitor;
 public class GameStatusState implements State {
 
 	private GameMap gameMap;
-	private GamePlayersSet gamePlayersSet;
+	private PlayersSet gamePlayersSet;
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
 	private boolean finalTurn;
@@ -41,10 +41,16 @@ public class GameStatusState implements State {
 		print += "\t\t\t\t\t+                   +\n";
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
 		print += gameMap;
-		print += "\n\n\n\t\t\t\t\t++++++++GAME BOARD++++++++\n\n";
-		print += "KING COUNCIL: " + kingCouncil + "\n\n\n>NOBILITY TRACK: " + nobilityTrack + "\n\n\nPLAYERS: " + gamePlayersSet + "\n\n\n";
+		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
+		print += "> KING COUNCIL: " + kingCouncil + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
+		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
+			print += "> " + gamePlayer + "\n";
+		}
+		print += "\n\n===============================================================================================================\n";
+		print += "===============================================================================================================\n\n";
 		if(finalTurn) {
-			print += "\nThis is the final round.";
+			print += "This is the final round.";
 		}
 		return print;
 	}

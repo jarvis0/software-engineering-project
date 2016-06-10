@@ -41,13 +41,13 @@ public abstract class Region {
 	
 	@Override
 	public String toString() {
-		String print = "\n> " + name + ":\n\n";
+		String print = "> " + name + ":\n";
 		print += "\t- CITIES:\n";
 		Collection<City> citiesValues = cities.values();
 		for(City city : citiesValues) {
 			print += "\t\t» " + city.toString();
 		}
-		print += "\n\t- REGIONAL BONUS TILE: " + victoryPointsBonus;
+		print += "\t- REGIONAL BONUS TILE: " + victoryPointsBonus;
 		return print;
 	}
 

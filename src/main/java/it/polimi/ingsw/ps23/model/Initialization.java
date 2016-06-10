@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorSet;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.King;
@@ -36,12 +36,12 @@ public class Initialization {
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private Deck politicDeck;
-	private FreeCouncillorSet freeCouncillors;
+	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
 	private KingTileSet kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayersSet gamePlayerSet;
+	private PlayersSet playerSet;
 	
 	public Initialization(List<String> playersName) throws NoCapitalException {
 		loadPoliticDeck();
@@ -57,7 +57,7 @@ public class Initialization {
 		return politicDeck;
 	}
 
-	public FreeCouncillorSet getFreeCouncillors() {
+	public FreeCouncillorsSet getFreeCouncillors() {
 		return freeCouncillors;
 	}
 
@@ -77,8 +77,8 @@ public class Initialization {
 		return nobilityTrack;
 	}
 
-	public GamePlayersSet getGamePlayerSet() {
-		return gamePlayerSet;
+	public PlayersSet getPlayersSet() {
+		return playerSet;
 	}
 	
 	private void loadPoliticDeck() {
@@ -168,11 +168,11 @@ public class Initialization {
 		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
 	}
 
-	private void loadPlayers(List<String> playersID) {
-		gamePlayerSet = new GamePlayersSet();
-		int playersNumber = playersID.size();
+	private void loadPlayers(List<String> playersName) {
+		playerSet = new PlayersSet();
+		int playersNumber = playersName.size();
 		for(int i = 0; i < playersNumber; i++) {
-			gamePlayerSet.addPlayer(new Player(playersID.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
+			playerSet.addPlayer(new Player(playersName.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
 		}
 	}
 	
