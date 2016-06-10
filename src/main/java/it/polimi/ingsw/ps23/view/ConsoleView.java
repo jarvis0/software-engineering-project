@@ -41,12 +41,12 @@ public class ConsoleView extends View implements ViewVisitor {
 	}	
 
 	private void setPlayersNumber() {
-		output.println("Players number: ");
+		output.print("Players number: ");
 		int playersNumber = scanner.nextInt();
 		scanner.nextLine();
 		List<String> playersName = new ArrayList<>();
 		for(int i = 0; i < playersNumber; i++) {
-			output.println("Name Player " + (i + 1) + ": ");
+			output.print("Name Player " + (i + 1) + ": ");
 			playersName.add(scanner.nextLine());
 		}
 		wakeUp(playersName);
@@ -74,8 +74,8 @@ public class ConsoleView extends View implements ViewVisitor {
 	@Override
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
-		output.println("Current player: " + player.toString() + player.showSecretStatus());
-		output.println("Choose an action to perform? " + currentState.getAvaiableAction());
+		output.println("CURRENT PLAYER: " + player.toString() + player.showSecretStatus());
+		output.print(currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 		try {
 			wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
 		}

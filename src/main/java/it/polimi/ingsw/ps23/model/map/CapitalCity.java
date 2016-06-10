@@ -10,7 +10,7 @@ public class CapitalCity extends City {
 
 	@Override
 	public String toString() {
-		return getName() + " " + getColor();
+		return getName() + " " + getColor() + "\n";
 	}
 	
 }

@@ -7,4 +7,6 @@ public class PermissionDeck extends Deck {
 	public PermissionDeck(List<Card> cards) {
 		super(cards);
 	}
+	
+	
 }

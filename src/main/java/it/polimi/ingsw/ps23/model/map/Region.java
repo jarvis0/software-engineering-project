@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.model.map;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,14 @@ public abstract class Region {
 	
 	@Override
 	public String toString() {
-		return name + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
+		String print = "\n> " + name + ":\n\n";
+		print += "\t- CITIES:\n";
+		Collection<City> citiesValues = cities.values();
+		for(City city : citiesValues) {
+			print += "\t\t» " + city.toString();
+		}
+		print += "\n\t- REGIONAL BONUS TILE: " + victoryPointsBonus;
+		return print;
 	}
 
 }

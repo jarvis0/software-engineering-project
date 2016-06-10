@@ -5,6 +5,7 @@ import it.polimi.ingsw.ps23.model.GamePlayersSet;
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.GameMap;
+import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class GameStatusState implements State {
@@ -12,6 +13,7 @@ public class GameStatusState implements State {
 	private GameMap gameMap;
 	private GamePlayersSet gamePlayersSet;
 	private Council kingCouncil;
+	private NobilityTrack nobilityTrack;
 	private boolean finalTurn;
 	
 	@Override
@@ -20,6 +22,7 @@ public class GameStatusState implements State {
 		this.gameMap = game.getGameMap();
 		this.gamePlayersSet = game.getGamePlayersSet();
 		this.kingCouncil = game.getKing().getCouncil();
+		this.nobilityTrack = game.getNobilityTrack();
 		finalTurn = false;
 		for (Player player : gamePlayersSet.getPlayers()) {
 			if (player.hasFinished()) {
@@ -30,11 +33,20 @@ public class GameStatusState implements State {
 	}
 		
 	public String getStatus() {
-		String returnString = "Map: " + gameMap + "\nPlayers: " + gamePlayersSet + "\n King Council: " + kingCouncil;
+		String print = "\n===============================================================================================================\n";
+		print += "===============================================================================================================\n\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+    GAME STATUS    +\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
+		print += gameMap;
+		print += "\n\n\n\t\t\t\t\t++++++++GAME BOARD++++++++\n\n";
+		print += "KING COUNCIL: " + kingCouncil + "\n\n\n>NOBILITY TRACK: " + nobilityTrack + "\n\n\nPLAYERS: " + gamePlayersSet + "\n\n\n";
 		if(finalTurn) {
-			returnString += "\nThis is the final round";
+			print += "\nThis is the final round.";
 		}
-		return returnString;
+		return print;
 	}
 	
 	@Override
