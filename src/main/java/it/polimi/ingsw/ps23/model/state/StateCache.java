@@ -17,9 +17,8 @@ public class StateCache {
 	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
 
 	private StateCache() {
-		
 	}
-	
+
 	public static ActionState getAction(String actionStateName) {
 		return (ActionState) stateMap.get(actionStateName).clone();
 	}

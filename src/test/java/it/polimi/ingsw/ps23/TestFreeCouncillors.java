@@ -12,12 +12,10 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorSet;
 
 public class TestFreeCouncillors {
 
-	
-	
 	@Test
 	public void test() {
 		
@@ -45,7 +43,7 @@ public class TestFreeCouncillors {
 		Councillor councillor1 = new Councillor(color1);
 		freeCouncillors.add(councillor1);
 		
-		FreeCouncillors freeCouncillors1 = new FreeCouncillors(freeCouncillors);
+		FreeCouncillorSet freeCouncillors1 = new FreeCouncillorSet(freeCouncillors);
 		
 		assertTrue(freeCouncillors1.toString().equals("[White, Black]"));
 		

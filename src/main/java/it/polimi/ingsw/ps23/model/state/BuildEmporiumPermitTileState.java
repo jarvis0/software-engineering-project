@@ -36,7 +36,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		return availableCards.toString();
 	}
 	
-	public String getChosenCard(int index) {
+	public String getChosenCard(int index){
 		return availableCards.getCards().get(index).toString();
 	}
 

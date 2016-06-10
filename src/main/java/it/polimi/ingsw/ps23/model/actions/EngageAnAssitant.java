@@ -5,7 +5,7 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 
-public class EngageAnAssitant extends QuickAction {
+public class EngageAnAssitant implements Action {
 
 	private static final int COINS_COST = -3;
 	private static final int EARNED_ASSITANTS = 1;

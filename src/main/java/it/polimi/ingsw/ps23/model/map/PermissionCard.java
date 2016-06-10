@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-public class PermissionCard extends Card implements BonusSlot {
+public class PermissionCard implements Card, BonusSlot {
 
 	private List<Bonus> bonuses;
 	private List<City> cities;

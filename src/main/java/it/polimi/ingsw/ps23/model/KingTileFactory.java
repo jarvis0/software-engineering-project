@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
-import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.KingTileSet;
 
 //generalizzare i bonus? - nome?
 public class KingTileFactory {
@@ -13,7 +13,7 @@ public class KingTileFactory {
 	private static final int BONUS_VALUE_POSITION = 0;
 	private static final int BONUS_NAME_POSITION = 0;
 	
-	public KingTiles makeTiles(List<String[]> rawKingTiles) {
+	public KingTileSet makeTiles(List<String[]> rawKingTiles) {
 		Deque<Bonus> tilesStack = new LinkedList<>();
 		String[] fields = rawKingTiles.remove(rawKingTiles.size() - 1);
 		for(String[] rawTile: rawKingTiles) {
@@ -21,7 +21,7 @@ public class KingTileFactory {
 			bonus.setValue(Integer.parseInt(rawTile[BONUS_VALUE_POSITION]));
 			tilesStack.push(bonus);
 		}
-		return new KingTiles(tilesStack);
+		return new KingTileSet(tilesStack);
 	}
 
 }

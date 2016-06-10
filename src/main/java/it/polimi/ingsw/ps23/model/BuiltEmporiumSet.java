@@ -10,16 +10,16 @@ public class BuiltEmporiumSet {
 	
 	private static final int MAX_EMPORIUMS = 10;
 	
-	private List<City> builtEmporiumSet;
+	private List<City> builtEmporiums;
 	
 	public BuiltEmporiumSet() {
-		builtEmporiumSet = new ArrayList<>();
+		builtEmporiums = new ArrayList<>();
 		
 	}
 	
 	public void addBuiltEmporium(City city) throws InvalidPositionException {
-		if(!builtEmporiumSet.contains(city)) {
-			builtEmporiumSet.add(city);
+		if(!builtEmporiums.contains(city)) {
+			builtEmporiums.add(city);
 		}
 		else {
 			throw new InvalidPositionException();
@@ -27,35 +27,36 @@ public class BuiltEmporiumSet {
 	}
 	
 	public boolean containsTenEmporium() {
-		return builtEmporiumSet.size() == MAX_EMPORIUMS;
+		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
 
 	public List<City> getBuiltEmporiumSet() {
-		return builtEmporiumSet;
+		return builtEmporiums;
 	}
 
 	@Override
 	public String toString() {
-		return builtEmporiumSet.toString();
+		return builtEmporiums.toString();
 	}
 
 	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
 		BuiltEmporiumSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumSet();
-		for (City city : builtEmporiumSet) {
+		for (City city : builtEmporiums) {
 			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackPoints()) {
-					citiesWithoutNobilityTrackPoints.builtEmporiumSet.add(city);
+					citiesWithoutNobilityTrackPoints.builtEmporiums.add(city);
 			}
 		}
 		return citiesWithoutNobilityTrackPoints;				
 	}
 
 	public NormalCity get(String cityName) {
-		for(City city : builtEmporiumSet ) {
+		for(City city : builtEmporiums) {
 			if (city.getName().equals(cityName)) {
 				return (NormalCity) city;
 			}	
 		}
 		return null;
+		//TODO remove return null
 	}
 	
 }

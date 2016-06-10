@@ -6,7 +6,7 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 
-public class ChangePermitsTile  extends QuickAction {
+public class ChangePermitsTile implements Action {
 
 	private static final int ASSISTANTS_COST = -1;
 	String regionName;

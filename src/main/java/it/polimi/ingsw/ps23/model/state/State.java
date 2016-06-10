@@ -5,7 +5,8 @@ import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public interface State {
 	
-	public abstract void changeState(Context context, Game game);
-	public abstract void acceptView(ViewVisitor view);
+	public void changeState(Context context, Game game);
+	
+	public void acceptView(ViewVisitor view);
 	
 }

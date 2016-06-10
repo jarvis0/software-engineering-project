@@ -6,19 +6,19 @@ import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorSet;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.King;
-import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.KingTileSet;
 import it.polimi.ingsw.ps23.model.Initialization;
 
 public class Game {
 
 	private Deck politicDeck;
-	private FreeCouncillors freeCouncillors;
+	private FreeCouncillorSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTiles kingTiles;
+	private KingTileSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private GamePlayersSet gamePlayersSet;
 	private Player currentPlayer;
@@ -56,7 +56,7 @@ public class Game {
 		return currentPlayer;
 	}
 	
-	public FreeCouncillors getFreeCouncillors() {
+	public FreeCouncillorSet getFreeCouncillors() {
 		return freeCouncillors;
 	}
 	

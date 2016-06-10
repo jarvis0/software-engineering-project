@@ -6,7 +6,7 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.Council;
 
-public class ElectCouncillor extends MainAction {
+public class ElectCouncillor implements Action {
 	
 	private static final int EARNED_COINS = 4;
 	

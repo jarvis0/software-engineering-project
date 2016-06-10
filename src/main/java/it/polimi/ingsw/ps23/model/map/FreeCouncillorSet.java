@@ -3,11 +3,11 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.List;
 
 
-public class FreeCouncillors {
+public class FreeCouncillorSet {
 	
 	private List<Councillor> freeCouncillors;
 	
-	public FreeCouncillors(List<Councillor> freeCouncillors){
+	public FreeCouncillorSet(List<Councillor> freeCouncillors){
 		this.freeCouncillors = freeCouncillors;
 	}
 	

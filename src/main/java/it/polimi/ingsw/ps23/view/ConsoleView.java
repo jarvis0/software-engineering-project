@@ -273,11 +273,11 @@ public class ConsoleView extends View implements ViewVisitor {
 				}
 				else {
 					bonusesSelections.add(receive());
-					selectedBonuses.put(currentBonus, bonusesSelections);
 				}
+				selectedBonuses.put(currentBonus, bonusesSelections);
 			}	
-			wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
-			resume();
 		}
+		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+		resume();
 	}
 }

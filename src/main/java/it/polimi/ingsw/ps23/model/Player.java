@@ -160,8 +160,6 @@ public class Player {
 		}
 	}
 
-
-
 	public HandDeck getPermissionUsedHandDeck() {
 		return permissionUsedHandDeck;
 	}
