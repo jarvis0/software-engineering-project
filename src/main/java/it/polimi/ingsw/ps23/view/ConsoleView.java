@@ -35,8 +35,6 @@ public class ConsoleView extends View implements ViewVisitor {
 
 	private String clientName;
 
-	private List<ConsoleView> consoleViews;
-
 	private State state;
 	
 	private PrintStream output;
@@ -47,10 +45,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		this.clientName = clientName;
 	}
 	
-	public void setOtherViews(List<ConsoleView> consoleViews) {
-		this.consoleViews = consoleViews;
-	}
-	
+	@Override
 	public void update(State state) {
 		this.state = state;
 	}
@@ -82,12 +77,9 @@ public class ConsoleView extends View implements ViewVisitor {
 		}
 	}
 	
+	@Override
 	public synchronized void threadWakeUp() {
 		notifyAll();
-	}
-	
-	private synchronized void resume() {
-		connection.getServer().resumeView(consoleViews, this);
 	}
 	
 	@Override
@@ -123,7 +115,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
-		resume();
 	}
 
 	@Override
@@ -142,8 +133,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
 		int chosenCard = Integer.parseInt(receive()) - 1;
 		wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));
-		resume();
-		
 	}
 
 	@Override
@@ -153,19 +142,16 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
-		resume();
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
 		wakeUp(currentState.createAction());
-		resume();
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		wakeUp(currentState.createAction());
-		resume();
 	}
 
 	@Override
@@ -173,7 +159,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose a region:" + currentState.getPermitsMap());
 		String chosenRegion = receive();
 		wakeUp(currentState.createAction(chosenRegion));
-		resume();
 	}
 
 	@Override
@@ -190,7 +175,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
 		String arrivalCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(removedCards, arrivalCity));
-		resume();
 	}
 	
 	@Override
@@ -200,7 +184,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 		String chosenCity = receive().toUpperCase();
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
-		resume();
 	}
 
 	@Override
@@ -232,7 +215,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		sendWithInput("Choose the price for your offer: ");
 		int cost = Integer.parseInt(receive());
 		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
-		resume();
 	}
 
 	@Override
@@ -243,10 +225,9 @@ public class ConsoleView extends View implements ViewVisitor {
 			wakeUp(currentState.createTransation(Integer.parseInt(receive())));
 		}
 		else {
-			sendNoInput("You can buy nothing");
+			sendNoInput("You can buy nothing.");
 			wakeUp(currentState.createTransation());
 		}
-		resume();
 	}
 	
 	@Override
@@ -279,7 +260,6 @@ public class ConsoleView extends View implements ViewVisitor {
 			}	
 		}
 		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
-		resume();
 	}
 
 	@Override

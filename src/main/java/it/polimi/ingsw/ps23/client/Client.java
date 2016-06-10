@@ -40,6 +40,7 @@ public class Client {
 		output.print(receive());
 		send(scanner.nextLine());
 		output.println("Waiting others players to connect...");
+		output.println(receive());
 		RemoteConsoleView remoteConsoleView = new RemoteConsoleView(this, scanner, output);
 		remoteConsoleView.run();
 	}

@@ -21,16 +21,6 @@ public class ViewObservable {
 		observers.add(observer);
 	}
 	
-	public void wakeUp(List<String> state) {
-		notifyAllObservers(state);
-	}
-	
-	private void notifyAllObservers(List<String> state) {
-		for(ControllerObserver observer : observers) {
-			observer.update(state);
-		}
-	}
-	
 	public void wakeUp() {
 		notifyAllObservers();
 	}

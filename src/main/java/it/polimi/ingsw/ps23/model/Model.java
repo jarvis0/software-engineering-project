@@ -23,7 +23,8 @@ public class Model extends ModelObservable {
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
-	
+	private PlayerResumeHandler playerResumeHandler;
+
 	public Game getGame() {
 		return game;
 	}
@@ -38,8 +39,9 @@ public class Model extends ModelObservable {
 		changePlayer();
 	}
 
-	public void setUpModel(List<String> playersName) {
+	public void setUpModel(List<String> playersName, PlayerResumeHandler playerResumeHandler) {
 		setStartingPlayerIndex();
+		this.playerResumeHandler = playerResumeHandler;
 		newGame(playersName);
 		setGameStatusState();
 	}
@@ -58,6 +60,7 @@ public class Model extends ModelObservable {
 				}
 				else {
 					changePlayer();
+					playerResumeHandler.resume();
 				}
 			}
 			else {
@@ -86,7 +89,6 @@ public class Model extends ModelObservable {
 		context = new Context();
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
-		//clonare startTurnState
 		wakeUp(startTurnState);
 	}
 	

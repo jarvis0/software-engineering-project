@@ -5,4 +5,6 @@ import it.polimi.ingsw.ps23.commons.viewcontroller.ViewObservable;
 
 public abstract class View extends ViewObservable implements ViewObserver, Runnable {
 
+	public abstract void threadWakeUp();
+
 }

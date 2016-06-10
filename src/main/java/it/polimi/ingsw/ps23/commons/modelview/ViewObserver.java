@@ -5,6 +5,6 @@ import it.polimi.ingsw.ps23.model.state.State;
 @FunctionalInterface
 public interface ViewObserver {
 
-	public abstract void update(State state);
+	public void update(State state);
 	
 }

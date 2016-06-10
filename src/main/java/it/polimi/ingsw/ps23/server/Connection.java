@@ -3,10 +3,9 @@ package it.polimi.ingsw.ps23.server;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Date;
 import java.util.Scanner;
 
-import it.polimi.ingsw.ps23.view.ConsoleView;
+import it.polimi.ingsw.ps23.view.View;
 
 public class Connection implements Runnable {
 	
@@ -19,20 +18,15 @@ public class Connection implements Runnable {
 	
 	private boolean started;
 
-	private ConsoleView consoleView;
+	private View consoleView;
 	
-	public Connection(Server server, Socket socket) {
+	public Connection(Server server, Socket socket) throws IOException {
 		super();
 		this.server = server;
 		this.socket = socket;
-		try {
-			textIn = new Scanner(socket.getInputStream());
-			textIn.useDelimiter("EOM");
-			textOut = new PrintStream(socket.getOutputStream());
-			
-		} catch(IOException e) {
-			output.println("Error while initializating connection.");
-		}
+		textIn = new Scanner(socket.getInputStream());
+		textIn.useDelimiter("EOM");
+		textOut = new PrintStream(socket.getOutputStream());
 		output = new PrintStream(System.out);
 		started = false;
 	}
@@ -61,7 +55,7 @@ public class Connection implements Runnable {
 	
 	private void close() {
 		closeConnection();		
-		output.println("Deregistro il client!");
+		output.println("A client logged out.");
 		server.deregisterConnection(this);
 	}
 	
@@ -87,17 +81,14 @@ public class Connection implements Runnable {
 		}
 	}
 
-	public void setConsoleView(ConsoleView consoleView) {
+	public void setConsoleView(View consoleView) {
 		this.consoleView = consoleView;
 	}
 	
 	@Override
 	public void run() {
-		send("Connection established at " + new Date().toString());
-		send("Welcome, what's your name? ");
 		server.joinToWaitingList(this, receive());
 		initialization();
-		//remoteWakeUp();
 		consoleView.run();
 		close();
 	}

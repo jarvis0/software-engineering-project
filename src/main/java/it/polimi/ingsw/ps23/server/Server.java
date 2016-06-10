@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,13 +18,16 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
+import it.polimi.ingsw.ps23.model.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.view.ConsoleView;
+import it.polimi.ingsw.ps23.view.View;
 
-public class Server {
+public class Server implements Runnable {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 1;
+	private static final int TIMEOUT = 10;
 	private static final String LOGGER_NAME = "Exception logger";
+	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
 	
@@ -31,15 +35,16 @@ public class Server {
 	
 	private ServerSocket serverSocket;
 
-	private List<Connection> connections; //ridondante
 	private Map<String, Connection> waitingConnections;
-	private Map<String, Connection> playingConnections; //super-ridondante
+	private Map<String, Connection> playingConnections; //forse serve per ripristinare la sessione giocatore
+	
+	private boolean launchingGame;
 	
 	private PrintStream output;
 	private Logger logger;
 
 	private Model model;
-	private List<ConsoleView> consoleViews;
+	private List<View> consoleViews;
 	private Controller controller;
 	
 	private Server() {
@@ -48,52 +53,34 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {
-			output.println("Cannot initialize the server connection socket. The program ends.");
 			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
 		}
 		executor = Executors.newCachedThreadPool();
-		connections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
 		playingConnections = new HashMap<>();
+		launchingGame = false;
 	}
-	
-	private synchronized void registerConnection(Connection c) {
-		connections.add(c);
-	}
-	
-	public synchronized void deregisterConnection(Connection c) {
-		//player in un certo specifico game ??
-		connections.remove(c);
-		Connection connection = playingConnections.get(c);
-		if(connection != null)
-			connection.closeConnection();
-		playingConnections.remove(c);
-		playingConnections.remove(connection);
-		Iterator<String> iterator = waitingConnections.keySet().iterator();
-		while(iterator.hasNext()) {
-			if(waitingConnections.get(iterator.next()) == c) {
-				iterator.remove();
-			}
-		}
-	}
-	
+
 	public synchronized void setTimerEnd() {
 		notifyAll();
 	}
 
 	private synchronized void startCountdown() {
 		if(waitingConnections.size() == 2) {
-			output.println("A new game is starting in " + TIMEOUT + " seconds...");
+			launchingGame = true;
+			output.println("A new game is starting in " + TIMEOUT + SECONDS_PRINT);
+			for(Connection connection : waitingConnections.values()) {
+				connection.send("A new game is starting in " + TIMEOUT + SECONDS_PRINT);
+			}
 			timer = new Timer();
 			timer.schedule(new RemindTask(this, TIMEOUT), TIMEOUT, 1000L);
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				output.println("Cannot wait new game countdown. The server ends.");
 				logger.log(Level.SEVERE, "Cannot wait new game countdown.", e);
 			}
 			timer.cancel();
-			for(Connection connection : connections) {
+			for(Connection connection : waitingConnections.values()) {
 				connection.setStarted();
 			}
 		}
@@ -110,20 +97,18 @@ public class Server {
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
 		consoleViews = new ArrayList<>();
-		for(int i = 0; i < playersName.size(); i++) {			
-			playingConnections.put(playersName.get(i), waitingConnections.get(playersName.get(i)));
-			consoleViews.add(new ConsoleView(playersName.get(i), waitingConnections.get(playersName.get(i)), output));
-			connections.get(i).setConsoleView(consoleViews.get(i));
+		for(int i = 0; i < playersName.size(); i++) {
+			Connection connection = waitingConnections.get(playersName.get(i));
+			consoleViews.add(new ConsoleView(playersName.get(i), connection, output));
+			connection.setConsoleView(consoleViews.get(i));
 			model.attach(consoleViews.get(i));
 			consoleViews.get(i).attach(controller);
 		}
-		for(ConsoleView consoleView : consoleViews) {
-			consoleView.setOtherViews(consoleViews);
-		}
-		model.setUpModel(playersName);
+		model.setUpModel(playersName, new PlayerResumeHandler(consoleViews));
 		for(Connection connection : waitingConnections.values()) {
 			connection.startGame();
 		}
+		launchingGame = false;
 		waitingConnections.clear();
 	}
 	
@@ -133,22 +118,33 @@ public class Server {
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new Client connection.");
 			Connection connection = new Connection(this, newSocket);
-			registerConnection(connection);
+			String message = "Connection established at " + new Date().toString();
+			if(launchingGame) {
+				message += "\nA new game is starting in less than " + TIMEOUT + SECONDS_PRINT;
+			}
+			connection.send(message);
+			connection.send("Welcome, what's your name? ");
 			executor.submit(connection);
 		} catch (IOException e) {
-			output.println("Cannot create a new connection socket. The server ends.");
 			logger.log(Level.SEVERE, "Cannot create a new connection socket.", e);
 		}
 	}
-
-	public synchronized void resumeView(List<ConsoleView> consoleViews, ConsoleView currentConsoleView) {
-		for(ConsoleView consoleView : consoleViews) {
-			if(consoleView != currentConsoleView) {
-				consoleView.threadWakeUp();
+	
+	public synchronized void deregisterConnection(Connection c) {
+		Connection connection = playingConnections.get(c);
+		if(connection != null)
+			connection.closeConnection();
+		playingConnections.remove(c);
+		playingConnections.remove(connection);
+		Iterator<String> iterator = waitingConnections.keySet().iterator();
+		while(iterator.hasNext()) {
+			if(waitingConnections.get(iterator.next()) == c) {
+				iterator.remove();
 			}
 		}
 	}
 	
+	@Override
 	public void run() {
 		while(true) {
 			newConnection();
