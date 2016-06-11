@@ -41,7 +41,7 @@ public class BuiltEmporiumSet {
 
 	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
 		BuiltEmporiumSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumSet();
-		for (City city : builtEmporiums) {
+		for(City city : builtEmporiums) {
 			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackPoints()) {
 					citiesWithoutNobilityTrackPoints.builtEmporiums.add(city);
 			}
@@ -51,7 +51,7 @@ public class BuiltEmporiumSet {
 
 	public NormalCity get(String cityName) {
 		for(City city : builtEmporiums) {
-			if (city.getName().equals(cityName)) {
+			if(city.getName().equals(cityName)) {
 				return (NormalCity) city;
 			}	
 		}

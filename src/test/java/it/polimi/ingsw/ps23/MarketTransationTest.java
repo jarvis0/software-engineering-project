@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -22,7 +23,7 @@ import it.polimi.ingsw.ps23.model.market.MarketObject;
 @SuppressWarnings("unused")
 public class MarketTransationTest {
 	
-	@Test
+	@Ignore
 	public void test() {
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();
