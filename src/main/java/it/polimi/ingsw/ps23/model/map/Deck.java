@@ -13,7 +13,7 @@ public class Deck {
 		Collections.shuffle(cards);
 		this.cards = cards;
 	}
-	
+
 	public List<Card> getDeck() {
 		return cards;
 	}
@@ -28,6 +28,11 @@ public class Deck {
 
 	public Card pickCard() {
 		return cards.remove(TOP_CARD);
+	}
+	
+	@Override
+	public String toString() {
+		return this.getDeck().toString();
 	}
 	
 }

@@ -36,12 +36,12 @@ public class City {
 		return assitantsCost;
 	}
 
-	/*protected List<String> getEmporiumsPlayersList() {
+	protected List<String> getEmporiumsPlayersList() {
 		List<String> emporiumsPlayersList = new ArrayList<>();
 		for(Player emporium : emporiumList) {
 			emporiumsPlayersList.add(emporium.getName());
 		}
 		return emporiumsPlayersList;
-	}*/
+	}
 	
 }
