@@ -22,11 +22,10 @@ import it.polimi.ingsw.ps23.model.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.view.ConsoleView;
 import it.polimi.ingsw.ps23.view.View;
 
-public class Server implements Runnable {
+class Server implements Runnable {
 	
 	private static final int PORT = 12345;
 	private static final int TIMEOUT = 10;
-	private static final String LOGGER_NAME = "Exception logger";
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
@@ -49,7 +48,7 @@ public class Server implements Runnable {
 	
 	private Server() {
 		output = new PrintStream(System.out);
-		logger = Logger.getLogger(LOGGER_NAME);
+		logger = Logger.getLogger(this.getClass().getName());
 		try {
 			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {
@@ -61,7 +60,7 @@ public class Server implements Runnable {
 		launchingGame = false;
 	}
 
-	public synchronized void setTimerEnd() {
+	synchronized void setTimerEnd() {
 		notifyAll();
 	}
 
@@ -74,10 +73,15 @@ public class Server implements Runnable {
 			}
 			timer = new Timer();
 			timer.schedule(new RemindTask(this, TIMEOUT), TIMEOUT, 1000L);
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				logger.log(Level.SEVERE, "Cannot wait new game countdown.", e);
+			boolean loop = true;
+			while(loop) {
+				try {
+					wait();
+					loop = false;
+				} catch (InterruptedException e) {
+					logger.log(Level.SEVERE, "Cannot wait new game countdown.", e);
+					Thread.currentThread().interrupt();
+				}
 			}
 			timer.cancel();
 			for(Connection connection : waitingConnections.values()) {
@@ -86,13 +90,13 @@ public class Server implements Runnable {
 		}
 	}
 	
-	public void joinToWaitingList(Connection c, String name) {
+	void joinToWaitingList(Connection c, String name) {
 		output.println("Player " + name + " has been added to the waiting list.");
 		waitingConnections.put(name, c);
 		startCountdown();
 	}
 	
-	public synchronized void initializeGame() {
+	synchronized void initializeGame() {
 		model = new Model();
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
@@ -130,7 +134,7 @@ public class Server implements Runnable {
 		}
 	}
 	
-	public synchronized void deregisterConnection(Connection c) {
+	synchronized void deregisterConnection(Connection c) {
 		Connection connection = playingConnections.get(c);
 		if(connection != null)
 			connection.closeConnection();

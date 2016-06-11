@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.client;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class RemoteConsoleView {
+class RemoteConsoleView {
 
 	private static final String NO_INPUT = "NOINPUTNEEDED";
 	
@@ -18,7 +18,7 @@ public class RemoteConsoleView {
 		this.output = output;
 	}
 	
-	public void run() {
+	void run() {
 		String message;
 		while(true) {
 			message = client.receive();

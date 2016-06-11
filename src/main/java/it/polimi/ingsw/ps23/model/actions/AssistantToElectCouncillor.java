@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ps23.model.actions;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -13,6 +16,8 @@ public class AssistantToElectCouncillor implements Action {
 	private String councillor;
 	private Council council;
 	
+	private Logger logger;
+	
 	public AssistantToElectCouncillor(String councillor, Council council) {
 		this.councillor = councillor;
 		this.council = council;
@@ -20,11 +25,12 @@ public class AssistantToElectCouncillor implements Action {
 	
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
+		logger = Logger.getLogger(this.getClass().getName());
 		game.getFreeCouncillors().electCouncillor(councillor, council);
 		try {
 			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Insufficent current player assistants.", e);
 		}
 		turnHandler.useQuickAction();		
 	}

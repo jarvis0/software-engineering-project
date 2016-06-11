@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.view.View;
 
@@ -20,7 +22,9 @@ public class Connection implements Runnable {
 
 	private View consoleView;
 	
-	public Connection(Server server, Socket socket) throws IOException {
+	private Logger logger;
+	
+	Connection(Server server, Socket socket) throws IOException {
 		super();
 		this.server = server;
 		this.socket = socket;
@@ -28,10 +32,11 @@ public class Connection implements Runnable {
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
 		output = new PrintStream(System.out);
+		logger = Logger.getLogger(this.getClass().getName());
 		started = false;
 	}
 	
-	public Server getServer() {
+	Server getServer() {
 		return server;
 	}
 	
@@ -44,12 +49,12 @@ public class Connection implements Runnable {
  		return textIn.next();
  	}
 
-	public synchronized void closeConnection() {		
+	synchronized void closeConnection() {		
 		send("Connection ended.");
 		try {
 			socket.close();
-		} catch(IOException e) {
-			output.println("Unable to close the connection.");
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Cannot close the connection.", e);
 		}
 	}
 	
@@ -59,20 +64,25 @@ public class Connection implements Runnable {
 		server.deregisterConnection(this);
 	}
 	
-	public synchronized void setStarted() {
+	synchronized void setStarted() {
 		started = true;
 	}
 	
-	public synchronized void startGame() {
+	synchronized void startGame() {
 		notifyAll();
 	}
 	
 	private synchronized void initialization() {
+		boolean loop = true;
 		if(!started) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			while(loop) {
+				try {
+					wait();
+					loop = false;
+				} catch (InterruptedException e) {
+					logger.log(Level.SEVERE, "Cannot put connection " + this + " on hold.", e);
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 		else {
@@ -81,7 +91,7 @@ public class Connection implements Runnable {
 		}
 	}
 
-	public void setConsoleView(View consoleView) {
+	void setConsoleView(View consoleView) {
 		this.consoleView = consoleView;
 	}
 	

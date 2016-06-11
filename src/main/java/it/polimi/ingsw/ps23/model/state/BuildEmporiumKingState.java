@@ -58,7 +58,7 @@ public class BuildEmporiumKingState extends ActionState {
 	}
 
 	public Action createAction(List<String> removedCards, String arrivalCity) {
-		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition, initialNobilityTrackPoints);
+		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
 	}
 	
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
@@ -26,6 +28,8 @@ public class Player {
 	private HandDeck permissionUsedHandDeck;
 	private BonusTile bonusTile;
 	
+	private Logger logger;
+	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
 		this.coins = coins;
@@ -36,7 +40,8 @@ public class Player {
 		builtEmporiumSet = new BuiltEmporiumSet();
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
-		bonusTile = new BonusTile();		
+		bonusTile = new BonusTile();
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
@@ -94,7 +99,8 @@ public class Player {
 	public HandDeck getPermissionHandDeck() {
 		return permissionHandDeck;
 	}
-	public HandDeck getPermissionTotalHandeck() {
+	
+	public HandDeck getTotalPermissionHandDeck() {
 		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
 		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
@@ -106,7 +112,7 @@ public class Player {
 			builtEmporiumSet.addBuiltEmporium(city);
 			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
 	}
 	

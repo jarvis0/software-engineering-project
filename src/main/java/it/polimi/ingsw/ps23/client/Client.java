@@ -5,8 +5,10 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Client {
+class Client {
 
 	private static final int PORT_NUMBER = 12345;
 	
@@ -26,12 +28,12 @@ public class Client {
 		textOut = new PrintStream(socket.getOutputStream());
 	}
 
-	public void send(String message) {
+	void send(String message) {
  		textOut.print(message + "EOM");
  		textOut.flush();
  	}
  	
- 	public String receive() {
+ 	String receive() {
  		return textIn.next();
  	}
 	
@@ -47,11 +49,12 @@ public class Client {
 
 	public static void main(String[] args) {
 		Client client;
+		Logger logger = Logger.getLogger("main");
 		try {
 			client = new Client(PORT_NUMBER);
 			client.run();
 		} catch(IOException e) {
-			System.out.println("Cannot connect to server.");
+			logger.log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
@@ -39,10 +41,13 @@ public class ConsoleView extends View implements ViewVisitor {
 	
 	private PrintStream output;
 	
+	private Logger logger;
+	
 	public ConsoleView(String clientName, Connection connection, PrintStream output) {
 		this.connection = connection;
 		this.output = output;
 		this.clientName = clientName;
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	@Override
@@ -70,10 +75,15 @@ public class ConsoleView extends View implements ViewVisitor {
 	}
 	
 	private synchronized void pause() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		boolean loop = true;
+		while(loop) {
+			try {
+				wait();
+				loop = false;
+			} catch (InterruptedException e) {
+				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 	
@@ -98,6 +108,7 @@ public class ConsoleView extends View implements ViewVisitor {
 				wakeUp(StateCache.getAction(receive().toLowerCase()));
 			}
 			catch(NullPointerException e) {
+				logger.log(Level.SEVERE, "Cannot create the action.", e);
 				wakeUp();
 			}
 		}
@@ -247,7 +258,6 @@ public class ConsoleView extends View implements ViewVisitor {
 				List<String> bonusesSelections = new ArrayList<>();
 				if (selectedBonuses.get(currentBonus) != null) {			
 					bonusesSelections = selectedBonuses.get(currentBonus);
-					
 				}	
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
 					bonusesSelections.add(chosenRegion);

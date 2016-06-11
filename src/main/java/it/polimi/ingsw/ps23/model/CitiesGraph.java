@@ -23,6 +23,7 @@ public class CitiesGraph {
 	public DirectedGraph<City, DefaultEdge> getGraph() {
 		return graph;
 	}
+	
 	@Override
 	public String toString() {
 		List<String> cities = new ArrayList<>();
@@ -30,7 +31,8 @@ public class CitiesGraph {
 		while(iterator.hasNext()){
 			 cities.add(iterator.next().toString());
 		}
-		return cities.toString(); 		//return "Cities: " + citiesGraph.toString().replace("[(", "\nConnections: [(");
+		return cities.toString();
+		//TODO forse mai usata
 	}	
 
 	public void getBonuses(Game game, TurnHandler turnHandler, City arriveCity) {
@@ -39,7 +41,6 @@ public class CitiesGraph {
 		List<City> playerCityList = new ArrayList<>();
 		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
 		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
-
 	}
 
 	private void searchCities(List<City> citiesContainingPlayer, List<City> playerCityList, Game game, TurnHandler turnHandler) {
@@ -48,13 +49,12 @@ public class CitiesGraph {
 			List<City> successors = Graphs.successorListOf(graph, cityAnalyzed);
 			successors.remove(cityAnalyzed);
 			citiesContainingPlayer.remove(cityAnalyzed);
-			for (City city1 : playerCityList) {
+			for(City city1 : playerCityList) {
 				if(successors.contains(city1)) {
 					citiesContainingPlayer.add(city1);
 				}
 			}
-
-			if(!(cityAnalyzed instanceof CapitalCity) ){
+			if(!(cityAnalyzed instanceof CapitalCity)){
 				((NormalCity)cityAnalyzed).useRewardToken(game, turnHandler);
 			}
 			playerCityList.remove(cityAnalyzed);

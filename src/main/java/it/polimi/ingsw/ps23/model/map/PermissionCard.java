@@ -2,6 +2,8 @@ package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
@@ -14,9 +16,12 @@ public class PermissionCard implements Card, BonusSlot {
 	private List<Bonus> bonuses;
 	private List<City> cities;
 	
+	private Logger logger;
+	
 	public PermissionCard() {
 		bonuses = new ArrayList<>();
 		cities = new ArrayList<>();
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	@Override
@@ -33,7 +38,8 @@ public class PermissionCard implements Card, BonusSlot {
 			try {
 				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Insufficient current player resources.", e);
+				//TODO serve questa eccezione?
 			}
 		}
 	}

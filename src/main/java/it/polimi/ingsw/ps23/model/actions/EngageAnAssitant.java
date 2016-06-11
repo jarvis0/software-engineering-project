@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ps23.model.actions;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -12,12 +15,12 @@ public class EngageAnAssitant implements Action {
 	
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
-	
+		Logger logger = Logger.getLogger(this.getClass().getName());
 		try {
 			game.getCurrentPlayer().updateCoins(COINS_COST);
 			game.getCurrentPlayer().updateAssistants(EARNED_ASSITANTS);
 		} catch (InsufficientResourcesException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Insufficient current player coins.", e);
 		}
 		turnHandler.useQuickAction();
 	

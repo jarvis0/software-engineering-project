@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.model.actions.Action;
@@ -24,6 +26,12 @@ public class Model extends ModelObservable {
 	private Context context;
 	private TurnHandler turnHandler;
 	private PlayerResumeHandler playerResumeHandler;
+	
+	private Logger logger;
+	
+	public Model() {
+		logger = Logger.getLogger(this.getClass().getName());
+	}
 
 	public Game getGame() {
 		return game;
@@ -33,7 +41,7 @@ public class Model extends ModelObservable {
 		try {
 			game = new Game(playersName);
 		} catch (NoCapitalException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Cannot initializate a new game.", e);
 		}
 		currentPlayerIndex++;
 		changePlayer();

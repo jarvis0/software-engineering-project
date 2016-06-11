@@ -3,6 +3,8 @@ package it.polimi.ingsw.ps23.model.state;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.Player;
@@ -11,10 +13,13 @@ import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
-public class MarketOfferPhaseState implements State{
+public class MarketOfferPhaseState implements State {
 
 	private Player currentPlayer;
 	
+	private Logger logger;
+	
+	//TODO manca il costruttore, serve?
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -55,13 +60,14 @@ public class MarketOfferPhaseState implements State{
 	}
 	
 	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
+		logger = Logger.getLogger(this.getClass().getName()); //TODO se si mette il costruttore, spostare questa istruzione lì
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();		
 		for (String card : chosenPoliticCards) {
 			try {
 				politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Cannot find out chosen object.", e);
 			}
 		}
 		for (int index : chosenPermissionCards) {
