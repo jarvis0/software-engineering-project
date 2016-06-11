@@ -25,11 +25,11 @@ public class RewardToken implements BonusSlot {
 	
 	@Override
 	public void addBonus(Bonus bonus) {
-		this.bonuses.add(bonus);
+		bonuses.add(bonus);
 	}
 	
 	public void useBonus(Game game, TurnHandler turnHandler) {
-		for (Bonus bonus : bonuses) {
+		for(Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
@@ -38,20 +38,14 @@ public class RewardToken implements BonusSlot {
 			}
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return bonuses.toString();
-	}
 
 	public boolean hasNobilityTrackBonus() {
-		for (Bonus bonus : bonuses) {
+		for(Bonus bonus : bonuses) {
 			if(bonus instanceof NobilityTrackStepBonus) {
 				return true;
 			}
 		}
 		return false;
 	}
-
 
 }

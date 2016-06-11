@@ -60,9 +60,7 @@ public class TestFreeCouncillors {
 		assertTrue(council.toString().equals("[Purple, White, White]"));
 		
 		assertTrue(freeCouncillors1.toString().equals("[Green]"));
-
-
-		
+		//troppo complicato così.. fare come TestLoadPoliticDeck
 	}
 
 }

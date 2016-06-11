@@ -19,7 +19,7 @@ import it.polimi.ingsw.ps23.model.map.Region;
 public class Initialization {
 	
 	//è corretto organizzare così le costanti?
-	private static final String CONFIGURATIONS_PATH = "src/main/java/it/polimi/ingsw/ps23/model/configuration/";
+	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/model/configuration/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String COUNCILLORS_CSV = "councillors.csv";
@@ -82,30 +82,30 @@ public class Initialization {
 	}
 	
 	private void loadPoliticDeck() {
-		List<String[]> rawPoliticCards = new RawObject(CONFIGURATIONS_PATH + POLITIC_DECK_CSV).getRawObject();
+		List<String[]> rawPoliticCards = new RawObject(CONFIGURATION_PATH + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);	
 	}
 	
 	private void loadCouncillors() {
-		List<String[]> rawCouncillors = new RawObject(CONFIGURATIONS_PATH + COUNCILLORS_CSV).getRawObject();
+		List<String[]> rawCouncillors = new RawObject(CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 	}
 	
 	private CitiesFactory loadCities() {
-		List<String[]> rawCities = new RawObject(CONFIGURATIONS_PATH + CITIES_CSV).getRawObject();
-		List<String[]> rawRewardTokens = new RawObject(CONFIGURATIONS_PATH + REWARD_TOKENS_CSV).getRawObject();
+		List<String[]> rawCities = new RawObject(CONFIGURATION_PATH + CITIES_CSV).getRawObject();
+		List<String[]> rawRewardTokens = new RawObject(CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		CitiesFactory citiesFactory = new CitiesFactory();
 		citiesFactory.makeCities(rawCities, rawRewardTokens);
 		return citiesFactory;
 	}
 	
 	private CitiesGraph loadCitiesConnections(Map<String, City> cities) {
-		List<String[]> rawCitiesConnections = new RawObject(CONFIGURATIONS_PATH + CONNECTIONS_CSV).getRawObject();
+		List<String[]> rawCitiesConnections = new RawObject(CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
 		return new CitiesGraphFactory().makeCitiesGraph(rawCitiesConnections, cities);
 	}
 
 	private List<Region> loadRegions(Map<String, City> citiesMap) {
-		List<String[]> rawRegions = new RawObject(CONFIGURATIONS_PATH + REGIONS_CSV).getRawObject();
+		List<String[]> rawRegions = new RawObject(CONFIGURATION_PATH + REGIONS_CSV).getRawObject();
 		return new GroupRegionalCitiesFactory().makeRegions(rawRegions, citiesMap);
 	}
 	
@@ -116,7 +116,7 @@ public class Initialization {
 	}
 
 	private Map<String, Deck> loadPermissionDecks(Map<String, City> cities) {
-		List<String[]> rawPermissionCards = new RawObject(CONFIGURATIONS_PATH + PERMISSION_DECK_CSV).getRawObject();
+		List<String[]> rawPermissionCards = new RawObject(CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
 		return new PermissionDecksFactory(rawPermissionCards, cities).makeDecks();
 	}
 	
@@ -128,7 +128,7 @@ public class Initialization {
 	}
 
 	private List<Region> loadColoredRegions(List<City> cities) {
-		List<String[]> rawColoredCities = new RawObject(CONFIGURATIONS_PATH + GROUP_COLORED_CSV).getRawObject();
+		List<String[]> rawColoredCities = new RawObject(CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
 		return new GroupColoredCitiesFactory().makeGroup(rawColoredCities, cities);
 	}
 
@@ -159,12 +159,12 @@ public class Initialization {
 	}
 	
 	private void loadKingTiles() {
-		List<String[]> rawKingTiles = new RawObject(CONFIGURATIONS_PATH + KING_BONUS_TILE_CSV).getRawObject();
+		List<String[]> rawKingTiles = new RawObject(CONFIGURATION_PATH + KING_BONUS_TILE_CSV).getRawObject();
 		kingTiles = new KingTileFactory().makeTiles(rawKingTiles);
 	}
 	
 	private void loadNobilityTrack() {
-		List<String[]> rawNobilityTrackSteps = new RawObject(CONFIGURATIONS_PATH + NOBILY_TRACK_CSV).getRawObject();
+		List<String[]> rawNobilityTrackSteps = new RawObject(CONFIGURATION_PATH + NOBILY_TRACK_CSV).getRawObject();
 		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
 	}
 

@@ -10,7 +10,6 @@ import it.polimi.ingsw.ps23.model.bonus.NobilityTrackStepBonus;
 import it.polimi.ingsw.ps23.model.bonus.PoliticCardBonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
 
-//static? - flyweight
 public class BonusCache {
 
 	private static HashMap<String, Bonus> bonusesMap = new HashMap<>();
@@ -28,8 +27,8 @@ public class BonusCache {
 	private BonusCache() {
 	}
 	
-	public static Bonus getBonus(String bonusId, int value) {
-		Bonus cachedBonus = bonusesMap.get(bonusId);
+	public static Bonus getBonus(String bonusName, int value) {
+		Bonus cachedBonus = bonusesMap.get(bonusName);
 		Bonus bonus = (Bonus) cachedBonus.clone();
 		bonus.setValue(value);
 		return bonus;
@@ -40,7 +39,8 @@ public class BonusCache {
 	}
 	
 	public static void loadCache() {
-		AssistantBonus assistantBonus = new AssistantBonus(ASSISTANT);
+		
+		Bonus assistantBonus = new AssistantBonus(ASSISTANT);
 		putBonus(assistantBonus);
 		
 		Bonus coinBonus = new CoinBonus(COIN);

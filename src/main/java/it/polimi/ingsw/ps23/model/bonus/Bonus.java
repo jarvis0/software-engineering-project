@@ -35,11 +35,6 @@ public abstract class Bonus implements Cloneable {
 	}
 
 	@Override
-	public String toString() {
-		return name + " " + value;
-	}
-	
-	@Override
 	protected Object clone() {
 		Object clone = null;
 		try {

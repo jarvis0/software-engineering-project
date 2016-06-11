@@ -12,21 +12,12 @@ public class RewardTokenSet {
 		this.rewardTokens = rewardTokenSet;
 	}
 
-	public List<RewardToken> getRewardTokenSet() {
-		return rewardTokens;
-	}
-	
 	public int rewardTokenSize() {
 		return rewardTokens.size();
 	}
 	
 	public RewardToken removeRewardToken(int index) {
 		return rewardTokens.remove(index);
-	}
-	
-	@Override
-	public String toString() {
-		return this.getRewardTokenSet().toString();
 	}
 	
 }

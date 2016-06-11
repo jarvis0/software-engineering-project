@@ -62,15 +62,6 @@ public class GameMap {
 		}
 		return permitsMap;
 	}
-	
-	@Override
-	public String toString() {
-		String print = "\t\t\t\t\t+++++++REGIONS+++++++\n\n";
-		for(Region region : groupRegionalCities) {
-			print += region.toString() + "\n";
-		}
-		return print;
-	}
 
 	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
 		for (Region region : groupRegionalCities) {
@@ -88,6 +79,15 @@ public class GameMap {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		String print = "\t\t\t\t\t+++++++REGIONS+++++++\n\n";
+		for(Region region : groupRegionalCities) {
+			print += region.toString() + "\n";
+		}
+		return print;
 	}
 
 }

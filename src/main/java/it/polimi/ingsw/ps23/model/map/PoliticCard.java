@@ -16,7 +16,7 @@ public class PoliticCard implements Card {
 		return color;
 	}
 	
-	public boolean isJolly () {
+	public boolean isJolly() {
 		return color.getName().equals(MULTI);
 	}
 	

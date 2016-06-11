@@ -6,9 +6,9 @@ import it.polimi.ingsw.ps23.model.TurnHandler;
 
 public class NormalCity extends City {
 	
-	RewardToken rewardToken;
+	private RewardToken rewardToken;
 	
-	public NormalCity(String name, GameColor color, RewardToken rewardToken){ 
+	public NormalCity(String name, GameColor color, RewardToken rewardToken) { 
 		super(name, color);
 		this.rewardToken = rewardToken;
 	}
@@ -17,14 +17,8 @@ public class NormalCity extends City {
 		rewardToken.useBonus(game, turnHandler);
 	}
 	
-	public boolean hasNobilityTrackPoints() {
+	public boolean hasNobilityTrackBonus() {
 		return rewardToken.hasNobilityTrackBonus();
 	}
-	
-	@Override
-	public String toString() {
-		return getName() + " " + getColor() + " " + rewardToken + " " + getEmporiumsPlayersList() + "\n";
-	}
-	
 	
 }

@@ -25,7 +25,7 @@ import it.polimi.ingsw.ps23.view.View;
 class Server implements Runnable {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 10;
+	private static final int TIMEOUT = 1;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;

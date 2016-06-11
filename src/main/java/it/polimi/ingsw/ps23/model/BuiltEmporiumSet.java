@@ -42,7 +42,7 @@ public class BuiltEmporiumSet {
 	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
 		BuiltEmporiumSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumSet();
 		for(City city : builtEmporiums) {
-			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackPoints()) {
+			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackBonus()) {
 					citiesWithoutNobilityTrackPoints.builtEmporiums.add(city);
 			}
 		}

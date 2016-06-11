@@ -22,7 +22,6 @@ public class TestRawObject {
 		assertTrue(secondRow[0].equals(rawObject0.get(1)[0]));
 		assertTrue(firstRow[1].equals(rawObject0.get(0)[1]));
 		assertTrue(secondRow[1].equals(rawObject0.get(1)[1]));
-		
 	}
 
 }
