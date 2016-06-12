@@ -12,7 +12,6 @@ import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.model.state.Context;
 import it.polimi.ingsw.ps23.model.state.EndGameState;
-import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
@@ -51,13 +50,21 @@ public class Model extends ModelObservable {
 		setStartingPlayerIndex();
 		this.playerResumeHandler = playerResumeHandler;
 		newGame(playersName);
-		setGameStatusState();
+		setStartTurnState();
 	}
 	
 	private Player setCurrentGamePlayer() {
 		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
 		currentPlayer.pickCard(game.getPoliticDeck(), 1);
 		return currentPlayer;
+	}
+	
+	private void setStartTurnState() {
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState(turnHandler);		
+		startTurnState.changeState(context, game);
+		wakeUp(startTurnState);
+		playerResumeHandler.resume();
 	}
 	
 	public void setPlayerTurn() {
@@ -68,7 +75,6 @@ public class Model extends ModelObservable {
 				}
 				else {
 					changePlayer();
-					playerResumeHandler.resume();
 				}
 			}
 			else {
@@ -84,7 +90,6 @@ public class Model extends ModelObservable {
 		EndGameState endGameState = new EndGameState();	
 		endGameState.changeState(context, game);
 		wakeUp(endGameState);
-		
 	}
 
 	private void setUpMarket() {
@@ -92,14 +97,7 @@ public class Model extends ModelObservable {
 		game.createNewMarket();
 		launchOfferMarket();
 	}
-	
-	private void setStartTurnState() {
-		context = new Context();
-		StartTurnState startTurnState = new StartTurnState(turnHandler);		
-		startTurnState.changeState(context, game);
-		wakeUp(startTurnState);
-	}
-	
+
 	public void setActionState(State state) {
 		context = new Context();
 		state.changeState(context, game);
@@ -117,7 +115,6 @@ public class Model extends ModelObservable {
 				return;
 			}
 		}
-		setGameStatusState();
 	}
 	
 	private void setSuperBonusState() {
@@ -127,13 +124,6 @@ public class Model extends ModelObservable {
 		wakeUp(superBonusState);
 	}
 
-	private void setGameStatusState() {
-		context = new Context();
-		GameStatusState gameStatusState = new GameStatusState();
-		gameStatusState.changeState(context, game);
-		wakeUp(gameStatusState);
-	}
-	
 	private void changePlayer() {
 		turnHandler = new TurnHandler();
 		game.setCurrentPlayer(setCurrentGamePlayer());
@@ -156,6 +146,7 @@ public class Model extends ModelObservable {
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
 		marketOfferPhaseState.changeState(context, game);
 		wakeUp(marketOfferPhaseState);
+		playerResumeHandler.resume();
 	}
 	
 	public void doBuyMarket(MarketTransation marketTransation) {
@@ -167,7 +158,7 @@ public class Model extends ModelObservable {
 			setStartingPlayerIndex();
 			currentPlayerIndex++;
 			changePlayer();
-			setGameStatusState();
+			setStartTurnState();
 		}		
 	}
 	
@@ -177,6 +168,7 @@ public class Model extends ModelObservable {
 		MarketBuyPhaseState marketBuyPhaseState = new MarketBuyPhaseState();
 		marketBuyPhaseState.changeState(context, game);
 		wakeUp(marketBuyPhaseState);
+		playerResumeHandler.resume();
 	}
 	
 	private void setStartingPlayerIndex() {
@@ -189,7 +181,7 @@ public class Model extends ModelObservable {
 
 	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) {
 		superBonusGiver.values(game, turnHandler);
-		setGameStatusState();
+		setStartTurnState();
 	}
 	
 }

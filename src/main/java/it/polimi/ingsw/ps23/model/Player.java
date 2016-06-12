@@ -173,7 +173,7 @@ public class Player {
 	}
 
 	public boolean hasFinished() {
-		return builtEmporiumSet.containsTenEmporium();
+		return builtEmporiumSet.containsMaxEmporium();
 	}
 	
 	public void addBonusTile(Bonus bonus) {

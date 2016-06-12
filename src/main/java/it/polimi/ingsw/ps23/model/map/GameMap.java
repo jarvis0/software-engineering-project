@@ -63,9 +63,13 @@ public class GameMap {
 		return permitsMap;
 	}
 
+	private boolean isFoundRegion(Region region, BuiltEmporiumSet builtEmporiumSet) {
+		return builtEmporiumSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
+	}
+	
 	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
-		for (Region region : groupRegionalCities) {
-			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+		for(Region region : groupRegionalCities) {
+			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;
 			}
 		}
@@ -74,7 +78,7 @@ public class GameMap {
 
 	public Region groupColoredCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
 		for (Region region : groupColoredCities) {
-			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;
 			}
 		}

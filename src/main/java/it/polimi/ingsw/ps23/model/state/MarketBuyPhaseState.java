@@ -22,6 +22,10 @@ public class MarketBuyPhaseState implements State {
 		return currentPlayer.getName() + " coins: " + currentPlayer.getCoins();
 	}
 	
+	public String getPlayerName() {
+		return currentPlayer.getName();
+	}
+	
 	public boolean canBuy() {
 		for(MarketObject marketObject : market.getMarketObject()) {
 			if(marketObject.getPlayer() != currentPlayer && marketObject.getCost() < currentPlayer.getCoins()) {

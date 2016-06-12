@@ -19,14 +19,13 @@ public class MarketOfferPhaseState implements State {
 	
 	private Logger logger;
 	
-	//TODO manca il costruttore, serve?
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
 		currentPlayer = game.getCurrentPlayer();
 	}
 	
-	public String getCurrentPlayer() {
+	public String getPlayerName() {
 		return currentPlayer.getName();
 	}
 	
@@ -43,15 +42,15 @@ public class MarketOfferPhaseState implements State {
 	}
 	
 	public boolean canSellPoliticCards() {
-		return currentPlayer.getPoliticHandDeck().getHandSize() == 0;
+		return currentPlayer.getPoliticHandDeck().getHandSize() > 0;
 	}
 	
 	public boolean canSellPermissionCards() {
-		return currentPlayer.getPermissionHandDeck().getHandSize() == 0;
+		return currentPlayer.getPermissionHandDeck().getHandSize() > 0;
 	}
 	
 	public boolean canSellAssistants() {
-		return currentPlayer.getAssistants() == 0;
+		return currentPlayer.getAssistants() > 0;
 	}
 
 	@Override
