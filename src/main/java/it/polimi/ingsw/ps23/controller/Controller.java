@@ -29,6 +29,7 @@ public class Controller implements ControllerObserver {
 	@Override
 	public void update(Action action) {
 		model.doAction(action);
+		model.setPlayerTurn();
 	}
 
 	@Override
@@ -38,12 +39,12 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(MarketTransation marketTransation) {
-		model.doBuyMarket(marketTransation);	
+		model.doBuyMarket(marketTransation);
 	}
 
 	@Override
 	public void update(SuperBonusGiver superBonusGiver) {
-		model.doSuperBonusesAcquisition(superBonusGiver);	
+		model.doSuperBonusesAcquisition(superBonusGiver);
 	}
 
 }

@@ -19,7 +19,6 @@ import it.polimi.ingsw.ps23.model.state.BuildEmporiumPermitTileState;
 import it.polimi.ingsw.ps23.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.model.state.EndGameState;
 import it.polimi.ingsw.ps23.model.state.EngageAnAssistantState;
-import it.polimi.ingsw.ps23.model.state.GameStatusState;
 import it.polimi.ingsw.ps23.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.model.state.StartTurnState;
@@ -40,7 +39,7 @@ public class ConsoleView extends View implements ViewVisitor {
 	private State state;
 	
 	private PrintStream output;
-	
+
 	private Logger logger;
 	
 	public ConsoleView(String clientName, Connection connection, PrintStream output) {
@@ -91,17 +90,12 @@ public class ConsoleView extends View implements ViewVisitor {
 	public synchronized void threadWakeUp() {
 		notifyAll();
 	}
-	
-	@Override
-	public void visit(GameStatusState currentState) {
-		sendNoInput(currentState.getStatus());
-		wakeUp();
-	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
 		output.println("Current player: " + player.getName());
+		sendNoInput(currentState.getStatus());
 		if(player.getName().equals(clientName)) {
 			sendWithInput("Current player: " + player.toString() + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
@@ -115,7 +109,6 @@ public class ConsoleView extends View implements ViewVisitor {
 		else {
 			sendNoInput("It's player " + player.getName() + " turn.");
 			pause();
-			wakeUp();
 		}
 	}
 
@@ -177,8 +170,8 @@ public class ConsoleView extends View implements ViewVisitor {
 		List<String> removedCards = new ArrayList<>();
 		sendWithInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
 		int numberOfCards = Integer.parseInt(receive());
-		sendWithInput("player hand deck:" + currentState.getDeck());
-		for (int i=0; i<numberOfCards; i++) {
+		sendNoInput("Player hand deck:" + currentState.getDeck());
+		for (int i = 0; i < numberOfCards; i++) {
 			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 			String chosenCard = receive().toLowerCase();
 			removedCards.add(chosenCard);
@@ -201,43 +194,55 @@ public class ConsoleView extends View implements ViewVisitor {
 	public void visit(MarketOfferPhaseState currentState) {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		List<Integer> chosenPermissionCards = new ArrayList<>();
-		sendNoInput("It's " + currentState.getCurrentPlayer() + " market phase turn.");
-		if(currentState.canSellPoliticCards()) {
-			sendWithInput("How many politic cards do you want to use? ");
-			int numberOfCards = Integer.parseInt(receive());
-			for(int i = 0; i < numberOfCards; i++) {
-				sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
-				chosenPoliticCards.add(receive());
+		String player = currentState.getPlayerName();
+		sendNoInput("It's " + player + " market phase turn.");
+		if(player.equals(clientName)) {
+			if(currentState.canSellPoliticCards()) {
+				sendWithInput("How many politic cards do you want to use? ");
+				int numberOfCards = Integer.parseInt(receive());
+				for(int i = 0; i < numberOfCards; i++) {
+					sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
+					chosenPoliticCards.add(receive());
+				}
 			}
-		}
-		if(currentState.canSellPoliticCards()) {
-			sendWithInput("How many permission cards do you want to use? ");
-			int numberOfCards = Integer.parseInt(receive());
-			for(int i = 0; i < numberOfCards; i++) {
-				sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
-				chosenPermissionCards.add(Integer.parseInt(receive()));
+			if(currentState.canSellPoliticCards()) {
+				sendWithInput("How many permission cards do you want to use? ");
+				int numberOfCards = Integer.parseInt(receive());
+				for(int i = 0; i < numberOfCards; i++) {
+					sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
+					chosenPermissionCards.add(Integer.parseInt(receive()));
+				}
 			}
+			int chosenAssistants = 0;
+			if(currentState.canSellAssistants()) {
+				sendWithInput("Select the number of assistants " + currentState.getAssistants());
+				chosenAssistants = Integer.parseInt(receive());
+			}
+			sendWithInput("Choose the price for your offer: ");
+			int cost = Integer.parseInt(receive());
+			wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 		}
-		int chosenAssistants = 0;
-		if(currentState.canSellAssistants()) {
-			sendWithInput("Select the number of assistants " + currentState.getAssistants());
-			chosenAssistants = Integer.parseInt(receive());
+		else {
+			pause();
 		}
-		sendWithInput("Choose the price for your offer: ");
-		int cost = Integer.parseInt(receive());
-		wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 	}
 
 	@Override
-	public void visit(MarketBuyPhaseState currentState) {
-		sendNoInput("Market turn, current Player: " + currentState.getCurrentPlayer());
-		if(currentState.canBuy()) {
-			sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
-			wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+	public void visit(MarketBuyPhaseState currentState) {		
+		String player = currentState.getPlayerName();
+		sendNoInput("It's " + player + " market phase turn.");
+		if(player.equals(clientName)) {
+			if(currentState.canBuy()) {
+				sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
+				wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+			}
+			else {
+				sendNoInput("You can buy nothing.");
+				wakeUp(currentState.createTransation());
+			}
 		}
 		else {
-			sendNoInput("You can buy nothing.");
-			wakeUp(currentState.createTransation());
+			pause();
 		}
 	}
 	

@@ -64,7 +64,7 @@ public class GameMap {
 	}
 
 	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
-		for (Region region : groupRegionalCities) {
+		for(Region region : groupRegionalCities) {
 			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
 				return region;
 			}
