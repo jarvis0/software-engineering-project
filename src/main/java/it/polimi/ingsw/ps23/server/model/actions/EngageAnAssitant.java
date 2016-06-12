@@ -23,8 +23,6 @@ public class EngageAnAssitant implements Action {
 			logger.log(Level.SEVERE, "Insufficient current player coins.", e);
 		}
 		turnHandler.useQuickAction();
-	
 	}
-	
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-import it.polimi.ingsw.ps23.server.model.map.board.KingTileSet;
+import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
 
 class KingTileFactory {
 	

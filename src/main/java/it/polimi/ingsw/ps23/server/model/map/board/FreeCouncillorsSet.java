@@ -5,7 +5,6 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
-
 public class FreeCouncillorsSet {
 	
 	private List<Councillor> freeCouncillors;

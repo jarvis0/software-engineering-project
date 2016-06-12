@@ -28,7 +28,7 @@ public abstract class Region {
 		citiesList.addAll(cities.values());
 	}
 	
-	public List<City> getCitiesList() {
+	protected List<City> getCitiesList() {
 		return citiesList;
 	}
 
@@ -50,7 +50,7 @@ public abstract class Region {
 		return bonusTile;
 	}
 	
-	public Bonus getBonusTile() {
+	protected Bonus getBonusTile() {
 		return bonusTile;
 	}
 	
@@ -58,11 +58,7 @@ public abstract class Region {
 		return name;
 	}
 
-	public boolean containsAll(List<City> builtEmporiumSet) {
-		return citiesList.containsAll(builtEmporiumSet);
-	}
-
-	public boolean alreadyUsedBonusTile() {
+	protected boolean alreadyUsedBonusTile() {
 		return alreadyAcquiredBonusTile;
 	}
 

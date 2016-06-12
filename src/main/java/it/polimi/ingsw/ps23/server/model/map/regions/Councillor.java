@@ -4,7 +4,7 @@ import it.polimi.ingsw.ps23.server.model.map.GameColor;
 
 public class Councillor {
 	
-	GameColor color;
+	private GameColor color;
 	
 	public Councillor(GameColor color) {
 		this.color = color;

@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class SuperBonusGiver {
 	
-	Map<Bonus, List<String>> selectedBonuses;
+	private Map<Bonus, List<String>> selectedBonuses;
 	
 	public SuperBonusGiver(Map<Bonus, List<String>> selectedBonuses) {
 		this.selectedBonuses = selectedBonuses;
@@ -30,8 +30,8 @@ public class SuperBonusGiver {
 			} 
 			else {
 				game.getCurrentPlayer().updateSuperBonus(bonus, values, game, turnHandler);
-			}
-			
+			}			
 		}
 	}
+	
 }

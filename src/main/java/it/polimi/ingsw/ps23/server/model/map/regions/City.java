@@ -10,6 +10,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 public class City {
 	
 	private static final int EMPTY = 0;
+	
 	private String name;
 	private GameColor color;
 	private List<Player> emporiumList;
@@ -37,7 +38,7 @@ public class City {
 		return assitantsCost;
 	}
 
-	protected List<String> getEmporiumsPlayersList() {
+	List<String> getEmporiumsPlayersList() {
 		List<String> emporiumsPlayersList = new ArrayList<>();
 		for(Player emporium : emporiumList) {
 			emporiumsPlayersList.add(emporium.getName());

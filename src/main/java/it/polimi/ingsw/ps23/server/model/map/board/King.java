@@ -13,11 +13,6 @@ public class King {
 		this.council = council;
 	}
 	
-	@Override
-	public String toString() {
-		return "King's position: " + position.toString() + "\n" + council.toString();
-	}
-	
 	public City getPosition(){
 		return position;
 	}
@@ -29,4 +24,10 @@ public class King {
 	public void setNewPosition(City arriveCity) {
 		position = arriveCity;		
 	}
+	
+	@Override
+	public String toString() {
+		return "King's position: " + position.toString() + "\n" + council.toString();
+	}
+	
 }
