@@ -23,7 +23,7 @@ public class Player {
 	private String name;
 	private int coins;
 	private int assistants;
-	private BuiltEmporiumSet builtEmporiumSet;
+	private BuiltEmporiumsSet builtEmporiumsSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
 	private HandDeck permissionHandDeck;
@@ -40,7 +40,7 @@ public class Player {
 		this.politicHandDeck = politicHandDeck;
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
-		builtEmporiumSet = new BuiltEmporiumSet();
+		builtEmporiumsSet = new BuiltEmporiumsSet();
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
 		bonusTile = new BonusTile();
@@ -112,15 +112,15 @@ public class Player {
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		try {
-			builtEmporiumSet.addBuiltEmporium(city);
+			builtEmporiumsSet.addBuiltEmporium(city);
 			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
 			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
 	}
 	
-	public BuiltEmporiumSet getEmporiums(){
-		return builtEmporiumSet;
+	public BuiltEmporiumsSet getEmporiums(){
+		return builtEmporiumsSet;
 	}
 	
 	public int getAssistants() {
@@ -171,12 +171,12 @@ public class Player {
 		return permissionUsedHandDeck;
 	}
 	
-	public BuiltEmporiumSet getEmporiumForRecycleRewardToken() {
-		return builtEmporiumSet.getCitiesForRecycleRewardTokens();
+	public BuiltEmporiumsSet getEmporiumForRecycleRewardToken() {
+		return builtEmporiumsSet.getCitiesForRecycleRewardTokens();
 	}
 
 	public boolean hasFinished() {
-		return builtEmporiumSet.containsMaxEmporium();
+		return builtEmporiumsSet.containsMaxEmporium();
 	}
 	
 	public void addBonusTile(Bonus bonus) {
@@ -196,14 +196,14 @@ public class Player {
 	}
 
 	public void checkEmporiumsGroups(Game game) {
-		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumSet);
+		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTileSet().isEmpty())) {
 				bonusTile.addTile(game.getKingTileSet().pop());
 			}
 		}
-		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumSet);
+		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTileSet().isEmpty())) {
@@ -214,7 +214,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
 	}
 
 }

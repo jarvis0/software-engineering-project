@@ -6,7 +6,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumSet;
+import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumsSet;
 
 public class GameMap {
 	
@@ -71,11 +71,11 @@ public class GameMap {
 		return permitsMap;
 	}
 
-	private boolean isFoundRegion(Region region, BuiltEmporiumSet builtEmporiumSet) {
-		return builtEmporiumSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
+	private boolean isFoundRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
+		return builtEmporiumsSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
 	}
 	
-	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+	public Region groupRegionalCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
 		for(Region region : groupRegionalCities) {
 			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;
@@ -84,7 +84,7 @@ public class GameMap {
 		return null;
 	}
 
-	public Region groupColoredCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+	public Region groupColoredCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
 		for (Region region : groupColoredCities) {
 			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;

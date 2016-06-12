@@ -7,13 +7,13 @@ import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
-public class BuiltEmporiumSet {
+public class BuiltEmporiumsSet {
 	
 	private static final int MAX_EMPORIUMS = 2;
 	
 	private List<City> builtEmporiums;
 	
-	public BuiltEmporiumSet() {
+	public BuiltEmporiumsSet() {
 		builtEmporiums = new ArrayList<>();
 	}
 	
@@ -34,8 +34,8 @@ public class BuiltEmporiumSet {
 		return builtEmporiums;
 	}
 
-	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
-		BuiltEmporiumSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumSet();
+	public BuiltEmporiumsSet getCitiesForRecycleRewardTokens() {
+		BuiltEmporiumsSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumsSet();
 		for(City city : builtEmporiums) {
 			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackBonus()) {
 				citiesWithoutNobilityTrackPoints.builtEmporiums.add(city);
@@ -53,15 +53,11 @@ public class BuiltEmporiumSet {
 		return null;
 	}
 
-	@Override
-	public String toString() {
-		return builtEmporiums.toString();
-	}
-
 	public String getCities() {
 		StringBuilder loopString = new StringBuilder();
-		City city = builtEmporiums.get(0);
+		City city;
 		if(!builtEmporiums.isEmpty()) {
+			city = builtEmporiums.get(0);
 			loopString.append(city.getName() + " " + city.getColor());
 		}
 		for(int i = 1; i < builtEmporiums.size(); i++) {
@@ -69,6 +65,11 @@ public class BuiltEmporiumSet {
 			loopString.append(", " + city.getName() + " " + city.getColor());
 		}
 		return "[" + new String() + loopString + "]";
+	}
+
+	@Override
+	public String toString() {
+		return builtEmporiums.toString();
 	}
 
 }
