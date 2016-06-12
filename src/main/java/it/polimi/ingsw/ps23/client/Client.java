@@ -22,7 +22,7 @@ class Client {
 	private Client(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
-		this.socket = new Socket("192.168.1.5", portNumber);
+		this.socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
