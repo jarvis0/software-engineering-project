@@ -21,10 +21,12 @@ public class NobilityTrack {
 	
 	@Override
 	public String toString() {
-		String print = new String();
+		StringBuilder loopPrint = new StringBuilder();
 		for(NobilityTrackStep step : steps) {
-			print += "\n\t- " + step.toString();
+			loopPrint.append("\n\t- " + step.toString());
 		}
+		String print = new String();
+		print += loopPrint;
 		return print;
 	}
 

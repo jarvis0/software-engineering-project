@@ -22,7 +22,7 @@ public class PoliticCard implements Card {
 	
 	@Override
 	public String toString() {
-		return color.toString();
+		return color.getName();
 	}
 
 }

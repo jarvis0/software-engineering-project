@@ -25,7 +25,7 @@ public class FreeCouncillorsSet {
 	}
 	
 	public void electCouncillor(String councillorColor, Council nameCouncil) {
-		for(Councillor freeCouncillor: freeCouncillors) {
+		for(Councillor freeCouncillor : freeCouncillors) {
 			if(freeCouncillor.getColorName().equals(councillorColor)) {
 				int i = freeCouncillors.indexOf(freeCouncillor);
 				freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));

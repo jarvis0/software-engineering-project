@@ -45,4 +45,14 @@ public abstract class Bonus implements Cloneable {
 		return clone;
 	}
 	
+	@Override
+	public String toString() {
+		if(!(this instanceof NullBonus)) {
+			return name + " " + value;
+		}
+		else {
+			return " - ";
+		}
+	}
+	
 }

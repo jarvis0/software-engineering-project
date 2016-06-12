@@ -99,14 +99,16 @@ public class Initialization {
 		return citiesFactory;
 	}
 	
-	private CitiesGraph loadCitiesConnections(Map<String, City> cities) {
+	private CitiesGraphFactory loadCitiesConnections(Map<String, City> cities) {
 		List<String[]> rawCitiesConnections = new RawObject(CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
-		return new CitiesGraphFactory().makeCitiesGraph(rawCitiesConnections, cities);
+		CitiesGraphFactory citiesGraphFactory = new CitiesGraphFactory();
+		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, cities);
+		return citiesGraphFactory;
 	}
 
-	private List<Region> loadRegions(Map<String, City> citiesMap) {
+	private List<Region> loadRegions(Map<String, City> citiesMap, Map<String, List<String>> citiesConnections) {
 		List<String[]> rawRegions = new RawObject(CONFIGURATION_PATH + REGIONS_CSV).getRawObject();
-		return new GroupRegionalCitiesFactory().makeRegions(rawRegions, citiesMap);
+		return new GroupRegionalCitiesFactory().makeRegions(rawRegions, citiesMap, citiesConnections);
 	}
 	
 	private void regionalCouncils(List<Region> regions) {
@@ -136,8 +138,10 @@ public class Initialization {
 		CitiesFactory citiesFactory = loadCities();
 		List<City> citiesList = citiesFactory.getCities();
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
-		CitiesGraph citiesGraph = loadCitiesConnections(citiesMap);
-		List<Region> groupRegionalCities = loadRegions(citiesMap);
+		CitiesGraphFactory citiesGraphFactory = loadCitiesConnections(citiesMap);
+		CitiesGraph citiesGraph = citiesGraphFactory.getCitiesGraph();
+		Map<String, List<String>> citiesConnections = citiesGraphFactory.getCitiesConnections();
+		List<Region> groupRegionalCities = loadRegions(citiesMap, citiesConnections);
 		//hashmap regions - citiesList -> hashmap coloredRegions
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionDecks(citiesMap, groupRegionalCities);

@@ -8,4 +8,9 @@ public class CapitalCity extends City {
 		super(name, color);
 	}
 
+	@Override
+	public String toString() {
+		return getName() + " " + getColor() + " " + getEmporiumsPlayersList();
+	}
+	
 }

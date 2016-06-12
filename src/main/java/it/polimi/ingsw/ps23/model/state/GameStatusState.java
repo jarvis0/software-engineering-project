@@ -44,9 +44,11 @@ public class GameStatusState implements State {
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
 		print += "> KING COUNCIL: " + kingCouncil + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
+		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
-			print += "> " + gamePlayer + "\n";
+			loopPrint.append("> " + gamePlayer + "\n");
 		}
+		print += loopPrint;
 		print += "\n\n===============================================================================================================\n";
 		print += "===============================================================================================================\n\n";
 		if(finalTurn) {

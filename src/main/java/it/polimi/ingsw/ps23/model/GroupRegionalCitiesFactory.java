@@ -19,13 +19,13 @@ public class GroupRegionalCitiesFactory {
 	private static final int BONUS_VALUE_POSITION = 1;
 	private static final int BONUS_NAME_POSITION = 0;
 	
-	public List<Region> makeRegions(List<String[]> rawRegions, Map<String, City> cities) {
+	public List<Region> makeRegions(List<String[]> rawRegions, Map<String, City> cities, Map<String, List<String>> citiesConnections) {
 		ArrayList<Region> groupRegionalCities = new ArrayList<>();
 		String rawBonus = rawRegions.remove(rawRegions.size() - 1)[BONUS_NAME_POSITION];
 		for(String[] rawRegion : rawRegions) {
 			Bonus bonus = new VictoryPointBonus(rawBonus);
 			bonus.setValue(Integer.parseInt(rawRegion[BONUS_VALUE_POSITION]));
-			Region regionalCity = new GroupRegionalCity(rawRegion[REGION_NAME_POSITION], bonus);
+			Region regionalCity = new GroupRegionalCity(rawRegion[REGION_NAME_POSITION], bonus, citiesConnections);
 			for(int i = BONUS_VALUE_POSITION + 1; i < rawRegion.length; i++){
 				try {
 					regionalCity.addCity(cities.get(rawRegion[i]));

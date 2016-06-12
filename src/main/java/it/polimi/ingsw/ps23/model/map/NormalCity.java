@@ -21,4 +21,9 @@ public class NormalCity extends City {
 		return rewardToken.hasNobilityTrackBonus();
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " " + getColor() + " " + rewardToken + " " + getEmporiumsPlayersList();
+	}
+	
 }

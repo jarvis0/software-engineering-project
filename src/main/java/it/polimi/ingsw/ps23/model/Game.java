@@ -33,7 +33,7 @@ public class Game {
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
-		StateCache.loadCache();
+		StateCache.loadCache();//TODO spostare questa istruzione
 	}
 	
 	public GameMap getGameMap() {

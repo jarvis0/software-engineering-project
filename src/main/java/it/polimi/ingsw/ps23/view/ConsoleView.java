@@ -103,7 +103,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		Player player = currentState.getCurrentPlayer();
 		output.println("Current player: " + player.getName());
 		if(player.getName().equals(clientName)) {
-			sendWithInput("Current player: " + player.toString() + player.showSecretStatus() + "\nChoose an action to perform? " + currentState.getAvaiableAction());
+			sendWithInput("Current player: " + player.toString() + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
 				wakeUp(StateCache.getAction(receive().toLowerCase()));
 			}

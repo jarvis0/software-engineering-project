@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ps23.model.map;
 
+import java.util.List;
+import java.util.Map;
+
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class GroupRegionalCity extends Region {
@@ -8,10 +11,11 @@ public class GroupRegionalCity extends Region {
 	private Council council;
 	private Deck permissionDeckDown;
 	private Deck permissionDeckUp;
-
+	private Map<String, List<String>> citiesConnections;
 	
-	public GroupRegionalCity(String name, Bonus bonus) {
+	public GroupRegionalCity(String name, Bonus bonus, Map<String, List<String>> citiesConnections) {
 		super(name, bonus);
+		this.citiesConnections = citiesConnections;
 	}
 	
 	public void setCouncil(Council council) {
@@ -49,14 +53,26 @@ public class GroupRegionalCity extends Region {
 			i++;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
-		String print = super.toString() + "\n\t- REGIONAL COUNCIL: " + council + "\n\t" + "- PERMISSION DECKS UP:";
-		for(int i = 0; i < permissionDeckUp.getDeck().size(); i++) {
-			print += "\n\t\t» " + permissionDeckUp.getDeck().get(i).toString();
+		String print = "> " + getName() + ":\n";
+		print += "\t- CITIES:\n";
+		StringBuilder loopPrint = new StringBuilder();
+		for(City city : getCitiesList()) {
+			loopPrint.append("\t\t» " + city.toString() + " / connections with: " + citiesConnections.get(city.getName()) + "\n");
 		}
-		return print;
+		print += loopPrint;
+		print += "\t- REGIONAL BONUS TILE: " + getBonusTile();
+		if(alreadyUsedBonusTile()) {
+			print += " (Already acquired)";
+		}
+		print += "\n\t- REGIONAL COUNCIL: " + council + "\n\t" + "- PERMISSION DECKS UP:";
+		loopPrint = new StringBuilder();
+		for(int i = 0; i < permissionDeckUp.getDeck().size(); i++) {
+			loopPrint.append("\n\t\t» " + permissionDeckUp.getDeck().get(i).toString());
+		}
+		return print + loopPrint;
 	}
 
 }

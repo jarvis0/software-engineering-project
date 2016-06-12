@@ -19,10 +19,14 @@ public abstract class Region {
 		cities = new HashMap<>();
 		this.name = name;
 		this.bonusTile = bonusTile;
-		citiesList = toList();
+		citiesList = toList(); //TODO uso improprio
 		alreadyAcquiredBonusTile = false;
 	}
 	
+	protected Collection<City> getCitiesList() {
+		return citiesList;
+	}
+
 	protected Map<String, City> getCities() {
 		return cities;
 	}
@@ -36,9 +40,13 @@ public abstract class Region {
 			throw new InvalidCityException();
 	}
 	
-	public Bonus getBonusTile() {
-			alreadyAcquiredBonusTile = true;
-			return bonusTile;
+	public Bonus useBonusTile() {
+		alreadyAcquiredBonusTile = true;
+		return bonusTile;
+	}
+	
+	protected Bonus getBonusTile() {
+		return bonusTile;
 	}
 	
 	public String getName() {
@@ -47,20 +55,6 @@ public abstract class Region {
 	
 	private Collection<City> toList() {
 		return cities.values();
-	}
-	
-	@Override
-	public String toString() {
-		String print = "> " + name + ":\n";
-		print += "\t- CITIES:\n";
-		for(City city : citiesList) {
-			print += "\t\t» " + city.toString();
-		}
-		print += "\t- REGIONAL BONUS TILE: " + bonusTile;
-		if(alreadyAcquiredBonusTile) {
-			print += " (Already acquired)";
-		}
-		return print;
 	}
 
 	public boolean containsAll(List<City> builtEmporiumSet) {

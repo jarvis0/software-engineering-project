@@ -32,7 +32,7 @@ public class Deck {
 	
 	@Override
 	public String toString() {
-		return this.getDeck().toString();
+		return getDeck().toString();
 	}
 	
 }

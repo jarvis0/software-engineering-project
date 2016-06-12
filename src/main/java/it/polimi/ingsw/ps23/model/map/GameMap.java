@@ -84,10 +84,11 @@ public class GameMap {
 	@Override
 	public String toString() {
 		String print = "\t\t\t\t\t+++++++REGIONS+++++++\n\n";
+		StringBuilder loopPrint = new StringBuilder();
 		for(Region region : groupRegionalCities) {
-			print += region.toString() + "\n";
+			loopPrint.append(region.toString() + "\n");
 		}
-		return print;
+		return print + loopPrint;
 	}
 
 }

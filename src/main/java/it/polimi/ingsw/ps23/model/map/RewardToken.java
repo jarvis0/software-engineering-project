@@ -47,5 +47,10 @@ public class RewardToken implements BonusSlot {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return bonuses.toString();
+	}
 
 }
