@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.model;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.model.actions.Action;
@@ -23,7 +25,14 @@ public class Model extends ModelObservable {
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
+	private PlayerResumeHandler playerResumeHandler;
 	
+	private Logger logger;
+	
+	public Model() {
+		logger = Logger.getLogger(this.getClass().getName());
+	}
+
 	public Game getGame() {
 		return game;
 	}
@@ -32,14 +41,15 @@ public class Model extends ModelObservable {
 		try {
 			game = new Game(playersName);
 		} catch (NoCapitalException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Cannot initializate a new game.", e);
 		}
 		currentPlayerIndex++;
 		changePlayer();
 	}
 
-	public void setUpModel(List<String> playersName) {
+	public void setUpModel(List<String> playersName, PlayerResumeHandler playerResumeHandler) {
 		setStartingPlayerIndex();
+		this.playerResumeHandler = playerResumeHandler;
 		newGame(playersName);
 		setGameStatusState();
 	}
@@ -58,6 +68,7 @@ public class Model extends ModelObservable {
 				}
 				else {
 					changePlayer();
+					playerResumeHandler.resume();
 				}
 			}
 			else {
@@ -86,7 +97,6 @@ public class Model extends ModelObservable {
 		context = new Context();
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
-		//clonare startTurnState
 		wakeUp(startTurnState);
 	}
 	
@@ -181,5 +191,5 @@ public class Model extends ModelObservable {
 		superBonusGiver.values(game, turnHandler);
 		setGameStatusState();
 	}
-
+	
 }

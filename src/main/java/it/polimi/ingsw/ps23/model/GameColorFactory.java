@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-//flyweight
 public final class GameColorFactory {
 	
 	private static final List<GameColor> COLORS = new ArrayList<>();

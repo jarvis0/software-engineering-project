@@ -4,16 +4,20 @@ import java.util.Deque;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
-public class KingTiles {
+public class KingTileSet {
 	
 	private Deque<Bonus> kingTiles;
 	
-	public KingTiles(Deque<Bonus> tilesStack) {
+	public KingTileSet(Deque<Bonus> tilesStack) {
 		this.kingTiles = tilesStack;
 	}
 	
-	public void pop() {
-		kingTiles.pop();
+	public Bonus pop() {
+		return kingTiles.pop();
+	}
+	
+	public boolean isEmpty() {
+		return kingTiles.isEmpty();
 	}
 	
 	@Override

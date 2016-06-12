@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.model.BuiltEmporiumSet;
 import it.polimi.ingsw.ps23.model.CitiesGraph;
 
 public class GameMap {
@@ -61,10 +62,33 @@ public class GameMap {
 		}
 		return permitsMap;
 	}
+
+	public Region groupRegionalCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+		for (Region region : groupRegionalCities) {
+			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+				return region;
+			}
+		}
+		return null;
+	}
+
+	public Region groupColoredCitiesComplete(BuiltEmporiumSet builtEmporiumSet) {
+		for (Region region : groupColoredCities) {
+			if(region.containsAll(builtEmporiumSet.getBuiltEmporiumSet()) && !(region.alreadyUsedBonusTile())) {
+				return region;
+			}
+		}
+		return null;
+	}
 	
 	@Override
 	public String toString() {
-		return groupRegionalCities.toString() + "\n" + groupColoredCities.toString();
+		String print = "\t\t\t\t\t+++++++REGIONS+++++++\n\n";
+		StringBuilder loopPrint = new StringBuilder();
+		for(Region region : groupRegionalCities) {
+			loopPrint.append(region.toString() + "\n");
+		}
+		return print + loopPrint;
 	}
 
 }

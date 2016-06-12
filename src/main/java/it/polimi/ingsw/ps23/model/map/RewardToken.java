@@ -2,6 +2,8 @@ package it.polimi.ingsw.ps23.model.map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
@@ -14,38 +16,41 @@ public class RewardToken implements BonusSlot {
 	
 	private List<Bonus> bonuses;
 	
+	private Logger logger;
+	
 	public RewardToken() {
 		bonuses = new ArrayList<>();
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	@Override
 	public void addBonus(Bonus bonus) {
-		this.bonuses.add(bonus);
+		bonuses.add(bonus);
 	}
 	
 	public void useBonus(Game game, TurnHandler turnHandler) {
-		for (Bonus bonus : bonuses) {
+		for(Bonus bonus : bonuses) {
 			try {
-		bonus.updateBonus(game, turnHandler);
+				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Insufficient current player resources.", e);
+				//TODO serve questa eccezione?
 			}
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return bonuses.toString();
-	}
 
 	public boolean hasNobilityTrackBonus() {
-		for (Bonus bonus : bonuses) {
+		for(Bonus bonus : bonuses) {
 			if(bonus instanceof NobilityTrackStepBonus) {
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
+	@Override
+	public String toString() {
+		return bonuses.toString();
+	}
 
 }

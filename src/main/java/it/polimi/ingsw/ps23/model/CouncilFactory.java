@@ -5,13 +5,13 @@ import java.util.Queue;
 
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 
 public class CouncilFactory {
 	
 	private static final int COUNCILLORS_NUMBER = 4;
 	
-	public Council makeCouncil(FreeCouncillors freeCouncillors) {
+	public Council makeCouncil(FreeCouncillorsSet freeCouncillors) {
 		Queue<Councillor> councilComposition = new LinkedList<>();
 		for(int i = 0; i < COUNCILLORS_NUMBER; i++) {
 				councilComposition.add(freeCouncillors.remove(freeCouncillors.getFreeCouncillors().size() - 1));

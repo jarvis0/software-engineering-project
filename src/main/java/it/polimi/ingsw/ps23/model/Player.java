@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ps23.model;
+
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
@@ -13,7 +16,7 @@ import it.polimi.ingsw.ps23.model.map.PermissionCard;
 import it.polimi.ingsw.ps23.model.map.Region;
 
 public class Player {
-
+	
 	private String name;
 	private int coins;
 	private int assistants;
@@ -25,6 +28,8 @@ public class Player {
 	private HandDeck permissionUsedHandDeck;
 	private BonusTile bonusTile;
 	
+	private Logger logger;
+	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
 		this.coins = coins;
@@ -35,7 +40,8 @@ public class Player {
 		builtEmporiumSet = new BuiltEmporiumSet();
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
-		bonusTile = new BonusTile();		
+		bonusTile = new BonusTile();
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
@@ -77,11 +83,6 @@ public class Player {
 	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) {
 		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
 	}
-	
-	@Override
-	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
-	}
 
 	public String showSecretStatus() {
 		return " " + politicHandDeck.toString();
@@ -98,7 +99,8 @@ public class Player {
 	public HandDeck getPermissionHandDeck() {
 		return permissionHandDeck;
 	}
-	public HandDeck getPermissionTotalHandeck() {
+	
+	public HandDeck getTotalPermissionHandDeck() {
 		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
 		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
@@ -110,7 +112,7 @@ public class Player {
 			builtEmporiumSet.addBuiltEmporium(city);
 			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
 	}
 	
@@ -189,4 +191,27 @@ public class Player {
 	public int getNumberOfPoliticCard() {
 		return politicHandDeck.getHandSize();
 	}
+
+	public void checkEmporiumsGroups(Game game) {
+		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumSet);
+		if(completedRegion != null) {
+			bonusTile.addTile(completedRegion.acquireBonusTile());
+			if(!(game.getKingTileSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTileSet().pop());
+			}
+		}
+		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumSet);
+		if(completedRegion != null) {
+			bonusTile.addTile(completedRegion.acquireBonusTile());
+			if(!(game.getKingTileSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTileSet().pop());
+			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
+	}
+
 }

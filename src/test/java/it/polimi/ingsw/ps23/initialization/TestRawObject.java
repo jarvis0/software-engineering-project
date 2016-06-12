@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23;
+package it.polimi.ingsw.ps23.initialization;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.model.RawObject;
 
 public class TestRawObject {
 
-	private static final String TEST_PATH = "src/test/java/it/polimi/ingsw/ps23/csv/";
+	private static final String TEST_PATH = "src/test/java/it/polimi/ingsw/ps23/configuration/";
 	private static final String TEST_CSV = "test.csv";
 	
 	@Test
@@ -22,7 +22,6 @@ public class TestRawObject {
 		assertTrue(secondRow[0].equals(rawObject0.get(1)[0]));
 		assertTrue(firstRow[1].equals(rawObject0.get(0)[1]));
 		assertTrue(secondRow[1].equals(rawObject0.get(1)[1]));
-		
 	}
 
 }

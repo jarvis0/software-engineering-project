@@ -6,7 +6,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.Player;
 
-public abstract class City {
+public class City {
 	
 	private static final int EMPTY = 0;
 	private String name;
@@ -24,7 +24,7 @@ public abstract class City {
 	}
 	
 	public String getColor() {
-		return color.toString();
+		return color.getName();
 	}
 	
 	public int buildEmporium(Player player) throws AlreadyBuiltHereException { 
@@ -32,13 +32,16 @@ public abstract class City {
 		if(emporiumList.size() != EMPTY){
 			assitantsCost =	-emporiumList.size();
 		}
-		
 		emporiumList.add(player); 
 		return assitantsCost;
 	}
 
-	public List<Player> getEmporiums() {
-		return emporiumList;
+	protected List<String> getEmporiumsPlayersList() {
+		List<String> emporiumsPlayersList = new ArrayList<>();
+		for(Player emporium : emporiumList) {
+			emporiumsPlayersList.add(emporium.getName());
+		}
+		return emporiumsPlayersList;
 	}
-
+	
 }

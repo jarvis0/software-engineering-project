@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ps23.model.market;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
@@ -9,14 +12,17 @@ import it.polimi.ingsw.ps23.model.market.MarketObject;
 public class MarketTransation {
 
 	private MarketObject requestedObject;
-	private boolean hasPurchase;
+	private boolean hasPurchased;
+	
+	private Logger logger;
 	
 	public MarketTransation() {
-		hasPurchase = true;
+		hasPurchased = true;
+		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	public void notPurchased() {
-		hasPurchase = false;
+		hasPurchased = false;
 	}
 	
 	public void setRequestedObject(MarketObject requestedObject) {
@@ -24,7 +30,7 @@ public class MarketTransation {
 	}
 	
 	public void doTransation(Game game) {
-		if(hasPurchase) {
+		if(hasPurchased) {
 			Player seller = requestedObject.getPlayer();
 			Player buyer = game.getCurrentPlayer();
 			buyer.buyPoliticCards(requestedObject.getPoliticCards());
@@ -37,7 +43,7 @@ public class MarketTransation {
 				buyer.updateCoins(- requestedObject.getCost());
 				seller.updateCoins(requestedObject.getCost());
 			} catch (InsufficientResourcesException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Either insufficient player assistants or coins.", e);
 			}
 		}
 	}

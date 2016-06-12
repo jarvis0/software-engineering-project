@@ -1,16 +1,21 @@
 package it.polimi.ingsw.ps23.model.map;
 
+import java.util.List;
+import java.util.Map;
+
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 
 public class GroupRegionalCity extends Region {
 	
+	private static final int CARDS_NUMBER_UP = 2;
 	private Council council;
 	private Deck permissionDeckDown;
 	private Deck permissionDeckUp;
-
+	private Map<String, List<String>> citiesConnections;
 	
-	public GroupRegionalCity(String name, Bonus bonus) {
+	public GroupRegionalCity(String name, Bonus bonus, Map<String, List<String>> citiesConnections) {
 		super(name, bonus);
+		this.citiesConnections = citiesConnections;
 	}
 	
 	public void setCouncil(Council council) {
@@ -19,7 +24,7 @@ public class GroupRegionalCity extends Region {
 	
 	public void setPermissionDeck(Deck permissionDeck) {
 		this.permissionDeckDown = permissionDeck;
-		permissionDeckUp = new Deck(permissionDeckDown.pickCards(2));
+		permissionDeckUp = new Deck(permissionDeckDown.pickCards(CARDS_NUMBER_UP));
 	}
 
 	public Deck getPermissionDeck() {
@@ -39,19 +44,35 @@ public class GroupRegionalCity extends Region {
 		permissionDeckUp.getDeck().set(index, permissionDeckDown.pickCard());
 		return card;
 	}
-	
-	@Override
-	public String toString() {
-		return super.toString() + "[Council: " + council + "]" + "\n" + "permissionDeck UP: " + permissionDeckUp + "\n";
-	}
 
 	public void changePermitTiles() {
 		int i=0;
-		for (Card card : permissionDeckUp.getDeck()) {
+		for(Card card : permissionDeckUp.getDeck()) {
 			permissionDeckDown.getDeck().add(card);
 			permissionDeckUp.getDeck().set(i, permissionDeckDown.pickCard());
 			i++;
 		}
+	}
+
+	@Override
+	public String toString() {
+		String print = "> " + getName() + ":\n";
+		print += "\t- CITIES:\n";
+		StringBuilder loopPrint = new StringBuilder();
+		for(City city : getCitiesList()) {
+			loopPrint.append("\t\t» " + city.toString() + " / connections with: " + citiesConnections.get(city.getName()) + "\n");
+		}
+		print += loopPrint;
+		print += "\t- REGIONAL BONUS TILE: " + getBonusTile();
+		if(alreadyUsedBonusTile()) {
+			print += " (Already acquired)";
+		}
+		print += "\n\t- REGIONAL COUNCIL: " + council + "\n\t" + "- PERMISSION DECKS UP:";
+		loopPrint = new StringBuilder();
+		for(int i = 0; i < permissionDeckUp.getDeck().size(); i++) {
+			loopPrint.append("\n\t\t» " + permissionDeckUp.getDeck().get(i).toString());
+		}
+		return print + loopPrint;
 	}
 
 }

@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
-public class MarketBuyPhaseState implements State{
+public class MarketBuyPhaseState implements State {
 	
 	private Market market;
 	private Player currentPlayer;

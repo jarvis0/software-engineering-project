@@ -17,19 +17,8 @@ public class ViewObservable {
 		observers = new ArrayList<>();
 	}
 	
-	public void attach(ControllerObserver observer){
+	public void attach(ControllerObserver observer) {
 		observers.add(observer);
-	}
-
-	public void wakeUp(List<String> state) {
-		notifyAllObservers(state);
-	}
-	
-	//all ?
-	private void notifyAllObservers(List<String> state) {
-		for(ControllerObserver observer : observers) {
-			observer.update(state);
-		}
 	}
 	
 	public void wakeUp() {

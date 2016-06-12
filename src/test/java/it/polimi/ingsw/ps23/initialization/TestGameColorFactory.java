@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23;
+package it.polimi.ingsw.ps23.initialization;
 
 import static org.junit.Assert.*;
 

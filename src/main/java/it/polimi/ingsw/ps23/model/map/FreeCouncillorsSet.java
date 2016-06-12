@@ -3,11 +3,11 @@ package it.polimi.ingsw.ps23.model.map;
 import java.util.List;
 
 
-public class FreeCouncillors {
+public class FreeCouncillorsSet {
 	
 	private List<Councillor> freeCouncillors;
 	
-	public FreeCouncillors(List<Councillor> freeCouncillors){
+	public FreeCouncillorsSet(List<Councillor> freeCouncillors){
 		this.freeCouncillors = freeCouncillors;
 	}
 	
@@ -25,7 +25,7 @@ public class FreeCouncillors {
 	}
 	
 	public void electCouncillor(String councillorColor, Council nameCouncil) {
-		for(Councillor freeCouncillor: freeCouncillors) {
+		for(Councillor freeCouncillor : freeCouncillors) {
 			if(freeCouncillor.getColorName().equals(councillorColor)) {
 				int i = freeCouncillors.indexOf(freeCouncillor);
 				freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));

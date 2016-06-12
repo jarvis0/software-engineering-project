@@ -6,21 +6,21 @@ import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.state.StateCache;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.King;
-import it.polimi.ingsw.ps23.model.map.KingTiles;
+import it.polimi.ingsw.ps23.model.map.KingTileSet;
 import it.polimi.ingsw.ps23.model.Initialization;
 
 public class Game {
 
 	private Deck politicDeck;
-	private FreeCouncillors freeCouncillors;
+	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTiles kingTiles;
+	private KingTileSet kingTiles;
 	private NobilityTrack nobilityTrack;
-	private GamePlayersSet gamePlayersSet;
+	private PlayersSet playersSet;
 	private Player currentPlayer;
 	private Market currentMarket;
 
@@ -32,16 +32,16 @@ public class Game {
 		king = init.getKing();
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
-		gamePlayersSet = init.getGamePlayerSet();
-		StateCache.loadCache();
+		playersSet = init.getPlayersSet();
+		StateCache.loadCache();//TODO spostare questa istruzione
 	}
 	
 	public GameMap getGameMap() {
 		return gameMap;
 	}
 	
-	public GamePlayersSet getGamePlayersSet() {
-		return gamePlayersSet;
+	public PlayersSet getGamePlayersSet() {
+		return playersSet;
 	}
 
 	public Deck getPoliticDeck() {
@@ -56,12 +56,16 @@ public class Game {
 		return currentPlayer;
 	}
 	
-	public FreeCouncillors getFreeCouncillors() {
+	public FreeCouncillorsSet getFreeCouncillors() {
 		return freeCouncillors;
 	}
 	
 	public King getKing() {
 		return king;
+	}
+	 
+	public KingTileSet getKingTileSet() {
+		return kingTiles;
 	}
 
 	public NobilityTrack getNobilityTrack() {
@@ -69,11 +73,11 @@ public class Game {
 	}
 
 	public void createNewMarket() {
-		currentMarket = new Market(gamePlayersSet);
+		currentMarket = new Market(playersSet);
 	}
 	
 	public int getNumberOfPlayer() {
-		return gamePlayersSet.numberOfPlayer();
+		return playersSet.numberOfPlayer();
 	}
 	
 	public Market getMarket() {

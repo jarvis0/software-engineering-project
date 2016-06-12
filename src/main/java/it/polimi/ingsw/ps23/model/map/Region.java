@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.model.map;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
@@ -9,14 +11,22 @@ public abstract class Region {
 	
 	private String name;
 	private Map<String, City> cities;
-	private Bonus victoryPointsBonus;
+	private Bonus bonusTile;
+	private Collection<City> citiesList;
+	private boolean alreadyAcquiredBonusTile;
 	
-	public Region(String name, Bonus victoryPointBonus) {
+	public Region(String name, Bonus bonusTile) {
 		cities = new HashMap<>();
 		this.name = name;
-		this.victoryPointsBonus = victoryPointBonus;
+		this.bonusTile = bonusTile;
+		citiesList = toList(); //TODO uso improprio
+		alreadyAcquiredBonusTile = false;
 	}
 	
+	protected Collection<City> getCitiesList() {
+		return citiesList;
+	}
+
 	protected Map<String, City> getCities() {
 		return cities;
 	}
@@ -30,17 +40,29 @@ public abstract class Region {
 			throw new InvalidCityException();
 	}
 	
-	protected Bonus getBonus() {
-		return victoryPointsBonus;
+	public Bonus acquireBonusTile() {
+		alreadyAcquiredBonusTile = true;
+		return bonusTile;
+	}
+	
+	protected Bonus getBonusTile() {
+		return bonusTile;
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	@Override
-	public String toString() {
-		return name + ": " + cities + "\n" + "[BonusTile: " + victoryPointsBonus + "]" + "\n"; 
+	private Collection<City> toList() {
+		return cities.values();
+	}
+
+	public boolean containsAll(List<City> builtEmporiumSet) {
+		return citiesList.containsAll(builtEmporiumSet);
+	}
+
+	public boolean alreadyUsedBonusTile() {
+		return alreadyAcquiredBonusTile;
 	}
 
 }

@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
-public class BuildEmporiumKingState extends ActionState{
+public class BuildEmporiumKingState extends ActionState {
 	
 	Council kingCouncil;
 	HandDeck availableCards;
@@ -58,7 +58,7 @@ public class BuildEmporiumKingState extends ActionState{
 	}
 
 	public Action createAction(List<String> removedCards, String arrivalCity) {
-		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition, initialNobilityTrackPoints);
+		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
 	}
 	
 }

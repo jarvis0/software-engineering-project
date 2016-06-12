@@ -1,17 +1,19 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.GamePlayersSet;
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.PlayersSet;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.GameMap;
+import it.polimi.ingsw.ps23.model.map.NobilityTrack;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class GameStatusState implements State {
 
 	private GameMap gameMap;
-	private GamePlayersSet gamePlayersSet;
+	private PlayersSet gamePlayersSet;
 	private Council kingCouncil;
+	private NobilityTrack nobilityTrack;
 	private boolean finalTurn;
 	
 	@Override
@@ -20,6 +22,7 @@ public class GameStatusState implements State {
 		this.gameMap = game.getGameMap();
 		this.gamePlayersSet = game.getGamePlayersSet();
 		this.kingCouncil = game.getKing().getCouncil();
+		this.nobilityTrack = game.getNobilityTrack();
 		finalTurn = false;
 		for (Player player : gamePlayersSet.getPlayers()) {
 			if (player.hasFinished()) {
@@ -30,11 +33,28 @@ public class GameStatusState implements State {
 	}
 		
 	public String getStatus() {
-		String returnString = "Map: " + gameMap + "\nPlayers: " + gamePlayersSet + "\n King Council: " + kingCouncil;
-		if(finalTurn) {
-			returnString += "\nThis is the final round";
+		String print = "\n===============================================================================================================\n";
+		print += "===============================================================================================================\n\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+    GAME STATUS    +\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
+		print += gameMap;
+		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
+		print += "> KING COUNCIL: " + kingCouncil + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
+		StringBuilder loopPrint = new StringBuilder();
+		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
+			loopPrint.append("> " + gamePlayer + "\n");
 		}
-		return returnString;
+		print += loopPrint;
+		print += "\n\n===============================================================================================================\n";
+		print += "===============================================================================================================\n\n";
+		if(finalTurn) {
+			print += "This is the final round.";
+		}
+		return print;
 	}
 	
 	@Override

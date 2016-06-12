@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 
 public class CouncillorsFactory {
 
@@ -13,7 +13,7 @@ public class CouncillorsFactory {
 	private static final int COUNCILLOR_COLOR_HEX_POSITION = 1;
 	private static final int COUNCILLOR_COLOR_NAME_POSITION = 2;
 	
-	public FreeCouncillors makeCouncillors(List<String[]> rawCouncillors) {
+	public FreeCouncillorsSet makeCouncillors(List<String[]> rawCouncillors) {
 		List<Councillor> councillors = new ArrayList<>();
 		for(String[] rawCouncillor : rawCouncillors) {
 			int sameColorCouncillorNumber = Integer.parseInt(rawCouncillor[SAME_COLORED_COUNCILLORS_POSITION]);
@@ -22,7 +22,7 @@ public class CouncillorsFactory {
 			}
 		}
 		Collections.shuffle(councillors);
-		return new FreeCouncillors(councillors);
+		return new FreeCouncillorsSet(councillors);
 	}
 }
 

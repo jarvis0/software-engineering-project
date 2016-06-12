@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23;
+package it.polimi.ingsw.ps23.initialization;
 
 import static org.junit.Assert.*;
 
@@ -12,12 +12,10 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.map.Council;
 import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillors;
+import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
 
 public class TestFreeCouncillors {
 
-	
-	
 	@Test
 	public void test() {
 		
@@ -45,7 +43,7 @@ public class TestFreeCouncillors {
 		Councillor councillor1 = new Councillor(color1);
 		freeCouncillors.add(councillor1);
 		
-		FreeCouncillors freeCouncillors1 = new FreeCouncillors(freeCouncillors);
+		FreeCouncillorsSet freeCouncillors1 = new FreeCouncillorsSet(freeCouncillors);
 		
 		assertTrue(freeCouncillors1.toString().equals("[White, Black]"));
 		
@@ -62,9 +60,7 @@ public class TestFreeCouncillors {
 		assertTrue(council.toString().equals("[Purple, White, White]"));
 		
 		assertTrue(freeCouncillors1.toString().equals("[Green]"));
-
-
-		
+		//troppo complicato così.. fare come TestLoadPoliticDeck
 	}
 
 }
