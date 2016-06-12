@@ -26,7 +26,7 @@ public class BuiltEmporiumSet {
 		}
 	}
 	
-	public boolean containsTenEmporium() { //TODO max emporium
+	public boolean containsMaxEmporium() { //TODO max emporium
 		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
 
