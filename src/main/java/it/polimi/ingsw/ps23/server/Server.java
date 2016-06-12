@@ -16,9 +16,9 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.model.Model;
 import it.polimi.ingsw.ps23.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.controller.Controller;
+import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.view.ConsoleView;
 import it.polimi.ingsw.ps23.view.View;
 

@@ -9,11 +9,11 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.model.map.regions.City;
 import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class CitiesGraph {
 	

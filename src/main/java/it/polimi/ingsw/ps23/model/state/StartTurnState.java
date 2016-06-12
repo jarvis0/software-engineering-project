@@ -1,12 +1,12 @@
 package it.polimi.ingsw.ps23.model.state;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.GameMap;
 import it.polimi.ingsw.ps23.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.model.map.regions.Council;
 import it.polimi.ingsw.ps23.model.player.Player;
 import it.polimi.ingsw.ps23.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class StartTurnState implements State {

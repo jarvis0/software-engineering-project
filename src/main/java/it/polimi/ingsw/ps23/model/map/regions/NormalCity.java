@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ps23.model.map.regions;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.GameColor;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class NormalCity extends City {
 	

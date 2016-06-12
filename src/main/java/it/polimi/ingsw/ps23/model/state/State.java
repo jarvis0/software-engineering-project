@@ -1,6 +1,6 @@
 package it.polimi.ingsw.ps23.model.state;
 
-import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public interface State {

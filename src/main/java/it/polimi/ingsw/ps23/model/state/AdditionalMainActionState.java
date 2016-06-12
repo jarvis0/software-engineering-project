@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ps23.model.state;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.actions.AdditionalMainAction;
+import it.polimi.ingsw.ps23.actions.Action;
+import it.polimi.ingsw.ps23.actions.AdditionalMainAction;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class AdditionalMainActionState extends ActionState {

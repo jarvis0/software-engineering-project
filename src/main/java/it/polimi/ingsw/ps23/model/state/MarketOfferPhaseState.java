@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.player.Player;
 import it.polimi.ingsw.ps23.model.player.PoliticHandDeck;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 

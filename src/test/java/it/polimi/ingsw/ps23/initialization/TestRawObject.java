@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
-
 public class TestRawObject {
 
 	private static final String TEST_PATH = "src/test/java/it/polimi/ingsw/ps23/configuration/";

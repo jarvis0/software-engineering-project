@@ -3,11 +3,11 @@ package it.polimi.ingsw.ps23.server.commons.viewcontroller;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.actions.Action;
+import it.polimi.ingsw.ps23.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.model.state.State;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 
 public class ViewObservable {
 	

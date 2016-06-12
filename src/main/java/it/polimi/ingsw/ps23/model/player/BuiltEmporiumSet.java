@@ -3,9 +3,9 @@ package it.polimi.ingsw.ps23.model.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.InvalidPositionException;
 import it.polimi.ingsw.ps23.model.map.regions.City;
 import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
+import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
 
 public class BuiltEmporiumSet {
 	

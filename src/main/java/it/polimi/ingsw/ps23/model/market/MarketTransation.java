@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.Game;
 
 public class MarketTransation {
 

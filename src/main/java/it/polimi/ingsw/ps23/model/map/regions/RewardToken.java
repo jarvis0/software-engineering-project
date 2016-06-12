@@ -7,11 +7,11 @@ import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
-import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
+import it.polimi.ingsw.ps23.bonus.Bonus;
+import it.polimi.ingsw.ps23.bonus.BonusSlot;
+import it.polimi.ingsw.ps23.bonus.NobilityTrackStepBonus;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class RewardToken implements BonusSlot {
 	

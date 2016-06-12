@@ -6,9 +6,8 @@ import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.InvalidPositionException;
-import it.polimi.ingsw.ps23.model.TurnHandler;
+import it.polimi.ingsw.ps23.bonus.Bonus;
+import it.polimi.ingsw.ps23.bonus.SuperBonus;
 import it.polimi.ingsw.ps23.model.map.BonusTile;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.Deck;
@@ -16,8 +15,9 @@ import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.model.map.regions.City;
 import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class Player {
 	

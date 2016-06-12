@@ -3,13 +3,13 @@ package it.polimi.ingsw.ps23.model.state;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.actions.Action;
+import it.polimi.ingsw.ps23.actions.ElectCouncillor;
 import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.model.map.regions.Council;
 import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.actions.ElectCouncillor;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ElectCouncillorState extends ActionState {

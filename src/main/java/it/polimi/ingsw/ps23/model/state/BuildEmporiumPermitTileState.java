@@ -2,12 +2,12 @@ package it.polimi.ingsw.ps23.model.state;
 
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.actions.Action;
+import it.polimi.ingsw.ps23.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.model.map.regions.City;
 import it.polimi.ingsw.ps23.model.player.HandDeck;
 import it.polimi.ingsw.ps23.model.player.PermissionHandDeck;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumPermitTile;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {

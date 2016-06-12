@@ -3,9 +3,9 @@ package it.polimi.ingsw.ps23.model.state;
 import java.util.Collections;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.WinnerComparator;
 import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class EndGameState implements State {

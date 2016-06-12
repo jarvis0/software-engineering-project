@@ -7,18 +7,18 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.server.model.bonus.AdditionalMainActionBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.AssistantBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.server.model.bonus.BuildingPermitBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.CoinBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.NullBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.PoliticCardBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.RecycleBuildingPermitBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.RecycleRewardTokenBonus;
-import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
+import it.polimi.ingsw.ps23.bonus.AdditionalMainActionBonus;
+import it.polimi.ingsw.ps23.bonus.AssistantBonus;
+import it.polimi.ingsw.ps23.bonus.Bonus;
+import it.polimi.ingsw.ps23.bonus.BonusCache;
+import it.polimi.ingsw.ps23.bonus.BuildingPermitBonus;
+import it.polimi.ingsw.ps23.bonus.CoinBonus;
+import it.polimi.ingsw.ps23.bonus.NobilityTrackStepBonus;
+import it.polimi.ingsw.ps23.bonus.NullBonus;
+import it.polimi.ingsw.ps23.bonus.PoliticCardBonus;
+import it.polimi.ingsw.ps23.bonus.RecycleBuildingPermitBonus;
+import it.polimi.ingsw.ps23.bonus.RecycleRewardTokenBonus;
+import it.polimi.ingsw.ps23.bonus.VictoryPointBonus;
 
 public class TestBonusCache {
 	

@@ -3,10 +3,10 @@ package it.polimi.ingsw.ps23.model.state;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.Game;
+import it.polimi.ingsw.ps23.actions.Action;
+import it.polimi.ingsw.ps23.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.actions.ChangePermitsTile;
+import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class ChangePermitsTileState extends ActionState {
