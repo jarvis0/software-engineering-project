@@ -3,8 +3,8 @@ package it.polimi.ingsw.ps23.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
 
 public class BuiltEmporiumSet {
 	
@@ -14,7 +14,6 @@ public class BuiltEmporiumSet {
 	
 	public BuiltEmporiumSet() {
 		builtEmporiums = new ArrayList<>();
-		
 	}
 	
 	public void addBuiltEmporium(City city) throws InvalidPositionException {
@@ -32,11 +31,6 @@ public class BuiltEmporiumSet {
 
 	public List<City> getBuiltEmporiumSet() {
 		return builtEmporiums;
-	}
-
-	@Override
-	public String toString() {
-		return builtEmporiums.toString();
 	}
 
 	public BuiltEmporiumSet getCitiesForRecycleRewardTokens() {
@@ -57,5 +51,23 @@ public class BuiltEmporiumSet {
 		}
 		return null;
 	}
-	
+
+	@Override
+	public String toString() {
+		return builtEmporiums.toString();
+	}
+
+	public String getCities() {
+		StringBuilder loopString = new StringBuilder();
+		City city = builtEmporiums.get(0);
+		if(!builtEmporiums.isEmpty()) {
+			loopString.append(city.getName() + " " + city.getColor());
+		}
+		for(int i = 1; i < builtEmporiums.size(); i++) {
+			city = builtEmporiums.get(i);
+			loopString.append(", " + city.getName() + " " + city.getColor());
+		}
+		return "[" + new String() + loopString + "]";
+	}
+
 }

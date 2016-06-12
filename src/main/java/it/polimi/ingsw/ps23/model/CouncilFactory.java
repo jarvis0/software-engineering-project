@@ -3,9 +3,9 @@ package it.polimi.ingsw.ps23.model;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.model.map.board.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.model.map.regions.Council;
+import it.polimi.ingsw.ps23.model.map.regions.Councillor;
 
 public class CouncilFactory {
 	

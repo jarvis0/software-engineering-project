@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,29 +10,19 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.bonus.BonusSlot;
 
-public class PermissionCard implements Card, BonusSlot {
+public class NobilityTrackStep implements BonusSlot {
 
 	private List<Bonus> bonuses;
-	private List<City> cities;
 	
 	private Logger logger;
 	
-	public PermissionCard() {
+	public NobilityTrackStep() {
 		bonuses = new ArrayList<>();
-		cities = new ArrayList<>();
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
-	@Override
-	public void addBonus(Bonus bonus) {
-		this.bonuses.add(bonus);
-	}
-	
-	public void addCity(City city) {
-		this.cities.add(city);
-	}
-
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
@@ -45,13 +35,13 @@ public class PermissionCard implements Card, BonusSlot {
 	}
 	
 	@Override
-	public String toString() {
-		String print = bonuses.toString() + " ~ ";
-		print += cities.get(0).getName();
-		for(int i = 1; i < cities.size(); i++) {
-			print += "/" + cities.get(i).getName();
-		}
-		return print;
+	public void addBonus(Bonus bonus) {
+		bonuses.add(bonus);		
 	}
-	
+		
+	@Override
+	public String toString() {
+		return bonuses.toString();
+	}
+
 }

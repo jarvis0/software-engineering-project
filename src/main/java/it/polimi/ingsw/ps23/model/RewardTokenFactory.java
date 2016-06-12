@@ -5,8 +5,8 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.model.BonusesFactory;
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.model.map.RewardToken;
-import it.polimi.ingsw.ps23.model.map.RewardTokenSet;
+import it.polimi.ingsw.ps23.model.map.regions.RewardToken;
+import it.polimi.ingsw.ps23.model.map.regions.RewardTokenSet;
 
 public class RewardTokenFactory {
 	

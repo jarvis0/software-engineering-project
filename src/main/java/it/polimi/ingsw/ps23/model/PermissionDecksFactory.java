@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.model.map.BonusSlot;
+import it.polimi.ingsw.ps23.model.bonus.BonusSlot;
 import it.polimi.ingsw.ps23.model.map.Card;
-import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.PermissionCard;
-import it.polimi.ingsw.ps23.model.map.PermissionDeck;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.model.map.regions.PermissionDeck;
 
 public class PermissionDecksFactory {
 

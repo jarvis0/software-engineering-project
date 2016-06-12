@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
-import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
 import it.polimi.ingsw.ps23.model.map.InvalidCityException;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 
 public class GroupRegionalCitiesFactory {
 

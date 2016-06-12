@@ -14,14 +14,14 @@ public class EndGame {
 	private TurnHandler turnHandler;
 	
 	public boolean isGameEnded(Game game, TurnHandler turnHandler) {
-		for (Player player : game.getGamePlayersSet().getPlayers()) {
-			if (player.hasFinished()) {
+		//for(Player player : game.getGamePlayersSet().getPlayers()) {
+			if(game.getCurrentPlayer().hasFinished()) {
 				this.game = game;
 				this.turnHandler = turnHandler;
 				applyFinalBonus();
 				return true;
 			}
-		}
+		//}
 		return false;
 	}
 	

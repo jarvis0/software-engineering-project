@@ -7,7 +7,7 @@ import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.map.Council;
+import it.polimi.ingsw.ps23.model.map.regions.Council;
 
 public class AssistantToElectCouncillor implements Action {
 

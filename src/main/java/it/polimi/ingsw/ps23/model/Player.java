@@ -9,11 +9,11 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.SuperBonus;
 import it.polimi.ingsw.ps23.model.map.Card;
-import it.polimi.ingsw.ps23.model.map.City;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.PermissionCard;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 
 public class Player {
 	
@@ -211,7 +211,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.getCities();	
 	}
 
 }

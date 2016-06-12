@@ -5,8 +5,8 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
-import it.polimi.ingsw.ps23.model.map.PoliticDeck;
+import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.model.map.board.PoliticDeck;
 
 public class PoliticDeckFactory {
 	

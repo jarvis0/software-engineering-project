@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.regions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,26 +10,33 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.model.bonus.NobilityTrackStepBonus;
+import it.polimi.ingsw.ps23.model.bonus.BonusSlot;
+import it.polimi.ingsw.ps23.model.map.Card;
 
-public class RewardToken implements BonusSlot {
-	
+public class PermissionCard implements Card, BonusSlot {
+
 	private List<Bonus> bonuses;
+	private List<City> cities;
 	
 	private Logger logger;
 	
-	public RewardToken() {
+	public PermissionCard() {
 		bonuses = new ArrayList<>();
+		cities = new ArrayList<>();
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	@Override
 	public void addBonus(Bonus bonus) {
-		bonuses.add(bonus);
+		this.bonuses.add(bonus);
 	}
 	
+	public void addCity(City city) {
+		this.cities.add(city);
+	}
+
 	public void useBonus(Game game, TurnHandler turnHandler) {
-		for(Bonus bonus : bonuses) {
+		for (Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
@@ -38,19 +45,15 @@ public class RewardToken implements BonusSlot {
 			}
 		}
 	}
-
-	public boolean hasNobilityTrackBonus() {
-		for(Bonus bonus : bonuses) {
-			if(bonus instanceof NobilityTrackStepBonus) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	@Override
 	public String toString() {
-		return bonuses.toString();
+		String print = bonuses.toString() + " ~ ";
+		print += cities.get(0).getName();
+		for(int i = 1; i < cities.size(); i++) {
+			print += "/" + cities.get(i).getName();
+		}
+		return print;
 	}
-
+	
 }

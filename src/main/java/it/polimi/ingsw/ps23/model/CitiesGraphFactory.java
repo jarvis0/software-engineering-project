@@ -9,7 +9,7 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
-import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.regions.City;
 
 public class CitiesGraphFactory {	
 

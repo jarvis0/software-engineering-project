@@ -9,7 +9,7 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 
 public class AcquireBusinessPermitTile implements Action {
 

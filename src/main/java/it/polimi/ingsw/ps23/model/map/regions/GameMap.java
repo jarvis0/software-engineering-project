@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.regions;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.model.BuiltEmporiumSet;
 import it.polimi.ingsw.ps23.model.CitiesGraph;
+import it.polimi.ingsw.ps23.model.map.Deck;
 
 public class GameMap {
 	
@@ -44,6 +45,17 @@ public class GameMap {
 		return selectedRegion;	
 	}
 
+	public String getColoredBonusTileString() {
+		StringBuilder loopPrint = new StringBuilder();
+		for(Region region : groupColoredCities) {
+			loopPrint.append("\n\t- " + region.getName() + ": " + region.getBonusTile());
+			if(region.alreadyUsedBonusTile()) {
+				loopPrint.append(" (Already acquired)");
+			}
+		}
+		return new String() + loopPrint;
+	}
+	
 	public List<Region> getGroupColoredCity() {
 		return groupColoredCities;
 	}

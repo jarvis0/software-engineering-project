@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.model.map.board.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.model.map.regions.Councillor;
 
 public class CouncillorsFactory {
 

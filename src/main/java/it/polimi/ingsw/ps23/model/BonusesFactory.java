@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ps23.model;
 
 import it.polimi.ingsw.ps23.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.model.map.BonusSlot;
+import it.polimi.ingsw.ps23.model.bonus.BonusSlot;
 
 public class BonusesFactory {
 	

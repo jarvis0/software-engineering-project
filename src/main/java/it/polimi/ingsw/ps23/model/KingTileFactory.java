@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.bonus.VictoryPointBonus;
-import it.polimi.ingsw.ps23.model.map.KingTileSet;
+import it.polimi.ingsw.ps23.model.map.board.KingTileSet;
 
 //generalizzare i bonus? - nome?
 public class KingTileFactory {

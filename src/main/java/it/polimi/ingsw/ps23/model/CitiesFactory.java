@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.RewardTokenFactory;
-import it.polimi.ingsw.ps23.model.map.CapitalCity;
-import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
-import it.polimi.ingsw.ps23.model.map.RewardTokenSet;
+import it.polimi.ingsw.ps23.model.map.regions.CapitalCity;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
+import it.polimi.ingsw.ps23.model.map.regions.RewardTokenSet;
 
 public class CitiesFactory {
 	

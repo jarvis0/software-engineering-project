@@ -7,8 +7,8 @@ import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.actions.BuildEmporiumKing;
-import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.Council;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.Council;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class BuildEmporiumKingState extends ActionState {

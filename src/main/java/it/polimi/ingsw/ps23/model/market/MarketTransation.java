@@ -45,6 +45,9 @@ public class MarketTransation {
 			} catch (InsufficientResourcesException e) {
 				logger.log(Level.SEVERE, "Either insufficient player assistants or coins.", e);
 			}
+			game.getMarket().remove(requestedObject);
 		}
+
 	}
+	
 }

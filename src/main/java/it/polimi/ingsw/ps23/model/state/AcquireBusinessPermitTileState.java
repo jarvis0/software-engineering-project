@@ -9,12 +9,14 @@ import it.polimi.ingsw.ps23.model.HandDeck;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.model.actions.Action;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class AcquireBusinessPermitTileState extends ActionState {
 
+	private static final int MAX_CARDS_NUMBER = 4;
+	
 	private HandDeck politicHandDeck;
 	private Map<String, Region> regionsMap;
 	int initialNobilityTrackPoints;
@@ -42,6 +44,9 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	
 	public int getAvailablePoliticCardsNumber(String chosenCouncil) {
 		politicHandDeck = ((PoliticHandDeck)politicHandDeck).getAvailableCards(((GroupRegionalCity)regionsMap.get(chosenCouncil)).getCouncil());
+		if(politicHandDeck.getHandSize() > MAX_CARDS_NUMBER) {
+			return MAX_CARDS_NUMBER;
+		}
 		return politicHandDeck.getHandSize();
 	}
 		

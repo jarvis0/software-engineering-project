@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.regions;
 
 import it.polimi.ingsw.ps23.model.GameColor;
 

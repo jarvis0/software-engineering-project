@@ -43,6 +43,6 @@ public class MarketObject {
 	
 	@Override
 	public String toString() {
-		return player + " price: " + cost + " politicCards: " + politicCards + " permissionCards: " + permissionCards + " assistants: " + assistants;
+		return player.getName() + " price: " + cost + " politicCards: " + politicCards + " permissionCards: " + permissionCards + " assistants: " + assistants;
 	}
 }

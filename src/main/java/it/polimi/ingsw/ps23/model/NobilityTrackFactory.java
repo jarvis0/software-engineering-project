@@ -3,8 +3,8 @@ package it.polimi.ingsw.ps23.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.map.NobilityTrack;
-import it.polimi.ingsw.ps23.model.map.NobilityTrackStep;
+import it.polimi.ingsw.ps23.model.map.board.NobilityTrack;
+import it.polimi.ingsw.ps23.model.map.board.NobilityTrackStep;
 
 public class NobilityTrackFactory {
 

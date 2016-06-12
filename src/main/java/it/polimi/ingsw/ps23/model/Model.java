@@ -72,6 +72,7 @@ public class Model extends ModelObservable {
 			if(++currentPlayerIndex < game.getNumberOfPlayer()) {
 				if(new EndGame().isGameEnded(game, turnHandler)) {
 					setEndGameState();
+					return;
 				}
 				else {
 					changePlayer();

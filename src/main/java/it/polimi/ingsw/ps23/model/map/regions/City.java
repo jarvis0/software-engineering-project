@@ -1,10 +1,11 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.regions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.Player;
+import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
 
 public class City {
 	

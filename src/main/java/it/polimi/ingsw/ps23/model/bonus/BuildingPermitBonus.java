@@ -9,8 +9,8 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 
 public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	

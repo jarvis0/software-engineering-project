@@ -1,6 +1,4 @@
-package it.polimi.ingsw.ps23.model.map;
-
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
+package it.polimi.ingsw.ps23.model.bonus;
 
 @FunctionalInterface
 public interface BonusSlot {

@@ -107,7 +107,7 @@ public class ConsoleView extends View implements ViewVisitor {
 			}
 		}
 		else {
-			sendNoInput("It's player " + player.getName() + " turn.");
+			sendNoInput("It's player " + player.getName() + " turn.\n");
 			pause();
 		}
 	}
@@ -126,7 +126,7 @@ public class ConsoleView extends View implements ViewVisitor {
 		List<String> removedCards = new ArrayList<>();
 		sendWithInput("Choose a council to satisfy: " + currentState.getCouncilsMap());
 		String chosenCouncil = receive().toLowerCase();
-		sendWithInput("How many cards to you want to use ( min 1 - max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
+		sendWithInput("How many cards to you want to use (max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
 		int numberOfCards = Integer.parseInt(receive());
 		boolean finished = false;
 		for(int i = 0; i < numberOfCards && !finished; i++) {
@@ -205,12 +205,12 @@ public class ConsoleView extends View implements ViewVisitor {
 					chosenPoliticCards.add(receive());
 				}
 			}
-			if(currentState.canSellPoliticCards()) {
-				sendWithInput("How many permission cards do you want to use? ");
+			if(currentState.canSellPermissionCards()) {
+				sendWithInput("How many permission cards do you want to use? (numerical input >0)");
 				int numberOfCards = Integer.parseInt(receive());
 				for(int i = 0; i < numberOfCards; i++) {
 					sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
-					chosenPermissionCards.add(Integer.parseInt(receive()));
+					chosenPermissionCards.add(Integer.parseInt(receive()) - 1);
 				}
 			}
 			int chosenAssistants = 0;

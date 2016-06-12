@@ -1,6 +1,7 @@
-package it.polimi.ingsw.ps23.model.map;
+package it.polimi.ingsw.ps23.model.map.board;
 
 import it.polimi.ingsw.ps23.model.GameColor;
+import it.polimi.ingsw.ps23.model.map.Card;
 
 public class PoliticCard implements Card {
 	

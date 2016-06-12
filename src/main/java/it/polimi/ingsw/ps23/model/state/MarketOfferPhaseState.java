@@ -17,8 +17,6 @@ public class MarketOfferPhaseState implements State {
 
 	private Player currentPlayer;
 	
-	private Logger logger;
-	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -59,14 +57,13 @@ public class MarketOfferPhaseState implements State {
 	}
 	
 	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
-		logger = Logger.getLogger(this.getClass().getName()); //TODO se si mette il costruttore, spostare questa istruzione lì
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();		
 		for (String card : chosenPoliticCards) {
 			try {
 				politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Cannot find out chosen object.", e);
+				 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find out chosen object.", e);
 			}
 		}
 		for (int index : chosenPermissionCards) {

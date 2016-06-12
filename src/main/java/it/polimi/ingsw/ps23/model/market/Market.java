@@ -40,4 +40,8 @@ public class Market {
 	public Player selectPlayer() {
 		return ((MarketPlayersSet)playersSet).getCurrentPlayer();
 	}
+
+	public void remove(MarketObject requestedObject) {
+		marketObjectSet.remove(requestedObject);
+	}
 }

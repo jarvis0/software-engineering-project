@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import it.polimi.ingsw.ps23.model.map.NobilityTrack;
-import it.polimi.ingsw.ps23.model.map.CapitalCity;
-import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.regions.CapitalCity;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.GameMap;
+import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.model.map.regions.Region;
 import it.polimi.ingsw.ps23.model.map.Deck;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
-import it.polimi.ingsw.ps23.model.map.GameMap;
-import it.polimi.ingsw.ps23.model.map.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.King;
-import it.polimi.ingsw.ps23.model.map.KingTileSet;
-import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.model.map.board.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.model.map.board.King;
+import it.polimi.ingsw.ps23.model.map.board.KingTileSet;
+import it.polimi.ingsw.ps23.model.map.board.NobilityTrack;
 
 public class Initialization {
 	
@@ -31,8 +31,8 @@ public class Initialization {
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
-	private static final int STARTING_COINS = 10;
-	private static final int STARTING_ASSISTANTS = 1;
+	private static final int STARTING_COINS = 100;
+	private static final int STARTING_ASSISTANTS = 100;
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private Deck politicDeck;

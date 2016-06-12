@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
-import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.model.map.regions.City;
 
 
 public class BuildEmporiumKing implements Action {

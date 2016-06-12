@@ -16,8 +16,8 @@ import it.polimi.ingsw.ps23.model.PermissionHandDeck;
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.map.Card;
-import it.polimi.ingsw.ps23.model.map.PermissionCard;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
+import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 
 @SuppressWarnings("unused")

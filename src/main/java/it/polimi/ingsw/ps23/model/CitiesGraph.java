@@ -8,9 +8,10 @@ import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
-import it.polimi.ingsw.ps23.model.map.CapitalCity;
-import it.polimi.ingsw.ps23.model.map.City;
-import it.polimi.ingsw.ps23.model.map.NormalCity;
+
+import it.polimi.ingsw.ps23.model.map.regions.CapitalCity;
+import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
 
 public class CitiesGraph {
 	

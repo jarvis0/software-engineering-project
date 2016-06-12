@@ -4,9 +4,9 @@ import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.PlayersSet;
 import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.GameMap;
-import it.polimi.ingsw.ps23.model.map.NobilityTrack;
+import it.polimi.ingsw.ps23.model.map.board.NobilityTrack;
+import it.polimi.ingsw.ps23.model.map.regions.Council;
+import it.polimi.ingsw.ps23.model.map.regions.GameMap;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class StartTurnState implements State {
@@ -65,7 +65,7 @@ public class StartTurnState implements State {
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.getColoredBonusTileString() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
@@ -73,7 +73,7 @@ public class StartTurnState implements State {
 		}
 		print += loopPrint;
 		print += "\n\n===============================================================================================================\n";
-		print += "===============================================================================================================\n\n";
+		print += "===============================================================================================================\n";
 		if(finalTurn) {
 			print += "This is the final round.";
 		}

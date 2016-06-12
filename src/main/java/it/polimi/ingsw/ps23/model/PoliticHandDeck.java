@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.map.Card;
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
+import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.model.map.regions.Council;
+import it.polimi.ingsw.ps23.model.map.regions.Councillor;
 
 public class PoliticHandDeck extends HandDeck {
 
