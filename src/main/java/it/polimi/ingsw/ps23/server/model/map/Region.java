@@ -1,6 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.map;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,19 +13,23 @@ public abstract class Region {
 	private String name;
 	private Map<String, City> cities;
 	private Bonus bonusTile;
-	private Collection<City> citiesList;
+	private List<City> citiesList;
 	private boolean alreadyAcquiredBonusTile;
 	
 	public Region(String name, Bonus bonusTile) {
-		cities = new HashMap<>();
 		this.name = name;
 		this.bonusTile = bonusTile;
-		citiesList = toList(); //TODO uso improprio
+		cities = new HashMap<>();
+		citiesList = new ArrayList<>();
 		alreadyAcquiredBonusTile = false;
 	}
 	
+	public void toCitiesList() {
+		citiesList.addAll(cities.values());
+	}
+	
 	public List<City> getCitiesList() {
-		return (List<City>) citiesList;
+		return citiesList;
 	}
 
 	protected Map<String, City> getCities() {
@@ -52,10 +56,6 @@ public abstract class Region {
 	
 	public String getName() {
 		return name;
-	}
-	
-	private Collection<City> toList() {
-		return cities.values();
 	}
 
 	public boolean containsAll(List<City> builtEmporiumSet) {

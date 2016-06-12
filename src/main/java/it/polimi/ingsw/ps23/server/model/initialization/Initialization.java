@@ -23,7 +23,7 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 public class Initialization {
 	
-	//è corretto organizzare così le costanti?
+	//TODO è corretto organizzare così le costanti?
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
@@ -36,8 +36,8 @@ public class Initialization {
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
-	private static final int STARTING_COINS = 100;
-	private static final int STARTING_ASSISTANTS = 100;
+	private static final int STARTING_COINS = 10;
+	private static final int STARTING_ASSISTANTS = 1;
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private Deck politicDeck;
@@ -181,7 +181,8 @@ public class Initialization {
 		playerSet = new PlayersSet();
 		int playersNumber = playersName.size();
 		for(int i = 0; i < playersNumber; i++) {
-			playerSet.addPlayer(new Player(playersName.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER))));
+			Player player = new Player(playersName.get(i), STARTING_COINS + i, STARTING_ASSISTANTS + i, new PoliticHandDeck(politicDeck.pickCards(STARTING_POLITIC_CARDS_NUMBER)));
+			playerSet.addPlayer(player);
 		}
 	}
 	

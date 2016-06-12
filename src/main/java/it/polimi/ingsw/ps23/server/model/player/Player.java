@@ -215,7 +215,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.getCities();	
+		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumSet.toString();	
 	}
 
 }

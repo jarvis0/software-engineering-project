@@ -19,7 +19,7 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	public void addCards(List<Card> politicHandCards) {
-		for (Card politicHandCard : politicHandCards) {
+		for(Card politicHandCard : politicHandCards) {
 			addCard(politicHandCard);
 		}
 	}

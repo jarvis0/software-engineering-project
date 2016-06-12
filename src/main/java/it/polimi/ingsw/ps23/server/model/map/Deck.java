@@ -20,7 +20,7 @@ public class Deck {
 	
 	public List<Card> pickCards(int cardsNumber) {
 		List<Card> pickedCards = new ArrayList<>();
-		for (int i = 0; i < cardsNumber; i++) {
+		for(int i = 0; i < cardsNumber; i++) {
 			pickedCards.add(cards.remove(cards.size() - 1));
 		}
 		return pickedCards;

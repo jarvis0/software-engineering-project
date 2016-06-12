@@ -46,6 +46,7 @@ class GroupColoredCitiesFactory {
 			Region coloredGroup = new GroupColoredCity(colorName, bonus);
 			addCities(cities, colorName, coloredGroup);
 			coloredGroupCities.add(coloredGroup);
+			coloredGroup.toCitiesList();
 		}
 		return coloredGroupCities;
 	}

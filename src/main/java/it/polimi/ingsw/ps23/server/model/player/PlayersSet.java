@@ -3,7 +3,6 @@ package it.polimi.ingsw.ps23.server.model.player;
 import java.util.ArrayList;
 import java.util.List;
 
-//forse meglio HashMap ?
 public class PlayersSet {
 	
 	private List<Player> players;

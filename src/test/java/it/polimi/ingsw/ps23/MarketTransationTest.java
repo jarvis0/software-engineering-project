@@ -25,7 +25,7 @@ public class MarketTransationTest {
 	
 	@Ignore
 	public void test() {
-		List<Card> politicCards = new ArrayList<>();
+		/*List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();
 		List<String> playersName = new ArrayList<>();
 		playersName.add("Player 1");
@@ -47,7 +47,7 @@ public class MarketTransationTest {
 		} catch (NoCapitalException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }

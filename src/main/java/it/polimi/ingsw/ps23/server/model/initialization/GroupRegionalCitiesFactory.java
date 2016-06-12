@@ -34,7 +34,8 @@ class GroupRegionalCitiesFactory {
 					Logger logger = Logger.getLogger(this.getClass().getName());
 					logger.log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
 				}
-			}			
+			}
+			regionalCity.toCitiesList();
 			groupRegionalCities.add(regionalCity);
 		}
 		return groupRegionalCities;		
