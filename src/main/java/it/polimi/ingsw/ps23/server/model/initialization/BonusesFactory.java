@@ -3,12 +3,12 @@ package it.polimi.ingsw.ps23.server.model.initialization;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 
-public class BonusesFactory {
+class BonusesFactory {
 	
 	private static final String NULL_BONUS_NAME = "nullBonus";
 	private static final int NULL_BONUS_VALUE = 0;
 	
-	public BonusSlot makeBonuses(String[] fields, String[] rawSlot, BonusSlot bonusSlot) {
+	BonusSlot makeBonuses(String[] fields, String[] rawSlot, BonusSlot bonusSlot) {
 		boolean nullBonus = true;
 		int i = 0;
 		for(String rawSlotField : rawSlot) {

@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
 
-public class CitiesFactory {
+class CitiesFactory {
 	
 	private static final int CITY_NAME_POSITION = 0;
 	private static final int CITY_COLOR_HEX_POSITION = 1;
@@ -22,12 +22,12 @@ public class CitiesFactory {
 	private List<City> citiesList;
 	private Map<String, City> citiesMap;
 	
-	public CitiesFactory() {
+	CitiesFactory() {
 		citiesList = new ArrayList<>();
 		citiesMap = new HashMap<>();
 	}
 	
-	public void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
+	void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens);
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[CITY_TYPE_POSITION].equals(CAPITAL)) {
@@ -41,11 +41,11 @@ public class CitiesFactory {
 		}
 	}
 	
-	public List<City> getCities() {
+	List<City> getCities() {
 		return citiesList;
 	}
 
-	public Map<String, City> getHashMap() {
+	Map<String, City> getHashMap() {
 		return citiesMap;
 	}
 

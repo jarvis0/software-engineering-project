@@ -24,8 +24,8 @@ public abstract class Region {
 		alreadyAcquiredBonusTile = false;
 	}
 	
-	public Collection<City> getCitiesList() {
-		return citiesList;
+	public List<City> getCitiesList() {
+		return (List<City>) citiesList;
 	}
 
 	protected Map<String, City> getCities() {

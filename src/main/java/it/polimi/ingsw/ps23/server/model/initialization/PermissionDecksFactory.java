@@ -15,14 +15,14 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionDeck;
 
-public class PermissionDecksFactory {
+class PermissionDecksFactory {
 
 	private static final int BONUSES_NUMBER = 6;
 	
 	private List<String[]> rawPermissionCards;
 	private Map<String, City> cities;
 	
-	public PermissionDecksFactory(List<String[]> rawPermissionCards, Map<String, City> cities) {
+	PermissionDecksFactory(List<String[]> rawPermissionCards, Map<String, City> cities) {
 		super();
 		this.rawPermissionCards = rawPermissionCards;
 		this.cities = cities;
@@ -36,7 +36,7 @@ public class PermissionDecksFactory {
 		return rawBonuses;
 	}
 	
-	private BonusSlot addCitiesToPermissionCard(String[] rawPermissionCard) {
+	BonusSlot addCitiesToPermissionCard(String[] rawPermissionCard) {
 		String cityName;
 		BonusSlot permissionCard = new PermissionCard();
 		for(int i = BONUSES_NUMBER + 1; i < rawPermissionCard.length; i++) {
@@ -56,7 +56,7 @@ public class PermissionDecksFactory {
 		return permissionDecks;
 	}
 	
-	public Map<String, Deck> makeDecks() {
+	Map<String, Deck> makeDecks() {
 		List<Card> permissionCards;
 		Map<String, List<Card>> cardsMap = new HashMap<>();
 		BonusCache.loadCache();

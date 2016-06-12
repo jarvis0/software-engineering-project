@@ -8,29 +8,29 @@ import java.util.logging.Logger;
 
 import com.opencsv.CSVReader;
 
-public class RawObject {
+class RawObject {
 	
 	private List<String[]> raw;
 	
 	private Logger logger;
 	
-	public RawObject(String path) {
+	RawObject(String path) {
 		logger = Logger.getLogger(this.getClass().getName());
 		try {
 			this.raw = parseCSVFile(path);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error loading " + path + "file.", e);
+			logger.log(Level.SEVERE, "Error loading " + path + " file.", e);
 		}
 	}
 	
-	private List<String[]> parseCSVFile(String path) throws IOException {
+	List<String[]> parseCSVFile(String path) throws IOException {
 		CSVReader reader = new CSVReader(new FileReader(path));
 		List<String[]> read = reader.readAll();
 		reader.close();
 		return read;
 	}
 	
-	public List<String[]> getRawObject() {
+	List<String[]> getRawObject() {
 		return raw;
 	}
 	

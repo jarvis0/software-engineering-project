@@ -12,18 +12,18 @@ import org.jgrapht.graph.DefaultEdge;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
-public class CitiesGraphFactory {	
+class CitiesGraphFactory {	
 
 	private static final int CITY_VERTEX_POSITION = 0;
 	
 	private Map<String, List<String>> citiesConnections;
 	private CitiesGraph citiesGraph;
 	
-	public CitiesGraphFactory() {
+	CitiesGraphFactory() {
 		citiesConnections = new HashMap<>();
 	}
 	
-	public void makeCitiesGraph(List<String[]> rawCitiesConnections, Map<String, City> cities) {
+	void makeCitiesGraph(List<String[]> rawCitiesConnections, Map<String, City> cities) {
 		DirectedGraph<City, DefaultEdge> rawCitiesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 		for(String[] rawConnections : rawCitiesConnections) {
 			rawCitiesGraph.addVertex(cities.get(rawConnections[CITY_VERTEX_POSITION]));
@@ -39,11 +39,11 @@ public class CitiesGraphFactory {
 		citiesGraph = new CitiesGraph(rawCitiesGraph);
 	}
 	
-	public CitiesGraph getCitiesGraph() {
+	CitiesGraph getCitiesGraph() {
 		return citiesGraph;
 	}
 	
-	public Map<String, List<String>> getCitiesConnections() {
+	Map<String, List<String>> getCitiesConnections() {
 		return citiesConnections;
 	}
 	

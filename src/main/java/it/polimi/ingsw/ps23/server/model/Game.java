@@ -12,7 +12,6 @@ import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 
 public class Game {
 
@@ -35,7 +34,6 @@ public class Game {
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
-		StateCache.loadCache();//TODO spostare questa istruzione
 	}
 	
 	public GameMap getGameMap() {

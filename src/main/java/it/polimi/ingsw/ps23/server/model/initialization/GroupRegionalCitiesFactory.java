@@ -13,13 +13,13 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
-public class GroupRegionalCitiesFactory {
+class GroupRegionalCitiesFactory {
 
 	private static final int REGION_NAME_POSITION = 0;
 	private static final int BONUS_VALUE_POSITION = 1;
 	private static final int BONUS_NAME_POSITION = 0;
 	
-	public List<Region> makeRegions(List<String[]> rawRegions, Map<String, City> cities, Map<String, List<String>> citiesConnections) {
+	List<Region> makeRegions(List<String[]> rawRegions, Map<String, City> cities, Map<String, List<String>> citiesConnections) {
 		ArrayList<Region> groupRegionalCities = new ArrayList<>();
 		String rawBonus = rawRegions.remove(rawRegions.size() - 1)[BONUS_NAME_POSITION];
 		for(String[] rawRegion : rawRegions) {

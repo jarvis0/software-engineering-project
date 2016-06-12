@@ -8,9 +8,9 @@ import it.polimi.ingsw.ps23.server.model.initialization.BonusesFactory;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
 
-public class RewardTokenFactory {
+class RewardTokenFactory {
 	
-	public RewardTokenSet makeRewardTokenSet(List<String[]> rawRewardTokens) {
+	RewardTokenSet makeRewardTokenSet(List<String[]> rawRewardTokens) {
 		List<RewardToken> rewardTokens = new ArrayList<>();
 		BonusCache.loadCache();
 		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);

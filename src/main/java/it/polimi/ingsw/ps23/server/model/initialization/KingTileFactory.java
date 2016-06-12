@@ -8,13 +8,12 @@ import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.server.model.map.board.KingTileSet;
 
-//generalizzare i bonus? - nome?
-public class KingTileFactory {
+class KingTileFactory {
 	
 	private static final int BONUS_VALUE_POSITION = 0;
 	private static final int BONUS_NAME_POSITION = 0;
 	
-	public KingTileSet makeTiles(List<String[]> rawKingTiles) {
+	KingTileSet makeTiles(List<String[]> rawKingTiles) {
 		Deque<Bonus> tilesStack = new LinkedList<>();
 		String[] fields = rawKingTiles.remove(rawKingTiles.size() - 1);
 		for(String[] rawTile: rawKingTiles) {

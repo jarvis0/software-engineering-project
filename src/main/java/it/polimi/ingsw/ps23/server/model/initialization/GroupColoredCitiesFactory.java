@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.GroupColoredCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
-public class GroupColoredCitiesFactory {
+class GroupColoredCitiesFactory {
 	
 	private static final int COLOR_POSITION = 0;
 	private static final int BONUS_VALUE_POSITION = 1;
@@ -20,7 +20,7 @@ public class GroupColoredCitiesFactory {
 
 	private List<Region> coloredGroupCities;
 	
-	public GroupColoredCitiesFactory() {
+	GroupColoredCitiesFactory() {
 		coloredGroupCities = new ArrayList<>();
 	}
 	
@@ -37,7 +37,7 @@ public class GroupColoredCitiesFactory {
 		}
 	}
 	
-	public List<Region> makeGroup(List<String[]> rawColoredCities, List<City> cities) {
+	List<Region> makeGroup(List<String[]> rawColoredCities, List<City> cities) {
 		String[] fields = rawColoredCities.remove(rawColoredCities.size() - 1);
 		for(String[] rawColoredCity : rawColoredCities) {
 			String colorName = rawColoredCity[COLOR_POSITION];
