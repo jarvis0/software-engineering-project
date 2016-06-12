@@ -49,11 +49,14 @@ public class PermissionCard implements Card, BonusSlot {
 	@Override
 	public String toString() {
 		String print = bonuses.toString() + " ~ ";
-		print += cities.get(0).getName();
-		for(int i = 1; i < cities.size(); i++) {
-			print += "/" + cities.get(i).getName();
+		if(!cities.isEmpty()) {
+			print += cities.get(0).getName();
 		}
-		return print;
+		StringBuilder loopPrint = new StringBuilder();
+		for(int i = 1; i < cities.size(); i++) {
+			loopPrint.append("/" + cities.get(i).getName());
+		}
+		return print + loopPrint;
 	}
 	
 }

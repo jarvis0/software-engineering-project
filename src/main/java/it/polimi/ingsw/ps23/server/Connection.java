@@ -11,8 +11,6 @@ import it.polimi.ingsw.ps23.server.view.View;
 
 public class Connection implements Runnable {
 	
-	private PrintStream output;
-	
 	private Server server;
 	private Socket socket;
 	private Scanner textIn;
@@ -31,7 +29,6 @@ public class Connection implements Runnable {
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
-		output = new PrintStream(System.out);
 		logger = Logger.getLogger(this.getClass().getName());
 		started = false;
 	}
@@ -59,8 +56,7 @@ public class Connection implements Runnable {
 	}
 	
 	private void close() {
-		closeConnection();		
-		output.println("A client logged out.");
+		closeConnection();
 		server.deregisterConnection(this);
 	}
 	
@@ -87,7 +83,6 @@ public class Connection implements Runnable {
 		}
 		else {
 			server.initializeGame();
-			output.println("A new game has been started.");
 		}
 	}
 

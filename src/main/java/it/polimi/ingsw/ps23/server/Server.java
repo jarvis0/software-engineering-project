@@ -114,6 +114,7 @@ class Server implements Runnable {
 		}
 		launchingGame = false;
 		waitingConnections.clear();
+		output.println("A new game has been started.");
 	}
 	
 	private void newConnection() {
@@ -146,6 +147,7 @@ class Server implements Runnable {
 				iterator.remove();
 			}
 		}
+		output.println("A client logged out.");
 	}
 	
 	@Override
