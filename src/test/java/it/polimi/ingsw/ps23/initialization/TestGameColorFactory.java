@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.map.GameColor;
+import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
+import it.polimi.ingsw.ps23.server.model.map.GameColor;
 
 public class TestGameColorFactory {
 

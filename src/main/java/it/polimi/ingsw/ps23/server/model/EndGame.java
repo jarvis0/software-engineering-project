@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class EndGame {
 

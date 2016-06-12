@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.server.commons.modelview;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.state.State;
+import it.polimi.ingsw.ps23.server.model.state.State;
 
 public class ModelObservable {
 	

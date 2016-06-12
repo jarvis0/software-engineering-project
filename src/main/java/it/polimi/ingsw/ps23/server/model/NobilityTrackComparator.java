@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.server.model;
 
 import java.util.Comparator;
 
-import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class NobilityTrackComparator implements Comparator<Player>{
 

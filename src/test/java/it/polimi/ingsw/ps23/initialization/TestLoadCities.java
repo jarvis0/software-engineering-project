@@ -7,11 +7,14 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.bonus.BonusCache;
-import it.polimi.ingsw.ps23.model.map.regions.CapitalCity;
-import it.polimi.ingsw.ps23.model.map.regions.City;
-import it.polimi.ingsw.ps23.model.map.regions.NormalCity;
-import it.polimi.ingsw.ps23.model.map.regions.RewardToken;
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
+import it.polimi.ingsw.ps23.server.model.initialization.CitiesFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
+import it.polimi.ingsw.ps23.server.model.map.regions.City;
+import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
+import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
 
 public class TestLoadCities {
 

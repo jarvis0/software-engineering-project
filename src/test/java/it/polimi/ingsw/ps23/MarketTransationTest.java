@@ -9,16 +9,16 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.map.Card;
-import it.polimi.ingsw.ps23.model.map.GameColor;
-import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
-import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
-import it.polimi.ingsw.ps23.model.market.MarketObject;
-import it.polimi.ingsw.ps23.model.player.PermissionHandDeck;
-import it.polimi.ingsw.ps23.model.player.Player;
-import it.polimi.ingsw.ps23.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.NoCapitalException;
+import it.polimi.ingsw.ps23.server.model.map.Card;
+import it.polimi.ingsw.ps23.server.model.map.GameColor;
+import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.market.MarketObject;
+import it.polimi.ingsw.ps23.server.model.player.PermissionHandDeck;
+import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 @SuppressWarnings("unused")
 public class MarketTransationTest {
