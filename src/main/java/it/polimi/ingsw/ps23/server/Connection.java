@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.view.View;
+import it.polimi.ingsw.ps23.server.view.View;
 
 public class Connection implements Runnable {
 	

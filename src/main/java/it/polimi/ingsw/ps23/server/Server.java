@@ -16,16 +16,16 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.controller.Controller;
-import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.model.PlayerResumeHandler;
-import it.polimi.ingsw.ps23.view.ConsoleView;
-import it.polimi.ingsw.ps23.view.View;
+import it.polimi.ingsw.ps23.server.controller.Controller;
+import it.polimi.ingsw.ps23.server.model.Model;
+import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
+import it.polimi.ingsw.ps23.server.view.ConsoleView;
+import it.polimi.ingsw.ps23.server.view.View;
 
 class Server implements Runnable {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 10;
+	private static final int TIMEOUT = 7;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;

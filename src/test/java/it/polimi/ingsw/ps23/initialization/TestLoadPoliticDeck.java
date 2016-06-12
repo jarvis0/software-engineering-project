@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.GameColorFactory;
-import it.polimi.ingsw.ps23.model.PoliticDeckFactory;
-import it.polimi.ingsw.ps23.model.RawObject;
-import it.polimi.ingsw.ps23.model.map.PoliticCard;
-import it.polimi.ingsw.ps23.model.map.PoliticDeck;
+import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.PoliticDeckFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.map.GameColor;
+import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 
 public class TestLoadPoliticDeck {
 	

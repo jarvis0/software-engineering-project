@@ -9,10 +9,10 @@ import java.util.Queue;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.map.Council;
-import it.polimi.ingsw.ps23.model.map.Councillor;
-import it.polimi.ingsw.ps23.model.map.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.server.model.map.GameColor;
+import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
+import it.polimi.ingsw.ps23.server.model.map.regions.Council;
+import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
 public class TestFreeCouncillors {
 

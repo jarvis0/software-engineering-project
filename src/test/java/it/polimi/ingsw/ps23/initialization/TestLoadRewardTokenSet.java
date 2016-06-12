@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.RawObject;
-import it.polimi.ingsw.ps23.model.RewardTokenFactory;
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.model.map.RewardToken;
-import it.polimi.ingsw.ps23.model.map.RewardTokenSet;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
+import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.initialization.RewardTokenFactory;
+import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
+import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
 
 public class TestLoadRewardTokenSet {
 
