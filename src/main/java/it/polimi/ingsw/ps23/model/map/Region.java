@@ -40,7 +40,7 @@ public abstract class Region {
 			throw new InvalidCityException();
 	}
 	
-	public Bonus useBonusTile() {
+	public Bonus acquireBonusTile() {
 		alreadyAcquiredBonusTile = true;
 		return bonusTile;
 	}

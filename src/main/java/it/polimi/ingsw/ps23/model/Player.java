@@ -195,14 +195,14 @@ public class Player {
 	public void checkEmporiumsGroups(Game game) {
 		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumSet);
 		if(completedRegion != null) {
-			bonusTile.addTile(completedRegion.useBonusTile());
+			bonusTile.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTileSet().isEmpty())) {
 				bonusTile.addTile(game.getKingTileSet().pop());
 			}
 		}
 		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumSet);
 		if(completedRegion != null) {
-			bonusTile.addTile(completedRegion.useBonusTile());
+			bonusTile.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTileSet().isEmpty())) {
 				bonusTile.addTile(game.getKingTileSet().pop());
 			}
