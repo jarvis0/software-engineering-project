@@ -7,6 +7,7 @@ import java.util.List;
 public class Deck {
 	
 	private static final int TOP_CARD = 0;
+	
 	private List<Card> cards;
 	
 	public Deck(List<Card> cards) {

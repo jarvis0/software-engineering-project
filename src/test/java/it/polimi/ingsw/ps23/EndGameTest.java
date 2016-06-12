@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.model.NoCapitalException;
-import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.map.City;
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.Model;
+import it.polimi.ingsw.ps23.server.model.NoCapitalException;
+import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
+import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
 public class EndGameTest {
 

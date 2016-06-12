@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public abstract class Bonus implements Cloneable {
 
-	private String name;
+	private final String name;
 	private int value;
 	
 	private Logger logger;

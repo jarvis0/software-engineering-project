@@ -10,11 +10,6 @@ public class Council {
 		this.councilComposition = councilComposition;
 	}
 	
-	@Override
-	public String toString() {
-		return this.getCouncil().toString();
-	}
-	
 	public Queue<Councillor> getCouncil() {
 		return councilComposition;
 	}
@@ -23,6 +18,11 @@ public class Council {
 		Councillor removedCouncillor = councilComposition.remove();
 		councilComposition.add(selectedCouncillor); 
 		return removedCouncillor;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getCouncil().toString();
 	}
 	
 }

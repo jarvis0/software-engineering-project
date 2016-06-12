@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.server.model.map.board;
+package it.polimi.ingsw.ps23.server.model.player;
 
 import java.util.Deque;
 
@@ -12,11 +12,11 @@ public class KingTileSet {
 		this.kingTiles = tilesStack;
 	}
 	
-	public Bonus pop() {
+	Bonus pop() {
 		return kingTiles.pop();
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		return kingTiles.isEmpty();
 	}
 	

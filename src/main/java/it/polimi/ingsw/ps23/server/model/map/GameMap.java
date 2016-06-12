@@ -28,8 +28,7 @@ public class GameMap {
 
 	public Map<String, City> getCitiesMap() {
 		return citiesMap;
-	}
-	
+	}	
 
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;
@@ -56,10 +55,6 @@ public class GameMap {
 		return new String() + loopPrint;
 	}
 	
-	public List<Region> getGroupColoredCity() {
-		return groupColoredCities;
-	}
-	
 	public Map<String, Region> getRegionMap() {
 		Map<String, Region> regionMap = new HashMap<>();
 		for(Region region : getGroupRegionalCity()) {
@@ -67,8 +62,9 @@ public class GameMap {
 		}
 		return regionMap;
 	}
+	
 	public Map<String, Deck> getPermitMap() {
-	Map<String, Deck> permitsMap = new HashMap<>();
+		Map<String, Deck> permitsMap = new HashMap<>();
 		for(Region region : getGroupRegionalCity()) {
 			permitsMap.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeckUp());
 		}

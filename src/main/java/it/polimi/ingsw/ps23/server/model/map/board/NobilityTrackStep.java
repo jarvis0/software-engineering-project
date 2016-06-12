@@ -23,7 +23,7 @@ public class NobilityTrackStep implements BonusSlot {
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
-	public void useBonus(Game game, TurnHandler turnHandler) {
+	void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(game, turnHandler);

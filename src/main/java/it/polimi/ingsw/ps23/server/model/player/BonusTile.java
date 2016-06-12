@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.server.model.map;
+package it.polimi.ingsw.ps23.server.model.player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +11,22 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
-public class BonusTile {
+class BonusTile {
 	
 	private List<Bonus> bonuses;
 	
 	private Logger logger;
 	
-	public BonusTile() {
+	BonusTile() {
 		bonuses = new ArrayList<>();
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
-	public void addTile(Bonus bonus) {
+	void addTile(Bonus bonus) {
 		bonuses.add(bonus);
 	}
 	
-	public void useBonus(Game game, TurnHandler turnHandler) {
+	void useBonus(Game game, TurnHandler turnHandler) {
 		for(Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(game, turnHandler);
@@ -36,4 +36,5 @@ public class BonusTile {
 			}
 		}
 	}
+	
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.ps23.server.model.map;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -24,7 +23,7 @@ public abstract class Region {
 		alreadyAcquiredBonusTile = false;
 	}
 	
-	public Collection<City> getCitiesList() {
+	protected Collection<City> getCitiesList() {
 		return citiesList;
 	}
 
@@ -46,7 +45,7 @@ public abstract class Region {
 		return bonusTile;
 	}
 	
-	public Bonus getBonusTile() {
+	protected Bonus getBonusTile() {
 		return bonusTile;
 	}
 	
@@ -58,11 +57,7 @@ public abstract class Region {
 		return cities.values();
 	}
 
-	public boolean containsAll(List<City> builtEmporiumSet) {
-		return citiesList.containsAll(builtEmporiumSet);
-	}
-
-	public boolean alreadyUsedBonusTile() {
+	protected boolean alreadyUsedBonusTile() {
 		return alreadyAcquiredBonusTile;
 	}
 

@@ -29,7 +29,7 @@ public class RewardToken implements BonusSlot {
 		bonuses.add(bonus);
 	}
 	
-	public void useBonus(Game game, TurnHandler turnHandler) {
+	void useBonus(Game game, TurnHandler turnHandler) {
 		for(Bonus bonus : bonuses) {
 			try {
 				bonus.updateBonus(game, turnHandler);
@@ -40,7 +40,7 @@ public class RewardToken implements BonusSlot {
 		}
 	}
 
-	public boolean hasNobilityTrackBonus() {
+	boolean hasNobilityTrackBonus() {
 		for(Bonus bonus : bonuses) {
 			if(bonus instanceof NobilityTrackStepBonus) {
 				return true;

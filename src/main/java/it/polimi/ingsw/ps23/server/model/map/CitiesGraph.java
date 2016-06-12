@@ -27,17 +27,6 @@ public class CitiesGraph {
 		return graph;
 	}
 	
-	@Override
-	public String toString() {
-		List<String> cities = new ArrayList<>();
-		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
-		while(iterator.hasNext()){
-			 cities.add(iterator.next().toString());
-		}
-		return cities.toString();
-		//TODO forse mai usata
-	}	
-
 	public void getBonuses(Game game, TurnHandler turnHandler, City arriveCity) {
 		List<City> citiesContainingPlayer = new ArrayList<>();
 		citiesContainingPlayer.add(arriveCity);
@@ -65,6 +54,17 @@ public class CitiesGraph {
 		if(!citiesContainingPlayer.isEmpty()){
 			searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		List<String> cities = new ArrayList<>();
+		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
+		while(iterator.hasNext()){
+			 cities.add(iterator.next().toString());
+		}
+		return cities.toString();
+		//TODO forse mai usata
 	}
 		
 }

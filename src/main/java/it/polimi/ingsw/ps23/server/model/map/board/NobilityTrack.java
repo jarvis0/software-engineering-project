@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class NobilityTrack {
 	
-	List<NobilityTrackStep> steps;
+	private List<NobilityTrackStep> steps;
 
 	public NobilityTrack(List<NobilityTrackStep> steps) {
 		this.steps = steps;
