@@ -7,11 +7,11 @@ import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.model.bonus.BuildingPermitBonus;
-import it.polimi.ingsw.ps23.model.bonus.SuperBonus;
-import it.polimi.ingsw.ps23.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.BuildingPermitBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class SuperBonusState implements State {

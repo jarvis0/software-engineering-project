@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
 public class TurnHandler {
 

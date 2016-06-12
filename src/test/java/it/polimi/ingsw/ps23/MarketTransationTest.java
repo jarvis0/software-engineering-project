@@ -10,9 +10,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.GameColor;
 import it.polimi.ingsw.ps23.model.NoCapitalException;
 import it.polimi.ingsw.ps23.model.map.Card;
+import it.polimi.ingsw.ps23.model.map.GameColor;
 import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.model.map.regions.PermissionCard;
 import it.polimi.ingsw.ps23.model.market.MarketObject;

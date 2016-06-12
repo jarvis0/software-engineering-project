@@ -3,10 +3,10 @@ package it.polimi.ingsw.ps23.model.map.regions;
 import java.util.List;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.Deck;
 import it.polimi.ingsw.ps23.model.map.Region;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
 public class GroupRegionalCity extends Region {
 	

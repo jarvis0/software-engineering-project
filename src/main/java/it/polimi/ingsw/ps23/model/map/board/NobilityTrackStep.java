@@ -9,8 +9,8 @@ import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
 import it.polimi.ingsw.ps23.model.TurnHandler;
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.model.bonus.BonusSlot;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 
 public class NobilityTrackStep implements BonusSlot {
 

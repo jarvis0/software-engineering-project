@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
 public abstract class Region {
 	

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 
 public class TestRawObject {
 
