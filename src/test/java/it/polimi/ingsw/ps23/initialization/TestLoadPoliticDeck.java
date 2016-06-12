@@ -7,9 +7,9 @@ import java.util.List;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.GameColorFactory;
-import it.polimi.ingsw.ps23.model.PoliticDeckFactory;
-import it.polimi.ingsw.ps23.model.RawObject;
+import it.polimi.ingsw.ps23.model.initialization.GameColorFactory;
+import it.polimi.ingsw.ps23.model.initialization.PoliticDeckFactory;
+import it.polimi.ingsw.ps23.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.model.map.board.PoliticDeck;
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.model.player.Player;
 
 public class City {
 	

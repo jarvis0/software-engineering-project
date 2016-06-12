@@ -9,11 +9,11 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.TurnHandler;
 import it.polimi.ingsw.ps23.model.map.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.model.map.regions.City;
+import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.model.player.PoliticHandDeck;
 
 
 public class BuildEmporiumKing implements Action {

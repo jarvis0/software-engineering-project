@@ -1,10 +1,10 @@
 package it.polimi.ingsw.ps23.model.state;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.market.Market;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.model.player.Player;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class MarketBuyPhaseState implements State {

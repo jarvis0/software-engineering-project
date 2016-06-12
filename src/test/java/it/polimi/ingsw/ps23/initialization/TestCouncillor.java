@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.model.GameColor;
-import it.polimi.ingsw.ps23.model.GameColorFactory;
+import it.polimi.ingsw.ps23.model.initialization.GameColorFactory;
 import it.polimi.ingsw.ps23.model.map.regions.Councillor;
 
 public class TestCouncillor {

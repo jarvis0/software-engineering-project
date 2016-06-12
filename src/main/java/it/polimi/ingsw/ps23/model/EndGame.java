@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.model.player.Player;
+
 public class EndGame {
 
 	private static final int NOBILITY_TRACK_POINTS_FIRST_PLACE = 5;

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.ps23.controller;
 
-import it.polimi.ingsw.ps23.commons.viewcontroller.ControllerObserver;
 import it.polimi.ingsw.ps23.model.Model;
 import it.polimi.ingsw.ps23.model.actions.Action;
 import it.polimi.ingsw.ps23.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.model.market.MarketObject;
 import it.polimi.ingsw.ps23.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.model.state.State;
+import it.polimi.ingsw.ps23.server.commons.viewcontroller.ControllerObserver;
 
 public class Controller implements ControllerObserver {
 

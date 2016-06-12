@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.model.player.Player;
 import it.polimi.ingsw.ps23.model.state.ChangePermitsTileState;
 import it.polimi.ingsw.ps23.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.model.state.AdditionalMainActionState;

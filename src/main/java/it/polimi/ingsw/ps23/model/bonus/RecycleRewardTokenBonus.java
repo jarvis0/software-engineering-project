@@ -5,8 +5,8 @@ import java.util.List;
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.TurnHandler;
+import it.polimi.ingsw.ps23.model.player.Player;
 
 public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 	

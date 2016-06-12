@@ -2,8 +2,8 @@ package it.polimi.ingsw.ps23.model.market;
 
 import java.util.List;
 
-import it.polimi.ingsw.ps23.model.Player;
 import it.polimi.ingsw.ps23.model.map.Card;
+import it.polimi.ingsw.ps23.model.player.Player;
 
 public class MarketObject {
 	

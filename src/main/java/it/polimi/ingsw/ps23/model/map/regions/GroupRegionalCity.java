@@ -6,6 +6,7 @@ import java.util.Map;
 import it.polimi.ingsw.ps23.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.model.map.Card;
 import it.polimi.ingsw.ps23.model.map.Deck;
+import it.polimi.ingsw.ps23.model.map.Region;
 
 public class GroupRegionalCity extends Region {
 	

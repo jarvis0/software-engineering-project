@@ -2,8 +2,8 @@ package it.polimi.ingsw.ps23.model.market;
 
 import java.util.Collections;
 
-import it.polimi.ingsw.ps23.model.Player;
-import it.polimi.ingsw.ps23.model.PlayersSet;
+import it.polimi.ingsw.ps23.model.player.Player;
+import it.polimi.ingsw.ps23.model.player.PlayersSet;
 
 public class MarketPlayersSet extends PlayersSet {
 	

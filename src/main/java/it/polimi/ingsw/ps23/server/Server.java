@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.controller.Controller;
 import it.polimi.ingsw.ps23.model.Model;
-import it.polimi.ingsw.ps23.model.PlayerResumeHandler;
+import it.polimi.ingsw.ps23.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.view.ConsoleView;
 import it.polimi.ingsw.ps23.view.View;
 

@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.model.Game;
-import it.polimi.ingsw.ps23.model.HandDeck;
-import it.polimi.ingsw.ps23.model.PoliticHandDeck;
 import it.polimi.ingsw.ps23.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.model.actions.Action;
+import it.polimi.ingsw.ps23.model.map.Region;
 import it.polimi.ingsw.ps23.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.model.map.regions.Region;
+import it.polimi.ingsw.ps23.model.player.HandDeck;
+import it.polimi.ingsw.ps23.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.view.ViewVisitor;
 
 public class AcquireBusinessPermitTileState extends ActionState {
