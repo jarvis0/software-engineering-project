@@ -2,65 +2,47 @@ package it.polimi.ingsw.ps23.server.model.initialization;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
-import it.polimi.ingsw.ps23.server.model.map.regions.Council;
-import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
 public class TestFreeCouncillors {
-
+	
+	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
+	private static final String COUNCILLORS_CSV = "councillors.csv";
+	
+	private FreeCouncillorsSet freeCouncillors;
+	
 	@Test
 	public void test() {
 		
-		Queue<Councillor> councilQueue = new LinkedList<>();
-		
-		GameColor color2 = new GameColor("Green", "0xf0ffff");
-		Councillor councillor2 = new Councillor(color2);
-		councilQueue.add(councillor2);
-		
-		GameColor color3 = new GameColor("Purple", "0x7fffff");
-		Councillor councillor3 = new Councillor(color3);
-		councilQueue.add(councillor3);
-		
-		GameColor color4 = new GameColor("White", "0xf90fff");
-		Councillor councillor4 = new Councillor(color4);
-		councilQueue.add(councillor4);
-		
-		Council council = new Council(councilQueue);
-		
-		List<Councillor> freeCouncillors = new ArrayList<>();
-		GameColor color0 = new GameColor("White", "0xffffff");
-		Councillor councillor0 = new Councillor(color0);
-		freeCouncillors.add(councillor0);
-		GameColor color1 = new GameColor("Black", "0x0fffff");
-		Councillor councillor1 = new Councillor(color1);
-		freeCouncillors.add(councillor1);
-		
-		FreeCouncillorsSet freeCouncillors1 = new FreeCouncillorsSet(freeCouncillors);
-		
-		assertTrue(freeCouncillors1.toString().equals("[White, Black]"));
-		
-		freeCouncillors1.remove(1);
-		
-		assertTrue(freeCouncillors1.toString().equals("[White]"));
-		System.out.println(freeCouncillors1);
-		System.out.println(council);
-		
-		freeCouncillors1.electCouncillor("White", council);
-		System.out.println(freeCouncillors1);
-		System.out.println(council);
-		
-		assertTrue(council.toString().equals("[Purple, White, White]"));
-		
-		assertTrue(freeCouncillors1.toString().equals("[Green]"));
-		//troppo complicato così.. fare come TestLoadPoliticDeck
+		List<String[]> rawCouncillors = new RawObject(TEST_CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
+		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
+		boolean foundShuffled = false;
+		GameColor orange = GameColorFactory.makeColor("orange", "0xffa500");
+		GameColor blue = GameColorFactory.makeColor("blue", "0x0000ff");
+		int size = freeCouncillors.getFreeCouncillors().size();
+		for(int i = 0; i < (size - 1) / 2; i++) {
+			if(freeCouncillors.getFreeCouncillors().get(i) != freeCouncillors.getFreeCouncillors().get(i+1)) {
+				foundShuffled = true;
+			}
+		}
+		assertTrue(foundShuffled);
+		int countOrange = 0;
+		int countBlue = 0;
+		for(int i = 0; i < size; i++) {
+			if(freeCouncillors.getFreeCouncillors().get(i).getColor().equals(blue)) {
+				countBlue++;
+			}
+			if(freeCouncillors.getFreeCouncillors().get(i).getColor().equals(orange)) {
+				countOrange++;
+			}
+		}
+		assertTrue(countBlue == 10 && countOrange == 10);
+		assertTrue(freeCouncillors.getFreeCouncillors().get(0) == freeCouncillors.getFreeCouncillors().remove(0) && size == freeCouncillors.getFreeCouncillors().size() + 1);
 	}
 
 }
