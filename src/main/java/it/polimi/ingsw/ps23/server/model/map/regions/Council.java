@@ -14,7 +14,7 @@ public class Council {
 		return councilComposition;
 	}
 	
-	public Councillor pushCouncillor(Councillor selectedCouncillor){
+	public Councillor pushCouncillor(Councillor selectedCouncillor) {
 		Councillor removedCouncillor = councilComposition.remove();
 		councilComposition.add(selectedCouncillor); 
 		return removedCouncillor;
@@ -22,7 +22,7 @@ public class Council {
 	
 	@Override
 	public String toString() {
-		return this.getCouncil().toString();
+		return councilComposition.toString();
 	}
 	
 }

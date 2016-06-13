@@ -19,14 +19,14 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.ps23.server.controller.Controller;
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
-import it.polimi.ingsw.ps23.server.view.ConsoleView;
 import it.polimi.ingsw.ps23.server.view.View;
 
 class Server implements Runnable {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 1;
+	private static final int TIMEOUT = 10;
 	private static final String SECONDS_PRINT =  " seconds...";
+	private static final String LAUNCHING_GAME_PRINT = "STARTINGGAME";
 	
 	private ExecutorService executor;
 	
@@ -43,7 +43,7 @@ class Server implements Runnable {
 	private Logger logger;
 
 	private Model model;
-	private List<View> consoleViews;
+	private List<View> views;
 	private Controller controller;
 	
 	private Server() {
@@ -100,15 +100,15 @@ class Server implements Runnable {
 		model = new Model();
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
-		consoleViews = new ArrayList<>();
+		views = new ArrayList<>();
 		for(int i = 0; i < playersName.size(); i++) {
 			Connection connection = waitingConnections.get(playersName.get(i));
-			consoleViews.add(new ConsoleView(playersName.get(i), connection, output));
-			connection.setConsoleView(consoleViews.get(i));
-			model.attach(consoleViews.get(i));
-			consoleViews.get(i).attach(controller);
+			views.add(new View(playersName.get(i), connection, output));
+			connection.setView(views.get(i));
+			model.attach(views.get(i));
+			views.get(i).attach(controller);
 		}
-		model.setUpModel(playersName, new PlayerResumeHandler(consoleViews));
+		model.setUpModel(playersName, new PlayerResumeHandler(views));
 		for(Connection connection : waitingConnections.values()) {
 			connection.startGame();
 		}
@@ -123,12 +123,14 @@ class Server implements Runnable {
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new Client connection.");
 			Connection connection = new Connection(this, newSocket);
-			String message = "Connection established at " + new Date().toString();
+			String message = new String();
 			if(launchingGame) {
-				message += "\nA new game is starting in less than " + TIMEOUT + SECONDS_PRINT;
+				message += LAUNCHING_GAME_PRINT + "Connection established at " + new Date().toString() + "\nA new game is starting in less than " + TIMEOUT + SECONDS_PRINT;
 			}
-			connection.send(message);
-			connection.send("Welcome, what's your name? ");
+			else {
+				message += "Connection established at " + new Date().toString();
+			}
+			connection.send(message + "\nWelcome, what's your name? ");
 			executor.submit(connection);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Cannot create a new connection socket.", e);

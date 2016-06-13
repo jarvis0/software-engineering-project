@@ -15,11 +15,6 @@ public class GameColor {
 	public Color getHex() {
 		return color;
 	}
-	
-	@Override
-	public String toString() {
-		return colorName;
-	}
 
 	public String getName() {
 		return colorName;
@@ -29,4 +24,9 @@ public class GameColor {
 		return other.equals(colorName);
 	}
 	
+	@Override
+	public String toString() {
+		return colorName;
+	}
+
 }

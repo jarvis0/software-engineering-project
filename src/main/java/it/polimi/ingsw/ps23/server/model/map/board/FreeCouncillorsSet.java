@@ -12,11 +12,6 @@ public class FreeCouncillorsSet {
 	public FreeCouncillorsSet(List<Councillor> freeCouncillors){
 		this.freeCouncillors = freeCouncillors;
 	}
-	
-	@Override
-	public String toString() {
-		return freeCouncillors.toString();
-	}
 
 	public List<Councillor> getFreeCouncillors() {
 		return freeCouncillors;
@@ -36,4 +31,9 @@ public class FreeCouncillorsSet {
 		}
 	}	
 	
+	@Override
+	public String toString() {
+		return freeCouncillors.toString();
+	}
+
 }

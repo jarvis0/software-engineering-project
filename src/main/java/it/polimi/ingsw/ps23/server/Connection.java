@@ -18,7 +18,7 @@ public class Connection implements Runnable {
 	
 	private boolean started;
 
-	private View consoleView;
+	private View view;
 	
 	private Logger logger;
 	
@@ -86,15 +86,15 @@ public class Connection implements Runnable {
 		}
 	}
 
-	void setConsoleView(View consoleView) {
-		this.consoleView = consoleView;
+	void setView(View view) {
+		this.view = view;
 	}
 	
 	@Override
 	public void run() {
 		server.joinToWaitingList(this, receive());
 		initialization();
-		consoleView.run();
+		view.run();
 		close();
 	}
 

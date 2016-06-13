@@ -9,16 +9,14 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class City {
 	
-	private static final int EMPTY = 0;
-	
 	private String name;
 	private GameColor color;
-	private List<Player> emporiumList;
+	private List<Player> emporiumsList;
 	
 	protected City(String name, GameColor color) {
 		this.name = name;
 		this.color = color;
-		emporiumList = new ArrayList<>();
+		emporiumsList = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -30,17 +28,17 @@ public class City {
 	}
 	
 	public int buildEmporium(Player player) throws AlreadyBuiltHereException { 
-		int assitantsCost = 0;	
-		if(emporiumList.size() != EMPTY){
-			assitantsCost =	-emporiumList.size();
+		int assitantsCost = 0;
+		if(!emporiumsList.isEmpty()) {
+			assitantsCost =	- emporiumsList.size();
 		}
-		emporiumList.add(player); 
+		emporiumsList.add(player); 
 		return assitantsCost;
 	}
 
 	List<String> getEmporiumsPlayersList() {
 		List<String> emporiumsPlayersList = new ArrayList<>();
-		for(Player emporium : emporiumList) {
+		for(Player emporium : emporiumsList) {
 			emporiumsPlayersList.add(emporium.getName());
 		}
 		return emporiumsPlayersList;

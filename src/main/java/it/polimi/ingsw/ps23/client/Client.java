@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 class Client {
 
 	private static final int PORT_NUMBER = 12345;
+	private static final String LAUNCHING_GAME_PRINT = "STARTINGGAME";
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -38,11 +39,18 @@ class Client {
  	}
 	
 	private void run() {
-		output.println(receive());
-		output.print(receive());
-		send(scanner.nextLine());
-		output.println("Waiting others players to connect...");
-		output.println(receive());
+		String message = receive();
+		if(!message.contains(LAUNCHING_GAME_PRINT)) {
+			output.print(message);
+			send(scanner.nextLine());
+			output.println("Waiting others players to connect...\n");
+			output.println(receive());
+		}
+		else {
+			output.print(message.replace(LAUNCHING_GAME_PRINT, ""));
+			send(scanner.nextLine());
+			output.println("Waiting others players to connect...\n");
+		}
 		RemoteConsoleView remoteConsoleView = new RemoteConsoleView(this, scanner, output);
 		remoteConsoleView.run();
 	}

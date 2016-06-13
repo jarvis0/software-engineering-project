@@ -32,8 +32,8 @@ public class StartTurnState implements State {
 		this.kingCouncil = game.getKing().getCouncil();
 		this.nobilityTrack = game.getNobilityTrack();
 		finalTurn = false;
-		for (Player player : gamePlayersSet.getPlayers()) {
-			if (player.hasFinished()) {
+		for(Player player : gamePlayersSet.getPlayers()) {
+			if(player.hasFinished()) {
 				finalTurn = true;
 				return;
 			}

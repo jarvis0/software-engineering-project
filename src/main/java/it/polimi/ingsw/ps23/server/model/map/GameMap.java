@@ -7,7 +7,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumsSet;
-
+//TODO return null
 public class GameMap {
 	
 	private Map<String, City> citiesMap;

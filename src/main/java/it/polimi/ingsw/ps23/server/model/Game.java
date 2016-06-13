@@ -83,4 +83,5 @@ public class Game {
 	public Market getMarket() {
 		return currentMarket;
 	}
+	
 }
