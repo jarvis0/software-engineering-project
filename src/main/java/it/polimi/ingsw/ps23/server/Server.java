@@ -25,9 +25,8 @@ class Server implements Runnable {
 	
 	private static final int PORT = 12345;
 	private static final int LAUNCH_TIMEOUT = 10;
-	private static final int CONNECTION_TIMEOUT = 5;
+	private static final int CONNECTION_TIMEOUT = 50;
 	private static final String SECONDS_PRINT =  " seconds...";
-	private static final String LAUNCHING_GAME_PRINT = "STARTINGGAME";
 	
 	private ExecutorService executor;
 	
@@ -68,7 +67,7 @@ class Server implements Runnable {
 			launchingGame = true;
 			output.println("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			for(Connection connection : waitingConnections.values()) {
-				connection.send("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
+				connection.send("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n");
 			}
 			Timer timer = new Timer();
 			timer.schedule(new RemindTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
@@ -122,14 +121,14 @@ class Server implements Runnable {
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new Client connection.");
 			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
-			String message = new String();
+			String message = "Connection established at " + new Date().toString();
 			if(launchingGame) {
-				message += LAUNCHING_GAME_PRINT + "Connection established at " + new Date().toString() + "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
-			}
-			else {
-				message += "Connection established at " + new Date().toString();
+				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			}
 			connection.send(message + "\nWelcome, what's your name? ");
+			if(launchingGame) {
+				connection.send("The new game is starting in a few seconds...\n");
+			}
 			executor.submit(connection);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Cannot create a new connection socket.", e);
