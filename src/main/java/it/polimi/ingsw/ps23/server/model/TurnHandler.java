@@ -45,7 +45,7 @@ public class TurnHandler {
 		superBonusSet.add(superBonus);
 	}
 	
-	public boolean startSuperTurnState() {
+	public boolean isStartSuperTurnState() {
 		return !superBonusSet.isEmpty();
 		
 	}

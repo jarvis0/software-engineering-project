@@ -25,13 +25,11 @@ class Server implements Runnable {
 	
 	private static final int PORT = 12345;
 	private static final int LAUNCH_TIMEOUT = 10;
-	private static final int MOVE_TIMEOUT = 120;
+	private static final int CONNECTION_TIMEOUT = 5;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String LAUNCHING_GAME_PRINT = "STARTINGGAME";
 	
 	private ExecutorService executor;
-	
-	private Timer timer;
 	
 	private ServerSocket serverSocket;
 
@@ -72,7 +70,7 @@ class Server implements Runnable {
 			for(Connection connection : waitingConnections.values()) {
 				connection.send("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			}
-			timer = new Timer();
+			Timer timer = new Timer();
 			timer.schedule(new RemindTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
 			boolean loop = true;
 			while(loop) {
@@ -104,7 +102,7 @@ class Server implements Runnable {
 		views = new ArrayList<>();
 		for(int i = 0; i < playersName.size(); i++) {
 			Connection connection = waitingConnections.get(playersName.get(i));
-			views.add(new View(playersName.get(i), connection, MOVE_TIMEOUT));
+			views.add(new View(playersName.get(i), connection));
 			connection.setView(views.get(i));
 			model.attach(views.get(i));
 			views.get(i).attach(controller);
@@ -123,7 +121,7 @@ class Server implements Runnable {
 			output.println("Waiting for connections...");
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new Client connection.");
-			Connection connection = new Connection(this, newSocket);
+			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
 			String message = new String();
 			if(launchingGame) {
 				message += LAUNCHING_GAME_PRINT + "Connection established at " + new Date().toString() + "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
@@ -150,7 +148,7 @@ class Server implements Runnable {
 				iterator.remove();
 			}
 		}
-		output.println("A client logged out.");
+		output.println("A client has logged out.");
 	}
 	
 	@Override

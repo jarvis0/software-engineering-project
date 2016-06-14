@@ -57,12 +57,11 @@ class Client {
 
 	public static void main(String[] args) {
 		Client client;
-		Logger logger = Logger.getLogger("main");
 		try {
 			client = new Client(PORT_NUMBER);
 			client.run();
 		} catch(IOException e) {
-			logger.log(Level.SEVERE, "Cannot connect to server.", e);
+			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
 

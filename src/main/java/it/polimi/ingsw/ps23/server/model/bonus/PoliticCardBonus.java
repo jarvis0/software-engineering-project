@@ -15,6 +15,5 @@ public class PoliticCardBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
 		game.getCurrentPlayer().pickCard(game.getPoliticDeck(), getValue()); 
 	}
-
 	
 }

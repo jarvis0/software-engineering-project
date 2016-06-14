@@ -115,11 +115,12 @@ public class Model extends ModelObservable {
 		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		if(initialNobilityTrackPoints != finalNobilityTrackPoints) {
 			updateNobliltyTrackPoints(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);	
-			if(turnHandler.startSuperTurnState()) {
+			if(turnHandler.isStartSuperTurnState()) {
 				setSuperBonusState();
 				return;
 			}
 		}
+		setPlayerTurn();
 	}
 	
 	private void setSuperBonusState() {
@@ -186,7 +187,7 @@ public class Model extends ModelObservable {
 
 	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) {
 		superBonusGiver.values(game, turnHandler);
-		setStartTurnState();
+		setPlayerTurn();
 	}
 	
 }

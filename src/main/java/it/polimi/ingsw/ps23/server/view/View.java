@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,14 +39,11 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 
 	private State state;
 	
-	private int timeout;
-
 	private Logger logger;
 	
-	public View(String clientName, Connection connection, int timeout) {
+	public View(String clientName, Connection connection) {
 		this.clientName = clientName;
 		this.connection = connection;
-		this.timeout = timeout;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
@@ -99,10 +95,7 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 		if(player.getName().equals(clientName)) {
 			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				Timer timer = new Timer();
-				timer.schedule(new MoveTask(this), timeout * 1000L);
 				wakeUp(StateCache.getAction(receive().toLowerCase()));
-				timer.cancel();
 			}
 			catch(NullPointerException e) {
 				logger.log(Level.SEVERE, "Cannot create the action.", e);
@@ -254,7 +247,7 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
 		while(currentState.hasNext()) {
 			Bonus currentBonus = currentState.getCurrentBonus();
-			String chosenRegion = null;
+			String chosenRegion = new String();
 			int numberOfCurrentBonus = currentBonus.getValue();
 			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
@@ -264,7 +257,7 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 				}
 				sendWithInput(currentState.useBonus(currentBonus));
 				List<String> bonusesSelections = new ArrayList<>();
-				if (selectedBonuses.get(currentBonus) != null) {			
+				if(selectedBonuses.containsKey(currentBonus)) { //TODO verificare modifiche
 					bonusesSelections = selectedBonuses.get(currentBonus);
 				}	
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
@@ -286,8 +279,4 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
 	}
 
-	public void terminate() {
-		connection.close();
-	}
-	
 }

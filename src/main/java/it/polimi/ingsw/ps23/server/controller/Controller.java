@@ -29,7 +29,6 @@ public class Controller implements ControllerObserver {
 	@Override
 	public void update(Action action) {
 		model.doAction(action);
-		model.setPlayerTurn();
 	}
 
 	@Override

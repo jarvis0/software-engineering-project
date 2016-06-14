@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,16 +17,19 @@ public class Connection implements Runnable {
 	private Scanner textIn;
 	private PrintStream textOut;
 	
+	private int timeout;
+	
 	private boolean started;
 
 	private View view;
 	
 	private Logger logger;
 	
-	Connection(Server server, Socket socket) throws IOException {
+	Connection(Server server, Socket socket, int timeout) throws IOException {
 		super();
 		this.server = server;
 		this.socket = socket;
+		this.timeout = timeout;
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
@@ -43,11 +47,15 @@ public class Connection implements Runnable {
  	}
  	
  	public String receive() {
- 		return textIn.next();
+		Timer timer = new Timer();
+		timer.schedule(new TimeoutTask(this), timeout * 1000L);
+		String message = textIn.next();
+ 		timer.cancel();
+ 		return message;
  	}
 
-	synchronized void closeConnection() {		
-		send("Connection ended.");
+	synchronized void closeConnection() {
+		//send("\nConnection timed out. You have been kicked out.");
 		try {
 			socket.close();
 		} catch (IOException e) {
@@ -55,11 +63,11 @@ public class Connection implements Runnable {
 		}
 	}
 	
-	public void close() {
+	void close() {
 		closeConnection();
 		server.deregisterConnection(this);
 	}
-	
+
 	synchronized void setStarted() {
 		started = true;
 	}
