@@ -44,9 +44,4 @@ public abstract class HandDeck {
 		return cards.get(index);
 	}
 
-	public Card get(int chosenCard) {
-		return cards.get(chosenCard);
-	}
-
-
 }
