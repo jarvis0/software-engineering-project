@@ -19,7 +19,6 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	
 	private HandDeck politicHandDeck;
 	private Map<String, Region> regionsMap;
-	int initialNobilityTrackPoints;
 	
 	public AcquireBusinessPermitTileState(String name) {
 		super(name);
@@ -29,7 +28,6 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		politicHandDeck = new PoliticHandDeck(game.getCurrentPlayer().getPoliticHandDeck().getCards());
 		regionsMap = game.getGameMap().getRegionMap();
 	}
