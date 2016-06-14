@@ -36,7 +36,7 @@ class PermissionDecksFactory {
 		return rawBonuses;
 	}
 	
-	BonusSlot addCitiesToPermissionCard(String[] rawPermissionCard) {
+	private BonusSlot addCitiesToPermissionCard(String[] rawPermissionCard) {
 		StringBuilder cityName;
 		BonusSlot permissionCard = new PermissionCard();
 		for(int i = BONUSES_NUMBER + 1; i < rawPermissionCard.length; i++) {
