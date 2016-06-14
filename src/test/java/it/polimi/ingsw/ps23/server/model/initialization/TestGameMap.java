@@ -19,7 +19,6 @@ public class TestGameMap {
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String REGIONS_CSV = "regions.csv";
-	private static final String COUNCILLORS_CSV = "councillors.csv";
 	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
 	

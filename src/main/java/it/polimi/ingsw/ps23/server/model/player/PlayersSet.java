@@ -24,7 +24,13 @@ public class PlayersSet {
 	}
 	
 	public int numberOfPlayer() {
-		return players.size();
+		int n = 0;
+		for(Player player : players) {
+			if(player.isOnline()) {
+				n++;
+			}
+		}
+		return n;
 	}
 	
 	@Override

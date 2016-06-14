@@ -31,6 +31,16 @@ public class ViewObservable {
 		}
 	}
 	
+	public void wakeUp(String offlinePlayer) {
+		notifyAllObservers(offlinePlayer);
+	}
+	
+	private void notifyAllObservers(String offlinePlayer) {
+		for(ControllerObserver observer : observers) {
+			observer.update(offlinePlayer);
+		}
+	}
+	
 	public void wakeUp(State state) {
 		notifyAllObservers(state);
 	}

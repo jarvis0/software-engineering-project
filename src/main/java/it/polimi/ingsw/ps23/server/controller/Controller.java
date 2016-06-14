@@ -22,6 +22,11 @@ public class Controller implements ControllerObserver {
 	}
 
 	@Override
+	public void update(String offlinePlayer) {
+		model.setOfflinePlayer(offlinePlayer);
+	}
+
+	@Override
 	public void update(State state) {
 		model.setActionState(state);
 	}

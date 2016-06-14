@@ -5,8 +5,6 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.Timer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,8 +19,6 @@ public class Connection implements Runnable {
 	
 	private int timeout;
 
-	private ExecutorService executor;
-	
 	private boolean started;
 
 	private View view;
@@ -37,7 +33,6 @@ public class Connection implements Runnable {
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
-		executor = Executors.newCachedThreadPool();
 		logger = Logger.getLogger(this.getClass().getName());
 		started = false;
 	}
@@ -52,8 +47,6 @@ public class Connection implements Runnable {
  	}
  	
  	public String receive() {
- 		//SocketReceiver socketReceiver = new SocketReceiver(this, timeout);
- 		//executor.submit(new SocketReceiver(this, timeout));
 		Timer timer = new Timer();
 		timer.schedule(new TimeoutTask(this), timeout * 1000L);
 		String message = textIn.next();
@@ -62,14 +55,6 @@ public class Connection implements Runnable {
  	}
 
 	synchronized void closeConnection() {
-		/*final String message = "\nConnection timed out. You have been kicked out.";
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				send(message);
-			}
-		}).start();*/
-		send("\nConnection timed out. You have been kicked out.");
 		try {
 			socket.close();
 		} catch (IOException e) {

@@ -12,15 +12,22 @@ class RemoteConsoleView {
 	private Scanner scanner;
 	private PrintStream output;
 	
-	public RemoteConsoleView(Client client, Scanner scanner, PrintStream output) {
+	private boolean connectionTimedOut;
+	
+	RemoteConsoleView(Client client, Scanner scanner, PrintStream output) {
 		this.client = client;
 		this.scanner = scanner;
 		this.output = output;
+		connectionTimedOut = false;
+	}
+	
+	void setConnectionTimedOut() {
+		connectionTimedOut = true;
 	}
 	
 	void run() {
 		String message;
-		while(true) {
+		while(!connectionTimedOut) {
 			message = client.receive();
 			if(!message.contains(NO_INPUT)) {
 				output.println(message);

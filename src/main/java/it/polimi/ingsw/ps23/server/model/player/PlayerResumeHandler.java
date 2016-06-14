@@ -6,15 +6,15 @@ import it.polimi.ingsw.ps23.server.view.View;
 
 public class PlayerResumeHandler {
 
-	private List<View> consoleViews;
+	private List<View> views;
 	
-	public PlayerResumeHandler(List<View> consoleViews) {
-		this.consoleViews = consoleViews;
+	public PlayerResumeHandler(List<View> views) {
+		this.views = views;
 	}
 	
 	public synchronized void resume() {
-		for(View consoleView : consoleViews) {
-				consoleView.threadWakeUp();
+		for(View view : views) {
+			view.threadWakeUp();
 		}
 	}
 	

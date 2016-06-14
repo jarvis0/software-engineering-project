@@ -13,10 +13,14 @@ public class ModelObservable {
 		observers = new ArrayList<>();
 	}
 	
-	public void attach(ViewObserver observer){
+	public void attach(ViewObserver observer) {
 		observers.add(observer);
 	}
 
+	public void detach(ViewObserver observer) {
+		observers.remove(observer);
+	}
+	
 	public void wakeUp(State state) {
 		notifyAllObservers(state);
 	}

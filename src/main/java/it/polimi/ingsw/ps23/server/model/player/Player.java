@@ -30,6 +30,7 @@ public class Player {
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
 	private BonusTile bonusTile;
+	private boolean online;
 	
 	private Logger logger;
 	
@@ -44,6 +45,7 @@ public class Player {
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
 		bonusTile = new BonusTile();
+		online = true;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
@@ -69,6 +71,14 @@ public class Player {
 
 	public int getNobilityTrackPoints() {
 		return nobilityTrackPoints;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
+	public boolean isOnline() {
+		return online;
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {

@@ -46,17 +46,13 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 		this.connection = connection;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
-	
-	@Override
-	public void update(State state) {
-		this.state = state;
+
+	public Connection getConnection() {
+		return connection;
 	}
 
-	@Override
-	public synchronized void run() {
-		while(true) {
-			state.acceptView(this);
-		}
+	public String getClientName() {
+		return clientName;
 	}
 	
 	private void sendNoInput(String message) {
@@ -86,6 +82,10 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 	
 	public synchronized void threadWakeUp() {
 		notifyAll();
+	}
+
+	public void setPlayerOffline() {
+		wakeUp(clientName);
 	}
 
 	@Override
@@ -277,6 +277,18 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 	public void visit(EndGameState currentState) {
 		sendNoInput(currentState.getWinner());
 		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
+	}
+
+	@Override
+	public void update(State state) {
+		this.state = state;
+	}
+
+	@Override
+	public synchronized void run() {
+		while(true) {
+			state.acceptView(this);
+		}
 	}
 
 }

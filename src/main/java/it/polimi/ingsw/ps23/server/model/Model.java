@@ -23,10 +23,10 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class Model extends ModelObservable {
 	
-	private int currentPlayerIndex;
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
+	private int currentPlayerIndex;
 	private PlayerResumeHandler playerResumeHandler;
 	
 	private Logger logger;
@@ -35,10 +35,6 @@ public class Model extends ModelObservable {
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 
-	public Game getGame() {
-		return game;
-	}
-	
 	private void newGame(List<String> playersName) {
 		try {
 			game = new Game(playersName);
@@ -72,7 +68,7 @@ public class Model extends ModelObservable {
 	}
 	
 	public void setPlayerTurn() {
-		if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
+		if(game.getCurrentPlayer().isOnline() && !(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
 			if(++currentPlayerIndex < game.getNumberOfPlayer()) {
 				if(new EndGame().isGameEnded(game, turnHandler)) {
 					setEndGameState();
@@ -135,15 +131,19 @@ public class Model extends ModelObservable {
 		game.setCurrentPlayer(setCurrentGamePlayer());
 	}
 	
-	public void doOfferMarket(MarketObject marketObject) {
-		Market currentMarket = game.getMarket();
-		currentMarket.addMarketObject(marketObject);
+	private void chooseNextOfferMarketStep(Market currentMarket) {
 		if(currentMarket.sellObjects() == game.getNumberOfPlayer()) {
 			launchBuyMarket();
 		}
 		else {
 			launchOfferMarket();
 		}
+	}
+	
+	public void doOfferMarket(MarketObject marketObject) {
+		Market currentMarket = game.getMarket();
+		currentMarket.addMarketObject(marketObject);
+		chooseNextOfferMarketStep(currentMarket);
 	}
 	
 	private void launchOfferMarket() {
@@ -155,8 +155,7 @@ public class Model extends ModelObservable {
 		playerResumeHandler.resume();
 	}
 	
-	public void doBuyMarket(MarketTransation marketTransation) {
-		marketTransation.doTransation(game);
+	private void chooseNextBuyMarketStep() {
 		if(game.getMarket().continueMarket()) {
 			launchBuyMarket();
 		}
@@ -165,7 +164,12 @@ public class Model extends ModelObservable {
 			currentPlayerIndex++;
 			changePlayer();
 			setStartTurnState();
-		}		
+		}
+	}
+	
+	public void doBuyMarket(MarketTransation marketTransation) {
+		marketTransation.doTransation(game);
+		
 	}
 	
 	private void launchBuyMarket() {
@@ -188,6 +192,23 @@ public class Model extends ModelObservable {
 	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) {
 		superBonusGiver.values(game, turnHandler);
 		setPlayerTurn();
+	}
+
+	public void setOfflinePlayer(String offlinePlayer) {
+		State currentState = context.getState();
+		if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
+			game.getCurrentPlayer().setOnline(false);
+			setPlayerTurn();
+		}
+		else {
+			if(currentState instanceof MarketOfferPhaseState) {
+				chooseNextOfferMarketStep(game.getMarket());
+			}
+			else {
+				chooseNextBuyMarketStep();
+				//detach(view);
+			}
+		}
 	}
 	
 }

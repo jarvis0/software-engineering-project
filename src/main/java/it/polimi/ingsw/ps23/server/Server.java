@@ -25,15 +25,16 @@ class Server implements Runnable {
 	
 	private static final int PORT = 12345;
 	private static final int LAUNCH_TIMEOUT = 10;
-	private static final int CONNECTION_TIMEOUT = 50;
+	private static final int CONNECTION_TIMEOUT = 1;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
 	
 	private ServerSocket serverSocket;
 
+	private List<Connection> allConnections;
 	private Map<String, Connection> waitingConnections;
-	private Map<String, Connection> playingConnections; //forse serve per ripristinare la sessione giocatore
+	private Map<String, Connection> playingPlayers; //forse serve per ripristinare la sessione giocatore
 	
 	private boolean launchingGame;
 	
@@ -41,7 +42,7 @@ class Server implements Runnable {
 	private Logger logger;
 
 	private Model model;
-	private List<View> views;
+	private List<View> views; //forse non serve perché la deregister è chiamata da una view
 	private Controller controller;
 	
 	private Server() {
@@ -53,8 +54,9 @@ class Server implements Runnable {
 			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
 		}
 		executor = Executors.newCachedThreadPool();
+		allConnections = new ArrayList<>();
 		waitingConnections = new HashMap<>();
-		playingConnections = new HashMap<>();
+		playingPlayers = new HashMap<>();
 		launchingGame = false;
 	}
 
@@ -91,6 +93,7 @@ class Server implements Runnable {
 	void joinToWaitingList(Connection c, String name) {
 		output.println("Player " + name + " has been added to the waiting list.");
 		waitingConnections.put(name, c);
+		//TODO contorllare che questo player vuole rientrare in una partita precedentemente abbandonata
 		startCountdown();
 	}
 	
@@ -105,6 +108,7 @@ class Server implements Runnable {
 			connection.setView(views.get(i));
 			model.attach(views.get(i));
 			views.get(i).attach(controller);
+			playingPlayers.put(playersName.get(i), connection);
 		}
 		model.setUpModel(playersName, new PlayerResumeHandler(views));
 		for(Connection connection : waitingConnections.values()) {
@@ -121,6 +125,7 @@ class Server implements Runnable {
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new Client connection.");
 			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
+			allConnections.add(connection);
 			String message = "Connection established at " + new Date().toString();
 			if(launchingGame) {
 				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
@@ -136,14 +141,28 @@ class Server implements Runnable {
 	}
 	
 	synchronized void deregisterConnection(Connection c) {
-		Connection connection = playingConnections.get(c);
-		if(connection != null)
-			connection.closeConnection();
-		playingConnections.remove(c);
-		playingConnections.remove(connection);
-		Iterator<String> iterator = waitingConnections.keySet().iterator();
+		//TODO il player X passa offline
+		int i = 0;
+		boolean removed = false;
+		while(i < views.size() && !removed) {
+			if(views.get(i).getConnection() == c) { //TODO rimuovere questa view da observer di model
+				views.get(i).setPlayerOffline(); //model.setPlayerOffline(<-------)
+				//views.get(i).
+				views.remove(i);
+				removed = true;
+			}
+			i++;
+		}
+		allConnections.remove(c);
+		Iterator<String> iterator = playingPlayers.keySet().iterator();
 		while(iterator.hasNext()) {
-			if(waitingConnections.get(iterator.next()) == c) {
+			if(playingPlayers.get(iterator.next()) == c) {
+				iterator.remove();
+			}
+		}
+		iterator = waitingConnections.keySet().iterator();
+		while(iterator.hasNext()){
+			if(waitingConnections.get(iterator.next()) == c){
 				iterator.remove();
 			}
 		}
