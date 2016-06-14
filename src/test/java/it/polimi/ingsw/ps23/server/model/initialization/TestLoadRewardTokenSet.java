@@ -15,7 +15,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
 
 public class TestLoadRewardTokenSet {
 
-	private static final String TEST_CONFIGURATION_PATH = "src/test/java/configuration/";
+	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	
 	@Test

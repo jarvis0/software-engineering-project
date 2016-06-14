@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 
 public class TestRawObject {
 
-	private static final String TEST_PATH = "src/test/java/it/polimi/ingsw/ps23/configuration/";
+	private static final String TEST_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
 	private static final String TEST_CSV = "test.csv";
 	
 	@Test
