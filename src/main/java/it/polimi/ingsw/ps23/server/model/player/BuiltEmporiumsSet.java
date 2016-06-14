@@ -13,11 +13,11 @@ public class BuiltEmporiumsSet {
 	
 	private List<City> builtEmporiums;
 	
-	public BuiltEmporiumsSet() {
+	BuiltEmporiumsSet() {
 		builtEmporiums = new ArrayList<>();
 	}
 	
-	public void addBuiltEmporium(City city) throws InvalidPositionException {
+	void addBuiltEmporium(City city) throws InvalidPositionException {
 		if(!builtEmporiums.contains(city)) {
 			builtEmporiums.add(city);
 		}
@@ -26,7 +26,7 @@ public class BuiltEmporiumsSet {
 		}
 	}
 	
-	public boolean containsMaxEmporium() { //TODO max emporium
+	boolean containsMaxEmporium() { //TODO max emporium
 		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
 
@@ -34,7 +34,7 @@ public class BuiltEmporiumsSet {
 		return builtEmporiums;
 	}
 
-	public BuiltEmporiumsSet getCitiesForRecycleRewardTokens() {
+	BuiltEmporiumsSet getCitiesForRecycleRewardTokens() {
 		BuiltEmporiumsSet citiesWithoutNobilityTrackPoints = new BuiltEmporiumsSet();
 		for(City city : builtEmporiums) {
 			if(city instanceof NormalCity && !((NormalCity)city).hasNobilityTrackBonus()) {

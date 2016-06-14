@@ -22,7 +22,22 @@ public class StartTurnState implements State {
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
 	
+	public String getAvaiableAction() {
+		String avaiableAction = new String();
+		if(turnHandler.isAvailableMainAction()) {
+			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";
+		}
+		if(turnHandler.isAvailableQuickAction()) {
+			avaiableAction += "\n--Quick Action--\nEngage Assistant\nChange Permit Tile\nAssistant To Elect Councillor\nAdditional Main Action";
+		}
+		return avaiableAction;
+	}
+
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -40,19 +55,9 @@ public class StartTurnState implements State {
 		}
 	}
 	
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-	
-	public String getAvaiableAction() {
-		String avaiableAction = new String();
-		if(turnHandler.isAvailableMainAction()) {
-			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";
-		}
-		if(turnHandler.isAvailableQuickAction()) {
-			avaiableAction += "\n--Quick Action--\nEngage Assistant\nChange Permit Tile\nAssistant To Elect Councillor\nAdditional Main Action";
-		}
-		return avaiableAction;
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
 	}
 	
 	public String getStatus() {
@@ -80,9 +85,4 @@ public class StartTurnState implements State {
 		return print;
 	}
 	
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
-
 }

@@ -25,15 +25,15 @@ public class MarketObject {
 		return player;
 	}
 
-	public List<Card> getPermissionCards() {
+	List<Card> getPermissionCards() {
 		return permissionCards;
 	}
 
-	public List<Card> getPoliticCards() {
+	List<Card> getPoliticCards() {
 		return politicCards;
 	}
 
-	public int getAssistants() {
+	int getAssistants() {
 		return assistants;
 	}
 

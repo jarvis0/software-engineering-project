@@ -15,7 +15,7 @@ public abstract class Bonus implements Cloneable {
 	
 	private Logger logger;
 	
-	public Bonus(String name) {
+	Bonus(String name) {
 		this.name = name;
 		logger = Logger.getLogger(this.getClass().getName());
 	}

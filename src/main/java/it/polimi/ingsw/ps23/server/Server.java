@@ -24,7 +24,8 @@ import it.polimi.ingsw.ps23.server.view.View;
 class Server implements Runnable {
 	
 	private static final int PORT = 12345;
-	private static final int TIMEOUT = 10;
+	private static final int LAUNCH_TIMEOUT = 10;
+	private static final int MOVE_TIMEOUT = 120;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String LAUNCHING_GAME_PRINT = "STARTINGGAME";
 	
@@ -67,12 +68,12 @@ class Server implements Runnable {
 	private synchronized void startCountdown() {
 		if(waitingConnections.size() == 2) {
 			launchingGame = true;
-			output.println("A new game is starting in " + TIMEOUT + SECONDS_PRINT);
+			output.println("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			for(Connection connection : waitingConnections.values()) {
-				connection.send("A new game is starting in " + TIMEOUT + SECONDS_PRINT);
+				connection.send("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			}
 			timer = new Timer();
-			timer.schedule(new RemindTask(this, TIMEOUT), TIMEOUT, 1000L);
+			timer.schedule(new RemindTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
 			boolean loop = true;
 			while(loop) {
 				try {
@@ -103,7 +104,7 @@ class Server implements Runnable {
 		views = new ArrayList<>();
 		for(int i = 0; i < playersName.size(); i++) {
 			Connection connection = waitingConnections.get(playersName.get(i));
-			views.add(new View(playersName.get(i), connection, output));
+			views.add(new View(playersName.get(i), connection, MOVE_TIMEOUT));
 			connection.setView(views.get(i));
 			model.attach(views.get(i));
 			views.get(i).attach(controller);
@@ -125,7 +126,7 @@ class Server implements Runnable {
 			Connection connection = new Connection(this, newSocket);
 			String message = new String();
 			if(launchingGame) {
-				message += LAUNCHING_GAME_PRINT + "Connection established at " + new Date().toString() + "\nA new game is starting in less than " + TIMEOUT + SECONDS_PRINT;
+				message += LAUNCHING_GAME_PRINT + "Connection established at " + new Date().toString() + "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			}
 			else {
 				message += "Connection established at " + new Date().toString();

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.ps23.server.view;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,14 +40,14 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 
 	private State state;
 	
-	private PrintStream output;
+	private int timeout;
 
 	private Logger logger;
 	
-	public View(String clientName, Connection connection, PrintStream output) {
-		this.connection = connection;
-		this.output = output;
+	public View(String clientName, Connection connection, int timeout) {
 		this.clientName = clientName;
+		this.connection = connection;
+		this.timeout = timeout;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
@@ -95,12 +95,14 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 	@Override
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
-		output.println("Current player: " + player.getName());
 		sendNoInput(currentState.getStatus());
 		if(player.getName().equals(clientName)) {
-			sendWithInput("Current player: " + player.toString() + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
+				Timer timer = new Timer();
+				timer.schedule(new MoveTask(this), timeout * 1000L);
 				wakeUp(StateCache.getAction(receive().toLowerCase()));
+				timer.cancel();
 			}
 			catch(NullPointerException e) {
 				logger.log(Level.SEVERE, "Cannot create the action.", e);
@@ -282,6 +284,10 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 	public void visit(EndGameState currentState) {
 		sendNoInput(currentState.getWinner());
 		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
+	}
+
+	public void terminate() {
+		connection.close();
 	}
 	
 }

@@ -46,6 +46,30 @@ public class Player {
 		bonusTile = new BonusTile();
 		logger = Logger.getLogger(this.getClass().getName());
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getCoins() {
+		return coins;
+	}
+	
+	public BuiltEmporiumsSet getEmporiums(){
+		return builtEmporiumsSet;
+	}
+
+	public int getAssistants() {
+		return assistants;
+	}
+	
+	public int getVictoryPoints() {
+		return victoryPoints;
+	}
+
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
 		((PoliticHandDeck) politicHandDeck).addCards(politicDeck.pickCards(cardsNumber));
@@ -59,7 +83,7 @@ public class Player {
 	
 	public void updateVictoryPoints(int value) {
 		victoryPoints += value;
-	}	
+	}
 
 	public void updateNobilityPoints(int value) { 
 		nobilityTrackPoints += value;
@@ -88,13 +112,9 @@ public class Player {
 	}
 
 	public String showSecretStatus() {
-		return " " + politicHandDeck.toString();
+		return politicHandDeck.toString();
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
+
 	public HandDeck getPoliticHandDeck() {
 		return politicHandDeck;
 	}
@@ -118,56 +138,36 @@ public class Player {
 			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
 	}
-	
-	public BuiltEmporiumsSet getEmporiums(){
-		return builtEmporiumsSet;
-	}
-	
-	public int getAssistants() {
-		return assistants;
-	}
-	
-	public int getCoins() {
-		return coins;
-	}
-	
-	public int getNobilityTrackPoints() {
-		return nobilityTrackPoints;
-	}
-	
-	public int getVictoryPoints() {
-		return victoryPoints;
-	}
 
 	public void usePermissionCard(int chosenCard) {
 		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));	
 	}
 	
 	public void soldPoliticCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			politicHandDeck.removeCard(card);
 		}		
 	}
 	
 	public void soldPermissionCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			permissionHandDeck.removeCard(card);
 		}
 	}
 	
 	public void buyPoliticCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			politicHandDeck.addCard(card);
 		}		
 	}
 	
 	public void buyPermissionCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			permissionHandDeck.addCard(card);
 		}
 	}
 
-	public HandDeck getPermissionUsedHandDeck() {
+	HandDeck getPermissionUsedHandDeck() {
 		return permissionUsedHandDeck;
 	}
 	
@@ -179,7 +179,7 @@ public class Player {
 		return builtEmporiumsSet.containsMaxEmporium();
 	}
 	
-	public void addBonusTile(Bonus bonus) {
+	void addBonusTile(Bonus bonus) {
 		bonusTile.addTile(bonus);
 	}
 

@@ -24,4 +24,5 @@ public class KingTileSet {
 	public String toString() {
 		return kingTiles.toString();
 	}
+	
 }

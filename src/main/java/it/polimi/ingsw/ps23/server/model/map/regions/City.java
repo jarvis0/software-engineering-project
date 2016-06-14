@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.server.model.map.regions;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.model.map.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 

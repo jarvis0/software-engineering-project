@@ -8,7 +8,7 @@ public class Context {
 		state = null;
 	}
 	
-	public void setState(State state) {
+	void setState(State state) {
 		this.state = state;
 	}
 	

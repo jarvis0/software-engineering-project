@@ -7,9 +7,14 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class EngageAnAssistantState extends ActionState {
 	
-	public EngageAnAssistantState(String name) {
+	EngageAnAssistantState(String name) {
 		super(name);
 	}
+
+	public Action createAction() {
+		return new EngageAnAssitant();
+	}
+	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -20,10 +25,6 @@ public class EngageAnAssistantState extends ActionState {
 		view.visit(this);	
 	}
 	
-	public Action createAction() {
-		return new EngageAnAssitant();
-	}
-
 }
 
 

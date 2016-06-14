@@ -47,7 +47,6 @@ public class MarketTransation {
 			}
 			game.getMarket().remove(requestedObject);
 		}
-
 	}
 	
 }

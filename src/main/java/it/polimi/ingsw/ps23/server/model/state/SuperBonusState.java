@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,30 +15,17 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class SuperBonusState implements State {
 	
-	TurnHandler turnHandler;
-	List<Bonus> superBonus;
-	Player currentPlayer;
+	private TurnHandler turnHandler;
+	private List<Bonus> superBonus;
+	private Player currentPlayer;
 	
 	 public SuperBonusState(TurnHandler turnHandler) {
 		 this.turnHandler = turnHandler;
 		 superBonus = new ArrayList<>();
-		 
 	}
 
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		superBonus.addAll(turnHandler.getSuperBonuses());
-		currentPlayer = game.getCurrentPlayer();
-	}
-
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
-	
-	 public Boolean hasNext() {
-		 return !superBonus.isEmpty();
+	public boolean hasNext() {
+		return !superBonus.isEmpty();
 	}
 	 
 	public String useBonus(Bonus bonus) {
@@ -60,8 +46,19 @@ public class SuperBonusState implements State {
 
 	public void analyzeInput(String chosenRegion, Bonus currentBonus) {
 		((BuildingPermitBonus) currentBonus).selectRegion(chosenRegion);
-		
 	}
-		
+
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		superBonus.addAll(turnHandler.getSuperBonuses());
+		currentPlayer = game.getCurrentPlayer();
+	}
+
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
+	}
+	
 }	
 	

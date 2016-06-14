@@ -11,6 +11,11 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 public class EndGameState implements State {
 
 	private List<Player> players;
+
+	public String getWinner() {
+		Collections.sort(players, new WinnerComparator());
+		return "The winner is: " + players.get(0) + "\nClassification: " + players.toString();
+	}
 	
 	@Override
 	public void changeState(Context context, Game game) {
@@ -23,9 +28,4 @@ public class EndGameState implements State {
 		view.visit(this);
 	}
 	
-	public String getWinner() {
-		Collections.sort(players, new WinnerComparator());
-		return "The winner is: " + players.get(0) + "\nClassification: " + players.toString();
-	}
-
 }

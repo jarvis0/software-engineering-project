@@ -19,19 +19,10 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	
 	private HandDeck politicHandDeck;
 	private Map<String, Region> regionsMap;
-	int initialNobilityTrackPoints;
 	
-	public AcquireBusinessPermitTileState(String name) {
+	AcquireBusinessPermitTileState(String name) {
 		super(name);
 		regionsMap = new HashMap<>();
-	}
-
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
-		politicHandDeck = new PoliticHandDeck(game.getCurrentPlayer().getPoliticHandDeck().getCards());
-		regionsMap = game.getGameMap().getRegionMap();
 	}
 
 	public String getPoliticHandDeck() {
@@ -53,14 +44,21 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	public String getAvailablePermitTile(String chosenCouncil) {
 		return ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getPermissionDeckUp().toString();
 	}
-	
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
 
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) {
 		return new AcquireBusinessPermitTile(removedPoliticCards, (GroupRegionalCity)regionsMap.get(chosenCouncil), chosenPermissionCard);
+	}
+
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		politicHandDeck = new PoliticHandDeck(game.getCurrentPlayer().getPoliticHandDeck().getCards());
+		regionsMap = game.getGameMap().getRegionMap();
+	}
+
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
 	}
 
 }

@@ -17,19 +17,9 @@ public class ElectCouncillorState extends ActionState {
 	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;
 	
-	public ElectCouncillorState(String name) {
+	ElectCouncillorState(String name) {
 		super(name);
 		councilsMap = new HashMap<>();
-	}
-
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		freeCouncillors = game.getFreeCouncillors();
-		councilsMap.put("King", game.getKing().getCouncil());
-		for (Region region : game.getGameMap().getGroupRegionalCity()) {
-			councilsMap.put(region.getName(), ((GroupRegionalCity) region).getCouncil());
-		}
 	}
 
 	public String getFreeCouncillors() {
@@ -40,16 +30,27 @@ public class ElectCouncillorState extends ActionState {
 		return councilsMap.toString();
 	}	
 	
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);	
+	Council getCouncilMap(String chosenBalcony) {
+		return councilsMap.get(chosenBalcony);
 	}
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
 		return new ElectCouncillor(chosenCouncillor, getCouncilMap(chosenBalcony));
 	}
-	
-	Council getCouncilMap(String chosenBalcony) {
-		return councilsMap.get(chosenBalcony);
+
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		freeCouncillors = game.getFreeCouncillors();
+		councilsMap.put("King", game.getKing().getCouncil());
+		for(Region region : game.getGameMap().getGroupRegionalCity()) {
+			councilsMap.put(region.getName(), ((GroupRegionalCity) region).getCouncil());
+		}
 	}
+
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);	
+	}
+
 }

@@ -7,12 +7,11 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 
 public class PermissionHandDeck extends HandDeck {
 	
-	public PermissionHandDeck() {
+	PermissionHandDeck() {
 		super();
 	}
 	
-	
-	public void addCards(List<Card> permissionHandCards) {
+	void addCards(List<Card> permissionHandCards) {
 		for (Card permissionHandCard: permissionHandCards) {
 			addCard(permissionHandCard);
 		}

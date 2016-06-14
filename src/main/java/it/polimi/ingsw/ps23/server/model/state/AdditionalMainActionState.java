@@ -7,8 +7,12 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class AdditionalMainActionState extends ActionState {
 
-	public AdditionalMainActionState(String name) {
+	AdditionalMainActionState(String name) {
 		super(name);
+	}
+
+	public Action createAction() {
+		return new AdditionalMainAction();
 	}
 
 	@Override
@@ -21,7 +25,4 @@ public class AdditionalMainActionState extends ActionState {
 		view.visit(this);		
 	}
 	
-	public Action createAction() {
-		return new AdditionalMainAction();
-	}
 }

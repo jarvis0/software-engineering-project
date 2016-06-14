@@ -13,7 +13,7 @@ public abstract class HandDeck {
 		cards = new ArrayList<>();
 	}
 	
-	public void addCard(Card card) {
+	void addCard(Card card) {
 		cards.add(card);
 	}
 	
@@ -24,17 +24,12 @@ public abstract class HandDeck {
 	public int getHandSize() {
 		return cards.size();
 	}
-	
-	@Override
-	public String toString() {
-		return cards.toString();
-	}
 
-	public void removeCard(Card card) {
+	void removeCard(Card card) {
 		 cards.remove(card);
 	}
 
-	public Card getAndRemove(int chosenCard) {
+	Card getAndRemove(int chosenCard) {
 		Card removedCard = cards.get(chosenCard);
 		removeCard(removedCard);
 		return removedCard;
@@ -44,9 +39,9 @@ public abstract class HandDeck {
 		return cards.get(index);
 	}
 
-	public Card get(int chosenCard) {
-		return cards.get(chosenCard);
+	@Override
+	public String toString() {
+		return cards.toString();
 	}
-
 
 }

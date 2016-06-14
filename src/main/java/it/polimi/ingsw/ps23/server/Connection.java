@@ -55,7 +55,7 @@ public class Connection implements Runnable {
 		}
 	}
 	
-	private void close() {
+	public void close() {
 		closeConnection();
 		server.deregisterConnection(this);
 	}

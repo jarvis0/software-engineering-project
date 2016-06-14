@@ -35,7 +35,7 @@ public class TestLoadPoliticDeck {
 			if(politicDeck.getDeck().get(i) != politicDeck.getDeck().get(i+1)) {
 				foundShuffled = true;
 			}
-			if(((PoliticCard)politicDeck.getDeck().get(i)).isJolly()) {
+			if(((PoliticCard)politicDeck.getDeck().get(i)).isJoker()) {
 				foundJolly = true;
 				assertTrue(multi.toString().equals(politicDeck.getDeck().get(i).toString()));
 			}
