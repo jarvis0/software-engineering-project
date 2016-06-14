@@ -97,6 +97,10 @@ public class Connection implements Runnable {
 		this.view = view;
 	}
 	
+	void endThread() {
+		Thread.currentThread().interrupt();
+	}
+	
 	@Override
 	public void run() {
 		server.joinToWaitingList(this, receive());

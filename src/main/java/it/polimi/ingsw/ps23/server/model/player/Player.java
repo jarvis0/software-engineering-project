@@ -224,7 +224,14 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		if(isOnline()) {
+			print += " online";
+		}
+		else {
+			print += " offline";
+		}
+		return print;
 	}
 
 }

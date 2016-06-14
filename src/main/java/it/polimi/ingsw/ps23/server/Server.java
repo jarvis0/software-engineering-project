@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,11 +22,11 @@ import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.view.View;
 
-class Server implements Runnable {
+class Server {
 	
 	private static final int PORT = 12345;
-	private static final int LAUNCH_TIMEOUT = 10;
-	private static final int CONNECTION_TIMEOUT = 1;
+	private static final int LAUNCH_TIMEOUT = 7;
+	private static final int CONNECTION_TIMEOUT = 4;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
@@ -42,7 +43,7 @@ class Server implements Runnable {
 	private Logger logger;
 
 	private Model model;
-	private List<View> views; //forse non serve perché la deregister è chiamata da una view
+	private List<View> views;
 	private Controller controller;
 	
 	private Server() {
@@ -52,6 +53,8 @@ class Server implements Runnable {
 			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
+			Thread.currentThread().interrupt();
+			//eccezione fatale, come si fa?
 		}
 		executor = Executors.newCachedThreadPool();
 		allConnections = new ArrayList<>();
@@ -101,6 +104,7 @@ class Server implements Runnable {
 		model = new Model();
 		controller = new Controller(model);
 		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
+		Collections.shuffle(playersName);
 		views = new ArrayList<>();
 		for(int i = 0; i < playersName.size(); i++) {
 			Connection connection = waitingConnections.get(playersName.get(i));
@@ -116,7 +120,7 @@ class Server implements Runnable {
 		}
 		launchingGame = false;
 		waitingConnections.clear();
-		output.println("A new game has been started.");
+		output.println("A new game has started.");
 	}
 	
 	private void newConnection() {
@@ -140,18 +144,22 @@ class Server implements Runnable {
 		}
 	}
 	
+	//TODO 2 giocatori minimo altrimenti deve terminare il game
 	synchronized void deregisterConnection(Connection c) {
 		//TODO il player X passa offline
-		int i = 0;
-		boolean removed = false;
-		while(i < views.size() && !removed) {
-			if(views.get(i).getConnection() == c) { //TODO rimuovere questa view da observer di model
-				views.get(i).setPlayerOffline(); //model.setPlayerOffline(<-------)
-				//views.get(i).
-				views.remove(i);
-				removed = true;
+		String disconnectedPlayer = new String();
+		Iterator<View> loop = views.iterator();
+		while(loop.hasNext()) { //TODO se rimuovo potrei avere problemi a ciclare
+			View view = loop.next();
+			if(view.getConnection() == c) { //TODO rimuovere questa view da observer di model
+				disconnectedPlayer = view.getClientName();
+				view.setPlayerOffline();
+				view.getConnection().endThread();
+				loop.remove();
 			}
-			i++;
+		}
+		for(View view : views) {
+			view.sendNoInput("The player " + disconnectedPlayer + " has disconnected.");
 		}
 		allConnections.remove(c);
 		Iterator<String> iterator = playingPlayers.keySet().iterator();
@@ -166,16 +174,19 @@ class Server implements Runnable {
 				iterator.remove();
 			}
 		}
-		output.println("A client has logged out.");
+		output.println("The player " + disconnectedPlayer + " has disconnected.");
 	}
 	
-	@Override
+	private boolean isActive() {
+		return true;
+	}
+
 	public void run() {
-		while(true) {
+		while(isActive()) {
 			newConnection();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		Server server;
 		server = new Server();

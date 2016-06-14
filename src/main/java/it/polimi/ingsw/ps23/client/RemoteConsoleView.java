@@ -37,6 +37,7 @@ class RemoteConsoleView {
 				output.println(message.replace(NO_INPUT, ""));
 			}
 		}
+		client.closeConnection();
 	}
 
 }

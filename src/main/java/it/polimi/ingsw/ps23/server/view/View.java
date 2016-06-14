@@ -55,7 +55,7 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 		return clientName;
 	}
 	
-	private void sendNoInput(String message) {
+	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
 	

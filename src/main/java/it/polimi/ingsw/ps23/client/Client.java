@@ -27,7 +27,7 @@ class Client {
 	private Client(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
-		this.socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
+		socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream());
@@ -51,9 +51,18 @@ class Client {
 			else {
 				connectionTimedOut = true;
 			}
+			closeConnection();
  		}
 		return message;
  	}
+
+	synchronized void closeConnection() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot close the connection.", e);
+		}
+	}
 	
 	private void run() {
 		String message = receive();

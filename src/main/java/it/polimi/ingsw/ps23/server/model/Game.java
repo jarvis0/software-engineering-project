@@ -76,8 +76,8 @@ public class Game {
 		currentMarket = new Market(playersSet);
 	}
 	
-	public int getNumberOfPlayer() {
-		return playersSet.numberOfPlayer();
+	public int getPlayersNumber() {
+		return playersSet.playersNumber();
 	}
 	
 	public Market getMarket() {

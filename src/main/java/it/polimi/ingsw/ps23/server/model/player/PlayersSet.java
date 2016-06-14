@@ -15,6 +15,7 @@ public class PlayersSet {
 		players.add(player);
 	}
 
+	//TODO tutti i player o solo quelli online?
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -23,7 +24,7 @@ public class PlayersSet {
 		return players.get(index);
 	}
 	
-	public int numberOfPlayer() {
+	public int playersNumber() {
 		int n = 0;
 		for(Player player : players) {
 			if(player.isOnline()) {

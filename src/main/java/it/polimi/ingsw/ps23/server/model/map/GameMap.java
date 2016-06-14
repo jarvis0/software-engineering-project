@@ -36,8 +36,8 @@ public class GameMap {
 	
 	public Region getRegion(String regionName) {
 		Region selectedRegion = null;
-		for (Region region : groupRegionalCities) {
-			if (region.getName().equals(regionName)) {
+		for(Region region : groupRegionalCities) {
+			if(region.getName().equals(regionName)) {
 				selectedRegion = region;
 			}
 		}
@@ -71,6 +71,7 @@ public class GameMap {
 		return permitsMap;
 	}
 
+	//TODO BUG contains
 	private boolean isFoundRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
 		return builtEmporiumsSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
 	}
@@ -85,7 +86,7 @@ public class GameMap {
 	}
 
 	public Region groupColoredCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
-		for (Region region : groupColoredCities) {
+		for(Region region : groupColoredCities) {
 			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;
 			}

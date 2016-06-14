@@ -58,6 +58,11 @@ public class Model extends ModelObservable {
 		currentPlayer.pickCard(game.getPoliticDeck(), 1);
 		return currentPlayer;
 	}
+
+	private void changePlayer() {
+		turnHandler = new TurnHandler();
+		game.setCurrentPlayer(setCurrentGamePlayer());
+	}
 	
 	private void setStartTurnState() {
 		context = new Context();
@@ -66,22 +71,34 @@ public class Model extends ModelObservable {
 		wakeUp(startTurnState);
 		playerResumeHandler.resume();
 	}
-	
+
+	private int nextPlayerIndex() {
+		return 0;//TODO deve essere qui o altrove?
+	}
+
 	public void setPlayerTurn() {
-		if(game.getCurrentPlayer().isOnline() && !(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
-			if(++currentPlayerIndex < game.getNumberOfPlayer()) {
-				if(new EndGame().isGameEnded(game, turnHandler)) {
-					setEndGameState();
-					return;
+		if(game.getCurrentPlayer().isOnline()) {
+			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
+				if(++currentPlayerIndex < game.getPlayersNumber()) {
+					if(new EndGame().isGameEnded(game, turnHandler)) {
+						setEndGameState();
+						return;
+					}
+					else {
+						changePlayer();
+					}
 				}
 				else {
-					changePlayer();
+					setUpMarket();
+					return;
 				}
 			}
-			else {
-				setUpMarket();
-				return;
+		}
+		else {
+			if(++currentPlayerIndex < game.getPlayersNumber()) {
+				changePlayer();
 			}
+			//TODO verificare
 		}
 		setStartTurnState();
 	}
@@ -126,13 +143,8 @@ public class Model extends ModelObservable {
 		wakeUp(superBonusState);
 	}
 
-	private void changePlayer() {
-		turnHandler = new TurnHandler();
-		game.setCurrentPlayer(setCurrentGamePlayer());
-	}
-	
 	private void chooseNextOfferMarketStep(Market currentMarket) {
-		if(currentMarket.sellObjects() == game.getNumberOfPlayer()) {
+		if(currentMarket.sellObjects() == game.getPlayersNumber()) {
 			launchBuyMarket();
 		}
 		else {
