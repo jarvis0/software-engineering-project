@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
-import it.polimi.ingsw.ps23.server.view.View;
+import it.polimi.ingsw.ps23.server.view.SocketView;
 
 public class GameInstancesSet {
 
@@ -34,11 +34,11 @@ public class GameInstancesSet {
 	String disconnectPlayer(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = new String();
 		GameInstance gameInstance = findPlayerGameInstance(c);
-		List<View> views = gameInstance.getViews();
-		Iterator<View> loop = views.iterator();
+		List<SocketView> views = gameInstance.getViews();
+		Iterator<SocketView> loop = views.iterator();
 		boolean found = false;
 		while(!found && loop.hasNext()) { //TODO se rimuovo potrei avere problemi a ciclare
-			View view = loop.next();
+			SocketView view = loop.next();
 			if(view.getConnection() == c) { //TODO rimuovere questa view da observer di model
 				disconnectedPlayer = view.getClientName();
 				if(views.size() == 1) {
@@ -53,7 +53,7 @@ public class GameInstancesSet {
 				found = true;
 			}
 		}
-		for(View view : views) {
+		for(SocketView view : views) {
 			view.sendNoInput("The player " + disconnectedPlayer + " has disconnected.");
 		}
 		return disconnectedPlayer;

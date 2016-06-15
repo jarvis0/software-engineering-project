@@ -17,10 +17,10 @@ class RMIClient implements ClientInterface {
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "COF Server";
 	
-	private RemoteView remoteView;
+	private RMIView remoteView;
 	
 	private RMIClient() {
-		remoteView = new RemoteView(this);
+		remoteView = new RMIConsoleView(this);
 	}
 	
 	public static void main(String[] args) {

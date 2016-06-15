@@ -7,12 +7,14 @@ import java.util.Map;
 import it.polimi.ingsw.ps23.server.controller.Controller;
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
+import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
+import it.polimi.ingsw.ps23.server.view.SocketView;
 import it.polimi.ingsw.ps23.server.view.View;
 
 public class GameInstance {
 
 	private Model model;
-	private List<View> views;
+	private List<SocketView> views;
 	private Controller controller;
 	
 	GameInstance() {
@@ -21,7 +23,7 @@ public class GameInstance {
 		controller = new Controller(model);
 	}
 
-	List<View> getViews() {
+	List<SocketView> getViews() {
 		return views;
 	}
 	
@@ -30,7 +32,7 @@ public class GameInstance {
 		// TODO Collections.shuffle(playersName);
 		for(int i = 0; i < playersName.size(); i++) {
 			Connection connection = waitingConnections.get(playersName.get(i));
-			views.add(new View(playersName.get(i), connection));
+			views.add(new SocketConsoleView(playersName.get(i), connection));
 			connection.setView(views.get(i));
 			model.attach(views.get(i));
 			views.get(i).attach(controller);
@@ -43,7 +45,7 @@ public class GameInstance {
 	}
 	
 	boolean existsPlayerView(Connection c) {
-		for(View view : views) {
+		for(SocketView view : views) {
 			if(view.getConnection() == c) {
 				return true;
 			}
