@@ -26,7 +26,7 @@ class SocketClient {
 	
 	private SocketClient(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
-		output = new PrintStream(System.out);
+		output = new PrintStream(System.out, true);
 		socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
@@ -35,7 +35,6 @@ class SocketClient {
 
 	void send(String message) {
  		textOut.print(message + "EOM");
- 		textOut.flush();
  	}
  	
  	String receive() {

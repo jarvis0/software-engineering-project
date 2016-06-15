@@ -5,6 +5,6 @@ import java.rmi.RemoteException;
 
 public interface ClientInterface extends Remote {
 	
-	public void notify(String message) throws RemoteException;
+	public void infoMessage(String message) throws RemoteException;
 	
 }

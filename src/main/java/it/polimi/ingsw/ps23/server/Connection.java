@@ -33,7 +33,7 @@ public class Connection implements Runnable {
 		this.timeout = timeout;
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
-		textOut = new PrintStream(socket.getOutputStream());
+		textOut = new PrintStream(socket.getOutputStream(), true);
 		logger = Logger.getLogger(this.getClass().getName());
 		started = false;
 	}
@@ -44,7 +44,6 @@ public class Connection implements Runnable {
 	
 	public void send(String message) {
  		textOut.print(message + "EOM");
- 		textOut.flush();
  	}
  	
  	public String receive() {

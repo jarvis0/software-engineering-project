@@ -31,7 +31,6 @@ class Server implements ServerInterface {
 	private static final int LAUNCH_TIMEOUT = 10;
 	private static final int CONNECTION_TIMEOUT = 120;
 	private static final String SECONDS_PRINT =  " seconds...";
-	
 
 	private static final String POLICY_NAME = "COF Server";
 	
@@ -39,9 +38,13 @@ class Server implements ServerInterface {
 	
 	private ServerSocket serverSocket;
 
-	private List<Connection> allConnections;
-	private Map<String, Connection> waitingConnections;
-	private Map<String, Connection> playingPlayers; //forse serve per ripristinare la sessione giocatore
+	private List<Connection> socketAllConnections;
+	private Map<String, Connection> socketWaitingConnections;
+	private Map<String, Connection> socketPlayingPlayers; //forse serve per ripristinare la sessione giocatore
+	
+	private List<ClientInterface> rmiAllConnections;
+	private Map<String, ClientInterface> rmiWaitingConnections;
+	private Map<String, ClientInterface> rmiPlayingPlayers;
 	
 	private boolean launchingGame;
 	private boolean active;
@@ -52,7 +55,7 @@ class Server implements ServerInterface {
 	private GameInstancesSet gameInstances;
 	
 	private Server() {
-		output = new PrintStream(System.out);
+		output = new PrintStream(System.out, true);
 		gameInstances = new GameInstancesSet();
 		active = true;
 		logger = Logger.getLogger(this.getClass().getName());
@@ -64,9 +67,12 @@ class Server implements ServerInterface {
 			Thread.currentThread().interrupt();
 		}
 		executor = Executors.newCachedThreadPool();
-		allConnections = new ArrayList<>();
-		waitingConnections = new HashMap<>();
-		playingPlayers = new HashMap<>();
+		socketAllConnections = new ArrayList<>();
+		socketWaitingConnections = new HashMap<>();
+		socketPlayingPlayers = new HashMap<>();
+		rmiAllConnections = new ArrayList<>();
+		rmiWaitingConnections = new HashMap<>();
+		rmiPlayingPlayers = new HashMap<>();
 		launchingGame = false;
 	}
 	
@@ -75,11 +81,15 @@ class Server implements ServerInterface {
 	}
 
 	private synchronized void startCountdown() {
-		if(waitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
+		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
 			launchingGame = true;
 			output.println("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
-			for(Connection connection : waitingConnections.values()) {
-				connection.send("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n");
+			String message = "A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
+			for(Connection connection : socketWaitingConnections.values()) {
+				connection.send(message);
+			}
+			for(ClientInterface client : rmiWaitingConnections.values()) {
+				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
 			timer.schedule(new RemindTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
@@ -89,13 +99,13 @@ class Server implements ServerInterface {
 					wait();
 					loop = false;
 				} catch (InterruptedException e) {
+					active = false;
 					logger.log(Level.SEVERE, "Cannot wait new game countdown.", e);
 					Thread.currentThread().interrupt();
-					active = false;
 				}
 			}
 			timer.cancel();
-			for(Connection connection : waitingConnections.values()) {
+			for(Connection connection : socketWaitingConnections.values()) {
 				connection.setStarted();
 			}
 		}
@@ -103,25 +113,24 @@ class Server implements ServerInterface {
 	
 	void joinToWaitingList(Connection c, String name) {
 		output.println("Player " + name + " has been added to the waiting list.");
-		waitingConnections.put(name, c);
+		socketWaitingConnections.put(name, c);
 		//TODO contorllare che questo player vuole rientrare in una partita precedentemente abbandonata
 		startCountdown();
 	}
 	
 	synchronized void initializeGame() {
-		gameInstances.newGame(waitingConnections, playingPlayers);
+		gameInstances.newGame(socketWaitingConnections, socketPlayingPlayers);
 		launchingGame = false;
-		waitingConnections.clear();
+		socketWaitingConnections.clear();
 		output.println("A new game has started.");
 	}
 	
 	private void newConnection() {
 		try {
-			output.println("Waiting for connections...");
 			Socket newSocket = serverSocket.accept();
-			output.println("I've received a new Client connection.");
+			output.println("I've received a new socket client connection.");
 			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
-			allConnections.add(connection);
+			socketAllConnections.add(connection);
 			String message = "Connection established at " + new Date().toString();
 			if(launchingGame) {
 				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
@@ -140,16 +149,16 @@ class Server implements ServerInterface {
 	//TODO 2 giocatori minimo altrimenti deve terminare il game
 	synchronized void deregisterConnection(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = gameInstances.disconnectPlayer(c);
-		allConnections.remove(c);
-		Iterator<String> iterator = playingPlayers.keySet().iterator();
+		socketAllConnections.remove(c);
+		Iterator<String> iterator = socketPlayingPlayers.keySet().iterator();
 		while(iterator.hasNext()) {
-			if(playingPlayers.get(iterator.next()) == c) {
+			if(socketPlayingPlayers.get(iterator.next()) == c) {
 				iterator.remove();
 			}
 		}
-		iterator = waitingConnections.keySet().iterator();
+		iterator = socketWaitingConnections.keySet().iterator();
 		while(iterator.hasNext()){
-			if(waitingConnections.get(iterator.next()) == c){
+			if(socketWaitingConnections.get(iterator.next()) == c){
 				iterator.remove();
 			}
 		}
@@ -165,27 +174,42 @@ class Server implements ServerInterface {
 			Registry registry = LocateRegistry.createRegistry(1099);
 			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
 			registry.bind(POLICY_NAME, stub);
+			output.println("Waiting for RMI connections...");
 			
 		} catch (RemoteException | AlreadyBoundException e) {
+			active = false;
 			logger.log(Level.SEVERE, "Cannot create a new registry.", e);
 		}
 	}
 
+	private void infoMessage(ClientInterface client, String message) {
+		try {
+			client.infoMessage(message);
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot register the new client to the registry.", e);
+		}
+	}
+	
 	@Override
 	public void registerClient(String name, ClientInterface client) {
-		//se ci sono due giocatori nella waiting list ==> lancia il timer
-		try {
-			client.notify("CIAOOOOOOOO");
-		} catch (RemoteException e) {
+		output.println("I've received a new RMI client connection.");
+		rmiAllConnections.add(client);
+		rmiWaitingConnections.put(name,  client);
+		output.println("Player " + name + " has been added to the waiting list.");
+		String message = "Connection established at " + new Date().toString();
+		if(launchingGame) {
+			message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "The new game is starting in a few seconds...\n";
 		}
+		infoMessage(client, message);
 	}
 
 	@Override
 	public void notify(String message) {
-		System.out.println(message);
+		output.println(message);
 	}
 
 	public void startSocket() {
+		output.println("Waiting for socket connections...");
 		while(isActive()) {
 			newConnection();
 		}

@@ -15,7 +15,7 @@ class RemindTask extends TimerTask {
 	RemindTask(Server server, int seconds) {
 		this.server = server;
 		this.seconds = seconds;
-		output = new PrintStream(System.out);
+		output = new PrintStream(System.out, true);
 		i = 1;
 	}
 		
