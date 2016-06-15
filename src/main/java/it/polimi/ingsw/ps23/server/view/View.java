@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.modelview.ViewObserver;
 import it.polimi.ingsw.ps23.server.commons.viewcontroller.ViewObservable;
+import it.polimi.ingsw.ps23.server.model.EndGame;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -44,10 +45,13 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 
 	private Logger logger;
 	
+	private boolean endGame;
+	
 	public View(String clientName, Connection connection, PrintStream output) {
 		this.connection = connection;
 		this.output = output;
 		this.clientName = clientName;
+		endGame = false;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
@@ -58,9 +62,9 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 
 	@Override
 	public synchronized void run() {
-		while(true) {
+		do {
 			state.acceptView(this);
-		}
+		} while(!endGame);
 	}
 	
 	private void sendNoInput(String message) {
@@ -281,6 +285,7 @@ public class View extends ViewObservable implements Runnable, ViewObserver, View
 	@Override
 	public void visit(EndGameState currentState) {
 		sendNoInput(currentState.getWinner());
+		endGame = true;
 		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
 	}
 	
