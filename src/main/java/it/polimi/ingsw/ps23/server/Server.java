@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,15 +21,19 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 
-class Server {
+class Server implements ServerInterface {
 	
 	private static final int PORT = 12345;
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 10;
-	private static final int CONNECTION_TIMEOUT = 4;
+	private static final int CONNECTION_TIMEOUT = 120;
 	private static final String SECONDS_PRINT =  " seconds...";
+	
+
+	private static final String POLICY_NAME = "COF Server";
 	
 	private ExecutorService executor;
 	
@@ -60,7 +69,7 @@ class Server {
 		playingPlayers = new HashMap<>();
 		launchingGame = false;
 	}
-
+	
 	synchronized void setTimerEnd() {
 		notifyAll();
 	}
@@ -151,7 +160,32 @@ class Server {
 		return active;
 	}
 
-	public void run() {
+	private void startRMI() {
+		try {
+			Registry registry = LocateRegistry.createRegistry(1099);
+			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
+			registry.bind(POLICY_NAME, stub);
+			
+		} catch (RemoteException | AlreadyBoundException e) {
+			logger.log(Level.SEVERE, "Cannot create a new registry.", e);
+		}
+	}
+
+	@Override
+	public void registerClient(String name, ClientInterface client) {
+		//se ci sono due giocatori nella waiting list ==> lancia il timer
+		try {
+			client.notify("CIAOOOOOOOO");
+		} catch (RemoteException e) {
+		}
+	}
+
+	@Override
+	public void notify(String message) {
+		System.out.println(message);
+	}
+
+	public void startSocket() {
 		while(isActive()) {
 			newConnection();
 		}
@@ -160,7 +194,8 @@ class Server {
 	public static void main(String[] args) {
 		Server server;
 		server = new Server();
-		server.run();
+		server.startRMI();
+		server.startSocket();
 	}
 
 }

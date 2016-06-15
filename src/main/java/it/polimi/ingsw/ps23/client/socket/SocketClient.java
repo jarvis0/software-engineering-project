@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.client;
+package it.polimi.ingsw.ps23.client.socket;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -9,9 +9,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class Client {
+class SocketClient {
 
-	private static final int PORT_NUMBER = 12345;
+	private static final int SOCKET_PORT_NUMBER = 12345;
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -24,7 +24,7 @@ class Client {
 
 	private boolean connectionTimedOut;
 	
-	private Client(int portNumber) throws IOException {
+	private SocketClient(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out);
 		socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
@@ -64,7 +64,7 @@ class Client {
 		}
 	}
 	
-	private void run() {
+	void start() {
 		String message = receive();
 		output.print(message);
 		send(scanner.nextLine());
@@ -75,15 +75,15 @@ class Client {
 			remoteConsoleView.run();
 		}
 	}
-
+	
 	public static void main(String[] args) {
-		Client client;
+		SocketClient client;
 		try {
-			client = new Client(PORT_NUMBER);
-			client.run();
+			client = new SocketClient(SOCKET_PORT_NUMBER);
+			client.start();
 		} catch(IOException e) {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
-
+	
 }

@@ -72,40 +72,49 @@ public class Model extends ModelObservable {
 		playerResumeHandler.resume();
 	}
 
-	private void nextPlayerIndex() {
-		Player nextPlayer;
+	private boolean nextPlayerIndex() {
+		boolean endLoop = false;
 		do {
-			nextPlayer = game.getGamePlayersSet().getPlayer(++currentPlayerIndex);
-		} while(!nextPlayer.isOnline());
+			if(currentPlayerIndex < game.getPlayersNumber() - 1) {
+				if(game.getGamePlayersSet().getPlayer(++currentPlayerIndex).isOnline()) {
+					endLoop = true;
+				}
+			}
+			else {
+				setStartingPlayerIndex();
+				return false;
+			}
+		} while(!endLoop);
+		return true;
 	}
 
-	private void setNextGameState() {
-		nextPlayerIndex();
-		if(currentPlayerIndex < game.getPlayersNumber()) {
+	private void selectNextGameState() {
+		if(nextPlayerIndex()) {
 			if(new EndGame().isGameEnded(game, turnHandler)) {
 				setEndGameState();
-				return;
 			}
 			else {
 				changePlayer();
+				setStartTurnState();
 			}
 		}
 		else {
 			setUpMarket();
-			return;
 		}
 	}
 	
 	public void setPlayerTurn() {
 		if(game.getCurrentPlayer().isOnline()) {
 			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
-				setNextGameState();
+				selectNextGameState();
+			}
+			else {
+				setStartTurnState();
 			}
 		}
 		else {
-			setNextGameState();
+			selectNextGameState();
 		}
-		setStartTurnState();
 	}
 	
 	private void setEndGameState() {
@@ -116,7 +125,6 @@ public class Model extends ModelObservable {
 	}
 
 	private void setUpMarket() {
-		setStartingPlayerIndex();
 		game.createNewMarket();
 		launchOfferMarket();
 	}
@@ -164,7 +172,8 @@ public class Model extends ModelObservable {
 	}
 	
 	private void launchOfferMarket() {
-		Player currentPlayer = game.getGamePlayersSet().getPlayer(++currentPlayerIndex);
+		nextPlayerIndex();
+		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
 		game.setCurrentPlayer(currentPlayer);
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
 		marketOfferPhaseState.changeState(context, game);
@@ -178,7 +187,7 @@ public class Model extends ModelObservable {
 		}
 		else {
 			setStartingPlayerIndex();
-			currentPlayerIndex++;
+			nextPlayerIndex();
 			changePlayer();
 			setStartTurnState();
 		}
@@ -186,7 +195,7 @@ public class Model extends ModelObservable {
 	
 	public void doBuyMarket(MarketTransation marketTransation) {
 		marketTransation.doTransation(game);
-		
+		chooseNextBuyMarketStep();
 	}
 	
 	private void launchBuyMarket() {
@@ -223,7 +232,6 @@ public class Model extends ModelObservable {
 			}
 			else {
 				chooseNextBuyMarketStep();
-				//detach(view);
 			}
 		}
 	}
