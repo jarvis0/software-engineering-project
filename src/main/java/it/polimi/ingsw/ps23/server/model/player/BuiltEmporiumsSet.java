@@ -44,7 +44,7 @@ public class BuiltEmporiumsSet {
 		return citiesWithoutNobilityTrackPoints;				
 	}
 
-	public NormalCity get(String cityName) {
+	public NormalCity getChosenCity(String cityName) { //TODO sistemare la return null
 		for(City city : builtEmporiums) {
 			if(city.getName().equals(cityName)) {
 				return (NormalCity) city;

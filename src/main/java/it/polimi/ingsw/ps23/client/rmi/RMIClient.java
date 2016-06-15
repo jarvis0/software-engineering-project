@@ -2,7 +2,6 @@ package it.polimi.ingsw.ps23.client.rmi;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
