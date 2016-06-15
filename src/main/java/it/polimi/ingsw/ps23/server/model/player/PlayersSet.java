@@ -15,7 +15,7 @@ public class PlayersSet {
 		players.add(player);
 	}
 
-	//TODO tutti i player o solo quelli online?
+	// usato dal market e x stamapre i giocatori
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -24,7 +24,7 @@ public class PlayersSet {
 		return players.get(index);
 	}
 	
-	public int playersNumber() {
+	public int marketPlayersNumber() {
 		int n = 0;
 		for(Player player : players) {
 			if(player.isOnline()) {
@@ -32,6 +32,10 @@ public class PlayersSet {
 			}
 		}
 		return n;
+	}
+	
+	public int playersNumber() {
+		return players.size();
 	}
 	
 	@Override

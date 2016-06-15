@@ -31,7 +31,7 @@ public class CitiesGraph {
 		List<City> citiesContainingPlayer = new ArrayList<>();
 		citiesContainingPlayer.add(arriveCity);
 		List<City> playerCityList = new ArrayList<>();
-		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
+		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet());
 		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 	}
 

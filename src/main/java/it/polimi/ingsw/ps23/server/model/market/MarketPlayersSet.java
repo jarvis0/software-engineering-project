@@ -11,7 +11,7 @@ class MarketPlayersSet extends PlayersSet {
 		super();
 	}
 	
-	void shufflePlayer() {
+	void shufflePlayers() {
 		Collections.shuffle(getPlayers());
 	}
 	

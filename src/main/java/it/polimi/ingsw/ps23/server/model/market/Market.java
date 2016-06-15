@@ -18,7 +18,7 @@ public class Market {
 		for(Player player : playersSet.getPlayers()) {
 			this.playersSet.addPlayer(player);
 		}
-		((MarketPlayersSet)this.playersSet).shufflePlayer();
+		((MarketPlayersSet)this.playersSet).shufflePlayers();
 	}
 		
 	public List<MarketObject> getMarketObject() {
@@ -38,7 +38,11 @@ public class Market {
 	}
 	
 	public Player selectPlayer() {
-		return ((MarketPlayersSet)playersSet).getCurrentPlayer();
+		Player nextPlayer;
+		do {
+			nextPlayer = ((MarketPlayersSet)playersSet).getCurrentPlayer();
+		} while(!nextPlayer.isOnline());
+		return nextPlayer;
 	}
 
 	public void remove(MarketObject requestedObject) {

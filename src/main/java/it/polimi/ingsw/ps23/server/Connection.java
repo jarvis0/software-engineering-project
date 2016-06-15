@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 import it.polimi.ingsw.ps23.server.view.View;
 
 public class Connection implements Runnable {
@@ -48,7 +49,7 @@ public class Connection implements Runnable {
  	
  	public String receive() {
 		Timer timer = new Timer();
-		timer.schedule(new TimeoutTask(this), timeout * 1000L);
+		timer.schedule(new TimeoutTask(this, timer), timeout * 1000L);
 		String message = textIn.next();
  		timer.cancel();
  		return message;
@@ -64,7 +65,11 @@ public class Connection implements Runnable {
 	
 	void close() {
 		closeConnection();
-		server.deregisterConnection(this);
+		try {
+			server.deregisterConnection(this);
+		} catch (ViewNotFoundException e) {
+			logger.log(Level.SEVERE, "Cannot find disconnecting player view.", e);
+		}
 	}
 
 	synchronized void setStarted() {

@@ -23,7 +23,7 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public String checkBonus(Player currentPlayer) {
-		if(!currentPlayer.getEmporiumForRecycleRewardToken().getBuiltEmporiumSet().isEmpty()){
+		if(!currentPlayer.getEmporiumForRecycleRewardToken().getBuiltEmporiumsSet().isEmpty()){
 			return "You have encountred a Recycle Reward Token Bonus on Nobility Track \nchoose the city for recycle the reward a token: " +currentPlayer.getEmporiumForRecycleRewardToken().toString();
 		}
 		else {

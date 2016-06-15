@@ -80,6 +80,10 @@ public class Game {
 		return playersSet.playersNumber();
 	}
 	
+	public int getMarketPlayersNumber() {
+		return playersSet.marketPlayersNumber();
+	}
+	
 	public Market getMarket() {
 		return currentMarket;
 	}

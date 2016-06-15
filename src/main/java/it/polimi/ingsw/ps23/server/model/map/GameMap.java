@@ -71,9 +71,8 @@ public class GameMap {
 		return permitsMap;
 	}
 
-	//TODO BUG contains
 	private boolean isFoundRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
-		return builtEmporiumsSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
+		return builtEmporiumsSet.getBuiltEmporiumsSet().containsAll(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
 	}
 	
 	public Region groupRegionalCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {

@@ -72,33 +72,38 @@ public class Model extends ModelObservable {
 		playerResumeHandler.resume();
 	}
 
-	private int nextPlayerIndex() {
-		return 0;//TODO deve essere qui o altrove?
+	private void nextPlayerIndex() {
+		Player nextPlayer;
+		do {
+			nextPlayer = game.getGamePlayersSet().getPlayer(++currentPlayerIndex);
+		} while(!nextPlayer.isOnline());
 	}
 
-	public void setPlayerTurn() {
-		if(game.getCurrentPlayer().isOnline()) {
-			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
-				if(++currentPlayerIndex < game.getPlayersNumber()) {
-					if(new EndGame().isGameEnded(game, turnHandler)) {
-						setEndGameState();
-						return;
-					}
-					else {
-						changePlayer();
-					}
-				}
-				else {
-					setUpMarket();
-					return;
-				}
+	private void setNextGameState() {
+		nextPlayerIndex();
+		if(currentPlayerIndex < game.getPlayersNumber()) {
+			if(new EndGame().isGameEnded(game, turnHandler)) {
+				setEndGameState();
+				return;
+			}
+			else {
+				changePlayer();
 			}
 		}
 		else {
-			if(++currentPlayerIndex < game.getPlayersNumber()) {
-				changePlayer();
+			setUpMarket();
+			return;
+		}
+	}
+	
+	public void setPlayerTurn() {
+		if(game.getCurrentPlayer().isOnline()) {
+			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
+				setNextGameState();
 			}
-			//TODO verificare
+		}
+		else {
+			setNextGameState();
 		}
 		setStartTurnState();
 	}
@@ -144,7 +149,7 @@ public class Model extends ModelObservable {
 	}
 
 	private void chooseNextOfferMarketStep(Market currentMarket) {
-		if(currentMarket.sellObjects() == game.getPlayersNumber()) {
+		if(currentMarket.sellObjects() == game.getMarketPlayersNumber()) {
 			launchBuyMarket();
 		}
 		else {

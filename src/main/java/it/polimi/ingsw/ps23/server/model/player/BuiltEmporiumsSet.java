@@ -30,7 +30,7 @@ public class BuiltEmporiumsSet {
 		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
 
-	public List<City> getBuiltEmporiumSet() {
+	public List<City> getBuiltEmporiumsSet() {
 		return builtEmporiums;
 	}
 
