@@ -158,7 +158,7 @@ public class SocketConsoleView extends SocketView {
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
 		sendWithInput("Choose a region:" + currentState.getPermitsMap());
-		String chosenRegion = receive();
+		String chosenRegion = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenRegion));
 	}
 
