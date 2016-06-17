@@ -15,4 +15,8 @@ public abstract class RMIView extends View {
 	void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
+	
+	protected ServerControllerInterface getControllerInterface() {
+		return controllerInterface;
+	}
 }

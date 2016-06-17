@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
 import java.io.PrintStream;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,11 +64,15 @@ class RMIConsoleView extends RMIView {
 		if(player.getName().equals(clientName)) {
 			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				wakeUp(StateCache.getAction(scanner.nextLine().toLowerCase()));
-			}
-			catch(NullPointerException e) {
-				logger.log(Level.SEVERE, "Cannot create the action.", e);
-				wakeUp();
+				try {
+					getControllerInterface().wakeUpServer(StateCache.getAction(scanner.nextLine().toLowerCase()));
+				}
+				catch(NullPointerException e) {
+					logger.log(Level.SEVERE, "Cannot create the action.", e);
+					getControllerInterface().wakeUpServer();
+				}
+			} catch(RemoteException e) {
+				logger.log(Level.SEVERE, "Cannot reach remote server", e);
 			}
 		}
 		else {
@@ -81,7 +86,11 @@ class RMIConsoleView extends RMIView {
 		String chosenCouncillor = scanner.nextLine().toLowerCase();
 		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = scanner.nextLine().toLowerCase();
-		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}		
 	}
 	
 	@Override
@@ -99,7 +108,11 @@ class RMIConsoleView extends RMIView {
 		}
 		output.println("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
 		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
-		wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));		
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncil, removedCards, chosenCard));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}		
 	}
 	
 	@Override
@@ -108,25 +121,41 @@ class RMIConsoleView extends RMIView {
 		String chosenCouncillor = scanner.nextLine().toLowerCase();
 		output.println("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = scanner.nextLine().toLowerCase();
-		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));		
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}		
 	}
 	
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		wakeUp(currentState.createAction());
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction());
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}
 		
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		wakeUp(currentState.createAction());		
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction());
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}		
 	}
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
 		output.println("Choose a region:" + currentState.getPermitsMap());
 		String chosenRegion = scanner.nextLine().toLowerCase();
-		wakeUp(currentState.createAction(chosenRegion));
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(chosenRegion));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}
 		
 	}	
 
@@ -143,7 +172,11 @@ class RMIConsoleView extends RMIView {
 		}
 		output.println("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
 		String arrivalCity = scanner.nextLine().toUpperCase();
-		wakeUp(currentState.createAction(removedCards, arrivalCity));		
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(removedCards, arrivalCity));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}		
 	}
 
 	@Override
@@ -152,7 +185,11 @@ class RMIConsoleView extends RMIView {
 		int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
 		output.println("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 		String chosenCity = scanner.nextLine().toUpperCase();
-		wakeUp(currentState.createAction(chosenCity, chosenCard));
+		try {
+			getControllerInterface().wakeUpServer(currentState.createAction(chosenCity, chosenCard));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}
 		
 	}
 
@@ -186,7 +223,11 @@ class RMIConsoleView extends RMIView {
 			}
 			output.println("Choose the price for your offer: ");
 			int cost = Integer.parseInt(scanner.nextLine());
-			wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+			try {
+				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+			} catch (RemoteException e) {
+				logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			}
 		}
 	}
 
@@ -194,16 +235,20 @@ class RMIConsoleView extends RMIView {
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		if(player.equals(clientName)) {
-			if(currentState.canBuy()) {
-				output.println("Avaible offers: " + currentState.getAvaiableOffers());
-				wakeUp(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
+		try {
+			if(player.equals(clientName)) {
+				if(currentState.canBuy()) {
+					output.println("Avaible offers: " + currentState.getAvaiableOffers());
+					getControllerInterface().wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
+				}
+				else {
+					output.println("You can buy nothing.");
+					getControllerInterface().wakeUpServer(currentState.createTransation());
+				}
 			}
-			else {
-				output.println("You can buy nothing.");
-				wakeUp(currentState.createTransation());
-			}
-		}	
+		} catch(RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}
 	}
 
 	@Override
@@ -234,7 +279,11 @@ class RMIConsoleView extends RMIView {
 				selectedBonuses.put(currentBonus, bonusesSelections);
 			}	
 		}
-		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+		try {
+			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver(selectedBonuses));
+		} catch (RemoteException e) {
+			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+		}
 	}
 
 	@Override

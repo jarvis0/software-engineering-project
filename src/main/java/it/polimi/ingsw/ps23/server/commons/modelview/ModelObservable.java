@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.commons.modelview;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,12 @@ public class ModelObservable {
 	
 	private void notifyAllObservers(State state) {
 		for(ViewObserver observer : observers) {
-			observer.update(state);
+			try {
+				observer.update(state);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
