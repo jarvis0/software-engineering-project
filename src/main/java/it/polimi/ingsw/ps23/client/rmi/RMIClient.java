@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.ServerInterface;
+import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
+import it.polimi.ingsw.ps23.server.model.state.State;
 
 class RMIClient implements ClientInterface {
 	
@@ -46,11 +48,22 @@ class RMIClient implements ClientInterface {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to registry.", e);
 		}
 	}
+	
+	@Override
+	public void setController(ServerControllerInterface controller)
+	{
+		remoteView.setController(controller);
+	}
 
 	@Override
 	public void infoMessage(String message) throws RemoteException {
 		output.println(message);
 		//remoteView.xxxxxx()
+	}
+
+	@Override
+	public void changeState(State currentState) throws RemoteException {
+		remoteView.update(currentState);		
 	}
 	
 }
