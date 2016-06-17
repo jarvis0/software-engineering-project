@@ -12,6 +12,10 @@ public abstract class RMIView extends View {
 		this.client = client;
 	}
 	
+	public RMIClient getClient() {
+		return client;
+	}
+	
 	void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
@@ -19,4 +23,5 @@ public abstract class RMIView extends View {
 	protected ServerControllerInterface getControllerInterface() {
 		return controllerInterface;
 	}
+	
 }

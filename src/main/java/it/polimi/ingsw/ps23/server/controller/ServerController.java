@@ -1,5 +1,10 @@
 package it.polimi.ingsw.ps23.server.controller;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
@@ -8,6 +13,8 @@ import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 public class ServerController extends Controller implements ServerControllerInterface {
+
+	private static final String POLICY_NAME = "COFServer";
 
 	public ServerController(Model model) {
 		super(model);
@@ -48,7 +55,16 @@ public class ServerController extends Controller implements ServerControllerInte
 		update(superBonusGiver);
 	}
 
-	
-	
+	@Override
+	public ServerControllerInterface setStub() {
+		try {
+			ServerControllerInterface stub = (ServerControllerInterface) UnicastRemoteObject.exportObject(this, 0);
+			Naming.rebind(POLICY_NAME, stub);
+			return stub;
+		} catch (RemoteException | MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

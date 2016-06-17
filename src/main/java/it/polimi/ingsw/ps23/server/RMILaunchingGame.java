@@ -1,24 +1,28 @@
 package it.polimi.ingsw.ps23.server;
 
 import java.io.PrintStream;
+import java.util.Timer;
 import java.util.TimerTask;
 
-class RemindTask extends TimerTask {
+class RMILaunchingGame extends TimerTask {
 
 	private Server server;
+	
+	private Timer timer;
 	
 	private PrintStream output;
 	
 	private int seconds;
 	private int i;
 
-	RemindTask(Server server, int seconds) {
+	RMILaunchingGame(Timer timer, Server server, int seconds) {
+		this.timer = timer;
 		this.server = server;
 		this.seconds = seconds;
 		output = new PrintStream(System.out, true);
 		i = 1;
 	}
-		
+	
 	@Override
 	public void run() {
 		if(i != seconds) {
@@ -31,9 +35,8 @@ class RemindTask extends TimerTask {
 			i++;
 		}
 		else {
-			server.setTimerEnd();
+			server.setRMITimerEnd(timer);
 		}
 	}
-}
 	
-
+}

@@ -1,13 +1,15 @@
 package it.polimi.ingsw.ps23.server;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
-import it.polimi.ingsw.ps23.client.rmi.RMIView;
-import it.polimi.ingsw.ps23.server.controller.Controller;
+import it.polimi.ingsw.ps23.server.controller.ServerController;
+import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.model.Model;
+import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 import it.polimi.ingsw.ps23.server.view.View;
@@ -16,14 +18,12 @@ public class GameInstance {
 
 	private Model model;
 	private List<SocketView> socketViews;
-	private List<RMIView> rmiViews;
-	private Controller controller;
+	private ServerController controller;
 	
 	GameInstance() {
 		model = new Model();
 		socketViews = new ArrayList<>();
-		
-		controller = new Controller(model);
+		controller = new ServerController(model);
 	}
 
 	List<SocketView> getSocketViews() {
@@ -32,7 +32,6 @@ public class GameInstance {
 	
 	void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
 		List<String> socketPlayersName = new ArrayList<>(socketWaitingConnections.keySet());
-		// TODO Collections.shuffle(playersName);
 		for(int i = 0; i < socketPlayersName.size(); i++) {
 			String socketPlayerName = socketPlayersName.get(i);
 			Connection connection = socketWaitingConnections.get(socketPlayerName);
@@ -43,11 +42,24 @@ public class GameInstance {
 			socketViews.get(i).attach(controller);
 		}
 		List<String> rmiPlayersName = new ArrayList<>(rmiWaitingConnections.keySet());
-		for(int i = 0; i < rmiPlayersName.size(); i++) {
-			String rmiPlayerName = rmiPlayersName.get(i);
-			
+		if(!rmiPlayersName.isEmpty()) {
+			ServerControllerInterface serverControllerStub = controller.setStub();
+			for(int i = 0; i < rmiPlayersName.size(); i++) {
+				String rmiPlayerName = rmiPlayersName.get(i);
+				try {
+					ClientInterface remoteClient = rmiWaitingConnections.get(rmiPlayerName);
+					remoteClient.setController(serverControllerStub);
+					model.attachStub(rmiWaitingConnections.get(rmiPlayerName));
+				} catch (RemoteException e) {
+					System.out.println("CCCCC");
+				}
+			}
 		}
-		//model.setUpModel(socketPlayersName, new PlayerResumeHandler(socketViews));
+		List<String> playersName = new ArrayList<>();
+		playersName.addAll(socketPlayersName);
+		playersName.addAll(rmiPlayersName);
+		//Collections.shuffle(playersName);
+		model.setUpModel(playersName, new PlayerResumeHandler(socketViews));
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}

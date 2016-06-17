@@ -1,13 +1,10 @@
 package it.polimi.ingsw.ps23.server.commons.modelview;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 @FunctionalInterface
-public interface ViewObserver extends Remote {
+public interface ViewObserver {
 
-	public void update(State state) throws RemoteException;
+	public void update(State state);
 	
 }

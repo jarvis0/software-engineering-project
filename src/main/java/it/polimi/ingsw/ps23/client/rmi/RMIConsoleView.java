@@ -54,7 +54,7 @@ class RMIConsoleView extends RMIView {
 				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
 				Thread.currentThread().interrupt();
 			}
-		} while (!(state instanceof StartTurnState && state instanceof MarketBuyPhaseState && state instanceof MarketOfferPhaseState));
+		} while (!(state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState));
 	}
 
 	@Override
@@ -295,13 +295,13 @@ class RMIConsoleView extends RMIView {
 	@Override
 	public synchronized void run() {
 		do {
-			state.acceptView(this);
 			pause();
+			state.acceptView(this);
 		} while(!endGame);
 	}
 
 	@Override
-	public void update(State state) {
+	public synchronized void update(State state) {
 		this.state = state;
 		notifyAll();
 	}

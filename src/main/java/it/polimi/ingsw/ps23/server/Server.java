@@ -29,10 +29,10 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
-	private static final int LAUNCH_TIMEOUT = 5;
+	private static final int LAUNCH_TIMEOUT = 1;
 	private static final int CONNECTION_TIMEOUT = 120;
 	private static final String SECONDS_PRINT =  " seconds...";
-	private static final String POLICY_NAME = "COF_Server";
+	private static final String POLICY_NAME = "COFServer";
 	
 	private ExecutorService executor;
 	
@@ -46,12 +46,12 @@ class Server implements ServerInterface {
 	
 	private boolean launchingGame;
 	private boolean active;
+
+	private GameInstancesSet gameInstances;
 	
 	private PrintStream output;
 	private Logger logger;
 
-	private GameInstancesSet gameInstances;
-	
 	private Server() {
 		output = new PrintStream(System.out, true);
 		gameInstances = new GameInstancesSet();
@@ -65,11 +65,19 @@ class Server implements ServerInterface {
 		launchingGame = false;
 	}
 	
-	synchronized void setTimerEnd() {
+	synchronized void setSocketTimerEnd() {
 		notifyAll();
 	}
 
-	private synchronized void startCountdown() {
+	synchronized void setRMITimerEnd(Timer timer) {
+		timer.cancel();
+		for(Connection connection : socketWaitingConnections.values()) {
+			connection.setStarted();
+		}
+		initializeGame();
+	}
+	
+	private synchronized void startCountdownFromRMI() {
 		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
 			launchingGame = true;
 			output.println("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
@@ -81,7 +89,23 @@ class Server implements ServerInterface {
 				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
-			timer.schedule(new RemindTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+			timer.schedule(new RMILaunchingGame(timer, this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+		}
+	}
+
+	private synchronized void startCountdownFromSocket() {
+		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
+			launchingGame = true;
+			output.println("A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT);
+			String message = "A new game is starting in " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
+			for(Connection connection : socketWaitingConnections.values()) {
+				connection.send(message);
+			}
+			for(ClientInterface client : rmiWaitingConnections.values()) {
+				infoMessage(client, message);
+			}
+			Timer timer = new Timer();
+			timer.schedule(new SocketLaunchingGame(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
 			boolean loop = true;
 			while(loop) {
 				try {
@@ -104,7 +128,7 @@ class Server implements ServerInterface {
 		output.println("Player " + name + " has been added to the waiting list.");
 		socketWaitingConnections.put(name, c);
 		//TODO contorllare che questo player vuole rientrare in una partita precedentemente abbandonata
-		startCountdown();
+		startCountdownFromSocket();
 	}
 	
 	synchronized void initializeGame() {
@@ -184,10 +208,7 @@ class Server implements ServerInterface {
 			message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\nThe new game is starting in a few seconds...\n";
 		}
 		infoMessage(client, message);
-		startCountdown();
-		if(launchingGame) {
-			initializeGame();
-		}
+		startCountdownFromRMI();
 	}
 
 	@Override

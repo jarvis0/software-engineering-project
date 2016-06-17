@@ -9,6 +9,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,19 +21,23 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 class RMIClient implements ClientInterface {
 	
 	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "COF_Server";
+	private static final String POLICY_NAME = "COFServer";
 	
 	private Scanner scanner;
 	private PrintStream output;
 	
 	private RMIView remoteView;
+
+	private ExecutorService executor;
 	
 	private RMIClient() {
 		remoteView = new RMIConsoleView(this);
+		executor = Executors.newCachedThreadPool();
+		executor.submit(remoteView);
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
 	}
-	
+
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
@@ -50,20 +56,18 @@ class RMIClient implements ClientInterface {
 	}
 	
 	@Override
-	public void setController(ServerControllerInterface controller)
-	{
+	public void setController(ServerControllerInterface controller) {
 		remoteView.setController(controller);
 	}
 
 	@Override
-	public void infoMessage(String message) throws RemoteException {
+	public void infoMessage(String message) {
 		output.println(message);
-		//remoteView.xxxxxx()
 	}
 
 	@Override
-	public void changeState(State currentState) throws RemoteException {
-		remoteView.update(currentState);		
+	public void changeState(State currentState) {
+		((RMIConsoleView) remoteView).update(currentState);
 	}
-	
+
 }

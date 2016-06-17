@@ -11,6 +11,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class StartTurnState implements State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6709781155533826821L;
 	private Player currentPlayer;
 	private TurnHandler turnHandler;
 	private GameMap gameMap;
