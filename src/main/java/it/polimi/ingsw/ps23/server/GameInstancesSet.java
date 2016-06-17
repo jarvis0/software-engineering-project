@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
@@ -16,9 +17,9 @@ public class GameInstancesSet {
 		gameInstances = new ArrayList<>();
 	}
 
-	public void newGame(Map<String, Connection> waitingConnections, Map<String, Connection> playingPlayers) {
+	public void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
 		GameInstance gameInstance = new GameInstance();
-		gameInstance.newGame(waitingConnections, playingPlayers);
+		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}
 
@@ -34,12 +35,12 @@ public class GameInstancesSet {
 	String disconnectPlayer(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = new String();
 		GameInstance gameInstance = findPlayerGameInstance(c);
-		List<SocketView> views = gameInstance.getViews();
+		List<SocketView> views = gameInstance.getSocketViews();
 		Iterator<SocketView> loop = views.iterator();
 		boolean found = false;
-		while(!found && loop.hasNext()) { //TODO se rimuovo potrei avere problemi a ciclare
+		while(!found && loop.hasNext()) {
 			SocketView view = loop.next();
-			if(view.getConnection() == c) { //TODO rimuovere questa view da observer di model
+			if(view.getConnection() == c) {
 				disconnectedPlayer = view.getClientName();
 				if(views.size() == 1) {
 					view.getConnection().endThread();

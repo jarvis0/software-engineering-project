@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
+import it.polimi.ingsw.ps23.client.rmi.RMIView;
 import it.polimi.ingsw.ps23.server.controller.Controller;
 import it.polimi.ingsw.ps23.server.model.Model;
-import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 import it.polimi.ingsw.ps23.server.view.View;
@@ -14,38 +15,47 @@ import it.polimi.ingsw.ps23.server.view.View;
 public class GameInstance {
 
 	private Model model;
-	private List<SocketView> views;
+	private List<SocketView> socketViews;
+	private List<RMIView> rmiViews;
 	private Controller controller;
 	
 	GameInstance() {
 		model = new Model();
-		views = new ArrayList<>();
+		socketViews = new ArrayList<>();
+		
 		controller = new Controller(model);
 	}
 
-	List<SocketView> getViews() {
-		return views;
+	List<SocketView> getSocketViews() {
+		return socketViews;
 	}
 	
-	void newGame(Map<String, Connection> waitingConnections, Map<String, Connection> playingPlayers) {
-		List<String> playersName = new ArrayList<>(waitingConnections.keySet());
+	void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
+		List<String> socketPlayersName = new ArrayList<>(socketWaitingConnections.keySet());
 		// TODO Collections.shuffle(playersName);
-		for(int i = 0; i < playersName.size(); i++) {
-			Connection connection = waitingConnections.get(playersName.get(i));
-			views.add(new SocketConsoleView(playersName.get(i), connection));
-			connection.setView(views.get(i));
-			model.attach(views.get(i));
-			views.get(i).attach(controller);
-			playingPlayers.put(playersName.get(i), connection);
+		for(int i = 0; i < socketPlayersName.size(); i++) {
+			String socketPlayerName = socketPlayersName.get(i);
+			Connection connection = socketWaitingConnections.get(socketPlayerName);
+			//TODO if(GUI ==> guiview else Console)
+			socketViews.add(new SocketConsoleView(socketPlayerName, connection));
+			connection.setView(socketViews.get(i));
+			model.attach(socketViews.get(i));
+			socketViews.get(i).attach(controller);
 		}
-		model.setUpModel(playersName, new PlayerResumeHandler(views));
-		for(Connection connection : waitingConnections.values()) {
+		List<String> rmiPlayersName = new ArrayList<>(rmiWaitingConnections.keySet());
+		for(int i = 0; i < rmiPlayersName.size(); i++) {
+			String rmiPlayerName = rmiPlayersName.get(i);
+			
+		}
+		//model.setUpModel(socketPlayersName, new PlayerResumeHandler(socketViews));
+		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}
+		//TODO sendinfomessage ai rmiclients per avvisarli che il game è partito
 	}
 	
 	boolean existsPlayerView(Connection c) {
-		for(SocketView view : views) {
+		for(SocketView view : socketViews) {
 			if(view.getConnection() == c) {
 				return true;
 			}

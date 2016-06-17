@@ -17,7 +17,7 @@ import it.polimi.ingsw.ps23.server.ServerInterface;
 class RMIClient implements ClientInterface {
 	
 	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "COF Server";
+	private static final String POLICY_NAME = "COF_Server";
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -41,7 +41,7 @@ class RMIClient implements ClientInterface {
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
 			ClientInterface client =  new RMIClient();
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
-			server.registerClient(playerName, stub);			
+			server.registerClient(playerName, stub);
 		} catch (RemoteException | UnknownHostException | NotBoundException e) {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to registry.", e);
 		}

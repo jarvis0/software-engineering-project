@@ -26,13 +26,13 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 
 class Server implements ServerInterface {
 	
-	private static final int PORT = 12345;
+	private static final int SOCKET_PORT_NUMBER = 12345;
+	private static final int RMI_PORT_NUMBER = 1099;
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
-	private static final int LAUNCH_TIMEOUT = 10;
+	private static final int LAUNCH_TIMEOUT = 5;
 	private static final int CONNECTION_TIMEOUT = 120;
 	private static final String SECONDS_PRINT =  " seconds...";
-
-	private static final String POLICY_NAME = "COF Server";
+	private static final String POLICY_NAME = "COF_Server";
 	
 	private ExecutorService executor;
 	
@@ -40,11 +40,9 @@ class Server implements ServerInterface {
 
 	private List<Connection> socketAllConnections;
 	private Map<String, Connection> socketWaitingConnections;
-	private Map<String, Connection> socketPlayingPlayers; //forse serve per ripristinare la sessione giocatore
 	
 	private List<ClientInterface> rmiAllConnections;
 	private Map<String, ClientInterface> rmiWaitingConnections;
-	private Map<String, ClientInterface> rmiPlayingPlayers;
 	
 	private boolean launchingGame;
 	private boolean active;
@@ -59,20 +57,11 @@ class Server implements ServerInterface {
 		gameInstances = new GameInstancesSet();
 		active = true;
 		logger = Logger.getLogger(this.getClass().getName());
-		try {
-			serverSocket = new ServerSocket(PORT);
-		} catch (IOException e) {
-			active = false;
-			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
-			Thread.currentThread().interrupt();
-		}
 		executor = Executors.newCachedThreadPool();
 		socketAllConnections = new ArrayList<>();
 		socketWaitingConnections = new HashMap<>();
-		socketPlayingPlayers = new HashMap<>();
 		rmiAllConnections = new ArrayList<>();
 		rmiWaitingConnections = new HashMap<>();
-		rmiPlayingPlayers = new HashMap<>();
 		launchingGame = false;
 	}
 	
@@ -119,13 +108,14 @@ class Server implements ServerInterface {
 	}
 	
 	synchronized void initializeGame() {
-		gameInstances.newGame(socketWaitingConnections, socketPlayingPlayers);
+		gameInstances.newGame(socketWaitingConnections, rmiWaitingConnections);
 		launchingGame = false;
 		socketWaitingConnections.clear();
+		rmiWaitingConnections.clear();
 		output.println("A new game has started.");
 	}
 	
-	private void newConnection() {
+	private void newSocketConnection() {
 		try {
 			Socket newSocket = serverSocket.accept();
 			output.println("I've received a new socket client connection.");
@@ -137,7 +127,7 @@ class Server implements ServerInterface {
 			}
 			connection.send(message + "\nWelcome, what's your name? ");
 			if(launchingGame) {
-				connection.send("The new game is starting in a few seconds...\n");
+				connection.send("The new game is starting in a few" + SECONDS_PRINT + "\n");
 			}
 			executor.submit(connection);
 		} catch (IOException | NullPointerException e) {
@@ -150,13 +140,7 @@ class Server implements ServerInterface {
 	synchronized void deregisterConnection(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = gameInstances.disconnectPlayer(c);
 		socketAllConnections.remove(c);
-		Iterator<String> iterator = socketPlayingPlayers.keySet().iterator();
-		while(iterator.hasNext()) {
-			if(socketPlayingPlayers.get(iterator.next()) == c) {
-				iterator.remove();
-			}
-		}
-		iterator = socketWaitingConnections.keySet().iterator();
+		Iterator<String> iterator = socketWaitingConnections.keySet().iterator();
 		while(iterator.hasNext()){
 			if(socketWaitingConnections.get(iterator.next()) == c){
 				iterator.remove();
@@ -171,11 +155,10 @@ class Server implements ServerInterface {
 
 	private void startRMI() {
 		try {
-			Registry registry = LocateRegistry.createRegistry(1099);
+			Registry registry = LocateRegistry.createRegistry(RMI_PORT_NUMBER);
 			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
 			registry.bind(POLICY_NAME, stub);
 			output.println("Waiting for RMI connections...");
-			
 		} catch (RemoteException | AlreadyBoundException e) {
 			active = false;
 			logger.log(Level.SEVERE, "Cannot create a new registry.", e);
@@ -198,9 +181,13 @@ class Server implements ServerInterface {
 		output.println("Player " + name + " has been added to the waiting list.");
 		String message = "Connection established at " + new Date().toString();
 		if(launchingGame) {
-			message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "The new game is starting in a few seconds...\n";
+			message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\nThe new game is starting in a few seconds...\n";
 		}
 		infoMessage(client, message);
+		startCountdown();
+		if(launchingGame) {
+			initializeGame();
+		}
 	}
 
 	@Override
@@ -209,9 +196,16 @@ class Server implements ServerInterface {
 	}
 
 	public void startSocket() {
+		try {
+			serverSocket = new ServerSocket(SOCKET_PORT_NUMBER);
+		} catch (IOException e) {
+			active = false;
+			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
+			Thread.currentThread().interrupt();
+		}
 		output.println("Waiting for socket connections...");
 		while(isActive()) {
-			newConnection();
+			newSocketConnection();
 		}
 	}
 
