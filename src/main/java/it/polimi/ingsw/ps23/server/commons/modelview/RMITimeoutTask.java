@@ -5,11 +5,11 @@ import java.util.TimerTask;
 
 class RMITimeoutTask extends TimerTask {
 
-	private String playerName;
+	//private String playerName;
 	private Timer timer;
 	
 	RMITimeoutTask(String playerName, Timer timer) {
-		this.playerName = playerName;
+		//this.playerName = playerName;
 		this.timer = timer;
 	}
 	

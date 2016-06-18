@@ -97,7 +97,7 @@ class Server implements ServerInterface {
 	}
 
 	@Override
-	public void registerClient(String name, ClientInterface client) {
+	public void registerRMIClient(String name, ClientInterface client) {
 		output.println("New RMI client connection received.");
 		rmiAllConnections.add(client);
 		rmiWaitingConnections.put(name,  client);
@@ -160,16 +160,12 @@ class Server implements ServerInterface {
 			}
 			Timer timer = new Timer();
 			timer.schedule(new LaunchingGameTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
-			boolean loop = true;
-			while(loop) {
-				try {
-					wait();
-					loop = false;
-				} catch (InterruptedException e) {
-					socketActive = false;
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot wait new game countdown.", e);
-					Thread.currentThread().interrupt();
-				}
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				socketActive = false;
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot wait new game countdown.", e);
+				Thread.currentThread().interrupt();
 			}
 			timer.cancel();
 			for(Connection connection : socketWaitingConnections.values()) {

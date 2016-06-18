@@ -37,7 +37,6 @@ class RMIConsoleView extends RMIView {
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
-	private Logger logger;
 	
 	RMIConsoleView(RMIClient client, String playerName) {
 		super(client);
@@ -46,14 +45,13 @@ class RMIConsoleView extends RMIView {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
 		clientName = playerName;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	private synchronized void pause() {
 		try {
 			wait();
 		} catch (InterruptedException e) {
-			logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -67,14 +65,14 @@ class RMIConsoleView extends RMIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
 			} catch(NullPointerException e) {
-				logger.log(Level.SEVERE, "Cannot find the action.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find the action.", e);
 				try {
 					getControllerInterface().wakeUpServer();
 				} catch (RemoteException e1) {
-					logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 				}
 			} catch (RemoteException e) {
-				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
 		else {
@@ -93,7 +91,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -115,7 +113,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncil, removedCards, chosenCard));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -128,7 +126,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -137,7 +135,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}
@@ -147,7 +145,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 
@@ -158,7 +156,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenRegion));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}	
@@ -179,7 +177,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(removedCards, arrivalCity));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 
@@ -192,7 +190,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCity, chosenCard));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}
@@ -230,7 +228,7 @@ class RMIConsoleView extends RMIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (RemoteException e) {
-				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
 		else {
@@ -254,7 +252,7 @@ class RMIConsoleView extends RMIView {
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
 			} catch(RemoteException e) {
-				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
 		else {
@@ -294,7 +292,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver(selectedBonuses));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 	}
 

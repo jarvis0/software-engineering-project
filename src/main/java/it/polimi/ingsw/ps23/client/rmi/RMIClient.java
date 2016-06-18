@@ -33,10 +33,10 @@ class RMIClient implements ClientInterface {
 		rmiView = new RMIConsoleView(this, playerName);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
-		output = new PrintStream(System.out, true);
 	}
 
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")//TODO remove this warning
 		Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name? ");
@@ -46,7 +46,7 @@ class RMIClient implements ClientInterface {
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
 			ClientInterface client =  new RMIClient(playerName);
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
-			server.registerClient(playerName, stub);
+			server.registerRMIClient(playerName, stub);
 		} catch (RemoteException | UnknownHostException | NotBoundException e) {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to RMI registry.", e);
 		}

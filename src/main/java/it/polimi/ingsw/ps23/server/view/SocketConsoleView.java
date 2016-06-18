@@ -34,8 +34,6 @@ public class SocketConsoleView extends SocketView {
 	private String clientName;
 
 	private State state;
-	
-	private Logger logger;
 
 	private boolean endGame;
 	
@@ -44,17 +42,19 @@ public class SocketConsoleView extends SocketView {
 		this.clientName = clientName;
 		this.connection = connection;
 		endGame = false;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 
+	@Override
 	public Connection getConnection() {
 		return connection;
 	}
-
+	
+	@Override
 	public String getClientName() {
 		return clientName;
 	}
 	
+	@Override
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
@@ -74,16 +74,18 @@ public class SocketConsoleView extends SocketView {
 				wait();
 				loop = false;
 			} catch (InterruptedException e) {
-				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
 				Thread.currentThread().interrupt();
 			}
 		}
 	}
 	
+	@Override
 	public synchronized void threadWakeUp() {
 		notifyAll();
 	}
 
+	@Override
 	public void setPlayerOffline() {
 		wakeUp(clientName);
 	}
@@ -98,7 +100,7 @@ public class SocketConsoleView extends SocketView {
 				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}
 			catch(NullPointerException e) {
-				logger.log(Level.SEVERE, "Cannot create the action.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
 				wakeUp();
 			}
 		}
@@ -246,8 +248,8 @@ public class SocketConsoleView extends SocketView {
 	public void visit(SuperBonusState currentState) {
 		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
 		while(currentState.hasNext()) {
-			Bonus currentBonus = currentState.getCurrentBonus();
 			String chosenRegion = new String();
+			Bonus currentBonus = currentState.getCurrentBonus();
 			int numberOfCurrentBonus = currentBonus.getValue();
 			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {

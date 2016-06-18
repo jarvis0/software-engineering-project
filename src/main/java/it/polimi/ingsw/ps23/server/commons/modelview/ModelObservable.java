@@ -16,10 +16,10 @@ public class ModelObservable {
 	private List<ClientInterface> rmiObservers;
 	private Timer timer;
 	
-	private int timeout;
+	//private int timeout;
 	
 	public ModelObservable(int timeout) {
-		this.timeout = timeout;
+		//this.timeout = timeout;
 		observers = new ArrayList<>();
 		rmiObservers = new ArrayList<>();
 	}

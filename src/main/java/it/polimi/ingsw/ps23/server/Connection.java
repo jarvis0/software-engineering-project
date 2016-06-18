@@ -24,8 +24,6 @@ public class Connection implements Runnable {
 
 	private SocketView socketView;
 	
-	private Logger logger;
-	
 	Connection(Server server, Socket socket, int timeout) throws IOException {
 		super();
 		this.server = server;
@@ -34,7 +32,6 @@ public class Connection implements Runnable {
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream(), true);
-		logger = Logger.getLogger(this.getClass().getName());
 		started = false;
 	}
 	
@@ -58,7 +55,7 @@ public class Connection implements Runnable {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Cannot close the connection.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot close the connection.", e);
 		}
 	}
 	
@@ -67,7 +64,7 @@ public class Connection implements Runnable {
 		try {
 			server.deregisterSocketConnection(this);
 		} catch (ViewNotFoundException e) {
-			logger.log(Level.SEVERE, "Cannot find disconnecting player view.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find disconnecting player view.", e);
 		}
 	}
 
@@ -80,16 +77,12 @@ public class Connection implements Runnable {
 	}
 	
 	private synchronized void initialization() {
-		boolean loop = true;
 		if(!started) {
-			while(loop) {
-				try {
-					wait();
-					loop = false;
-				} catch (InterruptedException e) {
-					logger.log(Level.SEVERE, "Cannot put connection " + this + " on hold.", e);
-					Thread.currentThread().interrupt();
-				}
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put connection " + this + " on hold.", e);
+				Thread.currentThread().interrupt();
 			}
 		}
 		else {

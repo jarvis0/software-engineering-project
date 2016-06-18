@@ -7,6 +7,6 @@ import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 
 public interface ServerInterface extends Remote {
 
-	public void registerClient(String name, ClientInterface client) throws RemoteException;
+	public void registerRMIClient(String name, ClientInterface client) throws RemoteException;
 		
 }
