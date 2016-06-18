@@ -14,6 +14,10 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 71835727198785851L;
 	private static final int REGION_NAME_POSITION = 0;
 	private static final int CHOSEN_TILE_POSITION = 1;
 

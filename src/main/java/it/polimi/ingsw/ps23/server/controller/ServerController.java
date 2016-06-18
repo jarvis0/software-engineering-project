@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
@@ -11,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
-
+//TODO va in questo package?
 public class ServerController extends Controller implements ServerControllerInterface {
 
 	private static final String POLICY_NAME = "COFServer";
@@ -62,7 +64,7 @@ public class ServerController extends Controller implements ServerControllerInte
 			Naming.rebind(POLICY_NAME, stub);
 			return stub;
 		} catch (RemoteException | MalformedURLException e) {
-			e.printStackTrace();
+			Logger.getLogger("main").log(Level.SEVERE, "Cannot rebind the RMI registry.", e);
 		}
 		return null;
 	}

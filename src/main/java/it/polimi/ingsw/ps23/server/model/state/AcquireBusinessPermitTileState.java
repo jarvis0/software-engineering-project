@@ -15,6 +15,11 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class AcquireBusinessPermitTileState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6409535756165340260L;
+
 	private static final int MAX_CARDS_NUMBER = 4;
 	
 	private HandDeck politicHandDeck;

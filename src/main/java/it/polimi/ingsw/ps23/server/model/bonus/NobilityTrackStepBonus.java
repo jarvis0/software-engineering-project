@@ -7,6 +7,11 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class NobilityTrackStepBonus extends Bonus {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4715527573592795101L;
+
 	public NobilityTrackStepBonus(String name) {
 		super(name);
 	}

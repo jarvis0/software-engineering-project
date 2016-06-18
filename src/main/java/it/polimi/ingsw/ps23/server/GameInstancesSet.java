@@ -23,18 +23,22 @@ public class GameInstancesSet {
 		gameInstances.add(gameInstance);
 	}
 
-	private GameInstance findPlayerGameInstance(Connection c) throws ViewNotFoundException {
+	private GameInstance findSocketPlayerGame(Connection c) throws ViewNotFoundException {
 		for(GameInstance gameInstance : gameInstances) {
-			if(gameInstance.existsPlayerView(c)) {
+			if(gameInstance.existsSocketPlayerView(c)) {
 				return gameInstance;
 			}
 		}
 		throw new ViewNotFoundException();
 	}
 	
-	String disconnectPlayer(Connection c) throws ViewNotFoundException {
+	private void notifyDisconnectionToRMI(GameInstance gameInstance, String message) {
+		gameInstance.sendRMIMessage(message);
+	}
+	
+	String disconnectSocketPlayer(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = new String();
-		GameInstance gameInstance = findPlayerGameInstance(c);
+		GameInstance gameInstance = findSocketPlayerGame(c);
 		List<SocketView> views = gameInstance.getSocketViews();
 		Iterator<SocketView> loop = views.iterator();
 		boolean found = false;
@@ -42,21 +46,21 @@ public class GameInstancesSet {
 			SocketView view = loop.next();
 			if(view.getConnection() == c) {
 				disconnectedPlayer = view.getClientName();
-				if(views.size() == 1) {
-					view.getConnection().endThread();
+				if(views.size() < 1) {//TODO almeno 2 giocatori
 				}
 				else {
 					view.setPlayerOffline();
-					view.getConnection().endThread();
 				}
 				gameInstance.detach(view);
 				loop.remove();
 				found = true;
 			}
 		}
+		String message = "The player " + disconnectedPlayer + " has been disconnected.";
 		for(SocketView view : views) {
-			view.sendNoInput("The player " + disconnectedPlayer + " has disconnected.");
+			view.sendNoInput(message);
 		}
+		notifyDisconnectionToRMI(gameInstance, message);
 		return disconnectedPlayer;
 	}
 

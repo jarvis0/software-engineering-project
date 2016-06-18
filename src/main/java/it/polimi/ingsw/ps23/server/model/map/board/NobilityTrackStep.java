@@ -14,13 +14,15 @@ import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 
 public class NobilityTrackStep implements BonusSlot {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8355589099422337310L;
+
 	private List<Bonus> bonuses;
-	
-	private Logger logger;
 	
 	public NobilityTrackStep() {
 		bonuses = new ArrayList<>();
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	void useBonus(Game game, TurnHandler turnHandler) {
@@ -28,7 +30,7 @@ public class NobilityTrackStep implements BonusSlot {
 			try {
 				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
-				logger.log(Level.SEVERE, "Insufficient current player resources.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player resources.", e);
 				//TODO serve questa eccezione?
 			}
 		}

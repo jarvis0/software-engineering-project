@@ -55,7 +55,7 @@ public class SocketConsoleView extends SocketView {
 	public String getClientName() {
 		return clientName;
 	}
-
+	
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
@@ -104,7 +104,7 @@ public class SocketConsoleView extends SocketView {
 			}
 		}
 		else {
-			sendNoInput("It's player " + player.getName() + " turn.\n");
+			sendNoInput("It's player " + player.getName() + " turn.");
 			pause();
 		}
 	}

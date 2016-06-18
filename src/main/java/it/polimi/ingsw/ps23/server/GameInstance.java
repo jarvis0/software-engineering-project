@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.controller.ServerController;
@@ -37,7 +39,7 @@ public class GameInstance {
 			Connection connection = socketWaitingConnections.get(socketPlayerName);
 			//TODO if(GUI ==> guiview else Console)
 			socketViews.add(new SocketConsoleView(socketPlayerName, connection));
-			connection.setView(socketViews.get(i));
+			connection.setSocketView(socketViews.get(i));
 			model.attach(socketViews.get(i));
 			socketViews.get(i).attach(controller);
 		}
@@ -51,22 +53,21 @@ public class GameInstance {
 					remoteClient.setController(serverControllerStub);
 					model.attachStub(rmiWaitingConnections.get(rmiPlayerName));
 				} catch (RemoteException e) {
-					System.out.println("CCCCC");
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach remote RMI client.", e);
 				}
 			}
 		}
 		List<String> playersName = new ArrayList<>();
 		playersName.addAll(socketPlayersName);
 		playersName.addAll(rmiPlayersName);
-		//Collections.shuffle(playersName);
+		//Collections.shuffle(playersName); TODO remove the comment slashes
 		model.setUpModel(playersName, new PlayerResumeHandler(socketViews));
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}
-		//TODO sendinfomessage ai rmiclients per avvisarli che il game è partito
 	}
 	
-	boolean existsPlayerView(Connection c) {
+	boolean existsSocketPlayerView(Connection c) {
 		for(SocketView view : socketViews) {
 			if(view.getConnection() == c) {
 				return true;
@@ -77,6 +78,10 @@ public class GameInstance {
 
 	void detach(View view) {
 		model.detach(view);
+	}
+
+	void sendRMIMessage(String message) {
+		model.sendRMIInfoMessage(message);
 	}
 
 }

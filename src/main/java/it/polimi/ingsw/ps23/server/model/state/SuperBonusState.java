@@ -15,6 +15,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class SuperBonusState implements State {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6033290786328005099L;
 	private TurnHandler turnHandler;
 	private List<Bonus> superBonus;
 	private Player currentPlayer;

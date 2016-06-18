@@ -12,6 +12,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8070870675842800922L;
 	private HandDeck availableCards;
 	private Map<String, City> citiesMap;
 	

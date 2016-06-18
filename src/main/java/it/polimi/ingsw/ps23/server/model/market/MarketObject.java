@@ -1,12 +1,17 @@
 package it.polimi.ingsw.ps23.server.model.market;
 
+import java.io.Serializable;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class MarketObject {
+public class MarketObject implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7572250712520487859L;
 	private Player player;
 	private List<Card> permissionCards;
 	private List<Card> politicCards;

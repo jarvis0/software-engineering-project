@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import it.polimi.ingsw.ps23.server.model.NoCapitalException;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
@@ -48,7 +47,7 @@ public class Initialization {
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playerSet;
 	
-	public Initialization(List<String> playersName) throws NoCapitalException {
+	public Initialization(List<String> playersName) {
 		loadPoliticDeck();
 		loadCouncillors();
 		loadMap();
@@ -154,7 +153,7 @@ public class Initialization {
 		gameMap = new GameMap(citiesMap, citiesGraph, groupRegionalCities, groupColoredCities);
 	}
 	
-	private void createKing() throws NoCapitalException {
+	private void createKing() {
 		Map<String, City> cities = gameMap.getCitiesMap();		
 		Set<Entry<String, City>> citiesMapEntrySet = cities.entrySet();
 		for(Entry<String, City> city : citiesMapEntrySet) {
@@ -164,7 +163,6 @@ public class Initialization {
 				return;
 			}
 		}
-		throw new NoCapitalException();
 	}
 	
 	private void loadKingTiles() {

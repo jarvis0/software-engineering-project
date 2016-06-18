@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.initialization.Initialization;
@@ -13,19 +14,23 @@ import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
-public class Game {
+public class Game implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9200411232887252524L;
 	private Deck politicDeck;
 	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTileSet kingTiles;
+	private transient KingTileSet kingTiles; //TODO cambiare quando si inviano i kingtile
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playersSet;
 	private Player currentPlayer;
 	private Market currentMarket;
 
-	public Game(List<String> playersName) throws NoCapitalException {
+	public Game(List<String> playersName) {
 		Initialization init = new Initialization(playersName);
 		politicDeck = init.getPoliticDeck();
 		freeCouncillors = init.getFreeCouncillors();

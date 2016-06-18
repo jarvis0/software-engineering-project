@@ -1,12 +1,17 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
 
-public abstract class HandDeck {
+public abstract class HandDeck implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1199458593907360821L;
 	private List<Card> cards;
 
 	protected HandDeck() {

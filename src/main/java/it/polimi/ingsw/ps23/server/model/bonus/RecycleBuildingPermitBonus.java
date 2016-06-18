@@ -11,6 +11,10 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 384058475289488324L;
 	private static final int  VALUE_POSITION = 0;
 
 	public RecycleBuildingPermitBonus(String name) {

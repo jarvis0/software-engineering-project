@@ -2,12 +2,10 @@ package it.polimi.ingsw.ps23;
 
 import org.junit.Ignore;
 
-import it.polimi.ingsw.ps23.server.model.NoCapitalException;
-
 public class EndGameTest {
 
 	@Ignore
-	public void test() throws NoCapitalException {
+	public void test() {
 		/*List<String> players = new ArrayList<>();
 		players.add("Player 1");
 		players.add("Player 2");

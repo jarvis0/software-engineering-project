@@ -11,6 +11,10 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
 public class PoliticHandDeck extends HandDeck {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5573053817139705040L;
 	private static final String MULTI = "multi";
 
 	public PoliticHandDeck(List<Card> politicHandCards) {

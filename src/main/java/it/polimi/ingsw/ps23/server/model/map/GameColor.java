@@ -9,7 +9,7 @@ public class GameColor implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -7625811392414498777L;
-	private Color color;
+	private Color color;//TODO maybe useless
 	private String colorName;
 	
 	public GameColor(String colorName, String colorHex) {

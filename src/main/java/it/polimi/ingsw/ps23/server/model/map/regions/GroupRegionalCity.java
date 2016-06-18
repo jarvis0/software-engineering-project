@@ -10,12 +10,17 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 
 public class GroupRegionalCity extends Region {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -937978927421641632L;
+
 	private static final int CARDS_NUMBER_UP = 2;
 	
 	private Council council;
 	private Deck permissionDeckDown;
 	private Deck permissionDeckUp;
-	private Map<String, List<String>> citiesConnections;
+	private Map<String, List<String>> citiesConnections; //TODO sonar vuole che sia serializzabile ma lo è già
 	
 	public GroupRegionalCity(String name, Bonus bonus, Map<String, List<String>> citiesConnections) {
 		super(name, bonus);

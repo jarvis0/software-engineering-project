@@ -6,6 +6,10 @@ import it.polimi.ingsw.ps23.server.model.map.GameColor;
 
 public class NormalCity extends City {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1228258945749359973L;
 	private RewardToken rewardToken;
 	
 	public NormalCity(String name, GameColor color, RewardToken rewardToken) { 

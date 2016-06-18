@@ -11,6 +11,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class ChangePermitsTileState extends ActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6241571475175211290L;
 	private Map<String, Deck> permitsMap;
 
 	ChangePermitsTileState(String name) {

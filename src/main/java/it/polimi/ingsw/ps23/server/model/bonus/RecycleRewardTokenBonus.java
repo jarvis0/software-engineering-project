@@ -10,6 +10,10 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7318128168046149733L;
 	private static final int VALUE_POSITION = 0;
 	
 	public RecycleRewardTokenBonus(String name) {

@@ -7,6 +7,11 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class EngageAnAssistantState extends ActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -93833003270086175L;
+
 	EngageAnAssistantState(String name) {
 		super(name);
 	}

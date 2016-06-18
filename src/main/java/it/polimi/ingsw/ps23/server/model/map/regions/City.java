@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.map.regions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,12 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class City {
+public class City implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4628045111105663222L;
 	private String name;
 	private GameColor color;
 	private List<Player> emporiumsList;

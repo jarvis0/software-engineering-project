@@ -8,6 +8,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class AssistantToElectCouncillorState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3158661826594339779L;
 	private State electCouncillorState;
 	
 	AssistantToElectCouncillorState(String name) {

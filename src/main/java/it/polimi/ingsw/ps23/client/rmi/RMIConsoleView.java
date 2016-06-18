@@ -30,6 +30,8 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMIConsoleView extends RMIView {
 
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
+	
 	private Scanner scanner;
 	private PrintStream output;
 	private String clientName;
@@ -37,12 +39,12 @@ class RMIConsoleView extends RMIView {
 	private boolean endGame;
 	private Logger logger;
 	
-	RMIConsoleView(RMIClient client) {
+	RMIConsoleView(RMIClient client, String playerName) {
 		super(client);
 		endGame = false;
 		scanner = new Scanner(System.in);
-		output = new PrintStream(System.out);
-		//TODO client name
+		output = new PrintStream(System.out, true);
+		clientName = playerName;
 		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
@@ -54,7 +56,7 @@ class RMIConsoleView extends RMIView {
 				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
 				Thread.currentThread().interrupt();
 			}
-		} while (!(state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState));
+		} while(!(state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState));
 	}
 
 	@Override
@@ -64,19 +66,20 @@ class RMIConsoleView extends RMIView {
 		if(player.getName().equals(clientName)) {
 			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
+				getControllerInterface().wakeUpServer(StateCache.getAction(scanner.nextLine().toLowerCase()));
+			} catch(NullPointerException e) {
+				logger.log(Level.SEVERE, "Cannot find the action.", e);
 				try {
-					getControllerInterface().wakeUpServer(StateCache.getAction(scanner.nextLine().toLowerCase()));
-				}
-				catch(NullPointerException e) {
-					logger.log(Level.SEVERE, "Cannot create the action.", e);
 					getControllerInterface().wakeUpServer();
+				} catch (RemoteException e1) {
+					logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 				}
-			} catch(RemoteException e) {
-				logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			} catch (RemoteException e) {
+				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
 		else {
-			output.println("It's player " + player.getName() + " turn.\n");
+			output.println("It's player " + player.getName() + " turn.");
 		}
 	}
 
@@ -89,7 +92,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -111,7 +114,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncil, removedCards, chosenCard));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -124,7 +127,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCouncillor, chosenBalcony));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 	
@@ -133,7 +136,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}
@@ -143,7 +146,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 
@@ -154,7 +157,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenRegion));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}	
@@ -175,7 +178,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(removedCards, arrivalCity));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}		
 	}
 
@@ -188,7 +191,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createAction(chosenCity, chosenCard));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}
@@ -226,7 +229,7 @@ class RMIConsoleView extends RMIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (RemoteException e) {
-				logger.log(Level.SEVERE, "Cannot reach remote server", e);
+				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
 	}
@@ -247,7 +250,7 @@ class RMIConsoleView extends RMIView {
 				}
 			}
 		} catch(RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 	}
 
@@ -282,7 +285,7 @@ class RMIConsoleView extends RMIView {
 		try {
 			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver(selectedBonuses));
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "Cannot reach remote server", e);
+			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 	}
 
@@ -291,6 +294,12 @@ class RMIConsoleView extends RMIView {
 		output.println(currentState.getWinner());
 		endGame = true;
 	}
+
+	@Override
+	public synchronized void update(State state) {
+		this.state = state;
+		notifyAll();
+	}
 	
 	@Override
 	public synchronized void run() {
@@ -298,12 +307,6 @@ class RMIConsoleView extends RMIView {
 			pause();
 			state.acceptView(this);
 		} while(!endGame);
-	}
-
-	@Override
-	public synchronized void update(State state) {
-		this.state = state;
-		notifyAll();
 	}
 
 }

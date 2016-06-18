@@ -10,6 +10,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class EndGameState implements State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8226148165092467541L;
 	private List<Player> players;
 
 	public String getWinner() {

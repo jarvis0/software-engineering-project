@@ -1,10 +1,15 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayersSet {
+public class PlayersSet implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2043417363819650294L;
 	private List<Player> players;
 
 	public PlayersSet() {

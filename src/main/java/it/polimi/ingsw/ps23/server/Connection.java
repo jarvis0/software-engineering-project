@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
-import it.polimi.ingsw.ps23.server.view.View;
+import it.polimi.ingsw.ps23.server.view.SocketView;
 
 public class Connection implements Runnable {
 	
@@ -22,7 +22,7 @@ public class Connection implements Runnable {
 
 	private boolean started;
 
-	private View view;
+	private SocketView socketView;
 	
 	private Logger logger;
 	
@@ -65,7 +65,7 @@ public class Connection implements Runnable {
 	void close() {
 		closeConnection();
 		try {
-			server.deregisterConnection(this);
+			server.deregisterSocketConnection(this);
 		} catch (ViewNotFoundException e) {
 			logger.log(Level.SEVERE, "Cannot find disconnecting player view.", e);
 		}
@@ -97,19 +97,15 @@ public class Connection implements Runnable {
 		}
 	}
 
-	void setView(View view) {
-		this.view = view;
+	void setSocketView(SocketView socketView) {
+		this.socketView = socketView;
 	}
-	
-	void endThread() {
-		Thread.currentThread().interrupt();
-	}
-	
+
 	@Override
 	public void run() {
 		server.joinToWaitingList(this, receive());
 		initialization();
-		view.run();
+		socketView.run();
 		close();
 	}
 
