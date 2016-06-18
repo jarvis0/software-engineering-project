@@ -1,9 +1,10 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-abstract class ActionState implements State, Cloneable {
+abstract class ActionState implements State, Cloneable, Serializable {
 
 	/**
 	 * 

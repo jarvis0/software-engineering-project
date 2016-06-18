@@ -27,6 +27,14 @@ class CitiesFactory {
 		citiesMap = new HashMap<>();
 	}
 	
+	List<City> getCities() {
+		return citiesList;
+	}
+
+	Map<String, City> getHashMap() {
+		return citiesMap;
+	}
+
 	void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
 		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens);
 		for(String[] rawCity : rawCities) {
@@ -39,14 +47,6 @@ class CitiesFactory {
 				citiesMap.put(citiesList.get(citiesList.size() - 1).getName(), citiesList.get(citiesList.size() - 1));
 			}
 		}
-	}
-	
-	List<City> getCities() {
-		return citiesList;
-	}
-
-	Map<String, City> getHashMap() {
-		return citiesMap;
 	}
 
 }

@@ -11,17 +11,19 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 
 public class ElectCouncillor implements Action {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8467179646741897111L;
+
 	private static final int EARNED_COINS = 4;
 	
 	private String councillor;
 	private Council council;
-	
-	private Logger logger;
 		
 	public ElectCouncillor(String councillor, Council council) {
 		this.councillor = councillor;
 		this.council = council;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 
 	@Override
@@ -31,8 +33,9 @@ public class ElectCouncillor implements Action {
 			game.getCurrentPlayer().updateCoins(EARNED_COINS);
 		} catch (InsufficientResourcesException e) {
 			//TODO qua in realtà non dovrebbe lanciar l'eccezione
-			logger.log(Level.SEVERE, "Insufficient current player coins.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player coins.", e);
 		}
 		turnHandler.useMainAction();
 	}
+	
 }

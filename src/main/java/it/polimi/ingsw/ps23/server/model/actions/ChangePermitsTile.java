@@ -11,14 +11,15 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
 public class ChangePermitsTile implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4131871312323174768L;
 	private static final int ASSISTANTS_COST = -1;
 	private String regionName;
 	
-	private Logger logger;
-	
 	public ChangePermitsTile(String regionName) {
 		this.regionName = regionName;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class ChangePermitsTile implements Action {
 		 try {
 			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficient current player assistants.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player assistants.", e);
 		}
 		((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();
 		turnHandler.useQuickAction();

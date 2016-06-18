@@ -13,12 +13,15 @@ public class GameInstancesSet {
 
 	private List<GameInstance> gameInstances;
 	
-	GameInstancesSet() {
+	private int timeout;
+	
+	GameInstancesSet(int timeout) {
 		gameInstances = new ArrayList<>();
+		this.timeout = timeout;
 	}
 
 	public void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
-		GameInstance gameInstance = new GameInstance();
+		GameInstance gameInstance = new GameInstance(timeout);
 		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}

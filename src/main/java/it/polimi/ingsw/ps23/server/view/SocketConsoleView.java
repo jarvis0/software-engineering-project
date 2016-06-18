@@ -23,7 +23,6 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketConsoleView extends SocketView {
@@ -96,7 +95,7 @@ public class SocketConsoleView extends SocketView {
 		if(player.getName().equals(clientName)) {
 			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				wakeUp(StateCache.getAction(receive().toLowerCase()));
+				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}
 			catch(NullPointerException e) {
 				logger.log(Level.SEVERE, "Cannot create the action.", e);

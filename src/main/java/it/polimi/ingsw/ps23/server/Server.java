@@ -32,7 +32,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 5;
+	private static final int CONNECTION_TIMEOUT = 150;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
@@ -54,7 +54,7 @@ class Server implements ServerInterface {
 
 	private Server() {
 		output = new PrintStream(System.out, true);
-		gameInstances = new GameInstancesSet();
+		gameInstances = new GameInstancesSet(CONNECTION_TIMEOUT);
 		socketActive = true;
 		executor = Executors.newCachedThreadPool();
 		socketAllConnections = new ArrayList<>();

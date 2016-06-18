@@ -25,7 +25,6 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMIConsoleView extends RMIView {
@@ -37,10 +36,12 @@ class RMIConsoleView extends RMIView {
 	private String clientName;
 	private State state;
 	private boolean endGame;
+	private boolean waiting;
 	private Logger logger;
 	
 	RMIConsoleView(RMIClient client, String playerName) {
 		super(client);
+		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
@@ -49,14 +50,12 @@ class RMIConsoleView extends RMIView {
 	}
 	
 	private synchronized void pause() {
-		do {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-				Thread.currentThread().interrupt();
-			}
-		} while(!(state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState));
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	@Override
@@ -66,7 +65,7 @@ class RMIConsoleView extends RMIView {
 		if(player.getName().equals(clientName)) {
 			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				getControllerInterface().wakeUpServer(StateCache.getAction(scanner.nextLine().toLowerCase()));
+				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
 			} catch(NullPointerException e) {
 				logger.log(Level.SEVERE, "Cannot find the action.", e);
 				try {
@@ -80,6 +79,8 @@ class RMIConsoleView extends RMIView {
 		}
 		else {
 			output.println("It's player " + player.getName() + " turn.");
+			waiting = true;
+			pause();
 		}
 	}
 
@@ -232,14 +233,18 @@ class RMIConsoleView extends RMIView {
 				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		}
+		else {
+			waiting = true;
+			pause();
+		}
 	}
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		try {
-			if(player.equals(clientName)) {
+		if(player.equals(clientName)) {
+			try {
 				if(currentState.canBuy()) {
 					output.println("Avaible offers: " + currentState.getAvaiableOffers());
 					getControllerInterface().wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
@@ -248,14 +253,18 @@ class RMIConsoleView extends RMIView {
 					output.println("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
+			} catch(RemoteException e) {
+				logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
-		} catch(RemoteException e) {
-			logger.log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+		}
+		else {
+			waiting = true;
+			pause();
 		}
 	}
 
 	@Override
-	public void visit(SuperBonusState currentState) {
+	public void visit(SuperBonusState currentState) {//TODO gestione turni???
 		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
 		while(currentState.hasNext()) {
 			Bonus currentBonus = currentState.getCurrentBonus();
@@ -294,17 +303,30 @@ class RMIConsoleView extends RMIView {
 		output.println(currentState.getWinner());
 		endGame = true;
 	}
-
-	@Override
-	public synchronized void update(State state) {
-		this.state = state;
+	
+	private synchronized void resume() {
 		notifyAll();
+	}
+
+	private boolean waitResumeCondition() {
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}
 	
 	@Override
+	public void update(State state) {
+		this.state = state;
+		if(waitResumeCondition() && waiting) {
+			resume();
+			waiting = false;
+		}
+	}
+
+	@Override
 	public synchronized void run() {
+		waiting = true;
+		pause();
+		waiting = false;
 		do {
-			pause();
 			state.acceptView(this);
 		} while(!endGame);
 	}

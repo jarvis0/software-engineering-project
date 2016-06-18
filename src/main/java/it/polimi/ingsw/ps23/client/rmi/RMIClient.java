@@ -41,7 +41,6 @@ class RMIClient implements ClientInterface {
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name? ");
 		String playerName = scanner.next();
-		scanner.close();
 		try {
 			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);

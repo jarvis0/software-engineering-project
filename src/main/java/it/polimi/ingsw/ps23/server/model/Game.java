@@ -13,6 +13,7 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.state.StateCache;
 
 public class Game implements Serializable {
 
@@ -29,6 +30,7 @@ public class Game implements Serializable {
 	private PlayersSet playersSet;
 	private Player currentPlayer;
 	private Market currentMarket;
+	private StateCache stateCache;
 
 	public Game(List<String> playersName) {
 		Initialization init = new Initialization(playersName);
@@ -39,6 +41,7 @@ public class Game implements Serializable {
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
+		stateCache = new StateCache();
 	}
 	
 	public GameMap getGameMap() {
@@ -77,6 +80,10 @@ public class Game implements Serializable {
 		return nobilityTrack;
 	}
 
+	public StateCache getStateCache() {
+		return stateCache;
+	}
+	
 	public void createNewMarket() {
 		currentMarket = new Market(playersSet);
 	}

@@ -16,16 +16,19 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class Model extends ModelObservable {
-	
+
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
 	private PlayerResumeHandler playerResumeHandler;
+	
+	public Model(int timeout) {
+		super(timeout);
+	}
 
 	private void newGame(List<String> playersName) {
 		game = new Game(playersName);
@@ -37,7 +40,6 @@ public class Model extends ModelObservable {
 		setStartingPlayerIndex();
 		this.playerResumeHandler = playerResumeHandler;
 		newGame(playersName);
-		StateCache.loadCache();
 		setStartTurnState();
 	}
 	

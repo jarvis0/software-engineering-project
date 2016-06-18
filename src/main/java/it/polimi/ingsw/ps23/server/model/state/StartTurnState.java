@@ -21,6 +21,7 @@ public class StartTurnState implements State {
 	private PlayersSet gamePlayersSet;
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
+	private StateCache stateCache;
 	private boolean finalTurn;
 	
 	public StartTurnState(TurnHandler turnHandler) {
@@ -42,14 +43,19 @@ public class StartTurnState implements State {
 		return avaiableAction;
 	}
 
+	public StateCache getStateCache() {
+		return stateCache;
+	}
+	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
 		currentPlayer = game.getCurrentPlayer();
-		this.gameMap = game.getGameMap();
-		this.gamePlayersSet = game.getGamePlayersSet();
-		this.kingCouncil = game.getKing().getCouncil();
-		this.nobilityTrack = game.getNobilityTrack();
+		gameMap = game.getGameMap();
+		gamePlayersSet = game.getGamePlayersSet();
+		kingCouncil = game.getKing().getCouncil();
+		nobilityTrack = game.getNobilityTrack();
+		stateCache = game.getStateCache();
 		finalTurn = false;
 		for(Player player : gamePlayersSet.getPlayers()) {
 			if(player.hasFinished()) {

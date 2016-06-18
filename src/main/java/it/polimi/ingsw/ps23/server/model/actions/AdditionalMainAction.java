@@ -10,17 +10,19 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class AdditionalMainAction implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5396506198911022286L;
+
 	private static final int ASSISTANTS_COST = -3;
-	
-	private Logger logger;
 	
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
-		logger = Logger.getLogger(this.getClass().getName());
 		try {
 			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficient current player assistants.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player assistants.", e);
 		}
 		turnHandler.addMainAction();
 		turnHandler.useQuickAction();

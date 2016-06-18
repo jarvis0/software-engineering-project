@@ -22,8 +22,8 @@ public class GameInstance {
 	private List<SocketView> socketViews;
 	private ServerController controller;
 	
-	GameInstance() {
-		model = new Model();
+	GameInstance(int timeout) {
+		model = new Model(timeout);
 		socketViews = new ArrayList<>();
 		controller = new ServerController(model);
 	}

@@ -13,17 +13,18 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 public class AcquireBusinessPermitTile implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 333874053997816119L;
 	private List<String> removedPoliticCards;
 	private Region chosenRegion;
 	private int chosenPermissionCard;
-	
-	private Logger logger;
 	
 	public AcquireBusinessPermitTile(List<String> removedPoliticCards, Region chosenRegion, int chosenPermissionCard) {
 		this.removedPoliticCards = removedPoliticCards;
 		this.chosenRegion = chosenRegion;
 		this.chosenPermissionCard = chosenPermissionCard;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	@Override
@@ -32,7 +33,7 @@ public class AcquireBusinessPermitTile implements Action {
 		try {
 			game.getCurrentPlayer().updateCoins(cost);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficient current player coins.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player coins.", e);
 		}
 		game.getCurrentPlayer().pickPermitCard(game, turnHandler, chosenRegion, chosenPermissionCard);
 		turnHandler.useMainAction();

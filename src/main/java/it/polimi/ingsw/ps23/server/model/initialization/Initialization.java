@@ -146,7 +146,6 @@ public class Initialization {
 		CitiesGraph citiesGraph = citiesGraphFactory.getCitiesGraph();
 		Map<String, List<String>> citiesConnections = citiesGraphFactory.getCitiesConnections();
 		List<Region> groupRegionalCities = loadRegions(citiesMap, citiesConnections);
-		//hashmap regions - citiesList -> hashmap coloredRegions
 		regionalCouncils(groupRegionalCities);
 		regionalPermissionDecks(citiesMap, groupRegionalCities);
 		List<Region> groupColoredCities = loadColoredRegions(citiesList);
