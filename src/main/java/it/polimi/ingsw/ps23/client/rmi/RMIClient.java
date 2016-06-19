@@ -23,7 +23,7 @@ class RMIClient implements ClientInterface {
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	
-	private PrintStream output;	
+	private PrintStream output;
 	
 	private RMIView rmiView;
 

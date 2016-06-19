@@ -13,6 +13,7 @@ import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
+
 //TODO va in questo package?
 public class ServerController extends Controller implements ServerControllerInterface {
 
@@ -25,11 +26,6 @@ public class ServerController extends Controller implements ServerControllerInte
 	@Override
 	public void wakeUpServer() {
 		update();
-	}
-
-	@Override
-	public void wakeUpServer(String offlinePlayer) {
-		update(offlinePlayer);
 	}
 
 	@Override

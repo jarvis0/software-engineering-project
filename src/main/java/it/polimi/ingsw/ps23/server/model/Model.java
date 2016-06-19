@@ -206,7 +206,7 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
-	public void setOfflinePlayer(String offlinePlayer) {//TODO unused parameter
+	public void setOfflinePlayer(String offlinePlayer) {//TODO unused parameter - serve solo per overloading
 		//if(game.getGamePlayersSet().isAnyoneOnline()) {
 			State currentState = context.getState();
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
@@ -225,6 +225,10 @@ public class Model extends ModelObservable {
 		//else {
 			//TODO endgame?
 		//}
+	}
+	
+	public void setOnlinePlayer(String player) {
+		//game.getGamePlayersSet().;
 	}
 	
 }

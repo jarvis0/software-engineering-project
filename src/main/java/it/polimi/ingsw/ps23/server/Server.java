@@ -89,6 +89,14 @@ class Server implements ServerInterface {
 		}
 	}
 
+	private void infoMessage(ClientInterface client, String message) {
+		try {
+			client.infoMessage(message);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot register the new client to the registry.", e);
+		}
+	}
+	
 	@Override
 	public void registerRMIClient(String name, ClientInterface client) {
 		output.println("New RMI client connection received.");
@@ -102,14 +110,6 @@ class Server implements ServerInterface {
 		startCountdownFromRMI();
 	}
 
-	private void infoMessage(ClientInterface client, String message) {
-		try {
-			client.infoMessage(message);
-		} catch (RemoteException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot register the new client to the registry.", e);
-		}
-	}
-	
 	private void startRMI() {
 		try {
 			Registry registry = LocateRegistry.createRegistry(RMI_PORT_NUMBER);
@@ -122,16 +122,15 @@ class Server implements ServerInterface {
 		}
 	}
 
-	//TODO 2 giocatori minimo altrimenti deve terminare il game
-	synchronized void deregisterSocketConnection(Connection c) throws ViewNotFoundException {
-		String disconnectedPlayer = gameInstances.disconnectSocketPlayer(c);
+	synchronized void deregisterSocketConnection(Connection connection) throws ViewNotFoundException {
+		gameInstances.disconnectSocketPlayer(connection);
 		Iterator<String> iterator = socketWaitingConnections.keySet().iterator();
 		while(iterator.hasNext()) {
-			if(socketWaitingConnections.get(iterator.next()) == c){
+			if(socketWaitingConnections.get(iterator.next()) == connection){
 				iterator.remove();
 			}
-		}
-		output.println("The player " + disconnectedPlayer + " has been disconnected.");
+		}//TODO questo blocco serve solo se un socketPlayer si connette prima di inserire il nome
+		//output.println("The player " + disconnectedPlayer + " has been disconnected.");
 	}
 
 	synchronized void setSocketTimerEnd() {
@@ -165,10 +164,10 @@ class Server implements ServerInterface {
 		}
 	}
 
-	void joinToWaitingList(Connection c, String name) {
+	void joinToWaitingList(String name, Connection connection) {
 		output.println("Player " + name + " has been added to the waiting list.");
-		socketWaitingConnections.put(name, c);
-		//TODO contorllare che questo player vuole rientrare in una partita precedentemente abbandonata
+		gameInstances.checkIfFormerPlayer(name, connection);
+		socketWaitingConnections.put(name, connection);
 		startCountdownFromSocket();
 	}
 	

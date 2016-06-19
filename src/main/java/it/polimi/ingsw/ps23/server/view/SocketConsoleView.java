@@ -68,15 +68,11 @@ public class SocketConsoleView extends SocketView {
 	}
 	
 	private synchronized void pause() {
-		boolean loop = true;
-		while(loop) {
-			try {
-				wait();
-				loop = false;
-			} catch (InterruptedException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-				Thread.currentThread().interrupt();
-			}
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
 		}
 	}
 	
@@ -87,7 +83,8 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void setPlayerOffline() {
-		wakeUp(clientName);
+		connection.close();
+		Thread.currentThread().interrupt();
 	}
 
 	@Override

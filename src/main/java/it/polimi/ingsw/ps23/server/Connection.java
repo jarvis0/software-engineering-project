@@ -59,7 +59,7 @@ public class Connection implements Runnable {
 		}
 	}
 	
-	void close() {
+	public void close() {
 		closeConnection();
 		try {
 			server.deregisterSocketConnection(this);
@@ -96,7 +96,7 @@ public class Connection implements Runnable {
 
 	@Override
 	public void run() {
-		server.joinToWaitingList(this, receive());
+		server.joinToWaitingList(receive(), this);
 		initialization();
 		socketView.run();
 		close();

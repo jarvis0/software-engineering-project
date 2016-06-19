@@ -23,7 +23,6 @@ public class ModelObservable {
 	private String currentPlayer;
 	private GameInstance gameInstance;
 	private Timer timer;
-	
 	private int timeout;
 	
 	public ModelObservable() {
@@ -69,22 +68,22 @@ public class ModelObservable {
 	private void notifyRMIObservers(State state) {
 		Set<Entry<String, ClientInterface>> rmiPlayers = rmiObservers.entrySet();
 		for(Entry<String, ClientInterface> rmiPlayer : rmiPlayers) {
-			String rmiClientName = rmiPlayer.getKey();
-			ClientInterface rmiClient = rmiPlayer.getValue();
-			if(state instanceof StartTurnState && ((StartTurnState) state).getCurrentPlayer().getName() == rmiPlayer.getKey()) {
-				currentPlayer = rmiClientName;
+			if(rmiPlayer.getKey() == currentPlayer) {
 				timer = new Timer();
 				timer.schedule(new RMITimeoutTask(gameInstance, timer), timeout * 1000L);
 			}
 			try {
-				rmiClient.changeState(state);
+				rmiPlayer.getValue().changeState(state);
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach the RMI remote client.", e);
 			}
 		}
 	}
 	
-	private void notifyAllObservers(State state) {
+	private void notifyAllObservers(State state) {	
+		if(state instanceof StartTurnState) {//TODO verificare questa condizione
+			currentPlayer = ((StartTurnState) state).getCurrentPlayer().getName();
+		}
 		for(ViewObserver observer : observers) {
 			observer.update(state);
 		}
