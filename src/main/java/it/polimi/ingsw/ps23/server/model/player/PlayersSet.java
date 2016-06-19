@@ -25,6 +25,15 @@ public class PlayersSet implements Serializable {
 		return players;
 	}
 	
+	public boolean isAnyoneOnline() {
+		for(Player player : players) {
+			if(player.isOnline()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}

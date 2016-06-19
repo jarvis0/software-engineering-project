@@ -21,13 +21,21 @@ public class GameInstance {
 	private Model model;
 	private List<SocketView> socketViews;
 	private ServerController controller;
+	private List<String> playersName;
 	
-	GameInstance(int timeout) {
-		model = new Model(timeout);
+	private int rmiTimeout;
+	
+	GameInstance() {
+		model = new Model();
 		socketViews = new ArrayList<>();
 		controller = new ServerController(model);
+		playersName = new ArrayList<>();
 	}
 
+	void setRMITimeout(int rmiTimeout) {
+		this.rmiTimeout = rmiTimeout;
+	}
+	
 	List<SocketView> getSocketViews() {
 		return socketViews;
 	}
@@ -45,19 +53,19 @@ public class GameInstance {
 		}
 		List<String> rmiPlayersName = new ArrayList<>(rmiWaitingConnections.keySet());
 		if(!rmiPlayersName.isEmpty()) {
+			model.setUpRMI(this, rmiTimeout);
 			ServerControllerInterface serverControllerStub = controller.setStub();
 			for(int i = 0; i < rmiPlayersName.size(); i++) {
 				String rmiPlayerName = rmiPlayersName.get(i);
 				try {
 					ClientInterface remoteClient = rmiWaitingConnections.get(rmiPlayerName);
 					remoteClient.setController(serverControllerStub);
-					model.attachStub(rmiWaitingConnections.get(rmiPlayerName));
+					model.attachRMIClient(rmiPlayerName, rmiWaitingConnections.get(rmiPlayerName));
 				} catch (RemoteException e) {
 					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach remote RMI client.", e);
 				}
 			}
 		}
-		List<String> playersName = new ArrayList<>();
 		playersName.addAll(socketPlayersName);
 		playersName.addAll(rmiPlayersName);
 		//Collections.shuffle(playersName); TODO remove the comment slashes
@@ -76,12 +84,19 @@ public class GameInstance {
 		return false;
 	}
 
-	void detach(View view) {
+	void socketDetach(View view) {
 		model.detach(view);
 	}
 
 	void sendRMIMessage(String message) {
 		model.sendRMIInfoMessage(message);
+	}
+
+	public void disconnectRMIClient() {
+		String currentPlayerName = model.getCurrentPlayer();
+		model.sendRMIInfoMessage("Player " + currentPlayerName + " has been disconnected from the game due to connection timeout.");
+		model.detachRMIClient();
+		model.setOfflinePlayer(currentPlayerName);
 	}
 
 }

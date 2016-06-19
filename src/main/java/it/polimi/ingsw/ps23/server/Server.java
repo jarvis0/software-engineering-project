@@ -9,11 +9,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
@@ -28,21 +26,18 @@ class Server implements ServerInterface {
 	
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "COFRegistry";
+	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 150;
+	private static final int CONNECTION_TIMEOUT = 7;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
 	
 	private ServerSocket serverSocket;
 
-	private List<Connection> socketAllConnections;
 	private Map<String, Connection> socketWaitingConnections;
-	
-	private List<ClientInterface> rmiAllConnections;
 	private Map<String, ClientInterface> rmiWaitingConnections;
 	
 	private boolean launchingGame;
@@ -55,11 +50,9 @@ class Server implements ServerInterface {
 	private Server() {
 		output = new PrintStream(System.out, true);
 		gameInstances = new GameInstancesSet(CONNECTION_TIMEOUT);
-		socketActive = true;
+		socketActive = false;
 		executor = Executors.newCachedThreadPool();
-		socketAllConnections = new ArrayList<>();
 		socketWaitingConnections = new HashMap<>();
-		rmiAllConnections = new ArrayList<>();
 		rmiWaitingConnections = new HashMap<>();
 		launchingGame = false;
 	}
@@ -99,7 +92,6 @@ class Server implements ServerInterface {
 	@Override
 	public void registerRMIClient(String name, ClientInterface client) {
 		output.println("New RMI client connection received.");
-		rmiAllConnections.add(client);
 		rmiWaitingConnections.put(name,  client);
 		output.println("Player " + name + " has been added to the waiting list.");
 		String message = "Connection established at " + new Date().toString() + "\nWaiting others players to connect...\n";
@@ -133,7 +125,6 @@ class Server implements ServerInterface {
 	//TODO 2 giocatori minimo altrimenti deve terminare il game
 	synchronized void deregisterSocketConnection(Connection c) throws ViewNotFoundException {
 		String disconnectedPlayer = gameInstances.disconnectSocketPlayer(c);
-		socketAllConnections.remove(c);
 		Iterator<String> iterator = socketWaitingConnections.keySet().iterator();
 		while(iterator.hasNext()) {
 			if(socketWaitingConnections.get(iterator.next()) == c){
@@ -186,7 +177,6 @@ class Server implements ServerInterface {
 			Socket newSocket = serverSocket.accept();
 			output.println("New socket client connection received.");
 			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
-			socketAllConnections.add(connection);
 			String message = "Connection established at " + new Date().toString();
 			if(launchingGame) {
 				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
@@ -209,6 +199,7 @@ class Server implements ServerInterface {
 	private void startSocket() {
 		try {
 			serverSocket = new ServerSocket(SOCKET_PORT_NUMBER);
+			socketActive = true;
 		} catch (IOException e) {
 			socketActive = false;
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
@@ -221,8 +212,7 @@ class Server implements ServerInterface {
 	}
 
 	public static void main(String[] args) {
-		Server server;
-		server = new Server();
+		Server server = new Server();
 		server.startRMI();
 		server.startSocket();
 	}

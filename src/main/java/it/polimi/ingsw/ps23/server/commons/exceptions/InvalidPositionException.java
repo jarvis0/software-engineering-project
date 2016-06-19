@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.server.model;
+package it.polimi.ingsw.ps23.server.commons.exceptions;
 
 public class InvalidPositionException extends Exception {
 

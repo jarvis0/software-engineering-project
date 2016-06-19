@@ -26,10 +26,6 @@ public class Model extends ModelObservable {
 	private int currentPlayerIndex;
 	private PlayerResumeHandler playerResumeHandler;
 	
-	public Model(int timeout) {
-		super(timeout);
-	}
-
 	private void newGame(List<String> playersName) {
 		game = new Game(playersName);
 		currentPlayerIndex++;
@@ -211,19 +207,24 @@ public class Model extends ModelObservable {
 	}
 
 	public void setOfflinePlayer(String offlinePlayer) {//TODO unused parameter
-		State currentState = context.getState();
-		if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
-			game.getCurrentPlayer().setOnline(false);
-			setPlayerTurn();
-		}
-		else {
-			if(currentState instanceof MarketOfferPhaseState) {
-				chooseNextOfferMarketStep(game.getMarket());
+		//if(game.getGamePlayersSet().isAnyoneOnline()) {
+			State currentState = context.getState();
+			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
+				game.getCurrentPlayer().setOnline(false);
+				setPlayerTurn();
 			}
 			else {
-				chooseNextBuyMarketStep();
+				if(currentState instanceof MarketOfferPhaseState) {
+					chooseNextOfferMarketStep(game.getMarket());
+				}
+				else {
+					chooseNextBuyMarketStep();
+				}
 			}
-		}
+		//}
+		//else {
+			//TODO endgame?
+		//}
 	}
 	
 }

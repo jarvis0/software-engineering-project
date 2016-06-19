@@ -21,9 +21,9 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 class RMIClient implements ClientInterface {
 	
 	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "COFRegistry";
+	private static final String POLICY_NAME = "cofRegistry";
 	
-	private PrintStream output;
+	private PrintStream output;	
 	
 	private RMIView rmiView;
 
@@ -33,14 +33,15 @@ class RMIClient implements ClientInterface {
 		rmiView = new RMIConsoleView(this, playerName);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
+		output = new PrintStream(System.out);
 	}
 
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")//TODO remove this warning
 		Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name? ");
 		String playerName = scanner.next();
+		scanner.close();
 		try {
 			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);

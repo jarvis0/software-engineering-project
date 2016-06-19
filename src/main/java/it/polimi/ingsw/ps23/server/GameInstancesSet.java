@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
-public class GameInstancesSet {
+class GameInstancesSet {
 
 	private List<GameInstance> gameInstances;
 	
@@ -20,8 +20,11 @@ public class GameInstancesSet {
 		this.timeout = timeout;
 	}
 
-	public void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
-		GameInstance gameInstance = new GameInstance(timeout);
+	void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
+		GameInstance gameInstance = new GameInstance();
+		if(!rmiWaitingConnections.isEmpty()) {
+			gameInstance.setRMITimeout(timeout);
+		}
 		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}
@@ -49,17 +52,13 @@ public class GameInstancesSet {
 			SocketView view = loop.next();
 			if(view.getConnection() == c) {
 				disconnectedPlayer = view.getClientName();
-				if(views.size() < 1) {//TODO almeno 2 giocatori
-				}
-				else {
-					view.setPlayerOffline();
-				}
-				gameInstance.detach(view);
+				view.setPlayerOffline();//TODO almeno 2 giocatori
+				gameInstance.socketDetach(view);
 				loop.remove();
 				found = true;
 			}
 		}
-		String message = "The player " + disconnectedPlayer + " has been disconnected.";
+		String message = "The player " + disconnectedPlayer + " has been disconnected due to connection timeout.";
 		for(SocketView view : views) {
 			view.sendNoInput(message);
 		}
