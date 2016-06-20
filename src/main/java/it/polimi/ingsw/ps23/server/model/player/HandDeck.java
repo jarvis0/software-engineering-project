@@ -1,19 +1,24 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
 
-public abstract class HandDeck {
+public abstract class HandDeck implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1199458593907360821L;
 	private List<Card> cards;
 
 	protected HandDeck() {
 		cards = new ArrayList<>();
 	}
 	
-	public void addCard(Card card) {
+	void addCard(Card card) {
 		cards.add(card);
 	}
 	
@@ -24,17 +29,12 @@ public abstract class HandDeck {
 	public int getHandSize() {
 		return cards.size();
 	}
-	
-	@Override
-	public String toString() {
-		return cards.toString();
-	}
 
-	public void removeCard(Card card) {
+	void removeCard(Card card) {
 		 cards.remove(card);
 	}
 
-	public Card getAndRemove(int chosenCard) {
+	Card getAndRemove(int chosenCard) {
 		Card removedCard = cards.get(chosenCard);
 		removeCard(removedCard);
 		return removedCard;
@@ -44,9 +44,9 @@ public abstract class HandDeck {
 		return cards.get(index);
 	}
 
-	public Card get(int chosenCard) {
-		return cards.get(chosenCard);
+	@Override
+	public String toString() {
+		return cards.toString();
 	}
-
 
 }

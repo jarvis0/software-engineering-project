@@ -10,17 +10,20 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class EngageAnAssitant implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 158667005620083255L;
 	private static final int COINS_COST = -3;
 	private static final int EARNED_ASSITANTS = 1;
 	
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
-		Logger logger = Logger.getLogger(this.getClass().getName());
 		try {
 			game.getCurrentPlayer().updateCoins(COINS_COST);
 			game.getCurrentPlayer().updateAssistants(EARNED_ASSITANTS);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficient current player coins.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player coins.", e);
 		}
 		turnHandler.useQuickAction();
 	}

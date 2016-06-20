@@ -11,35 +11,23 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class StartTurnState implements State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6709781155533826821L;
 	private Player currentPlayer;
 	private TurnHandler turnHandler;
 	private GameMap gameMap;
 	private PlayersSet gamePlayersSet;
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
+	private StateCache stateCache;
 	private boolean finalTurn;
 	
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
-	
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		currentPlayer = game.getCurrentPlayer();
-		this.gameMap = game.getGameMap();
-		this.gamePlayersSet = game.getGamePlayersSet();
-		this.kingCouncil = game.getKing().getCouncil();
-		this.nobilityTrack = game.getNobilityTrack();
-		finalTurn = false;
-		for(Player player : gamePlayersSet.getPlayers()) {
-			if(player.hasFinished()) {
-				finalTurn = true;
-				return;
-			}
-		}
-	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -53,6 +41,33 @@ public class StartTurnState implements State {
 			avaiableAction += "\n--Quick Action--\nEngage Assistant\nChange Permit Tile\nAssistant To Elect Councillor\nAdditional Main Action";
 		}
 		return avaiableAction;
+	}
+
+	public StateCache getStateCache() {
+		return stateCache;
+	}
+	
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		currentPlayer = game.getCurrentPlayer();
+		gameMap = game.getGameMap();
+		gamePlayersSet = game.getGamePlayersSet();
+		kingCouncil = game.getKing().getCouncil();
+		nobilityTrack = game.getNobilityTrack();
+		stateCache = game.getStateCache();
+		finalTurn = false;
+		for(Player player : gamePlayersSet.getPlayers()) {
+			if(player.hasFinished()) {
+				finalTurn = true;
+				return;
+			}
+		}
+	}
+	
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
 	}
 	
 	public String getStatus() {
@@ -80,9 +95,4 @@ public class StartTurnState implements State {
 		return print;
 	}
 	
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
-
 }

@@ -11,11 +11,23 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class ChangePermitsTileState extends ActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6241571475175211290L;
 	private Map<String, Deck> permitsMap;
 
-	public ChangePermitsTileState(String name) {
+	ChangePermitsTileState(String name) {
 		super(name);
 		permitsMap = new HashMap<>();
+	}
+
+	public Action createAction(String chosenRegionTile) {
+		return new ChangePermitsTile(chosenRegionTile);
+	}
+	
+	public String getPermitsMap() {
+		return permitsMap.toString();
 	}
 
 	@Override
@@ -27,14 +39,6 @@ public class ChangePermitsTileState extends ActionState {
 	@Override
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);	
-	}
-
-	public Action createAction(String chosenRegionTile) {
-		return new ChangePermitsTile(chosenRegionTile);
-	}
-	
-	public String getPermitsMap() {
-		return permitsMap.toString();
 	}
 
 }

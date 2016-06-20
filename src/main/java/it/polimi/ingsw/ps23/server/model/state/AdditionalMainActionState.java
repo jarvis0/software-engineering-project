@@ -7,8 +7,17 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class AdditionalMainActionState extends ActionState {
 
-	public AdditionalMainActionState(String name) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4576967266256686342L;
+
+	AdditionalMainActionState(String name) {
 		super(name);
+	}
+
+	public Action createAction() {
+		return new AdditionalMainAction();
 	}
 
 	@Override
@@ -21,7 +30,4 @@ public class AdditionalMainActionState extends ActionState {
 		view.visit(this);		
 	}
 	
-	public Action createAction() {
-		return new AdditionalMainAction();
-	}
 }

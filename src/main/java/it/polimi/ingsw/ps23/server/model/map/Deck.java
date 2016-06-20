@@ -1,11 +1,17 @@
 package it.polimi.ingsw.ps23.server.model.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
+public class Deck implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1360173791794831347L;
+
 	private static final int TOP_CARD = 0;
 	
 	private List<Card> cards;

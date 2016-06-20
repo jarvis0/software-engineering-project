@@ -1,13 +1,14 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
@@ -18,8 +19,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 
-public class Player {
+public class Player implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 663214081725066833L;
 	private String name;
 	private int coins;
 	private int assistants;
@@ -29,9 +34,8 @@ public class Player {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
-	private BonusTile bonusTile;
-	
-	private Logger logger;
+	private BonusTile bonusTile; //TODO maybe we have to print also this
+	private boolean online;
 	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
@@ -44,7 +48,39 @@ public class Player {
 		permissionHandDeck = new PermissionHandDeck();
 		permissionUsedHandDeck = new PermissionHandDeck();
 		bonusTile = new BonusTile();
-		logger = Logger.getLogger(this.getClass().getName());
+		online = true;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getCoins() {
+		return coins;
+	}
+	
+	public BuiltEmporiumsSet getEmporiums(){
+		return builtEmporiumsSet;
+	}
+
+	public int getAssistants() {
+		return assistants;
+	}
+	
+	public int getVictoryPoints() {
+		return victoryPoints;
+	}
+
+	public int getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
+	public boolean isOnline() {
+		return online;
 	}
 
 	public void pickCard(Deck politicDeck, int cardsNumber) {
@@ -59,7 +95,7 @@ public class Player {
 	
 	public void updateVictoryPoints(int value) {
 		victoryPoints += value;
-	}	
+	}
 
 	public void updateNobilityPoints(int value) { 
 		nobilityTrackPoints += value;
@@ -88,13 +124,9 @@ public class Player {
 	}
 
 	public String showSecretStatus() {
-		return " " + politicHandDeck.toString();
+		return politicHandDeck.toString();
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
+
 	public HandDeck getPoliticHandDeck() {
 		return politicHandDeck;
 	}
@@ -115,28 +147,8 @@ public class Player {
 			builtEmporiumsSet.addBuiltEmporium(city);
 			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
-			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
-	}
-	
-	public BuiltEmporiumsSet getEmporiums(){
-		return builtEmporiumsSet;
-	}
-	
-	public int getAssistants() {
-		return assistants;
-	}
-	
-	public int getCoins() {
-		return coins;
-	}
-	
-	public int getNobilityTrackPoints() {
-		return nobilityTrackPoints;
-	}
-	
-	public int getVictoryPoints() {
-		return victoryPoints;
 	}
 
 	public void usePermissionCard(int chosenCard) {
@@ -144,30 +156,30 @@ public class Player {
 	}
 	
 	public void soldPoliticCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			politicHandDeck.removeCard(card);
 		}		
 	}
 	
 	public void soldPermissionCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			permissionHandDeck.removeCard(card);
 		}
 	}
 	
 	public void buyPoliticCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			politicHandDeck.addCard(card);
 		}		
 	}
 	
 	public void buyPermissionCards(List<Card> cards) {
-		for (Card card : cards) {
+		for(Card card : cards) {
 			permissionHandDeck.addCard(card);
 		}
 	}
 
-	public HandDeck getPermissionUsedHandDeck() {
+	HandDeck getPermissionUsedHandDeck() {
 		return permissionUsedHandDeck;
 	}
 	
@@ -179,7 +191,7 @@ public class Player {
 		return builtEmporiumsSet.containsMaxEmporium();
 	}
 	
-	public void addBonusTile(Bonus bonus) {
+	void addBonusTile(Bonus bonus) {
 		bonusTile.addTile(bonus);
 	}
 
@@ -215,7 +227,14 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		if(isOnline()) {
+			print += " online";
+		}
+		else {
+			print += " offline";
+		}
+		return print;
 	}
 
 }

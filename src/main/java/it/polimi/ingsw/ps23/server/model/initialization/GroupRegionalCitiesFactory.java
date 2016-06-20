@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-import it.polimi.ingsw.ps23.server.model.map.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
@@ -31,8 +31,7 @@ class GroupRegionalCitiesFactory {
 					regionalCity.addCity(cities.get(rawRegion[i]));
 				}
 				catch(InvalidCityException e) {
-					Logger logger = Logger.getLogger(this.getClass().getName());
-					logger.log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
 				}
 			}
 			regionalCity.toCitiesList();

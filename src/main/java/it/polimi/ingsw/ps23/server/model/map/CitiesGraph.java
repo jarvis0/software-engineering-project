@@ -1,13 +1,12 @@
 package it.polimi.ingsw.ps23.server.model.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.traverse.DepthFirstIterator;
-import org.jgrapht.traverse.GraphIterator;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
@@ -15,9 +14,13 @@ import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
-public class CitiesGraph {
+public class CitiesGraph implements Serializable {
 	
-	private DirectedGraph<City, DefaultEdge> graph;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 777126013147994317L;
+	private transient DirectedGraph<City, DefaultEdge> graph;
 	
 	public CitiesGraph(DirectedGraph<City, DefaultEdge> graph) {
 		this.graph = graph;
@@ -31,7 +34,7 @@ public class CitiesGraph {
 		List<City> citiesContainingPlayer = new ArrayList<>();
 		citiesContainingPlayer.add(arriveCity);
 		List<City> playerCityList = new ArrayList<>();
-		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumSet());
+		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet());
 		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);
 	}
 
@@ -56,7 +59,7 @@ public class CitiesGraph {
 		}
 	}
 	
-	@Override
+	/*@Override
 	public String toString() {
 		List<String> cities = new ArrayList<>();
 		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
@@ -65,7 +68,7 @@ public class CitiesGraph {
 		}
 		return cities.toString();
 		//TODO forse mai usata
-	}
+	}*/
 		
 }
 

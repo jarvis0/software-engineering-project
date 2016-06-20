@@ -5,6 +5,11 @@ import it.polimi.ingsw.ps23.server.model.map.GameColor;
 
 public class PoliticCard implements Card {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5455561632780600930L;
+
 	private static final String MULTI = "multi";
 	
 	private GameColor color;
@@ -17,7 +22,7 @@ public class PoliticCard implements Card {
 		return color;
 	}
 	
-	public boolean isJolly() {
+	public boolean isJoker() {
 		return color.getName().equals(MULTI);
 	}
 	

@@ -5,21 +5,26 @@ import java.util.Collections;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
-public class MarketPlayersSet extends PlayersSet {
+class MarketPlayersSet extends PlayersSet {
 	
-	public MarketPlayersSet() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5011596314294155431L;
+
+	MarketPlayersSet() {
 		super();
 	}
 	
-	public void shufflePlayer() {
+	void shufflePlayers() {
 		Collections.shuffle(getPlayers());
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		return getPlayers().isEmpty();
 	}
 	
-	public Player getCurrentPlayer() {
+	Player getCurrentPlayer() {
 		return getPlayers().remove(getPlayers().size() - 1);
 	}
 

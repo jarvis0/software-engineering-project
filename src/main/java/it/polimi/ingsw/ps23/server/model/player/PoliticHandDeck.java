@@ -11,6 +11,10 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
 public class PoliticHandDeck extends HandDeck {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5573053817139705040L;
 	private static final String MULTI = "multi";
 
 	public PoliticHandDeck(List<Card> politicHandCards) {
@@ -18,7 +22,7 @@ public class PoliticHandDeck extends HandDeck {
 		addCards(politicHandCards);
 	}
 	
-	public void addCards(List<Card> politicHandCards) {
+	void addCards(List<Card> politicHandCards) {
 		for(Card politicHandCard : politicHandCards) {
 			addCard(politicHandCard);
 		}
@@ -26,7 +30,7 @@ public class PoliticHandDeck extends HandDeck {
 	
 	public int removeCards(List<String> removedCards) {
 		int cost = 0;
-		for (String string : removedCards) {
+		for(String string : removedCards) {
 			if(MULTI.equals(string)){
 				cost--;
 			}
@@ -34,7 +38,7 @@ public class PoliticHandDeck extends HandDeck {
 		if(removedCards.size() != 4) {
 			cost += -(1 + 3 * (4 - removedCards.size()));
 		}	 
-		for (String removeCard : removedCards) {
+		for(String removeCard : removedCards) {
 			boolean found = false;
 			for(int i = 0; i < getCards().size() && !found; i++) {
 				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard)) {
@@ -48,7 +52,7 @@ public class PoliticHandDeck extends HandDeck {
 
 	public HandDeck getAvailableCards(Council council) {
 		List<Card> returnCards = getColoredCards(council);
-		returnCards.addAll(getJollyCards());
+		returnCards.addAll(getJokerCards());
 		return new PoliticHandDeck(returnCards);
 	}
 	
@@ -56,7 +60,7 @@ public class PoliticHandDeck extends HandDeck {
 		List<Card> cards = new ArrayList<>();
 		cards.addAll(getCards());
 		List<Card> returnCards = new ArrayList<>();
-		for (Councillor councillor : council.getCouncil()) {
+		for(Councillor councillor : council.getCouncil()) {
 			boolean found = false;
 			for(int i = 0; i < cards.size() && !found; i++) {
 				if(councillor.getColor() == ((PoliticCard)(cards.get(i))).getColor()) {
@@ -68,11 +72,11 @@ public class PoliticHandDeck extends HandDeck {
 		return returnCards;
 	}
 	
-	private List<Card> getJollyCards() {
+	private List<Card> getJokerCards() {
 		List<Card> cards = new ArrayList<>();
 		cards.addAll(getCards());
 		for(int i = cards.size() - 1; i >= 0; i--) {
-			if(!((PoliticCard)(cards.get(i))).isJolly()) {
+			if(!((PoliticCard)(cards.get(i))).isJoker()) {
 				cards.remove(i);
 			}
 		}

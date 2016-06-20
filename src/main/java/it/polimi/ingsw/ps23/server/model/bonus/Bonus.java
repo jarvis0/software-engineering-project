@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.bonus;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,16 +9,17 @@ import javax.naming.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-public abstract class Bonus implements Cloneable {
+public abstract class Bonus implements Cloneable, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4322173540984705455L;
 	private final String name;
 	private int value;
 	
-	private Logger logger;
-	
-	public Bonus(String name) {
+	Bonus(String name) {
 		this.name = name;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	public abstract void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException;
@@ -40,7 +42,7 @@ public abstract class Bonus implements Cloneable {
 		try {
 			clone = super.clone();
 		} catch (CloneNotSupportedException e) {
-			logger.log(Level.SEVERE, "Cannot create bonus object.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create bonus object.", e);
 		}
 		return clone;
 	}

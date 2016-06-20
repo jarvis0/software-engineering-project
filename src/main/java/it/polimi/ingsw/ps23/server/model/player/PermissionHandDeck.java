@@ -7,12 +7,16 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 
 public class PermissionHandDeck extends HandDeck {
 	
-	public PermissionHandDeck() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8754158271215617734L;
+
+	PermissionHandDeck() {
 		super();
 	}
 	
-	
-	public void addCards(List<Card> permissionHandCards) {
+	void addCards(List<Card> permissionHandCards) {
 		for (Card permissionHandCard: permissionHandCards) {
 			addCard(permissionHandCard);
 		}

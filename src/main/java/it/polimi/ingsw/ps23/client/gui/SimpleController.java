@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.NoCapitalException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
@@ -118,7 +117,6 @@ public class SimpleController implements Initializable {
 		  playersName.add("Vannozzi");
 		  playersName.add("Ferrandi");
 		  City city;
-		 try {
 			Game game = new Game(playersName);
 			city = game.getKing().getPosition();
 			placeKing(city);
@@ -130,9 +128,7 @@ public class SimpleController implements Initializable {
 			nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("nobilityTrackPoints"));  
 			victoryPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("victoryPoints"));
 			players.setItems(playersList);
-			} catch (NoCapitalException e) {
-				e.printStackTrace();
-			}
+		
 	}
 	
 	

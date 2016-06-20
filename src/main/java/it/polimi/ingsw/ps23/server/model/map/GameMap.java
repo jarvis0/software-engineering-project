@@ -1,17 +1,22 @@
 package it.polimi.ingsw.ps23.server.model.map;
 
 import java.util.Map;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumsSet;
-//TODO return null
-public class GameMap {
+
+public class GameMap implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8917662475849081509L;
 	private Map<String, City> citiesMap;
-	private CitiesGraph citiesGraph;	
+	private transient CitiesGraph citiesGraph;	
 	private List<Region> groupRegionalCities;
 	private List<Region> groupColoredCities;
 	
@@ -36,12 +41,12 @@ public class GameMap {
 	
 	public Region getRegion(String regionName) {
 		Region selectedRegion = null;
-		for (Region region : groupRegionalCities) {
-			if (region.getName().equals(regionName)) {
+		for(Region region : groupRegionalCities) {
+			if(region.getName().equals(regionName)) {
 				selectedRegion = region;
 			}
 		}
-		return selectedRegion;	
+		return selectedRegion; //TODO return null
 	}
 
 	public String getColoredBonusTileString() {
@@ -72,7 +77,7 @@ public class GameMap {
 	}
 
 	private boolean isFoundRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
-		return builtEmporiumsSet.getBuiltEmporiumSet().contains(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
+		return builtEmporiumsSet.getBuiltEmporiumsSet().containsAll(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
 	}
 	
 	public Region groupRegionalCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
@@ -81,16 +86,16 @@ public class GameMap {
 				return region;
 			}
 		}
-		return null;
+		return null; //TODO return null
 	}
 
 	public Region groupColoredCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
-		for (Region region : groupColoredCities) {
+		for(Region region : groupColoredCities) {
 			if(isFoundRegion(region, builtEmporiumSet)) {
 				return region;
 			}
 		}
-		return null;
+		return null; //TODO return null
 	}
 	
 	@Override

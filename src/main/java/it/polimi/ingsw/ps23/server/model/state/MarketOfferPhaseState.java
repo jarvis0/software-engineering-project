@@ -15,13 +15,11 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class MarketOfferPhaseState implements State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6288171557528132844L;
 	private Player currentPlayer;
-	
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		currentPlayer = game.getCurrentPlayer();
-	}
 	
 	public String getPlayerName() {
 		return currentPlayer.getName();
@@ -51,11 +49,6 @@ public class MarketOfferPhaseState implements State {
 		return currentPlayer.getAssistants() > 0;
 	}
 
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
-	
 	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();		
@@ -71,5 +64,16 @@ public class MarketOfferPhaseState implements State {
 		}
 		return new MarketObject(currentPlayer, permissionCards, politicCards, chosenAssistants, cost);
 	}
+	
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		currentPlayer = game.getCurrentPlayer();
+	}
 
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
+	}
+	
 }

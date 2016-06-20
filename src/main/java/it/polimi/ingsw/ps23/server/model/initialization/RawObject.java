@@ -12,14 +12,11 @@ class RawObject {
 	
 	private List<String[]> raw;
 	
-	private Logger logger;
-	
 	RawObject(String path) {
-		logger = Logger.getLogger(this.getClass().getName());
 		try {
 			this.raw = parseCSVFile(path);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error loading " + path + " file.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error loading " + path + " file.", e);
 		}
 	}
 	

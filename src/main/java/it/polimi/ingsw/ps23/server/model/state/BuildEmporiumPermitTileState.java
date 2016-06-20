@@ -12,24 +12,15 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8070870675842800922L;
 	private HandDeck availableCards;
 	private Map<String, City> citiesMap;
 	
-	public BuildEmporiumPermitTileState(String name) {
+	BuildEmporiumPermitTileState(String name) {
 		super(name);
-	}
-
-	@Override
-	public void changeState(Context context, Game game) {
-		context.setState(this);
-		availableCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
-		citiesMap = game.getGameMap().getCitiesMap();
-	}
-
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);	
-		
 	}
 
 	public String getAvaibleCards() {
@@ -43,6 +34,17 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	public Action createAction(String chosenCity, int chosenCard) {
 		return new BuildEmporiumPermitTile(citiesMap.get(chosenCity), chosenCard);
 	}
-	
+
+	@Override
+	public void changeState(Context context, Game game) {
+		context.setState(this);
+		availableCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
+		citiesMap = game.getGameMap().getCitiesMap();
+	}
+
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);	
+	}
 
 }

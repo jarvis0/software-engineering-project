@@ -2,19 +2,19 @@ package it.polimi.ingsw.ps23.server.model.player;
 
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.view.View;
+import it.polimi.ingsw.ps23.server.view.SocketView;
 
 public class PlayerResumeHandler {
 
-	private List<View> consoleViews;
+	private List<SocketView> views;
 	
-	public PlayerResumeHandler(List<View> consoleViews) {
-		this.consoleViews = consoleViews;
+	public PlayerResumeHandler(List<SocketView> views) {
+		this.views = views;
 	}
 	
 	public synchronized void resume() {
-		for(View consoleView : consoleViews) {
-				consoleView.threadWakeUp();
+		for(SocketView view : views) {
+			view.threadWakeUp();
 		}
 	}
 	

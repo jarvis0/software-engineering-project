@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.initialization.Initialization;
@@ -12,20 +13,26 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.state.StateCache;
 
-public class Game {
+public class Game implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9200411232887252524L;
 	private Deck politicDeck;
 	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTileSet kingTiles;
+	private transient KingTileSet kingTiles; //TODO cambiare quando si inviano i kingtile
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playersSet;
 	private Player currentPlayer;
 	private Market currentMarket;
+	private StateCache stateCache;
 
-	public Game(List<String> playersName) throws NoCapitalException {
+	public Game(List<String> playersName) {
 		Initialization init = new Initialization(playersName);
 		politicDeck = init.getPoliticDeck();
 		freeCouncillors = init.getFreeCouncillors();
@@ -34,6 +41,7 @@ public class Game {
 		kingTiles = init.getKingTiles();
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
+		stateCache = new StateCache();
 	}
 	
 	public GameMap getGameMap() {
@@ -72,12 +80,20 @@ public class Game {
 		return nobilityTrack;
 	}
 
+	public StateCache getStateCache() {
+		return stateCache;
+	}
+	
 	public void createNewMarket() {
 		currentMarket = new Market(playersSet);
 	}
 	
-	public int getNumberOfPlayer() {
-		return playersSet.numberOfPlayer();
+	public int getPlayersNumber() {
+		return playersSet.playersNumber();
+	}
+	
+	public int getMarketPlayersNumber() {
+		return playersSet.marketPlayersNumber();
 	}
 	
 	public Market getMarket() {

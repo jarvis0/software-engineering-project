@@ -7,9 +7,19 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class EngageAnAssistantState extends ActionState {
 	
-	public EngageAnAssistantState(String name) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -93833003270086175L;
+
+	EngageAnAssistantState(String name) {
 		super(name);
 	}
+
+	public Action createAction() {
+		return new EngageAnAssitant();
+	}
+	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -20,10 +30,6 @@ public class EngageAnAssistantState extends ActionState {
 		view.visit(this);	
 	}
 	
-	public Action createAction() {
-		return new EngageAnAssitant();
-	}
-
 }
 
 

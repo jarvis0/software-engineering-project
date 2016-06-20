@@ -1,15 +1,21 @@
 package it.polimi.ingsw.ps23.server.model.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
-public abstract class Region {
+public abstract class Region implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6779412923659189756L;
 	private String name;
 	private Map<String, City> cities;
 	private Bonus bonusTile;

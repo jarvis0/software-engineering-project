@@ -11,12 +11,15 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 
 public class AssistantToElectCouncillor implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 552188489180879350L;
+
 	private static final int ASSISTANTS_COST = -1;
 	
 	private String councillor;
 	private Council council;
-	
-	private Logger logger;
 	
 	public AssistantToElectCouncillor(String councillor, Council council) {
 		this.councillor = councillor;
@@ -25,12 +28,11 @@ public class AssistantToElectCouncillor implements Action {
 	
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) {
-		logger = Logger.getLogger(this.getClass().getName());
 		game.getFreeCouncillors().electCouncillor(councillor, council);
 		try {
 			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficent current player assistants.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficent current player assistants.", e);
 		}
 		turnHandler.useQuickAction();		
 	}

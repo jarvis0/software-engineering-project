@@ -1,13 +1,18 @@
 package it.polimi.ingsw.ps23.server.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class EndGame {
+public class EndGame implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8751948646819316802L;
 	private static final int NOBILITY_TRACK_POINTS_FIRST_PLACE = 5;
 	private static final int NOBILITY_TRACK_POINTS_SECOND_PLACE = 2;
 	private static final int PERMISSION_CARD_POINTS = 3;
@@ -16,7 +21,7 @@ public class EndGame {
 	private TurnHandler turnHandler;
 	
 	public boolean isGameEnded(Game game, TurnHandler turnHandler) {
-		//for(Player player : game.getGamePlayersSet().getPlayers()) {
+		//for(Player player : game.getGamePlayersSet().getPlayers()) {TODO
 			if(game.getCurrentPlayer().hasFinished()) {
 				this.game = game;
 				this.turnHandler = turnHandler;
@@ -87,4 +92,5 @@ public class EndGame {
 			player.updateVictoryPoints(PERMISSION_CARD_POINTS);
 		}
 	}
+	
 }

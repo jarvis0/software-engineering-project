@@ -9,19 +9,13 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class MarketBuyPhaseState implements State {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7921523727192618428L;
 	private Market market;
 	private Player currentPlayer;
-	
-	@Override
-	public void changeState(Context context, Game game) {
-		market = game.getMarket();	
-		currentPlayer = game.getCurrentPlayer();
-	}
-	
-	public String getCurrentPlayer() {
-		return currentPlayer.getName() + " coins: " + currentPlayer.getCoins();
-	}
-	
+
 	public String getPlayerName() {
 		return currentPlayer.getName();
 	}
@@ -45,11 +39,6 @@ public class MarketBuyPhaseState implements State {
 		return new String() + avaiableOffers;
 	}
 
-	@Override
-	public void acceptView(ViewVisitor view) {
-		view.visit(this);
-	}
-	
 	public MarketTransation createTransation() {
 		MarketTransation marketTransation = new MarketTransation();
 		marketTransation.notPurchased();
@@ -73,4 +62,16 @@ public class MarketBuyPhaseState implements State {
 		marketTransation.notPurchased();
 		return marketTransation;
 	}
+	
+	@Override
+	public void changeState(Context context, Game game) {
+		market = game.getMarket();	
+		currentPlayer = game.getCurrentPlayer();
+	}
+	
+	@Override
+	public void acceptView(ViewVisitor view) {
+		view.visit(this);
+	}
+	
 }

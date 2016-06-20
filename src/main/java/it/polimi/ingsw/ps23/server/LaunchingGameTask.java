@@ -1,24 +1,39 @@
 package it.polimi.ingsw.ps23.server;
 
 import java.io.PrintStream;
+import java.util.Timer;
 import java.util.TimerTask;
 
-class RemindTask extends TimerTask {
+class LaunchingGameTask extends TimerTask {
 
 	private Server server;
 	
+	private Timer timer;
+	
 	private PrintStream output;
+	
+	boolean isRMI;
 	
 	private int seconds;
 	private int i;
 
-	RemindTask(Server server, int seconds) {
+	LaunchingGameTask(Server server, int seconds) {
 		this.server = server;
 		this.seconds = seconds;
-		output = new PrintStream(System.out);
+		isRMI = false;
+		output = new PrintStream(System.out, true);
 		i = 1;
 	}
-		
+	
+	LaunchingGameTask(Timer timer, Server server, int seconds) {
+		this.timer = timer;
+		this.server = server;
+		this.seconds = seconds;
+		isRMI = true;
+		output = new PrintStream(System.out, true);
+		i = 1;
+	}
+	
 	@Override
 	public void run() {
 		if(i != seconds) {
@@ -31,7 +46,12 @@ class RemindTask extends TimerTask {
 			i++;
 		}
 		else {
-			server.setTimerEnd();
+			if(isRMI) {
+				server.setRMITimerEnd(timer);
+			}
+			else {
+				server.setSocketTimerEnd();
+			}
 		}
 	}
 }
