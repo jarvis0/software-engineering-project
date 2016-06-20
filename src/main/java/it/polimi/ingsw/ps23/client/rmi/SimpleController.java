@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.client.gui;
+package it.polimi.ingsw.ps23.client.rmi;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.google.common.base.Service.State;
+
 import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
 import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -75,9 +79,9 @@ public class SimpleController implements Initializable {
 	@FXML
 	ImageView king;
 	
-	public void changeValue() {
-		king.setX(O.getLayoutX());
-		king.setY(O.getLayoutY());
+	public void changeValue(GameMap gameMap, PlayersSet playersSet) {
+		placeRewardToken(gameMap.getCitiesMap());
+		setPlayerSet(playersSet);
 	}
 	
 	private void placeRewardToken(Map<String, City> map) {
@@ -99,6 +103,17 @@ public class SimpleController implements Initializable {
 		
 	}
 	
+	private void setPlayerSet(PlayersSet playersSet) {
+		ObservableList<Player> playersList = FXCollections.observableArrayList();
+		playersList.addAll(playersSet.getPlayers());
+		playerName.setCellValueFactory(new PropertyValueFactory<Player,String>("name"));  
+		coins.setCellValueFactory(new PropertyValueFactory<Player,String>("coins"));  
+		assistants.setCellValueFactory(new PropertyValueFactory<Player,String>("assistants"));  
+		nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("nobilityTrackPoints"));  
+		victoryPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("victoryPoints"));
+		players.setItems(playersList);
+	}
+	
 	private void placeKing(City city) {
 		for (ImageView imageView : citiesImagesList) {
 			if(imageView.getId().toString().equals(city.getName())) {
@@ -110,27 +125,8 @@ public class SimpleController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-	ObservableList<Player> playersList = FXCollections.observableArrayList();
-		List<String> playersName = new ArrayList<>();
-		  playersName.add("Pattavina");
-		  playersName.add("Maier");
-		  playersName.add("Vannozzi");
-		  playersName.add("Ferrandi");
-		  City city;
-			Game game = new Game(playersName);
-			city = game.getKing().getPosition();
-			placeKing(city);
-			placeRewardToken(game.getGameMap().getCitiesMap());
-			playersList.addAll(game.getGamePlayersSet().getPlayers());
-			playerName.setCellValueFactory(new PropertyValueFactory<Player,String>("name"));  
-			coins.setCellValueFactory(new PropertyValueFactory<Player,String>("coins"));  
-			assistants.setCellValueFactory(new PropertyValueFactory<Player,String>("assistants"));  
-			nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("nobilityTrackPoints"));  
-			victoryPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("victoryPoints"));
-			players.setItems(playersList);
 		
 	}
-	
 	
 }	
 
