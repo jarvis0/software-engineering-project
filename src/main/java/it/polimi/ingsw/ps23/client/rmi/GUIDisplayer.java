@@ -1,16 +1,20 @@
-package it.polimi.ingsw.ps23.client.gui;
+package it.polimi.ingsw.ps23.client.rmi;
 
+import it.polimi.ingsw.ps23.server.model.map.GameMap;
+import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 	
-	public class LineManipulator extends Application {
-
-	  public static void main(String[] args) throws Exception {
-		  Application.launch(args); 
-		  }
+	public class GUIDisplayer extends Application {
+		private SimpleController controller;
+		
+		public GUIDisplayer() {
+			 Application.launch(); 
+		}
+		 
 	  
 	  @Override 
 	  public void start(final Stage stage) throws Exception {
@@ -19,9 +23,12 @@ import javafx.scene.Scene;
 	      Scene newScene = new Scene(root);
 	      stage.setScene(newScene);
 		  stage.show();
-		  
 	  }
-		
+	
+	  public void showMap(GameMap gameMap, PlayersSet playersSet) {
+		  controller.changeValue(gameMap, playersSet);
+	  }
+	  
 	}		  
 	   
 	/*make a node movable by dragging it around with the mouse.

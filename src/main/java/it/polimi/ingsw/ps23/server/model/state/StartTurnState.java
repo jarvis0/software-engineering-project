@@ -47,6 +47,13 @@ public class StartTurnState implements State {
 		return stateCache;
 	}
 	
+	public GameMap getGameMap() {
+		return gameMap;
+	}
+	
+	public PlayersSet getPlayerSet() {
+		return gamePlayersSet;
+	}
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -94,5 +101,7 @@ public class StartTurnState implements State {
 		}
 		return print;
 	}
+	
+	
 	
 }
