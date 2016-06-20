@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
@@ -23,16 +22,11 @@ public class BuiltEmporiumsSet implements Serializable {
 		builtEmporiums = new ArrayList<>();
 	}
 	
-	void addBuiltEmporium(City city) throws InvalidPositionException {
-		if(!builtEmporiums.contains(city)) {
-			builtEmporiums.add(city);
-		}
-		else {
-			throw new InvalidPositionException();
-		}
+	void addBuiltEmporium(City city) {
+		builtEmporiums.add(city);
 	}
 	
-	boolean containsMaxEmporium() { //TODO max emporium
+	boolean containsMaxEmporium() {
 		return builtEmporiums.size() == MAX_EMPORIUMS;
 	}
 

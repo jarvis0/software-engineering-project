@@ -1,8 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.actions;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.server.model.Game;
@@ -18,12 +15,11 @@ public class AdditionalMainAction implements Action {
 	private static final int ASSISTANTS_COST = -3;
 	
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) {
-		try {
-			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
-		} catch (InsufficientResourcesException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player assistants.", e);
+	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
+		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
+			throw new InsufficientResourcesException();
 		}
+		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		turnHandler.addMainAction();
 		turnHandler.useQuickAction();
 	}

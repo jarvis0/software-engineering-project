@@ -1,10 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.market;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
@@ -39,14 +35,10 @@ public class MarketTransation implements Serializable {
 			seller.soldPoliticCards(requestedObject.getPoliticCards());
 			buyer.buyPermissionCards(requestedObject.getPermissionCards());
 			seller.soldPoliticCards(requestedObject.getPermissionCards());
-			try {
-				buyer.updateAssistants(requestedObject.getAssistants());
-				seller.updateAssistants(- requestedObject.getAssistants());
-				buyer.updateCoins(- requestedObject.getCost());
-				seller.updateCoins(requestedObject.getCost());
-			} catch (InsufficientResourcesException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Either insufficient player assistants or coins.", e);
-			}
+			buyer.updateAssistants(requestedObject.getAssistants());
+			seller.updateAssistants(- requestedObject.getAssistants());
+			buyer.updateCoins(- requestedObject.getCost());
+			seller.updateCoins(requestedObject.getCost());
 			game.getMarket().remove(requestedObject);
 		}
 	}

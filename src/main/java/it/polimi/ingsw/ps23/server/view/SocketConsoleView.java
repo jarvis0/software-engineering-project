@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -28,6 +29,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 public class SocketConsoleView extends SocketView {
 	
 	private static final String NO_INPUT = "NOINPUTNEEDED";
+	private static final String INVALID_CARD_SELECTED = "Invalid Card Selected";
 	
 	private Connection connection;
 
@@ -204,7 +206,11 @@ public class SocketConsoleView extends SocketView {
 			}
 			sendWithInput("Choose the price for your offer: ");
 			int cost = Integer.parseInt(receive());
-			wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+			try {
+				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			}
 		}
 		else {
 			pause();

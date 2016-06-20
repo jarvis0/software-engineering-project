@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -30,6 +31,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 class RMIConsoleView extends RMIView {
 
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
+	private static final String INVALID_CARD_SELECTED = "Invalid Card Selected";
 	
 	private Scanner scanner;
 	private PrintStream output;
@@ -229,6 +231,8 @@ class RMIConsoleView extends RMIView {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
 			}
 		}
 		else {

@@ -1,11 +1,9 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
@@ -49,15 +47,11 @@ public class MarketOfferPhaseState implements State {
 		return currentPlayer.getAssistants() > 0;
 	}
 
-	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) {
+	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException {
 		List<Card> politicCards = new ArrayList<>();
 		List<Card> permissionCards = new ArrayList<>();		
 		for (String card : chosenPoliticCards) {
-			try {
-				politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
-			} catch (IOException e) {
-				 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find out chosen object.", e);
-			}
+			politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
 		}
 		for (int index : chosenPermissionCards) {
 			permissionCards.add(currentPlayer.getPermissionHandDeck().getCardInPosition(index));

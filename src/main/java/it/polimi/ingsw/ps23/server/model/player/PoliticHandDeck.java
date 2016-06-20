@@ -1,9 +1,9 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
@@ -28,7 +28,22 @@ public class PoliticHandDeck extends HandDeck {
 		}
 	}
 	
-	public int removeCards(List<String> removedCards) {
+	private void checkCards(List<String> removedCards) throws InvalidCardException {
+		for(String removeCard : removedCards) {
+			boolean found = false;
+			for(int i = 0; i < getCards().size() && !found; i++) {
+				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard)) {
+					found = true;
+				}
+			}
+			if(!found) {
+				throw new InvalidCardException();
+			}
+		}
+	}
+	
+	public int checkCost(List<String> removedCards) throws InvalidCardException {
+		checkCards(removedCards);
 		int cost = 0;
 		for(String string : removedCards) {
 			if(MULTI.equals(string)){
@@ -37,18 +52,23 @@ public class PoliticHandDeck extends HandDeck {
 		}
 		if(removedCards.size() != 4) {
 			cost += -(1 + 3 * (4 - removedCards.size()));
-		}	 
+		}
+		return cost;
+	}
+	
+	public void removeCards(List<String> removedCards) {
 		for(String removeCard : removedCards) {
 			boolean found = false;
-			for(int i = 0; i < getCards().size() && !found; i++) {
+			int i = 0;
+			while(!found) {
 				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard)) {
 					getCards().remove(i);
 					found = true;
 				}
+				i++;
 			}
 		}
-		return cost;
-	}					
+	}
 
 	public HandDeck getAvailableCards(Council council) {
 		List<Card> returnCards = getColoredCards(council);
@@ -83,13 +103,13 @@ public class PoliticHandDeck extends HandDeck {
 		return cards;
 	}
 	
-	public Card getCardFromName(String name) throws IOException {
+	public Card getCardFromName(String name) throws InvalidCardException {
 		for (Card card : getCards()) {
 			if(((PoliticCard)card).getColor().isSameColor(name)) {
 				return card;
 			}
 		}
-		throw new IOException();
+		throw new InvalidCardException();
 	}
 
 }

@@ -1,16 +1,13 @@
 package it.polimi.ingsw.ps23.server.model.actions;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 
 public class AssistantToElectCouncillor implements Action {
-
 	/**
 	 * 
 	 */
@@ -27,13 +24,12 @@ public class AssistantToElectCouncillor implements Action {
 	}
 	
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCouncillorException, InsufficientResourcesException {
 		game.getFreeCouncillors().electCouncillor(councillor, council);
-		try {
-			game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
-		} catch (InsufficientResourcesException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficent current player assistants.", e);
+		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
+			throw new InsufficientResourcesException();
 		}
+		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		turnHandler.useQuickAction();		
 	}
 

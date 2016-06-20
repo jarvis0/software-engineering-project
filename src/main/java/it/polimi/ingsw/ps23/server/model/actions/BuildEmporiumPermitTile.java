@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.actions;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.model.Game;
@@ -24,14 +23,10 @@ public class BuildEmporiumPermitTile implements Action {
 	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) {
+	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException, AlreadyBuiltHereException {
 		Player player = game.getCurrentPlayer();
-		player.updateEmporiumSet(game, turnHandler, buildInThisCity);
-		try {
-			buildInThisCity.buildEmporium(player);
-		} catch (AlreadyBuiltHereException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot build here.", e);
-		}
+		buildInThisCity.buildEmporium(player);
+		player.updateEmporiumSet(game, turnHandler, buildInThisCity);		
 		player.usePermissionCard(chosenCard);
 		player.checkEmporiumsGroups(game);
 		turnHandler.useMainAction();

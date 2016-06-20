@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.naming.InsufficientResourcesException;
-
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
@@ -22,7 +20,7 @@ public abstract class Bonus implements Cloneable, Serializable {
 		this.name = name;
 	}
 	
-	public abstract void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException;
+	public abstract void updateBonus(Game game, TurnHandler turnHandler);
 
 	public String getName() {
 		return name;

@@ -1,5 +1,10 @@
 package it.polimi.ingsw.ps23.server.controller;
 
+import javax.naming.InsufficientResourcesException;
+
+import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.commons.viewcontroller.ControllerObserver;
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
@@ -28,7 +33,11 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(Action action) {
-		model.doAction(action);
+		try {
+			model.doAction(action);
+		} catch (InvalidCardException | InsufficientResourcesException | AlreadyBuiltHereException | InvalidCouncillorException e) {
+			model.rollBack();
+		}
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.bonus;
 
-import javax.naming.InsufficientResourcesException;
-
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
@@ -17,7 +15,7 @@ public class PoliticCardBonus extends Bonus {
 	}
 
 	@Override
-	public void updateBonus(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
+	public void updateBonus(Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().pickCard(game.getPoliticDeck(), getValue()); 
 	}
 	

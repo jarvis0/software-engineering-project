@@ -2,6 +2,11 @@ package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
 
+import javax.naming.InsufficientResourcesException;
+
+import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
@@ -121,7 +126,7 @@ public class Model extends ModelObservable {
 		wakeUp(state);
 	}
 	
-	public void doAction(Action action) {
+	public void doAction(Action action) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException {
 		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
 		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
@@ -229,6 +234,10 @@ public class Model extends ModelObservable {
 	
 	public void setOnlinePlayer(String player) {
 		//game.getGamePlayersSet().;
+	}
+
+	public void rollBack() {
+		wakeUp(context.getState());		
 	}
 	
 }
