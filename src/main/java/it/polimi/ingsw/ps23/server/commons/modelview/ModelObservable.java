@@ -98,7 +98,7 @@ public class ModelObservable {
 		}
 	}
 	
-	private void notifyAllObservers(State state) {	
+	private void notifyAllObservers(State state) {
 		findCurrentPlayer(state);
 		for(ViewObserver observer : observers) {
 			observer.update(state);

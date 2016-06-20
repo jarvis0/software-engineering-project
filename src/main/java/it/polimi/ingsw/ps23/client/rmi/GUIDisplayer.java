@@ -9,27 +9,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 	
 	public class GUIDisplayer extends Application {
-		private SimpleController controller;
-		
-		public GUIDisplayer() {
-			 Application.launch(); 
-		}
-		 
-	  
-	  @Override 
-	  public void start(final Stage stage) throws Exception {
-		  Parent root = FXMLLoader.load(getClass().getResource("sceneMap.fxml"));
-	      stage.setTitle("Line Manipulation Sample");
-	      Scene newScene = new Scene(root);
-	      stage.setScene(newScene);
-		  stage.show();
-	  }
+	private SimpleController controller;
 	
-	  public void showMap(GameMap gameMap, PlayersSet playersSet) {
-		  controller.changeValue(gameMap, playersSet);
-	  }
+	public GUIDisplayer() {
+		//Application.launch();
+	}
+	   
+	@Override 
+	public void start(final Stage stage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("sceneMap.fxml"));
+		stage.setTitle("Line Manipulation Sample");
+		Scene newScene = new Scene(root);
+		stage.setScene(newScene);
+		stage.show();
+	}
+	
+	public void showMap(GameMap gameMap, PlayersSet playersSet) {
+		controller.changeValue(gameMap, playersSet);
+	}
 	  
-	}		  
+}		  
 	   
 	/*make a node movable by dragging it around with the mouse.
 	   private void enableDrag() {

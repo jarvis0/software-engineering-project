@@ -2,13 +2,9 @@ package it.polimi.ingsw.ps23.client.rmi;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.google.common.base.Service.State;
-
-import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;

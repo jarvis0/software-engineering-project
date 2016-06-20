@@ -81,8 +81,8 @@ public class GameInstance {
 		List<String> rmiPlayersName = newRMIGame(rmiWaitingConnections);
 		playersName.addAll(socketPlayersName);
 		playersName.addAll(rmiPlayersName);
-		//Collections.shuffle(playersName); TODO
-		model.setUpModel(playersName, new PlayerResumeHandler(socketViews));//TODO in un altro thread?
+		//Collections.shuffle(playersName);TODO
+		model.setUpModel(playersName, new PlayerResumeHandler(socketViews));
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}
@@ -125,8 +125,17 @@ public class GameInstance {
 	}
 
 	void reconnectPlayer(String name, Connection connection) {
-		createSocketGame(new SocketConsoleView(name, connection), connection);
+		SocketView socketView = new SocketConsoleView(name, connection);
+		createSocketGame(socketView, connection);
 		model.setOnlinePlayer(name);
+		String message = "Player " + name + " has been reconnected to the game.";
+		for(SocketView gameSocketView : socketViews) {
+			if(gameSocketView != socketView) {
+				gameSocketView.sendNoInput(message);
+			}
+		}
+		model.sendRMIInfoMessage(message);
+		connection.startGame();
 	}
 
 }

@@ -11,11 +11,13 @@ import it.polimi.ingsw.ps23.server.view.SocketView;
 class GameInstancesSet {
 
 	private List<GameInstance> gameInstances;
+	private GameInstance foundGameInstance;
 	
 	private int timeout;
 	
 	GameInstancesSet(int timeout) {
 		gameInstances = new ArrayList<>();
+		foundGameInstance = null;
 		this.timeout = timeout;
 	}
 
@@ -38,14 +40,21 @@ class GameInstancesSet {
 		throw new ViewNotFoundException();
 	}
 	
-	boolean checkIfFormerPlayer(String name, Connection connection) {
+	boolean checkIfFormerPlayer(String name) {
 		for(GameInstance gameInstance : gameInstances) {
 			if(gameInstance.isFormerPlayer(name)) {
-				gameInstance.reconnectPlayer(name, connection);
+				foundGameInstance = gameInstance;
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	void reconnectPlayer(String name, Connection connection) {
+		if(foundGameInstance != null) {
+			foundGameInstance.reconnectPlayer(name, connection);
+			foundGameInstance = null;
+		}
 	}
 
 }

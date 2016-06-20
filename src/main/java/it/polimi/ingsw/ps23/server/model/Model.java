@@ -228,7 +228,12 @@ public class Model extends ModelObservable {
 	}
 	
 	public void setOnlinePlayer(String player) {
-		//game.getGamePlayersSet().;
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				gamePlayer.setOnline(true);
+				return;
+			}
+		}
 	}
 	
 }

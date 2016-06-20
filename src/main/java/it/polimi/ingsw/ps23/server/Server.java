@@ -28,9 +28,9 @@ class Server implements ServerInterface {
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
-	private static final int LAUNCH_TIMEOUT = 1;
+	private static final int LAUNCH_TIMEOUT = 10;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 100;
+	private static final int CONNECTION_TIMEOUT = 10;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
@@ -165,10 +165,16 @@ class Server implements ServerInterface {
 	}
 
 	void joinToWaitingList(String name, Connection connection) {
-		output.println("Player " + name + " has been added to the waiting list.");
-		gameInstances.checkIfFormerPlayer(name, connection);
-		socketWaitingConnections.put(name, connection);
-		startCountdownFromSocket();
+		if(!gameInstances.checkIfFormerPlayer(name)) {
+			output.println("Player " + name + " has been added to the waiting list.");
+			socketWaitingConnections.put(name, connection);
+			startCountdownFromSocket();
+		}
+		else {
+			output.println("Player " + name + " is being prompted to his previus game.");
+			gameInstances.reconnectPlayer(name, connection);
+			connection.send("You have been prompted to your previous game, please wait your turn.");
+		}
 	}
 	
 	private void newSocketConnection() {
