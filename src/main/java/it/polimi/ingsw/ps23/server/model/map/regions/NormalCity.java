@@ -21,6 +21,10 @@ public class NormalCity extends City {
 		rewardToken.useBonus(game, turnHandler);
 	}
 	
+	public RewardToken getRewardToken() {
+		return rewardToken;
+	}
+	
 	public boolean hasNobilityTrackBonus() {
 		return rewardToken.hasNobilityTrackBonus();
 	}

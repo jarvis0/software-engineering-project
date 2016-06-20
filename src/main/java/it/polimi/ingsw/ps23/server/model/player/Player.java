@@ -206,6 +206,7 @@ public class Player implements Serializable {
 	public int getNumberOfPoliticCard() {
 		return politicHandDeck.getHandSize();
 	}
+	
 
 	public void checkEmporiumsGroups(Game game) {
 		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumsSet);
