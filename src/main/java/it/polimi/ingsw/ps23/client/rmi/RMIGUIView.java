@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
-import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,57 +21,19 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
 	
-	private PrintStream output;
 	private String clientName;
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
 	private GUIDisplayer guiDisplayer;
 
-	RMIGUIView(RMIClient client) {
-		super(client);
+	RMIGUIView(String playerName) {
+		clientName = playerName;
 		guiDisplayer = new GUIDisplayer();
 	}
 
 	@Override
-	public synchronized void run() {
-		waiting = true;
-		pause();
-		waiting = false;
-		do {
-			state.acceptView(this);
-		} while(!endGame);
-	}
-
-	@Override
-	public void update(State state) {
-		this.state = state;
-		if(waitResumeCondition() && waiting) {
-			resume();
-			waiting = false;
-		}
-	}
-	
-	private synchronized void pause() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-			Thread.currentThread().interrupt();
-		}
-	}
-	
-	private synchronized void resume() {
-		notifyAll();
-	}
-
-	private boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
-	}
-
-	@Override
 	public void visit(StartTurnState currentState) {
-		
 		Player player = currentState.getCurrentPlayer();
 		guiDisplayer.showMap(currentState.getGameMap(), currentState.getPlayerSet());	
 	}
@@ -149,4 +110,40 @@ public class RMIGUIView extends RMIView {
 		
 	}
 
+	@Override
+	public synchronized void run() {
+		waiting = true;
+		pause();
+		waiting = false;
+		do {
+			state.acceptView(this);
+		} while(!endGame);
+	}
+
+	private synchronized void pause() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
+		}
+	}
+	
+	private synchronized void resume() {
+		notifyAll();
+	}
+
+	private boolean waitResumeCondition() {
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
+	}
+
+	@Override
+	public void update(State state) {
+		this.state = state;
+		if(waitResumeCondition() && waiting) {
+			resume();
+			waiting = false;
+		}
+	}
+	
 }
