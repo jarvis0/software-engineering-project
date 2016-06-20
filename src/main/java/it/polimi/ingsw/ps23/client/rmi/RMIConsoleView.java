@@ -38,22 +38,12 @@ class RMIConsoleView extends RMIView {
 	private boolean endGame;
 	private boolean waiting;
 	
-	RMIConsoleView(RMIClient client, String playerName) {
-		super(client);
+	RMIConsoleView(String playerName) {
 		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
 		clientName = playerName;
-	}
-	
-	private synchronized void pause() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-			Thread.currentThread().interrupt();
-		}
 	}
 
 	@Override
@@ -302,6 +292,15 @@ class RMIConsoleView extends RMIView {
 		endGame = true;
 	}
 	
+	private synchronized void pause() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
+		}
+	}
+
 	private synchronized void resume() {
 		notifyAll();
 	}
