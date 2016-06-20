@@ -23,7 +23,6 @@ class RMIClient implements ClientInterface {
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "COFServer";
 	
-	private Scanner scanner;
 	private PrintStream output;
 	
 	private RMIView remoteView;
@@ -34,7 +33,6 @@ class RMIClient implements ClientInterface {
 		remoteView = new RMIConsoleView(this);
 		executor = Executors.newCachedThreadPool();
 		executor.submit(remoteView);
-		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
 	}
 
@@ -45,12 +43,12 @@ class RMIClient implements ClientInterface {
 		String playerName = scanner.next();
 		scanner.close();
 		try {
-			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
+			Registry registry = LocateRegistry.getRegistry("192.168.1.4", RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
 			ClientInterface client =  new RMIClient();
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
 			server.registerClient(playerName, stub);
-		} catch (RemoteException | UnknownHostException | NotBoundException e) {
+		} catch (RemoteException | NotBoundException e) {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to registry.", e);
 		}
 	}
