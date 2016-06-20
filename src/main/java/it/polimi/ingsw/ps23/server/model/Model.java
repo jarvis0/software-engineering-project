@@ -1,8 +1,6 @@
 package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
@@ -18,29 +16,18 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class Model extends ModelObservable {
-	
+
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
 	private PlayerResumeHandler playerResumeHandler;
 	
-	private Logger logger;
-	
-	public Model() {
-		logger = Logger.getLogger(this.getClass().getName());
-	}
-
 	private void newGame(List<String> playersName) {
-		try {
-			game = new Game(playersName);
-		} catch (NoCapitalException e) {
-			logger.log(Level.SEVERE, "Cannot initializate a new game.", e);
-		}
+		game = new Game(playersName);
 		currentPlayerIndex++;
 		changePlayer();
 	}
@@ -49,7 +36,6 @@ public class Model extends ModelObservable {
 		setStartingPlayerIndex();
 		this.playerResumeHandler = playerResumeHandler;
 		newGame(playersName);
-		StateCache.loadCache();
 		setStartTurnState();
 	}
 	
@@ -220,20 +206,29 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
-	public void setOfflinePlayer(String offlinePlayer) {
-		State currentState = context.getState();
-		if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
-			game.getCurrentPlayer().setOnline(false);
-			setPlayerTurn();
-		}
-		else {
-			if(currentState instanceof MarketOfferPhaseState) {
-				chooseNextOfferMarketStep(game.getMarket());
+	public void setCurrentPLayerOffline() {
+		//if(game.getGamePlayersSet().isAnyoneOnline()) {
+			State currentState = context.getState();
+			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
+				game.getCurrentPlayer().setOnline(false);
+				setPlayerTurn();
 			}
 			else {
-				chooseNextBuyMarketStep();
+				if(currentState instanceof MarketOfferPhaseState) {
+					chooseNextOfferMarketStep(game.getMarket());
+				}
+				else {
+					chooseNextBuyMarketStep();
+				}
 			}
-		}
+		//}
+		//else {
+			//TODO endgame?
+		//}
+	}
+	
+	public void setOnlinePlayer(String player) {
+		//game.getGamePlayersSet().;
 	}
 	
 }

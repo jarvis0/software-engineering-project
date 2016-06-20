@@ -1,10 +1,16 @@
 package it.polimi.ingsw.ps23.server.model.map.board;
 
+import java.io.Serializable;
+
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 
-public class King {
+public class King implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2781939603449290246L;
 	private City position;
 	private Council council;
 	

@@ -21,41 +21,41 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 class RMIClient implements ClientInterface {
 	
 	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "COFServer";
+	private static final String POLICY_NAME = "cofRegistry";
 	
 	private PrintStream output;
 	
-	private RMIView remoteView;
+	private RMIView rmiView;
 
 	private ExecutorService executor;
 	
-	private RMIClient() {
-		remoteView = new RMIConsoleView(this);
-		executor = Executors.newCachedThreadPool();
-		executor.submit(remoteView);
-		output = new PrintStream(System.out, true);
+	private RMIClient(String playerName) {
+		rmiView = new RMIConsoleView(this, playerName);
+		executor = Executors.newSingleThreadExecutor();
+		executor.submit(rmiView);
+		output = new PrintStream(System.out);
 	}
 
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name? ");
 		String playerName = scanner.next();
-		scanner.close();
 		try {
-			Registry registry = LocateRegistry.getRegistry("192.168.1.4", RMI_PORT_NUMBER);
+			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
-			ClientInterface client =  new RMIClient();
+			ClientInterface client =  new RMIClient(playerName);
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
-			server.registerClient(playerName, stub);
-		} catch (RemoteException | NotBoundException e) {
-			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to registry.", e);
+			server.registerRMIClient(playerName, stub);
+		} catch (RemoteException | UnknownHostException | NotBoundException e) {
+			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to RMI registry.", e);
 		}
 	}
 	
 	@Override
 	public void setController(ServerControllerInterface controller) {
-		remoteView.setController(controller);
+		rmiView.setController(controller);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ class RMIClient implements ClientInterface {
 
 	@Override
 	public void changeState(State currentState) {
-		((RMIConsoleView) remoteView).update(currentState);
+		((RMIConsoleView) rmiView).update(currentState);
 	}
 
 }

@@ -10,8 +10,6 @@ public interface ControllerObserver {
 
 	public void update();
 	
-	public void update(String offlinePlayer);
-	
 	public void update(State state);
 	
 	public void update(Action action);

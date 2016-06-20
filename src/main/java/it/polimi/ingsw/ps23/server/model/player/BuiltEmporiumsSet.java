@@ -1,14 +1,20 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
-public class BuiltEmporiumsSet {
+public class BuiltEmporiumsSet implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6249094998409712661L;
+
 	private static final int MAX_EMPORIUMS = 2;
 	
 	private List<City> builtEmporiums;

@@ -1,13 +1,14 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
@@ -18,8 +19,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 
-public class Player {
+public class Player implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 663214081725066833L;
 	private String name;
 	private int coins;
 	private int assistants;
@@ -29,10 +34,8 @@ public class Player {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
-	private BonusTile bonusTile;
+	private BonusTile bonusTile; //TODO maybe we have to print also this
 	private boolean online;
-	
-	private Logger logger;
 	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
 		this.name = name;
@@ -46,7 +49,6 @@ public class Player {
 		permissionUsedHandDeck = new PermissionHandDeck();
 		bonusTile = new BonusTile();
 		online = true;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	public String getName() {
@@ -145,7 +147,7 @@ public class Player {
 			builtEmporiumsSet.addBuiltEmporium(city);
 			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 		} catch (InvalidPositionException e) {
-			logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
 		}
 	}
 

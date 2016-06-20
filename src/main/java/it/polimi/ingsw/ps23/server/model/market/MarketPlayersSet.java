@@ -7,6 +7,11 @@ import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
 class MarketPlayersSet extends PlayersSet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5011596314294155431L;
+
 	MarketPlayersSet() {
 		super();
 	}

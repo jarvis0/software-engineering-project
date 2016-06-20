@@ -1,12 +1,17 @@
 package it.polimi.ingsw.ps23.server.model.map.board;
 
+import java.io.Serializable;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
-public class FreeCouncillorsSet {
+public class FreeCouncillorsSet implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3830904009427644527L;
 	private List<Councillor> freeCouncillors;
 	
 	public FreeCouncillorsSet(List<Councillor> freeCouncillors){

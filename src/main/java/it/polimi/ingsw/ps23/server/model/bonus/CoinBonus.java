@@ -7,6 +7,11 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 public class CoinBonus extends Bonus {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8863360161746536864L;
+
 	public CoinBonus(String name) {
 		super(name);
 	}

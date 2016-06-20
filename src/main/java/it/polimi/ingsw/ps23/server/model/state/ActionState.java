@@ -1,17 +1,20 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-abstract class ActionState implements State, Cloneable {
+abstract class ActionState implements State, Cloneable, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7924914661050611016L;
 
 	private final String name;
 	
-	private Logger logger;
-	
 	ActionState(String name) {
 		this.name = name;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	String getName() {
@@ -24,7 +27,7 @@ abstract class ActionState implements State, Cloneable {
 		try {
 			clone = super.clone();
 		} catch (CloneNotSupportedException e) {
-			logger.log(Level.SEVERE, "Cannot create action object.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create action object.", e);
 		}
 		return clone;
 	}

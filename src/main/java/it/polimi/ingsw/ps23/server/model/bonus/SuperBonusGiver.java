@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.bonus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,12 @@ import java.util.Map.Entry;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-public class SuperBonusGiver {
+public class SuperBonusGiver implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4395249203502864570L;
 	private Map<Bonus, List<String>> selectedBonuses;
 	
 	public SuperBonusGiver(Map<Bonus, List<String>> selectedBonuses) {

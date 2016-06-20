@@ -30,8 +30,7 @@ class GroupColoredCitiesFactory {
 				try {
 					coloredGroup.addCity(city);
 				} catch (InvalidCityException e) {
-					Logger logger = Logger.getLogger(this.getClass().getName());
-					logger.log(Level.SEVERE, "Cannot initializate GroupColoredCities.", e);
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initializate GroupColoredCities.", e);
 				}
 			}
 		}

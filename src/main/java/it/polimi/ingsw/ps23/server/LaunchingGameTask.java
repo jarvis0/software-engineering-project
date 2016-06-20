@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class RMILaunchingGame extends TimerTask {
+class LaunchingGameTask extends TimerTask {
 
 	private Server server;
 	
@@ -12,13 +12,24 @@ class RMILaunchingGame extends TimerTask {
 	
 	private PrintStream output;
 	
+	boolean isRMI;
+	
 	private int seconds;
 	private int i;
 
-	RMILaunchingGame(Timer timer, Server server, int seconds) {
+	LaunchingGameTask(Server server, int seconds) {
+		this.server = server;
+		this.seconds = seconds;
+		isRMI = false;
+		output = new PrintStream(System.out, true);
+		i = 1;
+	}
+	
+	LaunchingGameTask(Timer timer, Server server, int seconds) {
 		this.timer = timer;
 		this.server = server;
 		this.seconds = seconds;
+		isRMI = true;
 		output = new PrintStream(System.out, true);
 		i = 1;
 	}
@@ -35,8 +46,14 @@ class RMILaunchingGame extends TimerTask {
 			i++;
 		}
 		else {
-			server.setRMITimerEnd(timer);
+			if(isRMI) {
+				server.setRMITimerEnd(timer);
+			}
+			else {
+				server.setSocketTimerEnd();
+			}
 		}
 	}
-	
 }
+	
+

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.server;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -9,55 +8,44 @@ import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
-public class GameInstancesSet {
+class GameInstancesSet {
 
 	private List<GameInstance> gameInstances;
 	
-	GameInstancesSet() {
+	private int timeout;
+	
+	GameInstancesSet(int timeout) {
 		gameInstances = new ArrayList<>();
+		this.timeout = timeout;
 	}
 
-	public void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
+	void newGame(Map<String, Connection> socketWaitingConnections, Map<String, ClientInterface> rmiWaitingConnections) {
 		GameInstance gameInstance = new GameInstance();
+		if(!rmiWaitingConnections.isEmpty()) {
+			gameInstance.setRMITimeout(timeout);
+		}
 		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}
-
-	private GameInstance findPlayerGameInstance(Connection c) throws ViewNotFoundException {
+	void disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
 		for(GameInstance gameInstance : gameInstances) {
-			if(gameInstance.existsPlayerView(c)) {
-				return gameInstance;
+			SocketView socketView = gameInstance.findSocketView(connection);
+			if(socketView != null) {
+				gameInstance.disconnectSocketClient(socketView);
+				return;
 			}
 		}
 		throw new ViewNotFoundException();
 	}
 	
-	String disconnectPlayer(Connection c) throws ViewNotFoundException {
-		String disconnectedPlayer = new String();
-		GameInstance gameInstance = findPlayerGameInstance(c);
-		List<SocketView> views = gameInstance.getSocketViews();
-		Iterator<SocketView> loop = views.iterator();
-		boolean found = false;
-		while(!found && loop.hasNext()) {
-			SocketView view = loop.next();
-			if(view.getConnection() == c) {
-				disconnectedPlayer = view.getClientName();
-				if(views.size() == 1) {
-					view.getConnection().endThread();
-				}
-				else {
-					view.setPlayerOffline();
-					view.getConnection().endThread();
-				}
-				gameInstance.detach(view);
-				loop.remove();
-				found = true;
+	boolean checkIfFormerPlayer(String name, Connection connection) {
+		for(GameInstance gameInstance : gameInstances) {
+			if(gameInstance.isFormerPlayer(name)) {
+				gameInstance.reconnectPlayer(name, connection);
+				return true;
 			}
 		}
-		for(SocketView view : views) {
-			view.sendNoInput("The player " + disconnectedPlayer + " has disconnected.");
-		}
-		return disconnectedPlayer;
+		return false;
 	}
 
 }

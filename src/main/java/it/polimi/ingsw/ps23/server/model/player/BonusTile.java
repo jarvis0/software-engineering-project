@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,15 +12,16 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
-class BonusTile {
+class BonusTile implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8693190914348433544L;
 	private List<Bonus> bonuses;
-	
-	private Logger logger;
 	
 	BonusTile() {
 		bonuses = new ArrayList<>();
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	void addTile(Bonus bonus) {
@@ -32,7 +34,7 @@ class BonusTile {
 				bonus.updateBonus(game, turnHandler);
 			} catch (InsufficientResourcesException e) {
 				//TODO che eccezione lancia qui?
-				logger.log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
 			}
 		}
 	}

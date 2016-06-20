@@ -14,6 +14,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class BuildEmporiumKingState extends ActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8190515657408088895L;
 	private Council kingCouncil;
 	private HandDeck availableCards;
 	private City kingPosition;

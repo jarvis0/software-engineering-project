@@ -1,15 +1,20 @@
 package it.polimi.ingsw.ps23.server.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
-public class TurnHandler {
+public class TurnHandler implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5789375179006568941L;
 	private int mainActionsNumber;
 	private boolean quickAction;
-	private List<Bonus> superBonusSet;
+	private transient List<Bonus> superBonusSet; //TODO serve al client questo attributo?
 	
 	public TurnHandler() {
 		mainActionsNumber = 1;

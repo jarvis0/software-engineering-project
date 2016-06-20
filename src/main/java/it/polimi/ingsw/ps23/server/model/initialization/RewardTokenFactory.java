@@ -12,7 +12,7 @@ class RewardTokenFactory {
 	
 	RewardTokenSet makeRewardTokenSet(List<String[]> rawRewardTokens) {
 		List<RewardToken> rewardTokens = new ArrayList<>();
-		BonusCache.loadCache();
+		BonusCache.loadCache();//TODO remove static BonusCache
 		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
 		for(String[] rawRewardToken : rawRewardTokens) {
 			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, new RewardToken()));

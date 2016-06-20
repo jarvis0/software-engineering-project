@@ -9,6 +9,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class MarketBuyPhaseState implements State {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7921523727192618428L;
 	private Market market;
 	private Player currentPlayer;
 

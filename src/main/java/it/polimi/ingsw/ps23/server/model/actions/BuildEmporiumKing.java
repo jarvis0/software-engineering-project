@@ -18,18 +18,19 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 public class BuildEmporiumKing implements Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3325202641887325997L;
 	private static final double ROAD_COST = -2;
 	private City arriveCity;
 	private List<String> removedCards;
 	private City kingPosition;
 	
-	private Logger logger;
-	
 	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;
 		this.kingPosition = kingPosition;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 
 	@Override
@@ -46,9 +47,9 @@ public class BuildEmporiumKing implements Action {
 			game.getKing().setNewPosition(arriveCity);
 			player.updateEmporiumSet(game, turnHandler, arriveCity);
 		} catch (AlreadyBuiltHereException e) {
-			logger.log(Level.SEVERE, "Cannot build here.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot build here.", e);
 		} catch (InsufficientResourcesException e) {
-			logger.log(Level.SEVERE, "Insufficient current player resources.", e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player resources.", e);
 		}
 		player.checkEmporiumsGroups(game);
 		turnHandler.useMainAction();

@@ -5,14 +5,14 @@ import it.polimi.ingsw.ps23.server.view.View;
 
 public abstract class RMIView extends View {
 	
-	private RMIClient client;
+	private RMIClient client;//TODO unused
 	private ServerControllerInterface controllerInterface;
 	
 	RMIView(RMIClient client) {
 		this.client = client;
 	}
 	
-	public RMIClient getClient() {
+	public RMIClient getClient() {//TODO unused
 		return client;
 	}
 	

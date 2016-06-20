@@ -15,6 +15,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class MarketOfferPhaseState implements State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6288171557528132844L;
 	private Player currentPlayer;
 	
 	public String getPlayerName() {

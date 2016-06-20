@@ -13,8 +13,6 @@ public interface ServerControllerInterface extends Remote {
 
 	public void wakeUpServer() throws RemoteException;
 	
-	public void wakeUpServer(String offlinePlayer) throws RemoteException;
-	
 	public void wakeUpServer(State state) throws RemoteException;
 	
 	public void wakeUpServer(Action action) throws RemoteException;

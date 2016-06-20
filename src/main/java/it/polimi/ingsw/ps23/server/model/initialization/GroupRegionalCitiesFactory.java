@@ -31,8 +31,7 @@ class GroupRegionalCitiesFactory {
 					regionalCity.addCity(cities.get(rawRegion[i]));
 				}
 				catch(InvalidCityException e) {
-					Logger logger = Logger.getLogger(this.getClass().getName());
-					logger.log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
 				}
 			}
 			regionalCity.toCitiesList();

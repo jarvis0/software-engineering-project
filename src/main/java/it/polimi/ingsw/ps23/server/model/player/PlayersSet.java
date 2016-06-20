@@ -1,10 +1,15 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayersSet {
+public class PlayersSet implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2043417363819650294L;
 	private List<Player> players;
 
 	public PlayersSet() {
@@ -18,6 +23,15 @@ public class PlayersSet {
 	// usato dal market e x stamapre i giocatori
 	public List<Player> getPlayers() {
 		return players;
+	}
+	
+	public boolean isAnyoneOnline() {
+		for(Player player : players) {
+			if(player.isOnline()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Player getPlayer(int index) {

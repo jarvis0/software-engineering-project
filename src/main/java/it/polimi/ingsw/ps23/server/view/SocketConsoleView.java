@@ -23,7 +23,6 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketConsoleView extends SocketView {
@@ -35,8 +34,6 @@ public class SocketConsoleView extends SocketView {
 	private String clientName;
 
 	private State state;
-	
-	private Logger logger;
 
 	private boolean endGame;
 	
@@ -45,17 +42,14 @@ public class SocketConsoleView extends SocketView {
 		this.clientName = clientName;
 		this.connection = connection;
 		endGame = false;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 
+	@Override
 	public Connection getConnection() {
 		return connection;
 	}
-
-	public String getClientName() {
-		return clientName;
-	}
-
+	
+	@Override
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
@@ -69,24 +63,17 @@ public class SocketConsoleView extends SocketView {
 	}
 	
 	private synchronized void pause() {
-		boolean loop = true;
-		while(loop) {
-			try {
-				wait();
-				loop = false;
-			} catch (InterruptedException e) {
-				logger.log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-				Thread.currentThread().interrupt();
-			}
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
 		}
 	}
 	
+	@Override
 	public synchronized void threadWakeUp() {
 		notifyAll();
-	}
-
-	public void setPlayerOffline() {
-		wakeUp(clientName);
 	}
 
 	@Override
@@ -96,15 +83,15 @@ public class SocketConsoleView extends SocketView {
 		if(player.getName().equals(clientName)) {
 			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				wakeUp(StateCache.getAction(receive().toLowerCase()));
+				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}
 			catch(NullPointerException e) {
-				logger.log(Level.SEVERE, "Cannot create the action.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
 				wakeUp();
 			}
 		}
 		else {
-			sendNoInput("It's player " + player.getName() + " turn.\n");
+			sendNoInput("It's player " + player.getName() + " turn.");
 			pause();
 		}
 	}
@@ -247,8 +234,8 @@ public class SocketConsoleView extends SocketView {
 	public void visit(SuperBonusState currentState) {
 		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
 		while(currentState.hasNext()) {
-			Bonus currentBonus = currentState.getCurrentBonus();
 			String chosenRegion = new String();
+			Bonus currentBonus = currentState.getCurrentBonus();
 			int numberOfCurrentBonus = currentBonus.getValue();
 			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 				if(currentState.isBuildingPemitTileBonus(currentBonus)) {

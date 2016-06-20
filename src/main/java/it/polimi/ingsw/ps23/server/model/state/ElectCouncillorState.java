@@ -14,6 +14,10 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class ElectCouncillorState extends ActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4320899244481923736L;
 	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;
 	

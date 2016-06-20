@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.market;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,16 +10,17 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class MarketTransation {
+public class MarketTransation implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4809513366700722300L;
 	private MarketObject requestedObject;
 	private boolean hasPurchased;
 	
-	private Logger logger;
-	
 	public MarketTransation() {
 		hasPurchased = true;
-		logger = Logger.getLogger(this.getClass().getName());
 	}
 	
 	public void notPurchased() {
@@ -43,7 +45,7 @@ public class MarketTransation {
 				buyer.updateCoins(- requestedObject.getCost());
 				seller.updateCoins(requestedObject.getCost());
 			} catch (InsufficientResourcesException e) {
-				logger.log(Level.SEVERE, "Either insufficient player assistants or coins.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Either insufficient player assistants or coins.", e);
 			}
 			game.getMarket().remove(requestedObject);
 		}
