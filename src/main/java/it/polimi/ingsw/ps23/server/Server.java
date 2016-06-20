@@ -30,7 +30,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 7;
+	private static final int CONNECTION_TIMEOUT = 170;
 	private static final String SECONDS_PRINT =  " seconds...";
 	
 	private ExecutorService executor;
@@ -129,7 +129,7 @@ class Server implements ServerInterface {
 			if(socketWaitingConnections.get(iterator.next()) == connection){
 				iterator.remove();
 			}
-		}//TODO questo blocco serve solo se un socketPlayer si connette prima di inserire il nome
+		}//TODO questo blocco while serve solo se un socketPlayer si connette prima di inserire il nome
 		//output.println("The player " + disconnectedPlayer + " has been disconnected.");
 	}
 

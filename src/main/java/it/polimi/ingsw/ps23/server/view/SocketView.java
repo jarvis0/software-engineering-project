@@ -8,10 +8,6 @@ public abstract class SocketView extends View {
 
 	public abstract void threadWakeUp();
 
-	public abstract String getClientName();
-
-	public abstract void setPlayerOffline();
-
 	public abstract void sendNoInput(String string);
 	
 }

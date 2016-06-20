@@ -104,22 +104,20 @@ public class GameInstance {
 	}
 	
 	void disconnectSocketClient(SocketView socketView) {
-		String currentPlayerName = model.getCurrentPlayer();
-		String message = "The player " + currentPlayerName + " has been disconnected due to connection timeout.";
+		String message = "The player " + model.getCurrentPlayer() + " has been disconnected due to connection timeout.";
 		socketViews.remove(socketView);
 		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
 		model.detach(socketView);
-		model.setOfflinePlayer(currentPlayerName);
+		model.setCurrentPLayerOffline();
 	}
 	
 	public void disconnectRMIClient() {
-		String currentPlayerName = model.getCurrentPlayer();
-		String message = "Player " + currentPlayerName + " has been disconnected from the game due to connection timeout.";
+		String message = "Player " +  model.getCurrentPlayer() + " has been disconnected from the game due to connection timeout.";
 		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
 		model.detachRMIClient();
-		model.setOfflinePlayer(currentPlayerName);
+		model.setCurrentPLayerOffline();
 	}
 
 	boolean isFormerPlayer(String name) {

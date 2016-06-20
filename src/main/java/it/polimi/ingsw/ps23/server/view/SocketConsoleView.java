@@ -50,11 +50,6 @@ public class SocketConsoleView extends SocketView {
 	}
 	
 	@Override
-	public String getClientName() {
-		return clientName;
-	}
-	
-	@Override
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
@@ -79,12 +74,6 @@ public class SocketConsoleView extends SocketView {
 	@Override
 	public synchronized void threadWakeUp() {
 		notifyAll();
-	}
-
-	@Override
-	public void setPlayerOffline() {
-		connection.close();
-		Thread.currentThread().interrupt();
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.GameInstance;
+import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
+import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
@@ -79,11 +81,25 @@ public class ModelObservable {
 			}
 		}
 	}
-	
-	private void notifyAllObservers(State state) {	
-		if(state instanceof StartTurnState) {//TODO verificare questa condizione
+
+	private void findCurrentPlayer(State state) {
+		if(state instanceof StartTurnState) {
 			currentPlayer = ((StartTurnState) state).getCurrentPlayer().getName();
 		}
+		else {
+			if(state instanceof MarketBuyPhaseState) {
+				currentPlayer = ((MarketBuyPhaseState) state).getPlayerName();
+			}
+			else {
+				if(state instanceof MarketOfferPhaseState) {
+					currentPlayer = ((MarketOfferPhaseState) state).getPlayerName();
+				}
+			}
+		}
+	}
+	
+	private void notifyAllObservers(State state) {	
+		findCurrentPlayer(state);
 		for(ViewObserver observer : observers) {
 			observer.update(state);
 		}
