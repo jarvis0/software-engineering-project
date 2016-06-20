@@ -28,7 +28,6 @@ import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.StateCache;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
-import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class View extends ViewObservable implements Runnable, ViewObserver, ViewVisitor {
 	

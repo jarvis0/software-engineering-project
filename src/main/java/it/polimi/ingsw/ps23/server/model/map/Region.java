@@ -28,7 +28,7 @@ public abstract class Region {
 		citiesList.addAll(cities.values());
 	}
 	
-	protected List<City> getCitiesList() {
+	public List<City> getCitiesList() { //TODO era protected ma mi serviva per javaFx
 		return citiesList;
 	}
 
