@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
 import it.polimi.ingsw.ps23.server.controller.ServerController;
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.model.Model;
-import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
+import it.polimi.ingsw.ps23.server.model.PlayersResumeHandler;
 import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
@@ -82,7 +82,7 @@ public class GameInstance {
 		playersName.addAll(socketPlayersName);
 		playersName.addAll(rmiPlayersName);
 		//Collections.shuffle(playersName);TODO
-		model.setUpModel(playersName, new PlayerResumeHandler(socketViews));
+		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}
@@ -135,7 +135,7 @@ public class GameInstance {
 			}
 		}
 		model.sendRMIInfoMessage(message);
-		connection.startGame();
+		connection.setReconnected();
 	}
 
 }

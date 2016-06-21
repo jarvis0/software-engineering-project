@@ -28,7 +28,7 @@ class Server implements ServerInterface {
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
-	private static final int LAUNCH_TIMEOUT = 10;
+	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
 	private static final int CONNECTION_TIMEOUT = 10;
 	private static final String SECONDS_PRINT =  " seconds...";
@@ -46,6 +46,8 @@ class Server implements ServerInterface {
 	private GameInstancesSet gameInstances;
 	
 	private PrintStream output;
+	
+	private String doubleName;
 
 	private Server() {
 		output = new PrintStream(System.out, true);
@@ -126,7 +128,7 @@ class Server implements ServerInterface {
 		gameInstances.disconnectSocketPlayer(connection);
 		Iterator<String> iterator = socketWaitingConnections.keySet().iterator();
 		while(iterator.hasNext()) {
-			if(socketWaitingConnections.get(iterator.next()) == connection){
+			if(socketWaitingConnections.get(iterator.next()) == connection) {
 				iterator.remove();
 			}
 		}//TODO questo blocco while serve solo se un socketPlayer si connette prima di inserire il nome
@@ -164,19 +166,48 @@ class Server implements ServerInterface {
 		}
 	}
 
-	void joinToWaitingList(String name, Connection connection) {
-		if(!gameInstances.checkIfFormerPlayer(name)) {
-			output.println("Player " + name + " has been added to the waiting list.");
-			socketWaitingConnections.put(name, connection);
+	private boolean isDouble(String name) {
+		// TODO cercare anche nella rmiWaitingConnections
+		doubleName = new String();
+		for(String playerName : socketWaitingConnections.keySet()) {
+			if(name.equals(playerName)) {
+				doubleName = playerName;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String solveDoubles() {
+		if(doubleName.contains(".")) {
+			return "." + Integer.parseInt(doubleName.substring(doubleName.indexOf('.') + 1)) + 1;
+		}
+		else {
+			return ".0";
+		}
+	}
+
+	synchronized void joinToWaitingList(String name, Connection connection) {
+		String message;
+		String playerName = name;
+		boolean formerPlayer = gameInstances.checkIfFormerPlayer(playerName);
+		if(isDouble(name) && !formerPlayer) {
+			String code = solveDoubles();
+			playerName += code;
+			message = "Your name is a double for a game, here you are a new one: ''" + playerName + "''.\nIn case of reconnection, use this name to rejoin your game.";
+		}
+		if(!formerPlayer) {
+			output.println("Player " + playerName + " has been added to the waiting list.");
+			socketWaitingConnections.put(playerName, connection);
 			startCountdownFromSocket();
 		}
 		else {
-			output.println("Player " + name + " is being prompted to his previus game.");
-			gameInstances.reconnectPlayer(name, connection);
+			output.println("Player " + playerName + " is being prompted to his previous game.");
+			gameInstances.reconnectPlayer(playerName, connection);
 			connection.send("You have been prompted to your previous game, please wait your turn.");
 		}
 	}
-	
+
 	private void newSocketConnection() {
 		try {
 			Socket newSocket = serverSocket.accept();
@@ -186,7 +217,7 @@ class Server implements ServerInterface {
 			if(launchingGame) {
 				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			}
-			connection.send(message + "\nWelcome, what's your name? ");
+			connection.send(message + "\nWelcome, what's your in game name? ");
 			if(launchingGame) {
 				connection.send("The new game is starting in a few" + SECONDS_PRINT + "\n");
 			}
@@ -205,14 +236,14 @@ class Server implements ServerInterface {
 		try {
 			serverSocket = new ServerSocket(SOCKET_PORT_NUMBER);
 			socketActive = true;
+			output.println("Waiting for socket connections...");
+			while(isActive()) {
+				newSocketConnection();
+			}
 		} catch (IOException e) {
 			socketActive = false;
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);
 			Thread.currentThread().interrupt();
-		}
-		output.println("Waiting for socket connections...");
-		while(isActive()) {
-			newSocketConnection();
 		}
 	}
 

@@ -82,7 +82,7 @@ public class ModelObservable {
 		}
 	}
 
-	private void findCurrentPlayer(State state) {
+	private void setCurrentPlayer(State state) {
 		if(state instanceof StartTurnState) {
 			currentPlayer = ((StartTurnState) state).getCurrentPlayer().getName();
 		}
@@ -99,7 +99,7 @@ public class ModelObservable {
 	}
 	
 	private void notifyAllObservers(State state) {
-		findCurrentPlayer(state);
+		setCurrentPlayer(state);
 		for(ViewObserver observer : observers) {
 			observer.update(state);
 		}

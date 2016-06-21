@@ -9,7 +9,6 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.model.state.Context;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
@@ -24,7 +23,7 @@ public class Model extends ModelObservable {
 	private Context context;
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
-	private PlayerResumeHandler playerResumeHandler;
+	private PlayersResumeHandler playersResumeHandler;
 	
 	private void newGame(List<String> playersName) {
 		game = new Game(playersName);
@@ -32,9 +31,9 @@ public class Model extends ModelObservable {
 		changePlayer();
 	}
 
-	public void setUpModel(List<String> playersName, PlayerResumeHandler playerResumeHandler) {
+	public void setUpModel(List<String> playersName, PlayersResumeHandler playersResumeHandler) {
 		setStartingPlayerIndex();
-		this.playerResumeHandler = playerResumeHandler;
+		this.playersResumeHandler = playersResumeHandler;
 		newGame(playersName);
 		setStartTurnState();
 	}
@@ -55,7 +54,7 @@ public class Model extends ModelObservable {
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
 		wakeUp(startTurnState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 
 	private boolean nextPlayerIndex() {
@@ -164,7 +163,7 @@ public class Model extends ModelObservable {
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
 		marketOfferPhaseState.changeState(context, game);
 		wakeUp(marketOfferPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void chooseNextBuyMarketStep() {
@@ -190,7 +189,7 @@ public class Model extends ModelObservable {
 		MarketBuyPhaseState marketBuyPhaseState = new MarketBuyPhaseState();
 		marketBuyPhaseState.changeState(context, game);
 		wakeUp(marketBuyPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void setStartingPlayerIndex() {
@@ -235,5 +234,5 @@ public class Model extends ModelObservable {
 			}
 		}
 	}
-	
+
 }

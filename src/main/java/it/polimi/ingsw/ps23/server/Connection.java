@@ -21,6 +21,7 @@ public class Connection implements Runnable {
 	private int timeout;
 
 	private boolean started;
+	private boolean reconnected;
 
 	private SocketView socketView;
 	
@@ -33,6 +34,7 @@ public class Connection implements Runnable {
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream(), true);
 		started = false;
+		reconnected = false;
 	}
 	
 	Server getServer() {
@@ -75,7 +77,11 @@ public class Connection implements Runnable {
 	synchronized void startGame() {
 		notifyAll();
 	}
-	
+
+	public void setReconnected() {
+		reconnected = true;
+	}
+
 	private synchronized void initialization() {
 		if(!started) {
 			try {
@@ -97,7 +103,10 @@ public class Connection implements Runnable {
 	@Override
 	public void run() {
 		server.joinToWaitingList(receive(), this);
-		initialization();
+		if(!reconnected) {
+			initialization();
+		}
+		socketView.setReconnected(reconnected);
 		socketView.run();
 		close();
 	}

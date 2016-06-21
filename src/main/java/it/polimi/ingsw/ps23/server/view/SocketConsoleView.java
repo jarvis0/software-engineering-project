@@ -36,12 +36,15 @@ public class SocketConsoleView extends SocketView {
 	private State state;
 
 	private boolean endGame;
+
+	private boolean reconnected;
 	
 	public SocketConsoleView(String clientName, Connection connection) {
 		this.connection = connection;
 		this.clientName = clientName;
 		this.connection = connection;
 		endGame = false;
+		reconnected = false;
 	}
 
 	@Override
@@ -53,7 +56,7 @@ public class SocketConsoleView extends SocketView {
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
-	
+
 	private void sendWithInput(String message) {
 		connection.send(message);
 	}
@@ -275,9 +278,17 @@ public class SocketConsoleView extends SocketView {
 	
 	@Override
 	public synchronized void run() {
+		if(reconnected) {
+			pause();
+		}
 		do {
 			state.acceptView(this);
 		} while(!endGame);
 	}
-	
+
+	@Override
+	public void setReconnected(boolean reconnected) {
+		this.reconnected = reconnected;
+	}
+
 }

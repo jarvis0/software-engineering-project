@@ -36,12 +36,12 @@ class SocketClient {
 	void send(String message) {
  		textOut.print(message + "EOM");
  	}
- 	
- 	String receive() {
- 		String message = new String();
- 		try {
- 			message = textIn.next();
- 		} catch (NoSuchElementException e) {
+	
+	String receive() {
+		String message = new String();
+		try {
+			message = textIn.next();
+		} catch (NoSuchElementException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Connection timed out.", e);
 			output.println("Connection timed out. Reconnect to resume the game.");
 			if(remoteConsoleView != null) {
@@ -84,5 +84,5 @@ class SocketClient {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
-	
+
 }

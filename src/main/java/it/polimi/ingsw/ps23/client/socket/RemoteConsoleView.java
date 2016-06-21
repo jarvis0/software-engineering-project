@@ -26,6 +26,7 @@ class RemoteConsoleView {
 	}
 	
 	void run() {
+		
 		String message;
 		while(!connectionTimedOut) {
 			message = client.receive();

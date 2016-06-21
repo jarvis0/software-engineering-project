@@ -29,6 +29,7 @@ class GameInstancesSet {
 		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}
+	
 	void disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
 		for(GameInstance gameInstance : gameInstances) {
 			SocketView socketView = gameInstance.findSocketView(connection);
