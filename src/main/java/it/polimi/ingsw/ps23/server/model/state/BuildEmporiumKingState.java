@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model.state;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumKing;
@@ -43,8 +44,21 @@ public class BuildEmporiumKingState extends ActionState {
 	public String getKingPosition() {
 		return kingPosition.toString();
 	}
+	
+	private void checkCards(List<String> removedPoliticCards) throws InvalidCardException {
+		String council = kingCouncil.toString();
+		for (String string : removedPoliticCards) {
+			if (council.contains(string)) {
+				council = council.replace(string, "");
+			}
+			else {
+				throw new InvalidCardException();
+			}
+		}
+	}
 
-	public Action createAction(List<String> removedCards, String arrivalCity) {
+	public Action createAction(List<String> removedCards, String arrivalCity) throws InvalidCardException {
+		checkCards(removedCards);
 		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
 	}
 

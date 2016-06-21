@@ -29,11 +29,13 @@ public class PoliticHandDeck extends HandDeck {
 	}
 	
 	private void checkCards(List<String> removedCards) throws InvalidCardException {
+		List<Integer> indexList = new ArrayList<>();
 		for(String removeCard : removedCards) {
 			boolean found = false;
 			for(int i = 0; i < getCards().size() && !found; i++) {
-				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard)) {
+				if(((PoliticCard)getCards().get(i)).getColor().isSameColor(removeCard) && !indexList.contains(i)) {
 					found = true;
+					indexList.add(i);
 				}
 			}
 			if(!found) {

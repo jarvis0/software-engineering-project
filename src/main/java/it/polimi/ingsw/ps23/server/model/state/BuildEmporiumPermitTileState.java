@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.state;
 
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelected;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumPermitTile;
@@ -23,7 +24,10 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		super(name);
 	}
 
-	public String getAvaibleCards() {
+	public String getAvaibleCards() throws IllegalActionSelected {
+		if (availableCards.getHandSize() == 0) {
+			throw new IllegalActionSelected();
+		}
 		return availableCards.toString();
 	}
 	

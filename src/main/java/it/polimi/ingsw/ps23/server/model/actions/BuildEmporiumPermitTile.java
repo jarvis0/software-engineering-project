@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model.actions;
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -21,9 +22,16 @@ public class BuildEmporiumPermitTile implements Action {
 		this.buildInThisCity = city;
 		this.chosenCard = chosenCard;
 	}
+	
+	private void checkAction() throws InvalidCityException {
+		if(buildInThisCity == null) {
+			throw new InvalidCityException();
+		}
+	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException, AlreadyBuiltHereException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException {
+		checkAction();
 		Player player = game.getCurrentPlayer();
 		buildInThisCity.buildEmporium(player);
 		player.updateEmporiumSet(game, turnHandler, buildInThisCity);		

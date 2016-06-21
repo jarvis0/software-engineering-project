@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.actions;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
@@ -23,8 +24,15 @@ public class AssistantToElectCouncillor implements Action {
 		this.council = council;
 	}
 	
+	private void checkAction() throws InvalidCouncilException {
+		if(council == null) {
+			throw new InvalidCouncilException();
+		}
+	}
+	
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCouncillorException, InsufficientResourcesException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCouncillorException, InsufficientResourcesException, InvalidCouncilException {
+		checkAction();
 		game.getFreeCouncillors().electCouncillor(councillor, council);
 		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
 			throw new InsufficientResourcesException();

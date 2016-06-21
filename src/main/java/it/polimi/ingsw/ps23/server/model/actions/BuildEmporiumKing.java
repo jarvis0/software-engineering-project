@@ -8,6 +8,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -31,9 +32,16 @@ public class BuildEmporiumKing implements Action {
 		this.arriveCity = arriveCity;
 		this.kingPosition = kingPosition;
 	}
+	
+	private void checkAction() throws InvalidCityException {
+		if(arriveCity == null) {
+			throw new InvalidCityException();
+		}
+	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException {
+		checkAction();
 		Player player = game.getCurrentPlayer();
 		int assistantsCost = 0;
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedCards);

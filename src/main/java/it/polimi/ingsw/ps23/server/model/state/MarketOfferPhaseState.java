@@ -39,8 +39,16 @@ public class MarketOfferPhaseState implements State {
 		return currentPlayer.getPoliticHandDeck().getHandSize() > 0;
 	}
 	
+	public int getPoliticHandSize() {
+		return currentPlayer.getPoliticHandDeck().getHandSize();
+	}
+	
 	public boolean canSellPermissionCards() {
 		return currentPlayer.getPermissionHandDeck().getHandSize() > 0;
+	}
+	
+	public int getPermissionHandSize() {
+		return currentPlayer.getPermissionHandDeck().getHandSize();
 	}
 	
 	public boolean canSellAssistants() {

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.naming.InsufficientResourcesException;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.Region;
@@ -26,11 +27,21 @@ public class AcquireBusinessPermitTile implements Action {
 		this.chosenPermissionCard = chosenPermissionCard;
 	}
 	
+	private void checkAction() throws InvalidRegionException {
+		if(chosenRegion == null) {
+			throw new InvalidRegionException();
+		}
+	}
+	
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, InvalidRegionException {
+		checkAction();
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedPoliticCards);
 		if(Math.abs(cost) > game.getCurrentPlayer().getCoins()) {
 			throw new InsufficientResourcesException();
+		}
+		if(chosenPermissionCard < 0 || chosenPermissionCard > 1) {
+			throw new InvalidCardException();
 		}
 		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedPoliticCards);
 		game.getCurrentPlayer().updateCoins(cost);

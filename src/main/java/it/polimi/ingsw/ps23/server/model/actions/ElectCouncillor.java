@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.actions;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
@@ -21,9 +22,16 @@ public class ElectCouncillor implements Action {
 		this.councillor = councillor;
 		this.council = council;
 	}
+	
+	private void checkAction() throws InvalidCouncilException {
+		if(council == null) {
+			throw new InvalidCouncilException();
+		}
+	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCouncillorException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCouncillorException, InvalidCouncilException {
+		checkAction();
 		game.getFreeCouncillors().electCouncillor(councillor, council);
 		game.getCurrentPlayer().updateCoins(EARNED_COINS);
 		turnHandler.useMainAction();

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.server.commons.exceptions;
 
-public class InvalidCityException extends Exception {
+import java.io.IOException;
+
+public class InvalidCityException extends IOException {
 
 	/**
 	 * 

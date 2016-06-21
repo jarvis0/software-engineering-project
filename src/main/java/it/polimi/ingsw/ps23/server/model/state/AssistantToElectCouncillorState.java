@@ -24,7 +24,7 @@ public class AssistantToElectCouncillorState extends ActionState {
 	}
 
 	public String getCouncilsMap() {
-		return ((ElectCouncillorState) electCouncillorState).toString();
+		return ((ElectCouncillorState) electCouncillorState).getCouncilsMap();
 	}	
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
