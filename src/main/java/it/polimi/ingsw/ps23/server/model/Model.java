@@ -235,4 +235,13 @@ public class Model extends ModelObservable {
 		}
 	}
 
+	public boolean isOnline(String player) {
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				return gamePlayer.isOnline();
+			}
+		}
+		return false;
+	}
+
 }

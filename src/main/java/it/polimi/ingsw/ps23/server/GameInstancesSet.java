@@ -51,6 +51,15 @@ class GameInstancesSet {
 		return false;
 	}
 	
+	boolean checkIfAlreadyInGame(String name) {
+		for(GameInstance gameInstance : gameInstances) {
+			if(gameInstance.isInGame(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	void reconnectPlayer(String name, Connection connection) {
 		if(foundGameInstance != null) {
 			foundGameInstance.reconnectPlayer(name, connection);

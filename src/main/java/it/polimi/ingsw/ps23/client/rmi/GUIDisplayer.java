@@ -5,98 +5,75 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-	
+
 public class GUIDisplayer extends Application implements Runnable {
 
-	@Override 
+	@Override
 	public void start(final Stage stage) throws Exception {
 		new GUIController();
-		Parent root = FXMLLoader.load(getClass().getResource("sceneMap.fxml"));
-		stage.setTitle("Line Manipulation Sample");
-		Scene newScene = new Scene(root);
-		stage.setScene(newScene);
-		stage.show();
-	}
-	
-	public void run() {
-		Application.launch();
-	}
-	  
-}		  
-	   
-	/*make a node movable by dragging it around with the mouse.
-	   private void enableDrag() {
-	      final Delta dragDelta = new Delta();
-	      setOnMousePressed(new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          // record a delta distance for the drag and drop operation.
-	          dragDelta.x = getCenterX() - mouseEvent.getX();
-	          dragDelta.y = getCenterY() - mouseEvent.getY();
-	          getScene().setCursor(Cursor.MOVE);
-	        }
-	      });
-	      setOnMouseReleased(new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          getScene().setCursor(Cursor.HAND);
-	        }
-	      });
-	      setOnMouseDragged(new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          double newX = mouseEvent.getX() + dragDelta.x;
-	          if (newX > 0 && newX < getScene().getWidth()) {
-	            setCenterX(newX);
-	          }  
-	          double newY = mouseEvent.getY() + dragDelta.y;
-	          if (newY > 0 && newY < getScene().getHeight()) {
-	            setCenterY(newY);
-	          }  
-	        }
-	      });
-	      setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (!mouseEvent.isPrimaryButtonDown()) {
-	            getScene().setCursor(Cursor.HAND);
-	          }
-	        }
-	      });
-	      setOnMouseExited(new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (!mouseEvent.isPrimaryButtonDown()) {
-	            getScene().setCursor(Cursor.DEFAULT);
-	          }
-	        }
-	      });
-	    }
-
-	    // records relative x and y co-ordinates.
-	    private class Delta { double x, y; }
-	  }  
-=======
-
-public class GUIDisplayer extends Application implements Runnable{
-
-	public void start(Stage stage) throws Exception {
-		new GUIController();
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		Parent root = fxmlLoader.load(getClass().getResource("sceneMap.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sceneMap.fxml"));
+		Parent root = fxmlLoader.load();
 		stage.setTitle("Council of Four");
 		Scene newScene = new Scene(root);
 		stage.setScene(newScene);
 		stage.show();
-		
 	}
 
-
-	@Override
 	public void run() {
 		Application.launch();
-		
->>>>>>> refs/remotes/origin/AlessandroNew
+		new RMIGUIView("erba").run();
 	}
+
 }
 
 /*
  * make a node movable by dragging it around with the mouse. private void
+ * enableDrag() { final Delta dragDelta = new Delta(); setOnMousePressed(new
+ * EventHandler<MouseEvent>() {
+ * 
+ * @Override public void handle(MouseEvent mouseEvent) { // record a delta
+ * distance for the drag and drop operation. dragDelta.x = getCenterX() -
+ * mouseEvent.getX(); dragDelta.y = getCenterY() - mouseEvent.getY();
+ * getScene().setCursor(Cursor.MOVE); } }); setOnMouseReleased(new
+ * EventHandler<MouseEvent>() {
+ * 
+ * @Override public void handle(MouseEvent mouseEvent) {
+ * getScene().setCursor(Cursor.HAND); } }); setOnMouseDragged(new
+ * EventHandler<MouseEvent>() {
+ * 
+ * @Override public void handle(MouseEvent mouseEvent) { double newX =
+ * mouseEvent.getX() + dragDelta.x; if (newX > 0 && newX <
+ * getScene().getWidth()) { setCenterX(newX); } double newY = mouseEvent.getY()
+ * + dragDelta.y; if (newY > 0 && newY < getScene().getHeight()) {
+ * setCenterY(newY); } } }); setOnMouseEntered(new EventHandler<MouseEvent>() {
+ * 
+ * @Override public void handle(MouseEvent mouseEvent) { if
+ * (!mouseEvent.isPrimaryButtonDown()) { getScene().setCursor(Cursor.HAND); } }
+ * }); setOnMouseExited(new EventHandler<MouseEvent>() {
+ * 
+ * @Override public void handle(MouseEvent mouseEvent) { if
+ * (!mouseEvent.isPrimaryButtonDown()) { getScene().setCursor(Cursor.DEFAULT); }
+ * } }); }
+ * 
+ * // records relative x and y co-ordinates. private class Delta { double x, y;
+ * } } =======
+ * 
+ * public class GUIDisplayer extends Application implements Runnable{
+ * 
+ * public void start(Stage stage) throws Exception { new GUIController();
+ * FXMLLoader fxmlLoader = new FXMLLoader(); Parent root =
+ * fxmlLoader.load(getClass().getResource("sceneMap.fxml")); stage.setTitle(
+ * "Council of Four"); Scene newScene = new Scene(root);
+ * stage.setScene(newScene); stage.show();
+ * 
+ * }
+ * 
+ * 
+ * @Override public void run() { Application.launch();
+ * 
+ * >>>>>>> refs/remotes/origin/AlessandroNew } }
+ * 
+ * /* make a node movable by dragging it around with the mouse. private void
  * enableDrag() { final Delta dragDelta = new Delta(); setOnMousePressed(new
  * EventHandler<MouseEvent>() {
  * 

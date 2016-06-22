@@ -81,7 +81,6 @@ public class GUIController implements Initializable {
 		self = this;
 	}
 
-
 	private void placeRewardToken() {
 		Map<String, City> citiesMap = GUIController.currentState.getGameMap().getCitiesMap();
 		for (ImageView imageView : citiesImagesList) {
@@ -97,9 +96,7 @@ public class GUIController implements Initializable {
 				text.setFont(Font.font("Verdana", 12));
 				text.setFill(Color.MAGENTA);
 			}
-
 		}
-
 	}
 
 	private void setPlayerSet() {
@@ -125,15 +122,6 @@ public class GUIController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		self = this;
-		javafx.application.Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				if (self != null) {
-					new RMIGUIView("erba").run();
-				}
-			}
-		});
-		
 	}
 
 	public static void updateGUI(StartTurnState state) {

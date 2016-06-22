@@ -166,9 +166,8 @@ class Server implements ServerInterface {
 			}
 		}
 	}
-
+	
 	private boolean isDouble(String name) {
-		// TODO cercare anche nella rmiWaitingConnections
 		doubleName = new String();
 		for(String playerName : socketWaitingConnections.keySet()) {
 			if(name.equals(playerName)) {
@@ -176,16 +175,34 @@ class Server implements ServerInterface {
 				return true;
 			}
 		}
+		for(String playerName : rmiWaitingConnections.keySet()) {
+			if(name.equals(playerName)) {
+				doubleName = playerName;
+				return true;
+			}
+		}
+		if(gameInstances.checkIfAlreadyInGame(name)) {
+			doubleName = name;
+			return true;
+		}
 		return false;
 	}
 
-	private String solveDoubles() {
+	private String solveDoubles(String playerName) {
+		String newPlayerName = playerName;
 		if(doubleName.contains(".")) {
-			return "." + Integer.parseInt(doubleName.substring(doubleName.indexOf('.') + 1)) + 1;
+			int n = doubleName.indexOf('.') + 1;
+			String intermediary = doubleName.substring(n);
+			int index = Integer.parseInt(intermediary) + 1;
+			newPlayerName = doubleName.substring(0, doubleName.indexOf('.') + 1) + index;
 		}
 		else {
-			return ".0";
+			newPlayerName += ".0";
 		}
+		if(isDouble(newPlayerName)) {
+			newPlayerName = solveDoubles(playerName);
+		}
+		return newPlayerName;
 	}
 
 	synchronized void joinToWaitingList(String name, Connection connection) {
@@ -199,8 +216,7 @@ class Server implements ServerInterface {
 		else {
 			if(!formerPlayer) {
 				if(isDouble(name)) {
-					String code = solveDoubles();
-					playerName += code;
+					playerName = solveDoubles(playerName);
 					connection.send(NO_INPUT + "Your name is a double for a game, here you are a new one: ''" + playerName + "''.\nIn case of reconnection, use this name to rejoin your game.");
 				}
 				output.println("Player " + playerName + " has been added to the waiting list.");

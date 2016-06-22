@@ -120,8 +120,12 @@ public class GameInstance {
 		model.setCurrentPLayerOffline();
 	}
 
+	public boolean isInGame(String name) {
+		return playersName.contains(name) && model.isOnline(name);
+	}
+
 	boolean isFormerPlayer(String name) {
-		return playersName.contains(name);
+		return playersName.contains(name) && !model.isOnline(name);
 	}
 
 	void reconnectPlayer(String name, Connection connection) {

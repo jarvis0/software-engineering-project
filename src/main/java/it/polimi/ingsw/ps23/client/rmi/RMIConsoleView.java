@@ -33,24 +33,23 @@ class RMIConsoleView extends RMIView {
 	
 	private Scanner scanner;
 	private PrintStream output;
-	private String clientName;
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
 	
 	RMIConsoleView(String playerName) {
+		super(playerName);
 		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
-		clientName = playerName;
 	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
 		output.println(currentState.getStatus());
-		if(player.getName().equals(clientName)) {
+		if(player.getName().equals(getClientName())) {
 			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
 				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
@@ -191,7 +190,7 @@ class RMIConsoleView extends RMIView {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		if(player.equals(clientName)) {
+		if(player.equals(getClientName())) {
 			if(currentState.canSellPoliticCards()) {
 				output.println("How many politic cards do you want to use? ");
 				int numberOfCards = Integer.parseInt(scanner.nextLine());
@@ -231,7 +230,7 @@ class RMIConsoleView extends RMIView {
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		if(player.equals(clientName)) {
+		if(player.equals(getClientName())) {
 			try {
 				if(currentState.canBuy()) {
 					output.println("Avaible offers: " + currentState.getAvaiableOffers());
@@ -290,19 +289,6 @@ class RMIConsoleView extends RMIView {
 	public void visit(EndGameState currentState) {
 		output.println(currentState.getWinner());
 		endGame = true;
-	}
-	
-	private synchronized void pause() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private synchronized void resume() {
-		notifyAll();
 	}
 
 	private boolean waitResumeCondition() {
