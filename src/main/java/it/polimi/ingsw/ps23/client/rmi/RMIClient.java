@@ -30,10 +30,11 @@ class RMIClient implements ClientInterface {
 	private ExecutorService executor;
 	
 	private RMIClient(String playerName) {
-		rmiView = new RMIConsoleView(playerName);
+		//rmiView = new RMIConsoleView(playerName);
+		//rmiView = new RMIConsoleView(playerName);
 		//rmiView = new RMIGUIView(playerName);
 		executor = Executors.newSingleThreadExecutor();
-		executor.submit(rmiView);
+		executor.submit(new GUIDisplayer());
 		output = new PrintStream(System.out);
 	}
 
@@ -66,7 +67,7 @@ class RMIClient implements ClientInterface {
 
 	@Override
 	public void changeState(State currentState) {
-		((RMIConsoleView) rmiView).update(currentState);
+		((RMIView) rmiView).update(currentState);
 	}
 
 }

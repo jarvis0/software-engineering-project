@@ -1,7 +1,10 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.mockito.cglib.core.GeneratorStrategy;
 
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -18,6 +21,8 @@ import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 public class RMIGUIView extends RMIView {
 	
@@ -29,13 +34,15 @@ public class RMIGUIView extends RMIView {
 
 	RMIGUIView(String playerName) {
 		clientName = playerName;
-		guiDisplayer = new GUIDisplayer();
 	}
-
+	
+	public State getCurrentState() {
+		return state;
+	}
 	@Override
 	public void visit(StartTurnState currentState) {
-		Player player = currentState.getCurrentPlayer();
-		guiDisplayer.showMap(currentState.getGameMap(), currentState.getPlayerSet());	
+		new GUIController();
+		GUIController.updateGUI(currentState);
 	}
 
 	@Override
@@ -113,7 +120,10 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public synchronized void run() {
 		waiting = true;
+		new Scanner(System.in).next();
 		pause();
+		//guiDisplayer = new GUIDisplayer();
+		//(new Thread(() -> guiDisplayer.startGUI())).start();
 		waiting = false;
 		do {
 			state.acceptView(this);

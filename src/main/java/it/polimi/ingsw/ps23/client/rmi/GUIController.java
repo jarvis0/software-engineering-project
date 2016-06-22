@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -26,10 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class GUIController implements Initializable {
-	
 
-	private static GUIController self = null;
-	
 	@FXML
 	ArrayList<ImageView> citiesImagesList;
 	@FXML
@@ -78,98 +73,85 @@ public class GUIController implements Initializable {
 	ImageView O;
 	@FXML
 	ImageView king;
-	
+
+	private static StartTurnState currentState;
+	private static GUIController self = null;
+
 	public GUIController() {
 		self = this;
 	}
-	
-	public static void changeValue() {
-	       new JFXPanel(); 
-	        javafx.application.Platform.runLater(new Runnable() {
-	            @Override
-	            public void run() {
-	                if(self != null){
-	                    self.refreshGUI();
-	                 }
-	            }
-	        });
-	        
-	}
-	
-	 private void refreshGUI() {
-	     	king.setX(300);
-	     	king.setY(100);
-	     	
-			//placeRewardToken(gameMap.getCitiesMap());
-			//setPlayerSet(playersSet);
-	     	
-	 	 /*  printCitiesRewardsAndEmporiums();
-	        printTilesDecks();
-	        printCityAndRegionBonus();
-	        printNobilityTrackRewards();
-	        printCouncils();
-	        printKingCouncil();
-	        printKingCity();
-	        printKingBonus();
-	        printCouncillorsMuck();
-	        printPlayersPublicInfo();*/
-	    }  
-	
-	private void placeRewardToken(Map<String, City> map) {
+
+
+	private void placeRewardToken() {
+		Map<String, City> citiesMap = GUIController.currentState.getGameMap().getCitiesMap();
 		for (ImageView imageView : citiesImagesList) {
-			City city = map.get(imageView.getId().toString());
-			if(city instanceof NormalCity) {
-				RewardToken rewardToken = ((NormalCity)city).getRewardToken();
+			City city = citiesMap.get(imageView.getId().toString());
+			if (city instanceof NormalCity) {
+				RewardToken rewardToken = ((NormalCity) city).getRewardToken();
 				Text text = new Text();
 				group.getChildren().add(text);
 				text.setText(rewardToken.toString());
-				text.setX(imageView.getLayoutX()+5.00);
+				text.setX(imageView.getLayoutX() + 5.00);
 				text.setY(imageView.getLayoutY());
 				text.toFront();
-				text.setFont(Font.font ("Verdana", 12));
+				text.setFont(Font.font("Verdana", 12));
 				text.setFill(Color.MAGENTA);
 			}
-			
+
 		}
-		
+
 	}
-	
-	private void setPlayerSet(PlayersSet playersSet) {
+
+	private void setPlayerSet() {
 		ObservableList<Player> playersList = FXCollections.observableArrayList();
-		playersList.addAll(playersSet.getPlayers());
-		playerName.setCellValueFactory(new PropertyValueFactory<Player,String>("name"));  
-		coins.setCellValueFactory(new PropertyValueFactory<Player,String>("coins"));  
-		assistants.setCellValueFactory(new PropertyValueFactory<Player,String>("assistants"));  
-		nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("nobilityTrackPoints"));  
-		victoryPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("victoryPoints"));
+		playersList.addAll(GUIController.currentState.getPlayerSet().getPlayers());
+		playerName.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
+		coins.setCellValueFactory(new PropertyValueFactory<Player, String>("coins"));
+		assistants.setCellValueFactory(new PropertyValueFactory<Player, String>("assistants"));
+		nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player, String>("nobilityTrackPoints"));
+		victoryPoints.setCellValueFactory(new PropertyValueFactory<Player, String>("victoryPoints"));
 		players.setItems(playersList);
 	}
-	
-	private void placeKing(City city) {
+
+	private void placeKing() {
 		for (ImageView imageView : citiesImagesList) {
-			if(imageView.getId().toString().equals(city.getName())) {
+			if (imageView.getId().toString().equals(GUIController.currentState.getKing().getPosition().getName())) {
 				king.setX(imageView.getLayoutX());
 				king.setY(imageView.getLayoutY());
 			}
 		}
 	}
-	
-	public static void staticRefreshGUI(){
-        new JFXPanel(); 
-        javafx.application.Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                if(self != null){
-                    self.refreshGUI();
-                 }
-            }
-        });
-    }
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		self = this;
+		javafx.application.Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if (self != null) {
+					new RMIGUIView("erba").run();
+				}
+			}
+		});
 		
 	}
-	
-}	
 
+	public static void updateGUI(StartTurnState state) {
+		GUIController.currentState = state;
+		javafx.application.Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if (self != null) {
+					self.updateMap();
+				}
+			}
+		});
+	}
+
+	private void updateMap() {
+		placeKing();
+		placeRewardToken();
+		setPlayerSet();
+	}
+
+}
