@@ -30,8 +30,9 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 10;
+	private static final int CONNECTION_TIMEOUT = 1000;
 	private static final String SECONDS_PRINT =  " seconds...";
+	private static final String NO_INPUT = "NOINPUTNEEDED";
 	
 	private ExecutorService executor;
 	
@@ -145,7 +146,7 @@ class Server implements ServerInterface {
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
 			for(Connection connection : socketWaitingConnections.values()) {
-				connection.send(message);
+				connection.send(NO_INPUT + "" + message);
 			}
 			for(ClientInterface client : rmiWaitingConnections.values()) {
 				infoMessage(client, message);
@@ -188,23 +189,29 @@ class Server implements ServerInterface {
 	}
 
 	synchronized void joinToWaitingList(String name, Connection connection) {
-		String message;
 		String playerName = name;
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(playerName);
-		if(isDouble(name) && !formerPlayer) {
-			String code = solveDoubles();
-			playerName += code;
-			message = "Your name is a double for a game, here you are a new one: ''" + playerName + "''.\nIn case of reconnection, use this name to rejoin your game.";
-		}
-		if(!formerPlayer) {
-			output.println("Player " + playerName + " has been added to the waiting list.");
-			socketWaitingConnections.put(playerName, connection);
-			startCountdownFromSocket();
+		if(!formerPlayer && !playerName.matches("[a-zA-Z]")) {
+			connection.send(NO_INPUT + "Invalid name.");
+			connection.close();
+			Thread.currentThread().interrupt();
 		}
 		else {
-			output.println("Player " + playerName + " is being prompted to his previous game.");
-			gameInstances.reconnectPlayer(playerName, connection);
-			connection.send("You have been prompted to your previous game, please wait your turn.");
+			if(!formerPlayer) {
+				if(isDouble(name)) {
+					String code = solveDoubles();
+					playerName += code;
+					connection.send(NO_INPUT + "Your name is a double for a game, here you are a new one: ''" + playerName + "''.\nIn case of reconnection, use this name to rejoin your game.");
+				}
+				output.println("Player " + playerName + " has been added to the waiting list.");
+				socketWaitingConnections.put(playerName, connection);
+				startCountdownFromSocket();
+			}
+			else {
+				output.println("Player " + playerName + " is being prompted to his previous game.");
+				gameInstances.reconnectPlayer(playerName, connection);
+				connection.send(NO_INPUT + "You have been prompted to your previous game, please wait your turn.");
+			}
 		}
 	}
 
@@ -213,14 +220,14 @@ class Server implements ServerInterface {
 			Socket newSocket = serverSocket.accept();
 			output.println("New socket client connection received.");
 			Connection connection = new Connection(this, newSocket, CONNECTION_TIMEOUT);
-			String message = "Connection established at " + new Date().toString();
+			String message = "Connection established at " + new Date().toString() + "\n";
 			if(launchingGame) {
-				message += "\nA new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
+				message += "A new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			}
-			connection.send(message + "\nWelcome, what's your in game name? ");
-			if(launchingGame) {
+			/*if(launchingGame) {
 				connection.send("The new game is starting in a few" + SECONDS_PRINT + "\n");
-			}
+			}*/
+			connection.send(message);
 			executor.submit(connection);
 		} catch (IOException | NullPointerException e) {
 			socketActive = false;

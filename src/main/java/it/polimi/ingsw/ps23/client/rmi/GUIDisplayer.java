@@ -8,15 +8,11 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 	
-	public class GUIDisplayer extends Application {
-	private SimpleController controller;
-	
-	public GUIDisplayer() {
-		//Application.launch();
-	}
-	   
+public class GUIDisplayer extends Application {
+
 	@Override 
 	public void start(final Stage stage) throws Exception {
+		new GUIController();
 		Parent root = FXMLLoader.load(getClass().getResource("sceneMap.fxml"));
 		stage.setTitle("Line Manipulation Sample");
 		Scene newScene = new Scene(root);
@@ -25,7 +21,7 @@ import javafx.scene.Scene;
 	}
 	
 	public void showMap(GameMap gameMap, PlayersSet playersSet) {
-		controller.changeValue(gameMap, playersSet);
+		GUIController.changeValue();
 	}
 	  
 }		  

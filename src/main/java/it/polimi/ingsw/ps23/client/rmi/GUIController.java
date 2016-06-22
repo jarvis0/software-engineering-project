@@ -13,6 +13,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -24,7 +25,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class SimpleController implements Initializable {
+public class GUIController implements Initializable {
+	
+
+	private static GUIController self = null;
 	
 	@FXML
 	ArrayList<ImageView> citiesImagesList;
@@ -75,10 +79,41 @@ public class SimpleController implements Initializable {
 	@FXML
 	ImageView king;
 	
-	public void changeValue(GameMap gameMap, PlayersSet playersSet) {
-		placeRewardToken(gameMap.getCitiesMap());
-		setPlayerSet(playersSet);
+	public GUIController() {
+		self = this;
 	}
+	
+	public static void changeValue() {
+	       new JFXPanel(); 
+	        javafx.application.Platform.runLater(new Runnable() {
+	            @Override
+	            public void run() {
+	                if(self != null){
+	                    self.refreshGUI();
+	                 }
+	            }
+	        });
+	        
+	}
+	
+	 private void refreshGUI() {
+	     	king.setX(300);
+	     	king.setY(100);
+	     	
+			//placeRewardToken(gameMap.getCitiesMap());
+			//setPlayerSet(playersSet);
+	     	
+	 	 /*  printCitiesRewardsAndEmporiums();
+	        printTilesDecks();
+	        printCityAndRegionBonus();
+	        printNobilityTrackRewards();
+	        printCouncils();
+	        printKingCouncil();
+	        printKingCity();
+	        printKingBonus();
+	        printCouncillorsMuck();
+	        printPlayersPublicInfo();*/
+	    }  
 	
 	private void placeRewardToken(Map<String, City> map) {
 		for (ImageView imageView : citiesImagesList) {
@@ -118,6 +153,18 @@ public class SimpleController implements Initializable {
 			}
 		}
 	}
+	
+	public static void staticRefreshGUI(){
+        new JFXPanel(); 
+        javafx.application.Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(self != null){
+                    self.refreshGUI();
+                 }
+            }
+        });
+    }
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

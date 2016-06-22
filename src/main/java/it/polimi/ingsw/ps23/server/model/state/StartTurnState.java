@@ -51,7 +51,7 @@ public class StartTurnState implements State {
 		return gameMap;
 	}
 	
-	public PlayersSet getPlayerSet() {
+	public PlayersSet getPlayerSet() {//TODO playersssss
 		return gamePlayersSet;
 	}
 	@Override
@@ -101,7 +101,5 @@ public class StartTurnState implements State {
 		}
 		return print;
 	}
-	
-	
 	
 }
