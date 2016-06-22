@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.actions;
 
 import javax.naming.InsufficientResourcesException;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
@@ -20,9 +21,12 @@ public class ChangePermitsTile implements Action {
 	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException {
+	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException, InvalidRegionException {
 		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
 			throw new InsufficientResourcesException();
+		}
+		if(((GroupRegionalCity) game.getGameMap().getRegion(regionName)) == null) {
+			throw new InvalidRegionException();
 		}
 		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();

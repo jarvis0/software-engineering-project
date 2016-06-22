@@ -37,6 +37,9 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	}
 	
 	public int getPoliticHandSize() {
+		if(politicHandDeck.getHandSize() > 4){
+			return 4;
+		}
 		return politicHandDeck.getHandSize();
 	}
 	
@@ -47,8 +50,8 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	private void checkCards(String chosenCouncil, List<String> removedPoliticCards) throws InvalidCardException {
 		String council = ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getCouncil().toString();
 		for (String string : removedPoliticCards) {
-			if (council.contains(string)) {
-				council = council.replace(string, "");
+			if (council.contains(string) || string.equals("multi")) {
+				council = council.replaceFirst(string, "");
 			}
 			else {
 				throw new InvalidCardException();

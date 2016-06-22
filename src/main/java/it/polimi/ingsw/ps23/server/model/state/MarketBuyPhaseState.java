@@ -22,7 +22,7 @@ public class MarketBuyPhaseState implements State {
 	
 	public boolean canBuy() {
 		for(MarketObject marketObject : market.getMarketObject()) {
-			if(marketObject.getPlayer() != currentPlayer && marketObject.getCost() < currentPlayer.getCoins()) {
+			if(!marketObject.getPlayer().getName().equals(currentPlayer.getName()) && marketObject.getCost() <= currentPlayer.getCoins()) {
 				return true;
 			}
 		}
@@ -32,7 +32,7 @@ public class MarketBuyPhaseState implements State {
 	public String getAvaiableOffers() {
 		StringBuilder avaiableOffers = new StringBuilder();
 		for(MarketObject marketObject : market.getMarketObject()) {
-			if(marketObject.getPlayer() != currentPlayer && marketObject.getCost() < currentPlayer.getCoins()) {
+			if(!marketObject.getPlayer().getName().equals(currentPlayer.getName()) && marketObject.getCost() <= currentPlayer.getCoins()) {
 				avaiableOffers.append("\n" + marketObject.toString());
 			}
 		}
@@ -49,7 +49,7 @@ public class MarketBuyPhaseState implements State {
 		MarketTransation marketTransation = new MarketTransation();
 		int i = 0;
 		for(MarketObject marketObject : market.getMarketObject()) {
-			if(marketObject.getPlayer() != currentPlayer && marketObject.getCost() < currentPlayer.getCoins()) {
+			if(!marketObject.getPlayer().getName().equals(currentPlayer.getName()) && marketObject.getCost() <= currentPlayer.getCoins()) {
 				if(i == selectedItem) {
 					marketTransation.setRequestedObject(marketObject);
 					return marketTransation;

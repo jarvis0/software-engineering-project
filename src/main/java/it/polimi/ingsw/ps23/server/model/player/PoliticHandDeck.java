@@ -105,6 +105,10 @@ public class PoliticHandDeck extends HandDeck {
 		return cards;
 	}
 	
+	public int getJokerCardsNumber() {
+		return getJokerCards().size();
+	}
+	
 	public Card getCardFromName(String name) throws InvalidCardException {
 		for (Card card : getCards()) {
 			if(((PoliticCard)card).getColor().isSameColor(name)) {

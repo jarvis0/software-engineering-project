@@ -24,10 +24,15 @@ public class BuildEmporiumKingState extends ActionState {
 	private City kingPosition;
 	private HandDeck deck;
 	private Map<String, City> citiesMap;
+	private int coins;
 	
 	BuildEmporiumKingState(String name) {
 		super(name);
 	}
+	
+	/*public boolean canPerformThisAction() {
+		if(coins < 1 && availableCards.getHandSize()-((PoliticHandDeck) availableCards).getJokerCardsNumber() >= 3)
+	}*/
 
 	public String getDeck() {
 		return deck.toString();
@@ -48,7 +53,7 @@ public class BuildEmporiumKingState extends ActionState {
 	private void checkCards(List<String> removedPoliticCards) throws InvalidCardException {
 		String council = kingCouncil.toString();
 		for (String string : removedPoliticCards) {
-			if (council.contains(string)) {
+			if (council.contains(string) || string.equals("multi")) {
 				council = council.replace(string, "");
 			}
 			else {
@@ -70,6 +75,7 @@ public class BuildEmporiumKingState extends ActionState {
 		deck = game.getCurrentPlayer().getPoliticHandDeck();
 		availableCards = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).getAvailableCards(kingCouncil);
 		citiesMap = game.getGameMap().getCitiesMap();
+		coins = game.getCurrentPlayer().getCoins();
 	}
 
 	@Override

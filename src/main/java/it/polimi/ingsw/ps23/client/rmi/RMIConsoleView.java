@@ -143,32 +143,32 @@ class RMIConsoleView extends RMIView {
 	
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		if(actionLoop) {
-			try {
+		try {
+			if(!actionLoop) {
 				getControllerInterface().wakeUpServer(currentState.createAction());
 				actionLoop = true;
-			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
-		}
-		else {
-			wakeUp();
+			else {
+				getControllerInterface().wakeUpServer();
+			}
+		} catch(RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 		
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		if(!actionLoop) {
-			try {
+		try {
+			if(!actionLoop) {
 				getControllerInterface().wakeUpServer(currentState.createAction());
-				actionLoop = true;
-			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+				actionLoop = true;				
 			}
-		}
-		else {
-			wakeUp();
+			else {
+				getControllerInterface().wakeUpServer();
+			}
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
 	}
 
@@ -220,7 +220,11 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch (IllegalActionSelected e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
-			wakeUp();
+			try {
+				getControllerInterface().wakeUpServer();
+			} catch (RemoteException e1) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
+			}
 		}
 		
 	}
