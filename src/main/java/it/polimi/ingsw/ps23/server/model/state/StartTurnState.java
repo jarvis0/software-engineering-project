@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model.state;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
+import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.player.Player;
@@ -21,6 +22,7 @@ public class StartTurnState implements State {
 	private PlayersSet gamePlayersSet;
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
+	private King king;
 	private StateCache stateCache;
 	private boolean finalTurn;
 	
@@ -54,6 +56,10 @@ public class StartTurnState implements State {
 	public PlayersSet getPlayerSet() {
 		return gamePlayersSet;
 	}
+	
+	public King getKing() {
+		return king;
+	}
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
@@ -62,6 +68,7 @@ public class StartTurnState implements State {
 		gamePlayersSet = game.getGamePlayersSet();
 		kingCouncil = game.getKing().getCouncil();
 		nobilityTrack = game.getNobilityTrack();
+		king = game.getKing();
 		stateCache = game.getStateCache();
 		finalTurn = false;
 		for(Player player : gamePlayersSet.getPlayers()) {

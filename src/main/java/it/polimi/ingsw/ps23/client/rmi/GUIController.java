@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.google.common.base.Service.State;
-
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -15,6 +13,9 @@ import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.State;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,8 +29,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class SimpleController implements Initializable {
-	
+public class GUIController implements Initializable {
+
 	@FXML
 	ArrayList<ImageView> citiesImagesList;
 	@FXML
@@ -78,55 +79,84 @@ public class SimpleController implements Initializable {
 	ImageView O;
 	@FXML
 	ImageView king;
-	
-	public void changeValue(GameMap gameMap, PlayersSet playersSet) {
-		placeRewardToken(gameMap.getCitiesMap());
-		setPlayerSet(playersSet);
+
+	private static StartTurnState currentState;
+	private static GUIController self = null;
+
+	public GUIController() {
+		self = this;
 	}
-	
-	private void placeRewardToken(Map<String, City> map) {
+
+
+	private void placeRewardToken() {
+		Map<String, City> citiesMap = GUIController.currentState.getGameMap().getCitiesMap();
 		for (ImageView imageView : citiesImagesList) {
-			City city = map.get(imageView.getId().toString());
-			if(city instanceof NormalCity) {
-				RewardToken rewardToken = ((NormalCity)city).getRewardToken();
+			City city = citiesMap.get(imageView.getId().toString());
+			if (city instanceof NormalCity) {
+				RewardToken rewardToken = ((NormalCity) city).getRewardToken();
 				Text text = new Text();
 				group.getChildren().add(text);
 				text.setText(rewardToken.toString());
-				text.setX(imageView.getLayoutX()+5.00);
+				text.setX(imageView.getLayoutX() + 5.00);
 				text.setY(imageView.getLayoutY());
 				text.toFront();
-				text.setFont(Font.font ("Verdana", 12));
+				text.setFont(Font.font("Verdana", 12));
 				text.setFill(Color.MAGENTA);
 			}
-			
+
 		}
-		
+
 	}
-	
-	private void setPlayerSet(PlayersSet playersSet) {
+
+	private void setPlayerSet() {
 		ObservableList<Player> playersList = FXCollections.observableArrayList();
-		playersList.addAll(playersSet.getPlayers());
-		playerName.setCellValueFactory(new PropertyValueFactory<Player,String>("name"));  
-		coins.setCellValueFactory(new PropertyValueFactory<Player,String>("coins"));  
-		assistants.setCellValueFactory(new PropertyValueFactory<Player,String>("assistants"));  
-		nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("nobilityTrackPoints"));  
-		victoryPoints.setCellValueFactory(new PropertyValueFactory<Player,String>("victoryPoints"));
+		playersList.addAll(GUIController.currentState.getPlayerSet().getPlayers());
+		playerName.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
+		coins.setCellValueFactory(new PropertyValueFactory<Player, String>("coins"));
+		assistants.setCellValueFactory(new PropertyValueFactory<Player, String>("assistants"));
+		nobilityPoints.setCellValueFactory(new PropertyValueFactory<Player, String>("nobilityTrackPoints"));
+		victoryPoints.setCellValueFactory(new PropertyValueFactory<Player, String>("victoryPoints"));
 		players.setItems(playersList);
 	}
-	
-	private void placeKing(City city) {
+
+	private void placeKing() {
 		for (ImageView imageView : citiesImagesList) {
-			if(imageView.getId().toString().equals(city.getName())) {
+			if (imageView.getId().toString().equals(GUIController.currentState.getKing().getPosition().getName())) {
 				king.setX(imageView.getLayoutX());
 				king.setY(imageView.getLayoutY());
 			}
 		}
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		self = this;
+		javafx.application.Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if (self != null) {
+					new RMIGUIView("erba").run();
+				}
+			}
+		});
 		
 	}
-	
-}	
 
+	public static void updateGUI(StartTurnState state) {
+		GUIController.currentState = state;
+		javafx.application.Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if (self != null) {
+					self.updateMap();
+				}
+			}
+		});
+	}
+
+	private void updateMap() {
+		placeKing();
+		placeRewardToken();
+		setPlayerSet();
+	}
+}
