@@ -83,6 +83,7 @@ public class GUIDisplayer extends Application implements Runnable{
 		Scene newScene = new Scene(root);
 		stage.setScene(newScene);
 		stage.show();
+		
 	}
 
 
