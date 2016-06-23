@@ -1,8 +1,9 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
 import java.util.List;
-import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumKing;
@@ -22,10 +23,16 @@ public class BuildEmporiumKingState extends ActionState {
 	private HandDeck availableCards;
 	private City kingPosition;
 	private HandDeck deck;
-	private Map<String, City> citiesMap;
 	
 	BuildEmporiumKingState(String name) {
 		super(name);
+	}
+	
+	public int getPoliticHandSize() {
+		if(deck.getHandSize() > 4){
+			return 4;
+		}
+		return deck.getHandSize();
 	}
 
 	public String getDeck() {
@@ -36,16 +43,32 @@ public class BuildEmporiumKingState extends ActionState {
 		return availableCards.toString();
 	}
 	
-	public int getAvailableCardsNumber() {
+	public int getAvailableCardsNumber() throws IllegalActionSelectedException {
+		if(availableCards.getHandSize() == 0) {
+			throw new IllegalActionSelectedException();
+		}
 		return availableCards.getHandSize();
 	}
 
 	public String getKingPosition() {
 		return kingPosition.toString();
 	}
+	
+	private void checkCards(List<String> removedPoliticCards) throws InvalidCardException {
+		String council = kingCouncil.toString();
+		for (String string : removedPoliticCards) {
+			if (council.contains(string) || string.equals("multi")) {
+				council = council.replaceFirst(string, "");
+			}
+			else {
+				throw new InvalidCardException();
+			}
+		}
+	}
 
-	public Action createAction(List<String> removedCards, String arrivalCity) {
-		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
+	public Action createAction(List<String> removedCards, String arrivalCity) throws InvalidCardException {
+		checkCards(removedCards);
+		return new BuildEmporiumKing(removedCards, arrivalCity);
 	}
 
 	@Override
@@ -55,7 +78,6 @@ public class BuildEmporiumKingState extends ActionState {
 		kingCouncil = game.getKing().getCouncil();
 		deck = game.getCurrentPlayer().getPoliticHandDeck();
 		availableCards = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).getAvailableCards(kingCouncil);
-		citiesMap = game.getGameMap().getCitiesMap();
 	}
 
 	@Override

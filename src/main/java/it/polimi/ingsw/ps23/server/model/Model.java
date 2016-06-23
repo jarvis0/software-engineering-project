@@ -2,6 +2,13 @@ package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
@@ -120,7 +127,7 @@ public class Model extends ModelObservable {
 		wakeUp(state);
 	}
 	
-	public void doAction(Action action) {
+	public void doAction(Action action) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException {
 		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
 		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
@@ -244,4 +251,17 @@ public class Model extends ModelObservable {
 		return false;
 	}
 
+	public void rollBack(Exception e) {
+		context.addExceptionText(e);
+		wakeUp(context.getState());		
+	}
+
+	public void restartTurn(Exception e) {
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState(turnHandler);
+		startTurnState.changeState(context, game);
+		context.addExceptionText(e);
+		wakeUp(startTurnState);		
+	}
+	
 }

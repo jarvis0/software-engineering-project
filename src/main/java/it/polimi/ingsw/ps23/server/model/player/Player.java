@@ -2,12 +2,7 @@ package it.polimi.ingsw.ps23.server.model.player;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.naming.InsufficientResourcesException;
-
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidPositionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -101,22 +96,12 @@ public class Player implements Serializable {
 		nobilityTrackPoints += value;
 	}
 	
-	public void updateCoins(int value) throws InsufficientResourcesException {
-		if(coins + value >= 0) {
-			coins += value;
-		}
-		else{
-			throw new InsufficientResourcesException();
-		}
+	public void updateCoins(int value) {
+		coins += value;
 	}
 	
-	public void updateAssistants(int value) throws InsufficientResourcesException {
-		if(assistants + value >= 0){
-			assistants += value;
-		}
-		else{
-			throw new InsufficientResourcesException();
-		}
+	public void updateAssistants(int value) {
+		assistants += value;
 	}
 	
 	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) {
@@ -143,12 +128,8 @@ public class Player implements Serializable {
 	}
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
-		try {
-			builtEmporiumsSet.addBuiltEmporium(city);
-			game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
-		} catch (InvalidPositionException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server connection socket.", e);	
-		}
+		builtEmporiumsSet.addBuiltEmporium(city);
+		game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
 	}
 
 	public void usePermissionCard(int chosenCard) {

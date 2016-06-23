@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class SuperBonusState implements State {
+public class SuperBonusState extends State {
 	
 	/**
 	 * 

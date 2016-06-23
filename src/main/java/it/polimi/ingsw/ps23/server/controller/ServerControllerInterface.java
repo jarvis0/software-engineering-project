@@ -22,6 +22,8 @@ public interface ServerControllerInterface extends Remote {
 	public void wakeUpServer(MarketTransation marketTransation) throws RemoteException;
 	
 	public void wakeUpServer(SuperBonusGiver superBonusGiver) throws RemoteException;
+	
+	public void wakeUpServer(Exception e) throws RemoteException;
 
 	public ServerControllerInterface setStub() throws RemoteException;
 	

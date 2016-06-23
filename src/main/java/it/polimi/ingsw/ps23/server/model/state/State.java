@@ -5,10 +5,25 @@ import java.io.Serializable;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public interface State extends Serializable {
+@SuppressWarnings("serial")
+public abstract class State implements Serializable {
 	
-	public void changeState(Context context, Game game);
+	private String exceptionString = new String();
 	
-	public void acceptView(ViewVisitor view);
+	public abstract void changeState(Context context, Game game);
+	
+	public abstract void acceptView(ViewVisitor view);
+	
+	public void setExceptionString(String exceptionString) {
+		this.exceptionString = exceptionString;
+	}
+	
+	public String getExceptionString() {
+		return exceptionString;
+	}
+	
+	public boolean arePresentException() {
+		return exceptionString.length() != 0;
+	}
 	
 }

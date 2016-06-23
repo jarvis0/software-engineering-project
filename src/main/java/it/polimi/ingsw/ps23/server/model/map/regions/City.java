@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
@@ -32,12 +33,18 @@ public class City implements Serializable {
 		return color.getName();
 	}
 	
-	public int buildEmporium(Player player) throws AlreadyBuiltHereException { 
+	public int buildEmporium(Player player) throws AlreadyBuiltHereException, InsufficientResourcesException { 
 		int assitantsCost = 0;
 		if(!emporiumsList.isEmpty()) {
 			assitantsCost =	- emporiumsList.size();
 		}
-		emporiumsList.add(player); 
+		if(Math.abs(assitantsCost) > player.getAssistants()) {
+			throw new InsufficientResourcesException();
+		}
+		if(emporiumsList.contains(player)) {
+			throw new AlreadyBuiltHereException();
+		}
+		emporiumsList.add(player);
 		return assitantsCost;
 	}
 

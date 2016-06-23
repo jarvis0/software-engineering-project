@@ -12,8 +12,9 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
+import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 
-public class TestPlayer {
+public class TestPermissionHandDeck {
 
 	@Test
 	public void test() {
@@ -23,18 +24,13 @@ public class TestPlayer {
 		cards.add(card);
 		Deck politicDeck = new PoliticDeck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));
-		assertTrue(player.getName().equals("1"));
-		assertTrue(player.getAssistants() == 2 && player.getCoins() == 2 && player.getVictoryPoints() == 0 && player.getNobilityTrackPoints() == 0 && player.getNumberOfPoliticCard() == 1);
-		player.updateAssistants(1);
-		assertTrue(player.getAssistants() == 3);
-		player.updateCoins(1);
-		assertTrue(player.getCoins() == 3);
-		player.updateVictoryPoints(1);
-		assertTrue(player.getVictoryPoints() == 1);
-		player.updateNobilityPoints(1);
-		assertTrue(player.getNobilityTrackPoints() == 1);
-		player.setOnline(false);
-		assertFalse(player.isOnline());
+		PermissionCard permissionCard = new PermissionCard();
+		HandDeck handDeck = new PermissionHandDeck();
+		List<Card> permissionHandCards = new ArrayList<>();
+		permissionHandCards.add(permissionCard);
+		((PermissionHandDeck)handDeck).addCards(permissionHandCards);
+		assertTrue(((PermissionHandDeck)handDeck).getAvaiblePermissionCards().getCardInPosition(0).equals(permissionCard));
+		//player.
 	}
 
 }

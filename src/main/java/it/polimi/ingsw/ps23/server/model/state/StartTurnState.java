@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class StartTurnState implements State {
+public class StartTurnState extends State {
 
 	/**
 	 * 

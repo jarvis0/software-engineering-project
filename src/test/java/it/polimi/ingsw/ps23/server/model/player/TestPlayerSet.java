@@ -16,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
-public class TestPlayerTest {
+public class TestPlayerSet {
 
 	@Test
 	public void test() {
