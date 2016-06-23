@@ -239,11 +239,12 @@ public class Model extends ModelObservable {
 	}
 
 	public void rollBack(Exception e) {
-		wakeUp(context.getState());
 		context.addExceptionText(e);
+		wakeUp(context.getState());		
 	}
 
 	public void restartTurn(Exception e) {
+		context.addExceptionText(e);
 		setStartTurnState();		
 	}
 	
