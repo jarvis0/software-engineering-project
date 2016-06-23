@@ -31,6 +31,10 @@ public class PermissionCard implements Card, BonusSlot {
 	public void addCity(City city) {
 		this.cities.add(city);
 	}
+	
+	public boolean containCity(City city) {
+		return cities.contains(city);
+	}
 
 	public void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {

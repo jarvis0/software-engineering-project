@@ -41,9 +41,12 @@ public class Controller implements ControllerObserver {
 	public void update(Action action) {
 		try {
 			model.doAction(action);
-		} catch (InvalidCardException | InsufficientResourcesException | AlreadyBuiltHereException | InvalidCouncillorException | InvalidCouncilException | InvalidRegionException | InvalidCityException e) {
+		} catch (InvalidCardException | AlreadyBuiltHereException | InvalidCouncillorException | InvalidCouncilException | InvalidRegionException | InvalidCityException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Occured", e);
 			model.rollBack();
+		} catch (InsufficientResourcesException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Occured", e);
+			model.restartTurn();
 		}
 	}
 

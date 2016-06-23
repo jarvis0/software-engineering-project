@@ -23,39 +23,38 @@ public class BuildEmporiumKing implements Action {
 	 */
 	private static final long serialVersionUID = -3325202641887325997L;
 	private static final double ROAD_COST = -2;
-	private City arriveCity;
+	private String arriveCity;
 	private List<String> removedCards;
-	private City kingPosition;
 	
-	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
+	public BuildEmporiumKing(List<String> removedCards, String arriveCity) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;
-		this.kingPosition = kingPosition;
 	}
 	
-	private void checkAction() throws InvalidCityException {
-		if(arriveCity == null) {
+	private void checkAction(Game game) throws InvalidCityException {
+		if(game.getGameMap().getCitiesMap().get(arriveCity) == null) {
 			throw new InvalidCityException();
 		}
 	}
 
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException {
-		checkAction();
+		checkAction(game);
+		City finalCity = game.getGameMap().getCitiesMap().get(arriveCity);
 		Player player = game.getCurrentPlayer();
 		int assistantsCost = 0;
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedCards);
-		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), kingPosition , arriveCity);
+		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), game.getKing().getPosition() , finalCity);
 		cost = cost + (int) (ROAD_COST * dijkstraShortestPath.getPathLength());
 		if(Math.abs(cost) > player.getCoins()) {
 			throw new InsufficientResourcesException();
 		}
-		assistantsCost = arriveCity.buildEmporium(player);
+		assistantsCost = finalCity.buildEmporium(player);
 		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedCards);
 		player.updateCoins(cost);
 		player.updateAssistants(assistantsCost);
-		game.getKing().setNewPosition(arriveCity);
-		player.updateEmporiumSet(game, turnHandler, arriveCity);
+		game.getKing().setNewPosition(finalCity);
+		player.updateEmporiumSet(game, turnHandler, finalCity);
 		player.checkEmporiumsGroups(game);
 		turnHandler.useMainAction();
 	}

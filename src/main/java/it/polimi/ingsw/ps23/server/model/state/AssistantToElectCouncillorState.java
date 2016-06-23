@@ -28,7 +28,7 @@ public class AssistantToElectCouncillorState extends ActionState {
 	}	
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
-		return new AssistantToElectCouncillor(chosenCouncillor, ((ElectCouncillorState) electCouncillorState).getCouncilMap(chosenBalcony));
+		return new AssistantToElectCouncillor(chosenCouncillor, chosenBalcony);
 	}
 	
 	@Override

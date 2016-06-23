@@ -39,7 +39,7 @@ public class ElectCouncillorState extends ActionState {
 	}
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
-		return new ElectCouncillor(chosenCouncillor, getCouncilMap(chosenBalcony));
+		return new ElectCouncillor(chosenCouncillor, chosenBalcony);
 	}
 
 	@Override

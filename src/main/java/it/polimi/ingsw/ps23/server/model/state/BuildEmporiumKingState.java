@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
 import java.util.List;
-import java.util.Map;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
@@ -23,7 +22,6 @@ public class BuildEmporiumKingState extends ActionState {
 	private HandDeck availableCards;
 	private City kingPosition;
 	private HandDeck deck;
-	private Map<String, City> citiesMap;
 	private int coins;
 	
 	BuildEmporiumKingState(String name) {
@@ -33,6 +31,13 @@ public class BuildEmporiumKingState extends ActionState {
 	/*public boolean canPerformThisAction() {
 		if(coins < 1 && availableCards.getHandSize()-((PoliticHandDeck) availableCards).getJokerCardsNumber() >= 3)
 	}*/
+	
+	public int getPoliticHandSize() {
+		if(deck.getHandSize() > 4){
+			return 4;
+		}
+		return deck.getHandSize();
+	}
 
 	public String getDeck() {
 		return deck.toString();
@@ -54,7 +59,7 @@ public class BuildEmporiumKingState extends ActionState {
 		String council = kingCouncil.toString();
 		for (String string : removedPoliticCards) {
 			if (council.contains(string) || string.equals("multi")) {
-				council = council.replace(string, "");
+				council = council.replaceFirst(string, "");
 			}
 			else {
 				throw new InvalidCardException();
@@ -64,7 +69,7 @@ public class BuildEmporiumKingState extends ActionState {
 
 	public Action createAction(List<String> removedCards, String arrivalCity) throws InvalidCardException {
 		checkCards(removedCards);
-		return new BuildEmporiumKing(removedCards, citiesMap.get(arrivalCity), kingPosition);
+		return new BuildEmporiumKing(removedCards, arrivalCity);
 	}
 
 	@Override
@@ -74,7 +79,6 @@ public class BuildEmporiumKingState extends ActionState {
 		kingCouncil = game.getKing().getCouncil();
 		deck = game.getCurrentPlayer().getPoliticHandDeck();
 		availableCards = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).getAvailableCards(kingCouncil);
-		citiesMap = game.getGameMap().getCitiesMap();
 		coins = game.getCurrentPlayer().getCoins();
 	}
 

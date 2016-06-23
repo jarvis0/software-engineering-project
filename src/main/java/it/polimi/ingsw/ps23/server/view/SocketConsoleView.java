@@ -38,14 +38,12 @@ public class SocketConsoleView extends SocketView {
 	private Connection connection;
 	private String clientName;
 	private State state;
-	private boolean endGame;	
-	private boolean actionLoop;
+	private boolean endGame;
 	
 	public SocketConsoleView(String clientName, Connection connection) {
 		this.connection = connection;
 		this.clientName = clientName;
 		this.connection = connection;
-		endGame = false;
 	}
 
 	@Override
@@ -82,7 +80,6 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
-		actionLoop = false;
 		Player player = currentState.getCurrentPlayer();
 		sendNoInput(currentState.getStatus());
 		if(player.getName().equals(clientName)) {
@@ -142,24 +139,12 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		if(!actionLoop) {
-			wakeUp(currentState.createAction());
-			actionLoop = true;
-		}
-		else {
-			wakeUp();
-		}
+		wakeUp(currentState.createAction());
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		if(!actionLoop) {
-			wakeUp(currentState.createAction());
-			actionLoop = true;
-		}
-		else {
-			wakeUp();
-		}
+		wakeUp(currentState.createAction());
 	}
 
 	@Override
@@ -175,7 +160,7 @@ public class SocketConsoleView extends SocketView {
 		sendWithInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
 		int numberOfCards = Integer.parseInt(receive());
 		sendNoInput("Player hand deck:" + currentState.getDeck());
-		for (int i = 0; i < numberOfCards; i++) {
+		for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 			String chosenCard = receive().toLowerCase();
 			removedCards.add(chosenCard);
@@ -200,6 +185,8 @@ public class SocketConsoleView extends SocketView {
 		} catch (IllegalActionSelected e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
 			wakeUp();
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
 		}
 	}
 

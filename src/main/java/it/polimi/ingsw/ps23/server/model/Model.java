@@ -240,8 +240,11 @@ public class Model extends ModelObservable {
 	}
 
 	public void rollBack() {
-		//setStartTurnState();
 		wakeUp(context.getState());
+	}
+
+	public void restartTurn() {
+		setStartTurnState();		
 	}
 	
 }

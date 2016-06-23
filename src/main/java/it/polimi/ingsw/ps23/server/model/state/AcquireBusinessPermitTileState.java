@@ -76,7 +76,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) throws InvalidCardException {
 		checkCards(chosenCouncil, removedPoliticCards);
-		return new AcquireBusinessPermitTile(removedPoliticCards, (GroupRegionalCity) regionsMap.get(chosenCouncil), chosenPermissionCard);
+		return new AcquireBusinessPermitTile(removedPoliticCards, chosenCouncil, chosenPermissionCard);
 	}
 
 	@Override

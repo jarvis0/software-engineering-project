@@ -43,7 +43,6 @@ class RMIConsoleView extends RMIView {
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
-	private boolean actionLoop;
 	
 	RMIConsoleView(RMIClient client, String playerName) {
 		super(client);
@@ -65,7 +64,6 @@ class RMIConsoleView extends RMIView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
-		actionLoop = false;
 		Player player = currentState.getCurrentPlayer();
 		output.println(currentState.getStatus());
 		if(player.getName().equals(clientName)) {
@@ -144,13 +142,7 @@ class RMIConsoleView extends RMIView {
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
 		try {
-			if(!actionLoop) {
-				getControllerInterface().wakeUpServer(currentState.createAction());
-				actionLoop = true;
-			}
-			else {
-				getControllerInterface().wakeUpServer();
-			}
+			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch(RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
@@ -160,13 +152,7 @@ class RMIConsoleView extends RMIView {
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		try {
-			if(!actionLoop) {
-				getControllerInterface().wakeUpServer(currentState.createAction());
-				actionLoop = true;				
-			}
-			else {
-				getControllerInterface().wakeUpServer();
-			}
+			getControllerInterface().wakeUpServer(currentState.createAction());
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
@@ -190,7 +176,7 @@ class RMIConsoleView extends RMIView {
 		output.println("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
 		int numberOfCards = Integer.parseInt(scanner.nextLine());
 		output.println("Player hand deck:" + currentState.getDeck());
-		for (int i = 0; i < numberOfCards; i++) {
+		for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 			output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 			String chosenCard = scanner.nextLine().toLowerCase();
 			removedCards.add(chosenCard);
@@ -225,6 +211,8 @@ class RMIConsoleView extends RMIView {
 			} catch (RemoteException e1) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 			}
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
 		}
 		
 	}
