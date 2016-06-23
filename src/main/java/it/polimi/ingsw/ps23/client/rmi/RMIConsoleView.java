@@ -123,6 +123,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch(InvalidCouncilException | InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_COUNCIL_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}
 	}
 	
@@ -189,6 +190,7 @@ class RMIConsoleView extends RMIView {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}		
 	}
 
@@ -206,6 +208,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch (IllegalActionSelected e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			//TODO l'utente non viene mai notificato qua 
 			try {
 				getControllerInterface().wakeUpServer();
 			} catch (RemoteException e1) {
@@ -213,6 +216,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}
 		
 	}
@@ -253,6 +257,7 @@ class RMIConsoleView extends RMIView {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			} catch (InvalidCardException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+				state.setExceptionString(e.toString());
 			}
 		}
 		else {
@@ -350,6 +355,9 @@ class RMIConsoleView extends RMIView {
 		waiting = false;
 		do {
 			state.acceptView(this);
+			if(state.arePresentException()) {
+				output.println(state.getExceptionString());
+			}			
 		} while(!endGame);
 	}
 

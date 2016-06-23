@@ -2,9 +2,8 @@ package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
 
-import javax.naming.InsufficientResourcesException;
-
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
@@ -239,11 +238,12 @@ public class Model extends ModelObservable {
 		//game.getGamePlayersSet().;
 	}
 
-	public void rollBack() {
+	public void rollBack(Exception e) {
 		wakeUp(context.getState());
+		context.addExceptionText(e);
 	}
 
-	public void restartTurn() {
+	public void restartTurn(Exception e) {
 		setStartTurnState();		
 	}
 	

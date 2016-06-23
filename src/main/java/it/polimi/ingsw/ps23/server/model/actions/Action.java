@@ -2,9 +2,8 @@ package it.polimi.ingsw.ps23.server.model.actions;
 
 import java.io.Serializable;
 
-import javax.naming.InsufficientResourcesException;
-
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;

@@ -3,8 +3,7 @@ package it.polimi.ingsw.ps23.server.model.actions;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.InsufficientResourcesException;
-
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.Game;

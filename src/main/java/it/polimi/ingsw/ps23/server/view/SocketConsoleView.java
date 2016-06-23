@@ -125,6 +125,7 @@ public class SocketConsoleView extends SocketView {
 			wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));
 		} catch(InvalidCouncilException | InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_COUNCIL_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}
 	}
 
@@ -171,6 +172,7 @@ public class SocketConsoleView extends SocketView {
 			wakeUp(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}
 	}
 	
@@ -184,9 +186,11 @@ public class SocketConsoleView extends SocketView {
 			wakeUp(currentState.createAction(chosenCity, chosenCard));
 		} catch (IllegalActionSelected e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			//TODO l'utente non viene mai notificato qua
 			wakeUp();
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			state.setExceptionString(e.toString());
 		}
 	}
 
@@ -224,6 +228,7 @@ public class SocketConsoleView extends SocketView {
 				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (InvalidCardException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+				state.setExceptionString(e.toString());
 			}
 		}
 		else {
@@ -297,6 +302,9 @@ public class SocketConsoleView extends SocketView {
 	public synchronized void run() {
 		do {
 			state.acceptView(this);
+			if(state.arePresentException()) {
+				sendNoInput(state.getExceptionString());
+			}
 		} while(!endGame);
 	}
 	

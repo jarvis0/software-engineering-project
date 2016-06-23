@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class MarketOfferPhaseState implements State {
+public class MarketOfferPhaseState extends State {
 
 	/**
 	 * 

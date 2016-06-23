@@ -2,8 +2,7 @@ package it.polimi.ingsw.ps23.server.model.actions;
 
 import java.util.List;
 
-import javax.naming.InsufficientResourcesException;
-
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;

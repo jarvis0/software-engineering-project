@@ -3,9 +3,8 @@ package it.polimi.ingsw.ps23.server.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.naming.InsufficientResourcesException;
-
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
@@ -43,10 +42,10 @@ public class Controller implements ControllerObserver {
 			model.doAction(action);
 		} catch (InvalidCardException | AlreadyBuiltHereException | InvalidCouncillorException | InvalidCouncilException | InvalidRegionException | InvalidCityException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Occured", e);
-			model.rollBack();
+			model.rollBack(e);
 		} catch (InsufficientResourcesException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "IOException Occured", e);
-			model.restartTurn();
+			model.restartTurn(e);
 		}
 	}
 

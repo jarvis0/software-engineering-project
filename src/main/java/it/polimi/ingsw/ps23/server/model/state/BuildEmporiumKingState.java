@@ -22,15 +22,10 @@ public class BuildEmporiumKingState extends ActionState {
 	private HandDeck availableCards;
 	private City kingPosition;
 	private HandDeck deck;
-	private int coins;
 	
 	BuildEmporiumKingState(String name) {
 		super(name);
 	}
-	
-	/*public boolean canPerformThisAction() {
-		if(coins < 1 && availableCards.getHandSize()-((PoliticHandDeck) availableCards).getJokerCardsNumber() >= 3)
-	}*/
 	
 	public int getPoliticHandSize() {
 		if(deck.getHandSize() > 4){
@@ -79,7 +74,6 @@ public class BuildEmporiumKingState extends ActionState {
 		kingCouncil = game.getKing().getCouncil();
 		deck = game.getCurrentPlayer().getPoliticHandDeck();
 		availableCards = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).getAvailableCards(kingCouncil);
-		coins = game.getCurrentPlayer().getCoins();
 	}
 
 	@Override
