@@ -41,8 +41,7 @@ public class RMIGUIView extends RMIView {
 	}
 	@Override
 	public void visit(StartTurnState currentState) {
-		new GUIController();
-		GUIController.updateGUI(currentState);
+		guiDisplayer.guiController.updateGUI(currentState);
 	}
 
 	@Override
@@ -120,10 +119,9 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public synchronized void run() {
 		waiting = true;
-		new Scanner(System.in).next();
 		pause();
-		//guiDisplayer = new GUIDisplayer();
-		//(new Thread(() -> guiDisplayer.startGUI())).start();
+		guiDisplayer = new GUIDisplayer();
+		(new Thread(() -> guiDisplayer.startGUI())).start();
 		waiting = false;
 		do {
 			state.acceptView(this);
@@ -155,5 +153,6 @@ public class RMIGUIView extends RMIView {
 			waiting = false;
 		}
 	}
+
 	
 }

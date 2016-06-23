@@ -2,33 +2,48 @@ package it.polimi.ingsw.ps23.client.rmi;
 
 import java.io.IOException;
 
+import javax.management.loading.PrivateClassLoader;
+
+import org.junit.experimental.theories.Theories;
+
+import it.polimi.ingsw.ps23.server.controller.Controller;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.State;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-public class GUIDisplayer extends Application implements Runnable{
+public class GUIDisplayer extends Application {
+	
 
+	static GUIController guiController;
+	
 	public void start(Stage stage) throws Exception {
-		new GUIController();
+		GUIController controller = new GUIController();
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		Parent root = fxmlLoader.load(getClass().getResource("sceneMap.fxml"));
 		stage.setTitle("Council of Four");
 		Scene newScene = new Scene(root);
 		stage.setScene(newScene);
 		stage.show();
-		
+		controller.setStage(stage);
+		setController(controller);
 	}
 
-
-	@Override
-	public void run() {
+	public static void startGUI() {
 		Application.launch();
-		
 	}
+	
+
+	private void setController(GUIController controller) {
+		guiController = controller;
+	}
+	
 }
 
 /*

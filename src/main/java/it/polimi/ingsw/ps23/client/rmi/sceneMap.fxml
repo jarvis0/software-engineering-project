@@ -107,82 +107,82 @@
             <Image url="@strada_orizzontale.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="E" fitHeight="80.0" fitWidth="108.0" layoutX="89.0" layoutY="275.0">
+      <ImageView id="E" fx:id="E" fitHeight="80.0" fitWidth="108.0" layoutX="89.0" layoutY="275.0">
          <image>
             <Image url="@citta_bronze.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="B" fitHeight="80.0" fitWidth="120.0" layoutX="36.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="B" fx:id="B" fitHeight="80.0" fitWidth="120.0" layoutX="36.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_gold.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="A" fitHeight="80.0" fitWidth="120.0" layoutX="34.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="A" fx:id="A" fitHeight="80.0" fitWidth="120.0" layoutX="34.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@città_ironblue.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="D" fitHeight="80.0" fitWidth="120.0" layoutX="186.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="D" fx:id="D" fitHeight="80.0" fitWidth="120.0" layoutX="186.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_silver.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="C" fitHeight="80.0" fitWidth="120.0" layoutX="172.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="C" fx:id="C" fitHeight="80.0" fitWidth="120.0" layoutX="172.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_silver.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="J" fitHeight="80.0" fitWidth="120.0" layoutX="454.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="J" fx:id="J" fitHeight="80.0" fitWidth="120.0" layoutX="454.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_purple.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="king" fitHeight="50.0" fitWidth="50.0" layoutX="0.0" layoutY="0.0">
+      <ImageView id="king" fx:id="king" fitHeight="50.0" fitWidth="50.0" layoutX="0.0" layoutY="0.0">
          <image>
             <Image url="@re.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="F" fitHeight="80.0" fitWidth="120.0" layoutX="295.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="F" fx:id="F" fitHeight="80.0" fitWidth="120.0" layoutX="295.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_gold.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="H" fitHeight="80.0" fitWidth="120.0" layoutX="377.0" layoutY="295.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="H" fx:id="H" fitHeight="80.0" fitWidth="120.0" layoutX="377.0" layoutY="295.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_gold.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="G" fitHeight="80.0" fitWidth="120.0" layoutX="317.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="G" fx:id="G" fitHeight="80.0" fitWidth="120.0" layoutX="317.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_silver.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="I" fitHeight="80.0" fitWidth="108.0" layoutX="418.0" layoutY="64.0">
+      <ImageView id="I" fx:id="I" fitHeight="80.0" fitWidth="108.0" layoutX="418.0" layoutY="64.0">
          <image>
             <Image url="@citta_bronze.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="K" fitHeight="80.0" fitWidth="120.0" layoutX="565.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="K" fx:id="K" fitHeight="80.0" fitWidth="120.0" layoutX="565.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_gold.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="L" fitHeight="80.0" fitWidth="120.0" layoutX="565.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="L" fx:id="L" fitHeight="80.0" fitWidth="120.0" layoutX="565.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_silver.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="M" fitHeight="80.0" fitWidth="120.0" layoutX="566.0" layoutY="347.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="M" fx:id="M" fitHeight="80.0" fitWidth="120.0" layoutX="566.0" layoutY="347.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@città_ironblue.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="N" fitHeight="80.0" fitWidth="108.0" layoutX="692.0" layoutY="111.0">
+      <ImageView id="N" fx:id="N" fitHeight="80.0" fitWidth="108.0" layoutX="692.0" layoutY="111.0">
          <image>
             <Image url="@citta_bronze.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="O" fitHeight="80.0" fitWidth="120.0" layoutX="682.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="O" fx:id="O" fitHeight="80.0" fitWidth="120.0" layoutX="682.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@citta_gold.png" />
          </image>
@@ -262,7 +262,7 @@
             <Font name="Algerian" size="24.0" />
          </font>
       </Text>
-     <Group fx:id="group" />
+     <Group id="group" fx:id="group" />
       <fx:define>
          <ArrayList fx:id="citiesImagesList">
      	    <fx:reference source="A" />
@@ -282,7 +282,7 @@
             <fx:reference source="O" />
         </ArrayList>
     </fx:define>
-      <TableView fx:id="players" layoutY="463.0" prefHeight="137.0" prefWidth="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="463.0">
+      <TableView id="players" fx:id="players" layoutY="463.0" prefHeight="137.0" prefWidth="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="463.0">
          <columns>
             <TableColumn fx:id="playerName" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="victoryPoints" prefWidth="109.0" text="Victory Points" />
