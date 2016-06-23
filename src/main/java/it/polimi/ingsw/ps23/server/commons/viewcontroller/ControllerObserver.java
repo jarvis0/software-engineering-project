@@ -20,4 +20,6 @@ public interface ControllerObserver {
 	
 	public void update(SuperBonusGiver superBonusGiver);
 	
+	public void update(Exception e);
+	
 }

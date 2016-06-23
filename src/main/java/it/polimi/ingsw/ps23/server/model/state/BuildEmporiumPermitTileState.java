@@ -1,6 +1,6 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelected;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
@@ -21,9 +21,9 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		super(name);
 	}
 
-	public String getAvaibleCards() throws IllegalActionSelected {
+	public String getAvaibleCards() throws IllegalActionSelectedException {
 		if (availableCards.getHandSize() == 0) {
-			throw new IllegalActionSelected();
+			throw new IllegalActionSelectedException();
 		}
 		return availableCards.toString();
 	}

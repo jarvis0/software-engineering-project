@@ -64,4 +64,9 @@ public class Controller implements ControllerObserver {
 		model.doSuperBonusesAcquisition(superBonusGiver);
 	}
 
+	@Override
+	public void update(Exception e) {
+		model.restartTurn(e);	
+	}
+
 }

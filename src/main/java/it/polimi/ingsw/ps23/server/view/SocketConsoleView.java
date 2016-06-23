@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
-import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelected;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -157,22 +157,27 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		List<String> removedCards = new ArrayList<>();
-		sendWithInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
-		int numberOfCards = Integer.parseInt(receive());
-		sendNoInput("Player hand deck:" + currentState.getDeck());
-		for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-			sendWithInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
-			String chosenCard = receive().toLowerCase();
-			removedCards.add(chosenCard);
-		}
-		sendWithInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
-		String arrivalCity = receive().toUpperCase();
 		try {
-			wakeUp(currentState.createAction(removedCards, arrivalCity));
-		} catch (InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
-			state.setExceptionString(e.toString());
+			List<String> removedCards = new ArrayList<>();
+			sendWithInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
+			int numberOfCards = Integer.parseInt(receive());
+			sendNoInput("Player hand deck:" + currentState.getDeck());
+			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				sendWithInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
+				String chosenCard = receive().toLowerCase();
+				removedCards.add(chosenCard);
+			}
+			sendWithInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
+			String arrivalCity = receive().toUpperCase();
+			try {
+				wakeUp(currentState.createAction(removedCards, arrivalCity));
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+				state.setExceptionString(e.toString());
+			}
+		} catch(IllegalActionSelectedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			wakeUp(e);
 		}
 	}
 	
@@ -184,10 +189,9 @@ public class SocketConsoleView extends SocketView {
 			sendWithInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 			String chosenCity = receive().toUpperCase();
 			wakeUp(currentState.createAction(chosenCity, chosenCard));
-		} catch (IllegalActionSelected e) {
+		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
-			//TODO l'utente non viene mai notificato qua
-			wakeUp();
+			wakeUp(e);
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
 			state.setExceptionString(e.toString());

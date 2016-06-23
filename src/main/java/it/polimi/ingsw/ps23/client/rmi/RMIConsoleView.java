@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelected;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -173,25 +173,34 @@ class RMIConsoleView extends RMIView {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		List<String> removedCards = new ArrayList<>();
-		output.println("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
-		int numberOfCards = Integer.parseInt(scanner.nextLine());
-		output.println("Player hand deck:" + currentState.getDeck());
-		for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-			output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
-			String chosenCard = scanner.nextLine().toLowerCase();
-			removedCards.add(chosenCard);
-		}
-		output.println("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
-		String arrivalCity = scanner.nextLine().toUpperCase();
 		try {
-			getControllerInterface().wakeUpServer(currentState.createAction(removedCards, arrivalCity));
-		} catch (RemoteException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-		} catch (InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
-			state.setExceptionString(e.toString());
-		}		
+			List<String> removedCards = new ArrayList<>();
+			output.println("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
+			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			output.println("Player hand deck:" + currentState.getDeck());
+			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
+				String chosenCard = scanner.nextLine().toLowerCase();
+				removedCards.add(chosenCard);
+			}
+			output.println("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
+			String arrivalCity = scanner.nextLine().toUpperCase();
+			try {
+				getControllerInterface().wakeUpServer(currentState.createAction(removedCards, arrivalCity));
+			} catch (RemoteException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+				state.setExceptionString(e.toString());
+			}	
+		} catch(IllegalActionSelectedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			try {
+				getControllerInterface().wakeUpServer(e);
+			} catch (RemoteException e1) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			}
+		}
 	}
 
 	@Override
@@ -206,11 +215,11 @@ class RMIConsoleView extends RMIView {
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
-		} catch (IllegalActionSelected e) {
+		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
 			//TODO l'utente non viene mai notificato qua 
 			try {
-				getControllerInterface().wakeUpServer();
+				getControllerInterface().wakeUpServer(e);
 			} catch (RemoteException e1) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 			}

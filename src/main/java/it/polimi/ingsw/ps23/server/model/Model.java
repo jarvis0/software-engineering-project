@@ -244,8 +244,11 @@ public class Model extends ModelObservable {
 	}
 
 	public void restartTurn(Exception e) {
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState(turnHandler);
+		startTurnState.changeState(context, game);
 		context.addExceptionText(e);
-		setStartTurnState();		
+		wakeUp(startTurnState);		
 	}
 	
 }
