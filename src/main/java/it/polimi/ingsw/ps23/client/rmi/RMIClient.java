@@ -70,4 +70,9 @@ class RMIClient implements ClientInterface {
 		((RMIView) rmiView).update(currentState);
 	}
 
+	@Override
+	public void changeName(String newName) throws RemoteException {
+		rmiView.setNewClientName(newName);
+	}
+
 }

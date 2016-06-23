@@ -57,10 +57,7 @@ class SocketClient {
 	}
 	
 	void start(String playerName) {
-		String message = receive();
-		output.print(message);
 		send(playerName);
-		output.println("Waiting others players to connect...\n");
 		remoteConsoleView = new RemoteConsoleView(this, scanner, output);
 		remoteConsoleView.run();
 	}

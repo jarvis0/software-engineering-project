@@ -205,7 +205,7 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
-	public void setCurrentPLayerOffline() {
+	public void setCurrentPlayerOffline() {
 		//if(game.getGamePlayersSet().isAnyoneOnline()) {
 			State currentState = context.getState();
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {

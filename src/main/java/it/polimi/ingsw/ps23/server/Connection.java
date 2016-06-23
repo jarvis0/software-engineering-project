@@ -61,7 +61,7 @@ public class Connection implements Runnable {
 		}
 	}
 	
-	public void close() {
+	void close() {
 		closeConnection();
 		try {
 			server.deregisterSocketConnection(this);
@@ -73,13 +73,13 @@ public class Connection implements Runnable {
 	synchronized void setStarted() {
 		started = true;
 	}
+
+	void setReconnected() {
+		reconnected = true;
+	}
 	
 	synchronized void startGame() {
 		notifyAll();
-	}
-
-	public void setReconnected() {
-		reconnected = true;
 	}
 
 	private synchronized void initialization() {
@@ -87,7 +87,7 @@ public class Connection implements Runnable {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put connection " + this + " on hold.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put a socket connection on hold.", e);
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -102,11 +102,13 @@ public class Connection implements Runnable {
 
 	@Override
 	public void run() {
-		server.joinToWaitingList(receive(), this);
+		server.joinToSocketWaitingList(receive(), this);
 		if(!reconnected) {
 			initialization();
 		}
-		socketView.setReconnected(reconnected);
+		else {
+			socketView.setReconnected(reconnected);
+		}
 		socketView.run();
 		close();
 	}

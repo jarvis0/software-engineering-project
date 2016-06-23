@@ -72,7 +72,7 @@ public class ModelObservable {
 		for(Entry<String, ClientInterface> rmiPlayer : rmiPlayers) {
 			if(rmiPlayer.getKey() == currentPlayer) {
 				timer = new Timer();
-				timer.schedule(new RMITimeoutTask(gameInstance, timer), timeout * 1000L);
+				timer.schedule(new RMITimeoutTask(gameInstance, rmiPlayer.getValue(), timer), timeout * 1000L);
 			}
 			try {
 				rmiPlayer.getValue().changeState(state);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -56,7 +57,17 @@ public class GameInstance {
 		}
 		return socketPlayersName;
 	}
-	
+
+	private void createRMIGame(String rmiPlayerName, ClientInterface client, ServerControllerInterface serverControllerStub) {
+		try {
+			ClientInterface remoteClient = client;
+			remoteClient.setController(serverControllerStub);
+			model.attachRMIClient(rmiPlayerName, client);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach remote RMI client.", e);
+		}
+	}
+
 	private List<String> newRMIGame(Map<String, ClientInterface> rmiWaitingConnections) {
 		List<String> rmiPlayersName = new ArrayList<>(rmiWaitingConnections.keySet());
 		if(!rmiPlayersName.isEmpty()) {
@@ -64,13 +75,7 @@ public class GameInstance {
 			ServerControllerInterface serverControllerStub = controller.setStub();
 			for(int i = 0; i < rmiPlayersName.size(); i++) {
 				String rmiPlayerName = rmiPlayersName.get(i);
-				try {
-					ClientInterface remoteClient = rmiWaitingConnections.get(rmiPlayerName);
-					remoteClient.setController(serverControllerStub);
-					model.attachRMIClient(rmiPlayerName, rmiWaitingConnections.get(rmiPlayerName));
-				} catch (RemoteException e) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach remote RMI client.", e);
-				}
+				createRMIGame(rmiPlayerName, rmiWaitingConnections.get(rmiPlayerName), serverControllerStub);
 			}
 		}
 		return rmiPlayersName;
@@ -81,7 +86,7 @@ public class GameInstance {
 		List<String> rmiPlayersName = newRMIGame(rmiWaitingConnections);
 		playersName.addAll(socketPlayersName);
 		playersName.addAll(rmiPlayersName);
-		//Collections.shuffle(playersName);TODO
+		Collections.shuffle(playersName);
 		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
@@ -103,24 +108,32 @@ public class GameInstance {
 		}
 	}
 	
-	void disconnectSocketClient(SocketView socketView) {
-		String message = "The player " + model.getCurrentPlayer() + " has been disconnected due to connection timeout.";
+	String disconnectSocketClient(SocketView socketView) {
+		String currentPlayer = model.getCurrentPlayer();
+		String message = "The player " + currentPlayer + " has been disconnected due to connection timeout.";
 		socketViews.remove(socketView);
 		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
 		model.detach(socketView);
-		model.setCurrentPLayerOffline();
+		model.setCurrentPlayerOffline();
+		return currentPlayer;
 	}
 	
-	public void disconnectRMIClient() {
+	public void disconnectRMIClient(ClientInterface client) {
 		String message = "Player " +  model.getCurrentPlayer() + " has been disconnected from the game due to connection timeout.";
+		System.out.println(message);
 		sendSocketInfoMessage(message);
-		model.sendRMIInfoMessage(message);
+		try {
+			client.infoMessage("You have been disconnected from the game due to connection timeout.");
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach the RMI remote client.", e);
+		}
 		model.detachRMIClient();
-		model.setCurrentPLayerOffline();
+		model.sendRMIInfoMessage(message);
+		model.setCurrentPlayerOffline();
 	}
 
-	public boolean isInGame(String name) {
+	boolean isInGame(String name) {
 		return playersName.contains(name) && model.isOnline(name);
 	}
 
@@ -129,17 +142,20 @@ public class GameInstance {
 	}
 
 	void reconnectPlayer(String name, Connection connection) {
-		SocketView socketView = new SocketConsoleView(name, connection);
-		createSocketGame(socketView, connection);
-		model.setOnlinePlayer(name);
 		String message = "Player " + name + " has been reconnected to the game.";
 		for(SocketView gameSocketView : socketViews) {
-			if(gameSocketView != socketView) {
-				gameSocketView.sendNoInput(message);
-			}
+			gameSocketView.sendNoInput(message);
 		}
 		model.sendRMIInfoMessage(message);
+		createSocketGame(new SocketConsoleView(name, connection), connection);
+		model.setOnlinePlayer(name);
 		connection.setReconnected();
+	}
+	
+	void reconnectPlayer(String name, ClientInterface client) {
+		model.sendRMIInfoMessage("Player " + name + " has been reconnected to the game.");
+		createRMIGame(name, client, controller);
+		model.setOnlinePlayer(name);
 	}
 
 }

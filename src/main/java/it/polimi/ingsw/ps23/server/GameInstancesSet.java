@@ -30,12 +30,11 @@ class GameInstancesSet {
 		gameInstances.add(gameInstance);
 	}
 	
-	void disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
+	String disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
 		for(GameInstance gameInstance : gameInstances) {
 			SocketView socketView = gameInstance.findSocketView(connection);
 			if(socketView != null) {
-				gameInstance.disconnectSocketClient(socketView);
-				return;
+				return gameInstance.disconnectSocketClient(socketView);
 			}
 		}
 		throw new ViewNotFoundException();
@@ -63,6 +62,13 @@ class GameInstancesSet {
 	void reconnectPlayer(String name, Connection connection) {
 		if(foundGameInstance != null) {
 			foundGameInstance.reconnectPlayer(name, connection);
+			foundGameInstance = null;
+		}
+	}
+	
+	void reconnectPlayer(String name, ClientInterface client) {
+		if(foundGameInstance != null) {
+			foundGameInstance.reconnectPlayer(name, client);
 			foundGameInstance = null;
 		}
 	}

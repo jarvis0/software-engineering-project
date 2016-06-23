@@ -14,4 +14,6 @@ public interface ClientInterface extends Remote {
 	
 	public void setController(ServerControllerInterface controller) throws RemoteException;
 	
+	public void changeName(String newName) throws RemoteException;
+	
 }

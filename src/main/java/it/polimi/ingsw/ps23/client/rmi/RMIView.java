@@ -19,6 +19,10 @@ public abstract class RMIView extends View {
 		return clientName;
 	}
 	
+	protected void setNewClientName(String clientName) {
+		this.clientName = clientName;
+	}
+	
 	protected void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
