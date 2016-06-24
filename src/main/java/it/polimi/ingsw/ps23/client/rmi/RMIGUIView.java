@@ -16,8 +16,7 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
-
-
+	
 	private SwingUI swingUI;
 	private State state;
 	private boolean endGame;
@@ -30,9 +29,10 @@ public class RMIGUIView extends RMIView {
 	public State getCurrentState() {
 		return state;
 	}
-
+	
 	@Override
 	public void visit(StartTurnState currentState) {
+		swingUI.refreshUI(currentState);
 	}
 
 	@Override
@@ -112,6 +112,7 @@ public class RMIGUIView extends RMIView {
 		waiting = true;
 		swingUI = new SwingUI();
 		pause();
+		waiting = false;
 		do {
 			state.acceptView(this);
 		} while (!endGame);
