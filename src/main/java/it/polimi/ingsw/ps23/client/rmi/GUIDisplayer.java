@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.client.rmi;
+/*package it.polimi.ingsw.ps23.client.rmi;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ import javafx.scene.Scene;
 public class GUIDisplayer extends Application {
 	
 
-	static GUIController guiController;
+	
 	
 	public void start(Stage stage) throws Exception {
 		GUIController controller = new GUIController();

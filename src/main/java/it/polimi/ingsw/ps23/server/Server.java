@@ -72,6 +72,7 @@ class Server implements ServerInterface {
 		}
 		initializeGame();
 	}
+	
 
 	private synchronized void startCountdownFromRMI() {
 		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
