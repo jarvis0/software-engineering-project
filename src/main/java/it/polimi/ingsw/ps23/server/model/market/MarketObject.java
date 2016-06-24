@@ -3,22 +3,19 @@ package it.polimi.ingsw.ps23.server.model.market;
 import java.io.Serializable;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.model.map.Card;
-import it.polimi.ingsw.ps23.server.model.player.Player;
-
 public class MarketObject implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7572250712520487859L;
-	private Player player;
-	private List<Card> permissionCards;
-	private List<Card> politicCards;
+	private String player;
+	private List<Integer> permissionCards;
+	private List<String> politicCards;
 	private int assistants;
 	private int cost;
 	
-	public MarketObject(Player player, List<Card> permissionCards, List<Card> politicCards, int assistants, int cost) {
+	public MarketObject(String player, List<Integer> permissionCards, List<String> politicCards, int assistants, int cost) {
 		this.player = player;
 		this.permissionCards = permissionCards;
 		this.politicCards = politicCards;
@@ -26,15 +23,15 @@ public class MarketObject implements Serializable {
 		this.cost = cost;
 	}
 
-	public Player getPlayer() {
+	public String getPlayer() {
 		return player;
 	}
 
-	List<Card> getPermissionCards() {
+	List<Integer> getPermissionCards() {
 		return permissionCards;
 	}
 
-	List<Card> getPoliticCards() {
+	List<String> getPoliticCards() {
 		return politicCards;
 	}
 
@@ -48,6 +45,7 @@ public class MarketObject implements Serializable {
 	
 	@Override
 	public String toString() {
-		return player.getName() + " price: " + cost + " politicCards: " + politicCards + " permissionCards: " + permissionCards + " assistants: " + assistants;
+		return player + " price: " + cost + " politicCards: " + politicCards + " permissionCards: " + permissionCards + " assistants: " + assistants;
 	}
+	
 }

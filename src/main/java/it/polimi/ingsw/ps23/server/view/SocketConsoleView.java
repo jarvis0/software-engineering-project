@@ -10,7 +10,9 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -31,9 +33,6 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 public class SocketConsoleView extends SocketView {
 	
 	private static final String NO_INPUT = "NOINPUTNEEDED";
-	private static final String INVALID_CARD_SELECTED = "Invalid Card Selected";
-	private static final String INVALID_COUNCIL_SELECTED = "Invalid Council Selected";
-	private static final String INVALID_ACTION_SELECTED = "Invalid Action Selected";
 	
 	private Connection connection;
 	private String clientName;
@@ -127,8 +126,8 @@ public class SocketConsoleView extends SocketView {
 			sendWithInput("Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
 			int chosenCard = Integer.parseInt(receive()) - 1;
 			wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenCard));
-		} catch(InvalidCouncilException | InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_COUNCIL_SELECTED, e);
+		} catch(InvalidCouncilException | InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			state.setExceptionString(e.toString());
 		}
 	}
@@ -176,11 +175,11 @@ public class SocketConsoleView extends SocketView {
 			try {
 				wakeUp(currentState.createAction(removedCards, arrivalCity));
 			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				state.setExceptionString(e.toString());
 			}
-		} catch(IllegalActionSelectedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+		} catch(IllegalActionSelectedException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			wakeUp(e);
 		}
 	}
@@ -194,48 +193,63 @@ public class SocketConsoleView extends SocketView {
 			String chosenCity = receive().toUpperCase();
 			wakeUp(currentState.createAction(chosenCity, chosenCard));
 		} catch (IllegalActionSelectedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			wakeUp(e);
-		} catch (InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+		} catch (InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			state.setExceptionString(e.toString());
 		}
+	}
+	
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException{
+		List<String> chosenPoliticCards = new ArrayList<>();
+		if(currentState.canSellPoliticCards()) {
+			sendWithInput("How many politic cards do you want to use? ");
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
+				chosenPoliticCards.add(receive());
+			}
+		}
+		return chosenPoliticCards;
+	}
+	
+	private List<Integer> sellPermitCards(MarketOfferPhaseState currentState) throws NumberFormatException {
+		List<Integer> chosenPermissionCards = new ArrayList<>();
+		if(currentState.canSellPermissionCards()) {
+			sendWithInput("How many permission cards do you want to use? (numerical input >0)");
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
+				chosenPermissionCards.add(Integer.parseInt(receive()) - 1);
+			}
+		}
+		return chosenPermissionCards;
+	}
+	
+	private int sellAssistant(MarketOfferPhaseState currentState) throws NumberFormatException {
+		int chosenAssistants = 0;
+		if(currentState.canSellAssistants()) {
+			sendWithInput("Select the number of assistants " + currentState.getAssistants());
+			chosenAssistants = Integer.parseInt(receive());
+		}
+		return chosenAssistants;
 	}
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
-		List<String> chosenPoliticCards = new ArrayList<>();
-		List<Integer> chosenPermissionCards = new ArrayList<>();
 		String player = currentState.getPlayerName();
 		sendNoInput("It's " + player + " market phase turn.");
 		if(player.equals(clientName)) {
-			if(currentState.canSellPoliticCards()) {
-				sendWithInput("How many politic cards do you want to use? ");
-				int numberOfCards = Integer.parseInt(receive());
-				for(int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-					sendWithInput("Select a card from this list: " + currentState.getPoliticHandDeck());
-					chosenPoliticCards.add(receive());
-				}
-			}
-			if(currentState.canSellPermissionCards()) {
-				sendWithInput("How many permission cards do you want to use? (numerical input >0)");
-				int numberOfCards = Integer.parseInt(receive());
-				for(int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-					sendWithInput("Select a card from this list: " + currentState.getPermissionHandDeck());
-					chosenPermissionCards.add(Integer.parseInt(receive()) - 1);
-				}
-			}
-			int chosenAssistants = 0;
-			if(currentState.canSellAssistants()) {
-				sendWithInput("Select the number of assistants " + currentState.getAssistants());
-				chosenAssistants = Integer.parseInt(receive());
-			}
+			List<String> chosenPoliticCards = sellPoliticCard(currentState);
+			List<Integer> chosenPermissionCards = sellPermitCards(currentState);
+			int chosenAssistants = sellAssistant(currentState);
 			sendWithInput("Choose the price for your offer: ");
 			int cost = Integer.parseInt(receive());
 			try {
 				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
-			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				state.setExceptionString(e.toString());
 			}
 		}
@@ -249,13 +263,17 @@ public class SocketConsoleView extends SocketView {
 		String player = currentState.getPlayerName();
 		sendNoInput("It's " + player + " market phase turn.");
 		if(player.equals(clientName)) {
-			if(currentState.canBuy()) {
-				sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
-				wakeUp(currentState.createTransation(Integer.parseInt(receive())));
-			}
-			else {
-				sendNoInput("You can buy nothing.");
-				wakeUp(currentState.createTransation());
+			try {
+				if(currentState.canBuy()) {
+					sendWithInput("Avaible offers: " + currentState.getAvaiableOffers());
+					wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+				}
+				else {
+					sendNoInput("You can buy nothing.");
+					wakeUp(currentState.createTransation());
+				}
+			} catch(NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			}
 		}
 		else {
