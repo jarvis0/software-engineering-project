@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.awt.Point;
+
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -17,6 +19,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
 	
+	private SwingUI swingUI;
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
@@ -28,15 +31,10 @@ public class RMIGUIView extends RMIView {
 	public State getCurrentState() {
 		return state;
 	}
+	
 	@Override
 	public void visit(StartTurnState currentState) {
-		//new GUIController();
-		javafx.application.Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				GUIController.updateGUI(currentState);
-			}
-		});
+		swingUI.refreshUI(currentState);
 	}
 
 	@Override
@@ -114,10 +112,8 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public synchronized void run() {
 		waiting = true;
-		//new Scanner(System.in).next();
+		swingUI = new SwingUI();
 		pause();
-		//guiDisplayer = new GUIDisplayer();
-		//(new Thread(() -> guiDisplayer.startGUI())).start();
 		waiting = false;
 		do {
 			state.acceptView(this);

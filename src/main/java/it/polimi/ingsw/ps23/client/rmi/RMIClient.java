@@ -30,10 +30,9 @@ class RMIClient implements ClientInterface {
 	private ExecutorService executor;
 	
 	private RMIClient(String playerName) {
-		rmiView = new RMIConsoleView(playerName);
-		//rmiView = new RMIGUIView(playerName);
+		//rmiView = new RMIConsoleView(playerName);
+		rmiView = new RMIGUIView(playerName);
 		executor = Executors.newSingleThreadExecutor();
-		//executor.submit(new GUIDisplayer());
 		executor.submit(rmiView);
 		output = new PrintStream(System.out);
 	}
@@ -47,7 +46,7 @@ class RMIClient implements ClientInterface {
 		try {
 			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
-			ClientInterface client =  new RMIClient(playerName);
+			ClientInterface client = new RMIClient(playerName);
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
 			server.registerRMIClient(playerName, stub);
 		} catch (RemoteException | UnknownHostException | NotBoundException e) {
