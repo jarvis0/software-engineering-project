@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
@@ -186,7 +188,11 @@ public class Model extends ModelObservable {
 	}
 	
 	public void doBuyMarket(MarketTransation marketTransation) {
-		marketTransation.doTransation(game);
+		try {
+			marketTransation.doTransation(game);
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot execute the transation", e);
+		}
 		chooseNextBuyMarketStep();
 	}
 	
@@ -207,8 +213,8 @@ public class Model extends ModelObservable {
 		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
 	}
 
-	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) {
-		superBonusGiver.values(game, turnHandler);
+	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException {
+		superBonusGiver.giveBonus(game, turnHandler);
 		setPlayerTurn();
 	}
 

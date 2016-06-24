@@ -17,7 +17,7 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 public class TestPoliticHandDeck {
 
 	@Test
-	public void test() {
+	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
 		GameColor gameColor = new GameColor("blue", "0x0000ff");
 		Card card = new PoliticCard(gameColor);
@@ -43,6 +43,8 @@ public class TestPoliticHandDeck {
 		card = new PoliticCard(gameColor);
 		soldBuyCards.add(card);
 		player.buyPoliticCards(soldBuyCards);
+		assertTrue(((PoliticHandDeck)(player.getPoliticHandDeck())).getJokerCardsNumber() == 1);
+		assertTrue(card.equals(((PoliticHandDeck)(player.getPoliticHandDeck())).getCardFromName("multi")));
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 2);
 		List<String> removedCards = new ArrayList<>();
 		removedCards.add("multi");

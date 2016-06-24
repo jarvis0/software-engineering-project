@@ -1,7 +1,5 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
-import java.awt.Point;
-
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;

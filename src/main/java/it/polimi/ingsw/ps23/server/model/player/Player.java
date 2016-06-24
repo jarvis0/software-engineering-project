@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model.player;
 import java.io.Serializable;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -104,7 +105,7 @@ public class Player implements Serializable {
 		assistants += value;
 	}
 	
-	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) {
+	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) throws InvalidCardException {
 		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
 	}
 

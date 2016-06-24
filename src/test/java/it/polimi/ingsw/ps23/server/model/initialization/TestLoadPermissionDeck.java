@@ -38,6 +38,7 @@ public class TestLoadPermissionDeck {
 		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, cities).makeDecks();
 		Card permissionCard = new PermissionCard();
 		((PermissionCard)permissionCard).addCity(city);
+		assertTrue(((PermissionCard)permissionCard).containCity(city));
 		Bonus bonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
 		bonus.setValue(1);
 		((PermissionCard)permissionCard).addBonus(bonus);

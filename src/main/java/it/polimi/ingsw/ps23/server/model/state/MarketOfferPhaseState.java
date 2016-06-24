@@ -1,11 +1,11 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
@@ -54,17 +54,25 @@ public class MarketOfferPhaseState extends State {
 	public boolean canSellAssistants() {
 		return currentPlayer.getAssistants() > 0;
 	}
-
-	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException {
-		List<Card> politicCards = new ArrayList<>();
-		List<Card> permissionCards = new ArrayList<>();		
+	
+	private void checkMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException, InvalidNumberOfAssistantException, InvalidCostException {
 		for (String card : chosenPoliticCards) {
-			politicCards.add(((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card));
+			((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card);
 		}
 		for (int index : chosenPermissionCards) {
-			permissionCards.add(currentPlayer.getPermissionHandDeck().getCardInPosition(index));
+			currentPlayer.getPermissionHandDeck().getCardInPosition(index);
 		}
-		return new MarketObject(currentPlayer, permissionCards, politicCards, chosenAssistants, cost);
+		if(chosenAssistants < 0 || chosenAssistants > currentPlayer.getAssistants()) {
+			throw new InvalidNumberOfAssistantException();
+		}
+		if(cost <= 0) {
+			throw new InvalidCostException();
+		}
+	}
+
+	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException, InvalidNumberOfAssistantException, InvalidCostException {
+		checkMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost);
+		return new MarketObject(currentPlayer.getName(), chosenPermissionCards, chosenPoliticCards, chosenAssistants, cost);
 	}
 	
 	@Override
