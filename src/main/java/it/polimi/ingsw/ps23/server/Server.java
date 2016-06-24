@@ -283,6 +283,9 @@ class Server implements ServerInterface {
 		}
 	}
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Server server = new Server();
 		server.startRMI();

@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
@@ -34,6 +36,7 @@ public class SwingUI {
 	private Map<String, Component> components;
 	private JFrame frame;
 	private JPanel mapPanel;
+	private JTable playersTable;
 
 	private BufferedImage readImage(String path) {
 		try {
@@ -102,6 +105,11 @@ public class SwingUI {
 		mapPanel.add(mapLabel);
 	}
 
+	private void loadPlayersTable() {
+		//TableModel model = new DefaultTableModel(rowData, columnNames);
+		//playersTable = new JTable(model);
+	}
+
 	SwingUI() {
 		components = new HashMap<>();
 		frame = new JFrame();
@@ -114,8 +122,8 @@ public class SwingUI {
 		loadStreets();
 		loadMapBackground();
 		frame.add(mapPanel);
-		JTable playersTable = new JTable();
-		
+		loadPlayersTable();
+		frame.add(playersTable);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
