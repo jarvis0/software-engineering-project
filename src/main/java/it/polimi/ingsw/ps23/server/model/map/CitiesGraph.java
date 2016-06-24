@@ -14,6 +14,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
+/**
+ * Provides a graph representation to game cities and algorithms to explore
+ * the graph with the minimum walk way.
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class CitiesGraph implements Serializable {
 	
 	/**
@@ -22,6 +28,11 @@ public class CitiesGraph implements Serializable {
 	private static final long serialVersionUID = 777126013147994317L;
 	private transient DirectedGraph<City, DefaultEdge> graph;
 	
+	/**
+	 * Saves the already created graph from citiesFactory in order to
+	 * easy manipulate this object for further uses.
+	 * @param graph
+	 */
 	public CitiesGraph(DirectedGraph<City, DefaultEdge> graph) {
 		this.graph = graph;
 	}
@@ -30,9 +41,16 @@ public class CitiesGraph implements Serializable {
 		return graph;
 	}
 	
-	public void getBonuses(Game game, TurnHandler turnHandler, City arriveCity) {
+	/**
+	 * Calculates the minimum walk into the game cities graph and gives
+	 * the reached rewards token to the player.
+	 * @param game
+	 * @param turnHandler
+	 * @param arriveCity
+	 */
+	public void rewardTokenGiver(Game game, TurnHandler turnHandler, City arrivalCity) {
 		List<City> citiesContainingPlayer = new ArrayList<>();
-		citiesContainingPlayer.add(arriveCity);
+		citiesContainingPlayer.add(arrivalCity);
 		List<City> playerCityList = new ArrayList<>();
 		playerCityList.addAll(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet());
 		searchCities(citiesContainingPlayer, playerCityList, game, turnHandler);

@@ -5,17 +5,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Provides deck functionality to game cards such as cards shuffle and 
+ * picking a parametric number of cards from the specified deck.
+ * @author Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class Deck implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1360173791794831347L;
-
-	private static final int TOP_CARD = 0;
 	
 	private List<Card> cards;
 	
+	/**
+	 * Shuffles the specified deck.
+	 * @param cards
+	 */
 	public Deck(List<Card> cards) {
 		Collections.shuffle(cards);
 		this.cards = cards;
@@ -25,6 +33,14 @@ public class Deck implements Serializable {
 		return cards;
 	}
 	
+	/**
+	 * Picks the specified parametric number of cards from the specified
+	 * deck.
+	 * <p>
+	 * Removes the picked cards from the specified deck.
+	 * @param cardsNumber - number of cards to be picked
+	 * @return cards picked
+	 */
 	public List<Card> pickCards(int cardsNumber) {
 		List<Card> pickedCards = new ArrayList<>();
 		for(int i = 0; i < cardsNumber; i++) {
@@ -33,8 +49,12 @@ public class Deck implements Serializable {
 		return pickedCards;
 	}
 
+	/**
+	 * Picks the top card of the specified deck and removes it.
+	 * @return card picked
+	 */
 	public Card pickCard() {
-		return cards.remove(TOP_CARD);
+		return cards.remove(0);
 	}
 	
 	@Override

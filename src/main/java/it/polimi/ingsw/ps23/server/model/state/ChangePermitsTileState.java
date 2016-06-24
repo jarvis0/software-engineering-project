@@ -33,7 +33,7 @@ public class ChangePermitsTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		permitsMap = game.getGameMap().getPermitMap();
+		permitsMap = game.getGameMap().getPermissionCardsUp();
 	}
 
 	@Override

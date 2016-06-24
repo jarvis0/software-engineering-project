@@ -8,27 +8,39 @@ import java.util.logging.Logger;
 
 import com.opencsv.CSVReader;
 
+/**
+ * 
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class RawObject {
 	
 	private List<String[]> raw;
 	
+	/**
+	 * Opens a CSV file at the specified path location and stores
+	 * its content into a list of strings.
+	 * <p>
+	 * Each string is a field and each set of strings is a raw in the CSV file.
+	 * @param path
+	 */
 	public RawObject(String path) {
 		try {
-			this.raw = parseCSVFile(path);
+			raw = parseCSVFile(path);
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error loading " + path + " file.", e);
 		}
-	}
-	
-	public List<String[]> parseCSVFile(String path) throws IOException {
-		CSVReader reader = new CSVReader(new FileReader(path));
-		List<String[]> read = reader.readAll();
-		reader.close();
-		return read;
 	}
 	
 	public List<String[]> getRawObject() {
 		return raw;
 	}
 	
+	private List<String[]> parseCSVFile(String path) throws IOException {
+		CSVReader reader = new CSVReader(new FileReader(path));
+		List<String[]> read = reader.readAll();
+		reader.close();
+		return read;
+	}
+
 }

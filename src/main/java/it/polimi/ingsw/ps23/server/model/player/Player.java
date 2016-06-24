@@ -130,7 +130,7 @@ public class Player implements Serializable {
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		builtEmporiumsSet.addBuiltEmporium(city);
-		game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
+		game.getGameMap().getCitiesGraph().rewardTokenGiver(game, turnHandler, city);	
 	}
 
 	public void usePermissionCard(int chosenCard) {
@@ -209,7 +209,7 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCitiesPrint();	
 		if(isOnline()) {
 			print += " online";
 		}

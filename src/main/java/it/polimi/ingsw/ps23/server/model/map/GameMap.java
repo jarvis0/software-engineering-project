@@ -9,6 +9,16 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumsSet;
 
+/**
+ * Provides a unified representation of the game map which contains
+ * all cities in two different representations: the first is accessible via
+ * the city name and the second is useful for graph minimum walk.
+ * <p>
+ * Cities are organized into regional cities and same color groups in
+ * order to differentiate the bonuses permit tile.
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class GameMap implements Serializable {
 	
 	/**
@@ -20,6 +30,18 @@ public class GameMap implements Serializable {
 	private List<Region> groupRegionalCities;
 	private List<Region> groupColoredCities;
 	
+	/**
+	 * Constructs the whole game map which contains
+	 * all cities in two different representations: the first is accessible via
+	 * the city name and the second is useful for graph minimum walk.
+	 * <p>
+	 * Cities are organized into regional cities and same color cities in
+	 * order to differentiate the bonuses permit tile.
+	 * @param citiesMap - directly accessed cities via their names
+	 * @param citiesGraph - graph cities representation for explore cities connections
+	 * @param groupRegionalCities - cities organized into regions
+	 * @param groupColoredCities - cities organized into same color groups 
+	 */
 	public GameMap(Map<String, City> citiesMap, CitiesGraph citiesGraph, List<Region> groupRegionalCities, List<Region> groupColoredCities) {
 		this.citiesMap = citiesMap;
 		this.citiesGraph = citiesGraph;
@@ -39,6 +61,11 @@ public class GameMap implements Serializable {
 		return groupRegionalCities;
 	}
 	
+	/**
+	 * Tries to find the region specified in the parameter.
+	 * @param regionName - name of the region to be found.
+	 * @return region
+	 */
 	public Region getRegion(String regionName) {
 		Region selectedRegion = null;
 		for(Region region : groupRegionalCities) {
@@ -46,7 +73,7 @@ public class GameMap implements Serializable {
 				selectedRegion = region;
 			}
 		}
-		return selectedRegion; //TODO return null
+		return selectedRegion;
 	}
 
 	public String getColoredBonusTileString() {
@@ -68,7 +95,7 @@ public class GameMap implements Serializable {
 		return regionMap;
 	}
 	
-	public Map<String, Deck> getPermitMap() {
+	public Map<String, Deck> getPermissionCardsUp() {
 		Map<String, Deck> permitsMap = new HashMap<>();
 		for(Region region : getGroupRegionalCity()) {
 			permitsMap.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeckUp());
@@ -76,26 +103,38 @@ public class GameMap implements Serializable {
 		return permitsMap;
 	}
 
-	private boolean isFoundRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
+	private boolean isCompletedRegion(Region region, BuiltEmporiumsSet builtEmporiumsSet) {
 		return builtEmporiumsSet.getBuiltEmporiumsSet().containsAll(region.getCitiesList()) && !(region.alreadyUsedBonusTile());
 	}
 	
-	public Region groupRegionalCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
+	/**
+	 * Checks if there is a region which a player has built at least
+	 * an emporium in and if no one else have already reach this goal.
+	 * @param builtEmporiumsSet - current player built emporiums
+	 * @return the completed region if completed.
+	 */
+	public Region groupRegionalCitiesComplete(BuiltEmporiumsSet builtEmporiumsSet) {
 		for(Region region : groupRegionalCities) {
-			if(isFoundRegion(region, builtEmporiumSet)) {
+			if(isCompletedRegion(region, builtEmporiumsSet)) {
 				return region;
 			}
 		}
-		return null; //TODO return null
+		return null;
 	}
-
-	public Region groupColoredCitiesComplete(BuiltEmporiumsSet builtEmporiumSet) {
+	
+	/**
+	 * Checks if there is a colored cities group which a player has built at least
+	 * an emporium in and if no one else have already reach this goal.
+	 * @param builtEmporiumsSet - current player built emporiums
+	 * @return the completed colored cities group if completed.
+	 */
+	public Region groupColoredCitiesComplete(BuiltEmporiumsSet builtEmporiumsSet) {
 		for(Region region : groupColoredCities) {
-			if(isFoundRegion(region, builtEmporiumSet)) {
+			if(isCompletedRegion(region, builtEmporiumsSet)) {
 				return region;
 			}
 		}
-		return null; //TODO return null
+		return null;
 	}
 	
 	@Override

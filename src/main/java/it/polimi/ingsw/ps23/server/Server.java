@@ -141,6 +141,19 @@ class Server implements ServerInterface {
 		}
 	}
 	
+	/**
+	 * This method is a RMIClient entry point into the Server.
+	 * It's a remote call invocation from the client who wants to 
+	 * register his ClientInterface into the Server.
+	 * <p>
+	 * It checks whether the specified name parameter is in a valid format.
+	 * If so, then checks if there is a double name for the games system.
+	 * It solves the eventual name duplication and notifies the client providing the new name.
+	 * <p>
+	 * It adds a new entry into the RMI waiting connections list and checks if a new game
+	 * can be started or the specified client name is a former player who has been disconnected
+	 * earlier due to connection timeout.
+	 */
 	@Override
 	public void registerRMIClient(String name, ClientInterface client) {
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
@@ -284,7 +297,10 @@ class Server implements ServerInterface {
 	}
 
 	/**
-	 * @param args
+	 * This static method is the entry point for the Server.java application.
+	 * It starts RMI and Socket server side connections.
+	 * @author Giuseppe Mascellaro
+	 * @param args received from command prompt
 	 */
 	public static void main(String[] args) {
 		Server server = new Server();

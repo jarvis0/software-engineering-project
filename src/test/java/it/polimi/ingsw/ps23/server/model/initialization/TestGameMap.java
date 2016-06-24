@@ -46,7 +46,7 @@ public class TestGameMap {
 		assertTrue(groupRegional.equals(gameMap.getGroupRegionalCity()));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegion("seaside")));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegionMap().get("seaside")));
-		assertTrue(((GroupRegionalCity)groupRegional.get(0)).getPermissionDeckUp().equals(gameMap.getPermitMap().get("seaside")));		
+		assertTrue(((GroupRegionalCity)groupRegional.get(0)).getPermissionDeckUp().equals(gameMap.getPermissionCardsUp().get("seaside")));		
 	}
 
 }
