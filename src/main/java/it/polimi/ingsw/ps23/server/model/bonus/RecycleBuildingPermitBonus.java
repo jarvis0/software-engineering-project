@@ -34,7 +34,7 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	}	
 
 	@Override
-	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException {
+	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) throws InvalidCardException {
 		if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
 			((PermissionCard) game.getCurrentPlayer().getTotalPermissionHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
 		}

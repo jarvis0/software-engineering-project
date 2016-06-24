@@ -22,7 +22,7 @@ public class SuperBonusGiver implements Serializable {
 		this.selectedBonuses = selectedBonuses;
 	}
 	
-	public void giveBonus(Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException {
+	public void giveBonus(Game game, TurnHandler turnHandler) throws InvalidCardException {
 		for(Entry<Bonus, List<String>> entry : selectedBonuses.entrySet()) {
 			Bonus bonus = entry.getKey();
 			List <String> values = entry.getValue();

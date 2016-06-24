@@ -214,7 +214,7 @@ public class Model extends ModelObservable {
 		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
 	}
 
-	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws NumberFormatException, InvalidCardException {
+	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException {
 		superBonusGiver.giveBonus(game, turnHandler);
 		setPlayerTurn();
 	}

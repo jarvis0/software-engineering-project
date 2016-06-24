@@ -43,6 +43,8 @@ public class TestPoliticHandDeck {
 		card = new PoliticCard(gameColor);
 		soldBuyCards.add(card);
 		player.buyPoliticCards(soldBuyCards);
+		assertTrue(((PoliticHandDeck)(player.getPoliticHandDeck())).getJokerCardsNumber() == 1);
+		assertTrue(card.equals(((PoliticHandDeck)(player.getPoliticHandDeck())).getCardFromName("multi")));
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 2);
 		List<String> removedCards = new ArrayList<>();
 		removedCards.add("multi");

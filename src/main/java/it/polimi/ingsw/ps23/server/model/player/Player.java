@@ -105,7 +105,7 @@ public class Player implements Serializable {
 		assistants += value;
 	}
 	
-	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException {
+	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) throws InvalidCardException {
 		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
 	}
 

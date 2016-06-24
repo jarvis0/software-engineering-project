@@ -30,8 +30,10 @@ public class TestPermissionHandDeck {
 		List<Card> permissionHandCards = new ArrayList<>();
 		permissionHandCards.add(permissionCard);
 		((PermissionHandDeck)handDeck).addCards(permissionHandCards);
-		assertTrue(((PermissionHandDeck)handDeck).getAvaiblePermissionCards().getCardInPosition(0).equals(permissionCard));
-		//player.
+		player.buyPermissionCards(permissionHandCards);
+		assertTrue(permissionCard.equals(player.getPermissionHandDeck().getCardInPosition(0)));
+		player.soldPermissionCards(permissionHandCards);
+		assertTrue(player.getPermissionHandDeck().getHandSize() == 0);
 	}
 
 }

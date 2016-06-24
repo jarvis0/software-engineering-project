@@ -11,6 +11,6 @@ public interface SuperBonus {
 	
 	public String checkBonus(Player currentPlayer);
 	
-	public void acquireSuperBonus(List<String> inputs, Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException;
+	public void acquireSuperBonus(List<String> inputs, Game game, TurnHandler turnHandler) throws InvalidCardException;
 
 }
