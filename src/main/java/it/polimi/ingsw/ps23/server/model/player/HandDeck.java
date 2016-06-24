@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 
 public abstract class HandDeck implements Serializable {
@@ -40,7 +41,10 @@ public abstract class HandDeck implements Serializable {
 		return removedCard;
 	}
 	
-	public Card getCardInPosition(int index) {
+	public Card getCardInPosition(int index) throws InvalidCardException {
+		if(index < 0 || index >= getHandSize()) {
+			throw new InvalidCardException();
+		}
 		return cards.get(index);
 	}
 

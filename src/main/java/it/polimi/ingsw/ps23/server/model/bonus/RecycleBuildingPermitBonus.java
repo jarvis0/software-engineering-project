@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
@@ -33,7 +34,7 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	}	
 
 	@Override
-	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) {
+	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException {
 		if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
 			((PermissionCard) game.getCurrentPlayer().getTotalPermissionHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
 		}

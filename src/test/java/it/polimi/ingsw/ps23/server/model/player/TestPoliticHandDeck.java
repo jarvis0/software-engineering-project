@@ -17,7 +17,7 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 public class TestPoliticHandDeck {
 
 	@Test
-	public void test() {
+	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
 		GameColor gameColor = new GameColor("blue", "0x0000ff");
 		Card card = new PoliticCard(gameColor);

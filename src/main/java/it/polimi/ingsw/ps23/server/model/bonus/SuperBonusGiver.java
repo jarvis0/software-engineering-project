@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
@@ -21,7 +22,7 @@ public class SuperBonusGiver implements Serializable {
 		this.selectedBonuses = selectedBonuses;
 	}
 	
-	public void values(Game game, TurnHandler turnHandler) {
+	public void giveBonus(Game game, TurnHandler turnHandler) throws NumberFormatException, InvalidCardException {
 		for(Entry<Bonus, List<String>> entry : selectedBonuses.entrySet()) {
 			Bonus bonus = entry.getKey();
 			List <String> values = entry.getValue();

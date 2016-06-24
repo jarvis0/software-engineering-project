@@ -61,7 +61,11 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(SuperBonusGiver superBonusGiver) {
-		model.doSuperBonusesAcquisition(superBonusGiver);
+		try {
+			model.doSuperBonusesAcquisition(superBonusGiver);
+		} catch (NumberFormatException | InvalidCardException e) {
+			model.rollBack(e);
+		}
 	}
 
 	@Override

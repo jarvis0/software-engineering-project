@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
@@ -34,9 +36,6 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 class RMIConsoleView extends RMIView {
 
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
-	private static final String INVALID_CARD_SELECTED = "Invalid Card Selected";
-	private static final String INVALID_COUNCIL_SELECTED = "Invalid Council Selected";
-	private static final String INVALID_ACTION_SELECTED = "Invalid Action Selected";
 
 	private Scanner scanner;
 	private PrintStream output;
@@ -126,8 +125,8 @@ class RMIConsoleView extends RMIView {
 					"Choose a permission card (press 1 or 2): " + currentState.getAvailablePermitTile(chosenCouncil));
 			int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenCard));
-		} catch (InvalidCouncilException | InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_COUNCIL_SELECTED, e);
+		} catch (InvalidCouncilException | InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			state.setExceptionString(e.toString());
 		}
 	}
@@ -165,27 +164,27 @@ class RMIConsoleView extends RMIView {
 			output.println("Choose the number of cards you want for satisfy the King Council: "
 					+ currentState.getAvailableCardsNumber());
 		} catch (IllegalActionSelectedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			try {
 				getControllerInterface().wakeUpServer(e);
 			} catch (RemoteException e1) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 			}
 		}
-		int numberOfCards = Integer.parseInt(scanner.nextLine());
-		output.println("Player hand deck:" + currentState.getDeck());
-		for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-			output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
-			String chosenCard = scanner.nextLine().toLowerCase();
-			removedCards.add(chosenCard);
-		}
-		output.println("please insert the route for the king.[king's initial position: "
-				+ currentState.getKingPosition() + "] insert the arrival city: ");
-		String arrivalCity = scanner.nextLine().toUpperCase();
 		try {
+			int numberOfCards = Integer.parseInt(scanner.nextLine());
+			output.println("Player hand deck:" + currentState.getDeck());
+			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
+				String chosenCard = scanner.nextLine().toLowerCase();
+				removedCards.add(chosenCard);
+			}
+			output.println("please insert the route for the king.[king's initial position: "
+					+ currentState.getKingPosition() + "] insert the arrival city: ");
+			String arrivalCity = scanner.nextLine().toUpperCase();
 			sendAction(currentState.createAction(removedCards, arrivalCity));
-		} catch (InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+		} catch (InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			state.setExceptionString(e.toString());
 		}
 	}
@@ -201,20 +200,20 @@ class RMIConsoleView extends RMIView {
 			String chosenCity = scanner.nextLine().toUpperCase();
 			sendAction(currentState.createAction(chosenCity, chosenCard));
 		} catch (IllegalActionSelectedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_ACTION_SELECTED, e);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			try {
 				getControllerInterface().wakeUpServer(e);
 			} catch (RemoteException e1) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
 			}
-		} catch (InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+		} catch (InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			state.setExceptionString(e.toString());
 		}
 
 	}
 	
-	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) {
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if (currentState.canSellPoliticCards()) {
 			output.println("How many politic cards do you want to use? ");
@@ -227,7 +226,7 @@ class RMIConsoleView extends RMIView {
 		return chosenPoliticCards;
 	}
 	
-	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) {
+	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		if (currentState.canSellPermissionCards()) {
 			output.println("How many permission cards do you want to use? (numerical input >0)");
@@ -240,7 +239,7 @@ class RMIConsoleView extends RMIView {
 		return chosenPermissionCards;
 	}
 	
-	private int sellAssistant(MarketOfferPhaseState currentState) {
+	private int sellAssistant(MarketOfferPhaseState currentState) throws NumberFormatException {
 		int chosenAssistants = 0;
 		if (currentState.canSellAssistants()) {
 			output.println("Select the number of assistants " + currentState.getAssistants());
@@ -261,11 +260,11 @@ class RMIConsoleView extends RMIView {
 			int cost = Integer.parseInt(scanner.nextLine());
 			try {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards,
-						chosenPermissionCards, chosenAssistants, cost));
+							chosenPermissionCards, chosenAssistants, cost));
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, INVALID_CARD_SELECTED, e);
+			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				state.setExceptionString(e.toString());
 			}
 		} else {
@@ -288,8 +287,8 @@ class RMIConsoleView extends RMIView {
 					output.println("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
-			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			} catch (RemoteException | NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			}
 		} else {
 			waiting = true;

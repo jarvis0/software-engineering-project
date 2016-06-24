@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
@@ -17,7 +18,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 public class TestPermissionHandDeck {
 
 	@Test
-	public void test() {
+	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
 		GameColor gameColor = new GameColor("blue", "0x0000ff");
 		Card card = new PoliticCard(gameColor);
