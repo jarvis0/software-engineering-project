@@ -35,6 +35,7 @@ public class SwingUI {
 	SwingUI() {
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
+		frame.setIconImage(readImage(CONFIGURATION_PATH + "images/coin.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		mapPanel = new JPanel();
 		mapPanel.setLayout(null);
