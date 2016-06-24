@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,10 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class RMIGUIView extends RMIView {
 	
@@ -30,7 +35,7 @@ public class RMIGUIView extends RMIView {
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
-	private GUIDisplayer guiDisplayer;
+	static GUIController guiController;
 
 	RMIGUIView(String playerName) {
 		clientName = playerName;
@@ -41,7 +46,7 @@ public class RMIGUIView extends RMIView {
 	}
 	@Override
 	public void visit(StartTurnState currentState) {
-		guiDisplayer.guiController.updateGUI(currentState);
+		guiController.updateGUI(currentState);
 	}
 
 	@Override
@@ -119,10 +124,25 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public synchronized void run() {
 		waiting = true;
+		Stage stage = new Stage();
+		//(new Thread(() -> guiDisplayer.startGUI())).start();
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		Parent root;
+		try {
+			root = fxmlLoader.load(getClass().getResource("sceneMap.fxml"));
+			guiController = fxmlLoader.getController();
+			stage.setTitle("Council of Four");
+			Scene newScene = new Scene(root);
+			stage.setScene(newScene);
+			stage.show();
+			guiController.setStage(stage);
+			setController(guiController);
+			waiting = false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		pause();
-		guiDisplayer = new GUIDisplayer();
-		(new Thread(() -> guiDisplayer.startGUI())).start();
-		waiting = false;
 		do {
 			state.acceptView(this);
 		} while(!endGame);
@@ -135,6 +155,10 @@ public class RMIGUIView extends RMIView {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
 			Thread.currentThread().interrupt();
 		}
+	}
+	
+	private void setController(GUIController controller) {
+		guiController = controller;
 	}
 	
 	private synchronized void resume() {
