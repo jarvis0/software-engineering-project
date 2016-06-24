@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
@@ -81,7 +82,9 @@ public class TestRegion {
 		assertTrue(((GroupRegionalCity)regions.get(0)).pickPermissionCard(0).equals(deckUp.get(0)));
 		assertTrue(!((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getDeck().get(0).equals(deckUp.get(0)));
 		for(int i = 0; i < 4; i++) {
-			freeCouncillors.electCouncillor("orange", ((GroupRegionalCity)regions.get(0)).getCouncil());
+			try {
+				freeCouncillors.electCouncillor("orange", ((GroupRegionalCity)regions.get(0)).getCouncil());
+			} catch (InvalidCouncillorException e) { }
 		}
 		iterator = ((GroupRegionalCity)regions.get(0)).getCouncil().getCouncil().iterator();
 		while(iterator.hasNext()) {

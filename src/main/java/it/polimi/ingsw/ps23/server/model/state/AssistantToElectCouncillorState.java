@@ -24,11 +24,11 @@ public class AssistantToElectCouncillorState extends ActionState {
 	}
 
 	public String getCouncilsMap() {
-		return ((ElectCouncillorState) electCouncillorState).toString();
+		return ((ElectCouncillorState) electCouncillorState).getCouncilsMap();
 	}	
 
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
-		return new AssistantToElectCouncillor(chosenCouncillor, ((ElectCouncillorState) electCouncillorState).getCouncilMap(chosenBalcony));
+		return new AssistantToElectCouncillor(chosenCouncillor, chosenBalcony);
 	}
 	
 	@Override

@@ -2,6 +2,13 @@ package it.polimi.ingsw.ps23.server.model;
 
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.commons.modelview.ModelObservable;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
@@ -9,7 +16,6 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.model.state.Context;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
@@ -24,7 +30,7 @@ public class Model extends ModelObservable {
 	private Context context;
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
-	private PlayerResumeHandler playerResumeHandler;
+	private PlayersResumeHandler playersResumeHandler;
 	
 	private void newGame(List<String> playersName) {
 		game = new Game(playersName);
@@ -32,9 +38,9 @@ public class Model extends ModelObservable {
 		changePlayer();
 	}
 
-	public void setUpModel(List<String> playersName, PlayerResumeHandler playerResumeHandler) {
+	public void setUpModel(List<String> playersName, PlayersResumeHandler playersResumeHandler) {
 		setStartingPlayerIndex();
-		this.playerResumeHandler = playerResumeHandler;
+		this.playersResumeHandler = playersResumeHandler;
 		newGame(playersName);
 		setStartTurnState();
 	}
@@ -55,7 +61,7 @@ public class Model extends ModelObservable {
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
 		wakeUp(startTurnState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 
 	private boolean nextPlayerIndex() {
@@ -121,7 +127,7 @@ public class Model extends ModelObservable {
 		wakeUp(state);
 	}
 	
-	public void doAction(Action action) {
+	public void doAction(Action action) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException {
 		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
 		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
@@ -164,7 +170,7 @@ public class Model extends ModelObservable {
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
 		marketOfferPhaseState.changeState(context, game);
 		wakeUp(marketOfferPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void chooseNextBuyMarketStep() {
@@ -190,7 +196,7 @@ public class Model extends ModelObservable {
 		MarketBuyPhaseState marketBuyPhaseState = new MarketBuyPhaseState();
 		marketBuyPhaseState.changeState(context, game);
 		wakeUp(marketBuyPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void setStartingPlayerIndex() {
@@ -206,7 +212,7 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
-	public void setCurrentPLayerOffline() {
+	public void setCurrentPlayerOffline() {
 		//if(game.getGamePlayersSet().isAnyoneOnline()) {
 			State currentState = context.getState();
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
@@ -228,7 +234,34 @@ public class Model extends ModelObservable {
 	}
 	
 	public void setOnlinePlayer(String player) {
-		//game.getGamePlayersSet().;
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				gamePlayer.setOnline(true);
+				return;
+			}
+		}
+	}
+
+	public boolean isOnline(String player) {
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				return gamePlayer.isOnline();
+			}
+		}
+		return false;
+	}
+
+	public void rollBack(Exception e) {
+		context.addExceptionText(e);
+		wakeUp(context.getState());		
+	}
+
+	public void restartTurn(Exception e) {
+		context = new Context();
+		StartTurnState startTurnState = new StartTurnState(turnHandler);
+		startTurnState.changeState(context, game);
+		context.addExceptionText(e);
+		wakeUp(startTurnState);		
 	}
 	
 }

@@ -27,7 +27,7 @@ class RemoteConsoleView {
 	
 	void run() {
 		String message;
-		while(!connectionTimedOut) {
+		do {
 			message = client.receive();
 			if(!message.contains(NO_INPUT)) {
 				output.println(message);
@@ -36,7 +36,7 @@ class RemoteConsoleView {
 			else {
 				output.println(message.replace(NO_INPUT, ""));
 			}
-		}
+		} while(!connectionTimedOut);
 		client.closeConnection();
 	}
 

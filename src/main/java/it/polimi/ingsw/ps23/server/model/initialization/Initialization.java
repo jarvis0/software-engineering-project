@@ -22,7 +22,6 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 public class Initialization {
 	
-	//TODO è corretto organizzare così le costanti?
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";

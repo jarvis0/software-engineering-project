@@ -29,6 +29,7 @@ class RMIClient implements ClientInterface {
 
 	private ExecutorService executor;
 	
+
 	private RMIClient(String playerName) {
 		//rmiView = new RMIConsoleView(playerName);
 		rmiView = new RMIGUIView(playerName);
@@ -67,6 +68,11 @@ class RMIClient implements ClientInterface {
 	@Override
 	public void changeState(State currentState) {
 		((RMIView) rmiView).update(currentState);
+	}
+
+	@Override
+	public void changeName(String newName) throws RemoteException {
+		rmiView.setNewClientName(newName);
 	}
 
 }

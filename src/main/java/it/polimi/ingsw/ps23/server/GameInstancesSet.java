@@ -11,11 +11,13 @@ import it.polimi.ingsw.ps23.server.view.SocketView;
 class GameInstancesSet {
 
 	private List<GameInstance> gameInstances;
+	private GameInstance foundGameInstance;
 	
 	private int timeout;
 	
 	GameInstancesSet(int timeout) {
 		gameInstances = new ArrayList<>();
+		foundGameInstance = null;
 		this.timeout = timeout;
 	}
 
@@ -27,25 +29,48 @@ class GameInstancesSet {
 		gameInstance.newGame(socketWaitingConnections, rmiWaitingConnections);
 		gameInstances.add(gameInstance);
 	}
-	void disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
+	
+	String disconnectSocketPlayer(Connection connection) throws ViewNotFoundException {
 		for(GameInstance gameInstance : gameInstances) {
 			SocketView socketView = gameInstance.findSocketView(connection);
 			if(socketView != null) {
-				gameInstance.disconnectSocketClient(socketView);
-				return;
+				return gameInstance.disconnectSocketClient(socketView);
 			}
 		}
 		throw new ViewNotFoundException();
 	}
 	
-	boolean checkIfFormerPlayer(String name, Connection connection) {
+	boolean checkIfFormerPlayer(String name) {
 		for(GameInstance gameInstance : gameInstances) {
 			if(gameInstance.isFormerPlayer(name)) {
-				gameInstance.reconnectPlayer(name, connection);
+				foundGameInstance = gameInstance;
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	boolean checkIfAlreadyInGame(String name) {
+		for(GameInstance gameInstance : gameInstances) {
+			if(gameInstance.isInGame(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	void reconnectPlayer(String name, Connection connection) {
+		if(foundGameInstance != null) {
+			foundGameInstance.reconnectPlayer(name, connection);
+			foundGameInstance = null;
+		}
+	}
+	
+	void reconnectPlayer(String name, ClientInterface client) {
+		if(foundGameInstance != null) {
+			foundGameInstance.reconnectPlayer(name, client);
+			foundGameInstance = null;
+		}
 	}
 
 }

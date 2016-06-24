@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-abstract class ActionState implements State, Cloneable, Serializable {
+abstract class ActionState extends State implements Cloneable, Serializable {
 
 	/**
 	 * 

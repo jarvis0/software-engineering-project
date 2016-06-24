@@ -1,14 +1,14 @@
 package it.polimi.ingsw.ps23.server.model.actions;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.naming.InsufficientResourcesException;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -23,34 +23,38 @@ public class BuildEmporiumKing implements Action {
 	 */
 	private static final long serialVersionUID = -3325202641887325997L;
 	private static final double ROAD_COST = -2;
-	private City arriveCity;
+	private String arriveCity;
 	private List<String> removedCards;
-	private City kingPosition;
 	
-	public BuildEmporiumKing(List<String> removedCards, City arriveCity, City kingPosition) {
+	public BuildEmporiumKing(List<String> removedCards, String arriveCity) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;
-		this.kingPosition = kingPosition;
+	}
+	
+	private void checkAction(Game game) throws InvalidCityException {
+		if(game.getGameMap().getCitiesMap().get(arriveCity) == null) {
+			throw new InvalidCityException();
+		}
 	}
 
 	@Override
-	public void doAction(Game game, TurnHandler turnHandler) {
+	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException {
+		checkAction(game);
+		City finalCity = game.getGameMap().getCitiesMap().get(arriveCity);
 		Player player = game.getCurrentPlayer();
 		int assistantsCost = 0;
-		int cost = ((PoliticHandDeck) player.getPoliticHandDeck()).removeCards(removedCards);
-		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), kingPosition , arriveCity);
+		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedCards);
+		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), game.getKing().getPosition() , finalCity);
 		cost = cost + (int) (ROAD_COST * dijkstraShortestPath.getPathLength());
-		try {
-			assistantsCost = arriveCity.buildEmporium(player);
-			player.updateCoins(cost);
-			player.updateAssistants(assistantsCost);
-			game.getKing().setNewPosition(arriveCity);
-			player.updateEmporiumSet(game, turnHandler, arriveCity);
-		} catch (AlreadyBuiltHereException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot build here.", e);
-		} catch (InsufficientResourcesException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Insufficient current player resources.", e);
+		if(Math.abs(cost) > player.getCoins()) {
+			throw new InsufficientResourcesException();
 		}
+		assistantsCost = finalCity.buildEmporium(player);
+		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedCards);
+		player.updateCoins(cost);
+		player.updateAssistants(assistantsCost);
+		game.getKing().setNewPosition(finalCity);
+		player.updateEmporiumSet(game, turnHandler, finalCity);
 		player.checkEmporiumsGroups(game);
 		turnHandler.useMainAction();
 	}

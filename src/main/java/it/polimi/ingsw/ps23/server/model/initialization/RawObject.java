@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 
 import com.opencsv.CSVReader;
 
-class RawObject {
+public class RawObject {
 	
 	private List<String[]> raw;
 	
-	RawObject(String path) {
+	public RawObject(String path) {
 		try {
 			this.raw = parseCSVFile(path);
 		} catch (IOException e) {
@@ -20,14 +20,14 @@ class RawObject {
 		}
 	}
 	
-	List<String[]> parseCSVFile(String path) throws IOException {
+	private List<String[]> parseCSVFile(String path) throws IOException {
 		CSVReader reader = new CSVReader(new FileReader(path));
 		List<String[]> read = reader.readAll();
 		reader.close();
 		return read;
 	}
 	
-	List<String[]> getRawObject() {
+	public List<String[]> getRawObject() {
 		return raw;
 	}
 	

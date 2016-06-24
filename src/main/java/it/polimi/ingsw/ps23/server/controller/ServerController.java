@@ -52,6 +52,11 @@ public class ServerController extends Controller implements ServerControllerInte
 	public void wakeUpServer(SuperBonusGiver superBonusGiver) {
 		update(superBonusGiver);
 	}
+	
+	@Override
+	public void wakeUpServer(Exception e) throws RemoteException {
+		update(e);		
+	}
 
 	@Override
 	public ServerControllerInterface setStub() {
@@ -64,5 +69,5 @@ public class ServerController extends Controller implements ServerControllerInte
 		}
 		return null;
 	}
-
+	
 }

@@ -21,4 +21,9 @@ public class Context implements Serializable {
 	public State getState() {
 		return state;
 	}
+
+	public void addExceptionText(Exception e) {
+		state.setExceptionString(e.toString());
+		
+	}
 }

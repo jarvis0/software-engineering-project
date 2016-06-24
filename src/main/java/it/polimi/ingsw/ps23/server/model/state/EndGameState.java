@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class EndGameState implements State {
+public class EndGameState extends State {
 
 	/**
 	 * 

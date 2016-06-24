@@ -72,7 +72,7 @@ public class ModelObservable {
 		for(Entry<String, ClientInterface> rmiPlayer : rmiPlayers) {
 			if(rmiPlayer.getKey() == currentPlayer) {
 				timer = new Timer();
-				timer.schedule(new RMITimeoutTask(gameInstance, timer), timeout * 1000L);
+				timer.schedule(new RMITimeoutTask(gameInstance, rmiPlayer.getValue(), timer), timeout * 1000L);
 			}
 			try {
 				rmiPlayer.getValue().changeState(state);
@@ -82,7 +82,7 @@ public class ModelObservable {
 		}
 	}
 
-	private void findCurrentPlayer(State state) {
+	private void setCurrentPlayer(State state) {
 		if(state instanceof StartTurnState) {
 			currentPlayer = ((StartTurnState) state).getCurrentPlayer().getName();
 		}
@@ -98,8 +98,8 @@ public class ModelObservable {
 		}
 	}
 	
-	private void notifyAllObservers(State state) {	
-		findCurrentPlayer(state);
+	private void notifyAllObservers(State state) {
+		setCurrentPlayer(state);
 		for(ViewObserver observer : observers) {
 			observer.update(state);
 		}

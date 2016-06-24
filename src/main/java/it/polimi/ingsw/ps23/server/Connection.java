@@ -21,6 +21,7 @@ public class Connection implements Runnable {
 	private int timeout;
 
 	private boolean started;
+	private boolean reconnected;
 
 	private SocketView socketView;
 	
@@ -33,6 +34,7 @@ public class Connection implements Runnable {
 		textIn.useDelimiter("EOM");
 		textOut = new PrintStream(socket.getOutputStream(), true);
 		started = false;
+		reconnected = false;
 	}
 	
 	Server getServer() {
@@ -59,7 +61,7 @@ public class Connection implements Runnable {
 		}
 	}
 	
-	public void close() {
+	void close() {
 		closeConnection();
 		try {
 			server.deregisterSocketConnection(this);
@@ -71,17 +73,21 @@ public class Connection implements Runnable {
 	synchronized void setStarted() {
 		started = true;
 	}
+
+	void setReconnected() {
+		reconnected = true;
+	}
 	
 	synchronized void startGame() {
 		notifyAll();
 	}
-	
+
 	private synchronized void initialization() {
 		if(!started) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put connection " + this + " on hold.", e);
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put a socket connection on hold.", e);
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -96,8 +102,13 @@ public class Connection implements Runnable {
 
 	@Override
 	public void run() {
-		server.joinToWaitingList(receive(), this);
-		initialization();
+		server.joinToSocketWaitingList(receive(), this);
+		if(!reconnected) {
+			initialization();
+		}
+		else {
+			socketView.setReconnected(reconnected);
+		}
 		socketView.run();
 		close();
 	}

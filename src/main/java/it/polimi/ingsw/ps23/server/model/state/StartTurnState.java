@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class StartTurnState implements State {
+public class StartTurnState extends State {
 
 	/**
 	 * 
@@ -53,7 +53,7 @@ public class StartTurnState implements State {
 		return gameMap;
 	}
 	
-	public PlayersSet getPlayerSet() {
+	public PlayersSet getPlayerSet() {//TODO playersssss
 		return gamePlayersSet;
 	}
 	
@@ -108,7 +108,5 @@ public class StartTurnState implements State {
 		}
 		return print;
 	}
-	
-	
 	
 }

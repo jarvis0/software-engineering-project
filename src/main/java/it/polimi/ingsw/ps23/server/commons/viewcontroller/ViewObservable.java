@@ -37,5 +37,9 @@ public class ViewObservable {
 	public void wakeUp(SuperBonusGiver superBonusGiver) {
 		observer.update(superBonusGiver);
 	}
+	
+	public void wakeUp(Exception e) {
+		observer.update(e);
+	}
 
 }
