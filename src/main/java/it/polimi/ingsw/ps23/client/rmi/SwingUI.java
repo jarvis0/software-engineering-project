@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -20,18 +19,13 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
@@ -48,7 +42,6 @@ public class SwingUI {
 	private JFrame frame;
 	private JPanel mapPanel;
 	private JTable playersTable;
-	private JPanel tablePanel;
 	private DefaultTableModel tableModel; 
 
 	private BufferedImage readImage(String path) {
@@ -119,7 +112,6 @@ public class SwingUI {
 	}
 	
 	private void loadPlayersTable() {
-		tablePanel = new JPanel();
 		int numRows = 0;
 		String columnNames[] = new String[] {"Name", "VictoryPoints", "Coins", "Assistants", "Nobility Points"};
 		tableModel = new DefaultTableModel(numRows, columnNames.length);
@@ -127,7 +119,8 @@ public class SwingUI {
 		playersTable = new JTable(tableModel);
 		mapPanel.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(playersTable);
-        scrollPane.getViewport().setViewPosition(new Point(800,0));
+		Dimension dimension = new Dimension(550, 90);
+        scrollPane.setPreferredSize(dimension);
         mapPanel.add(scrollPane, BorderLayout.LINE_END);
 	}
 
