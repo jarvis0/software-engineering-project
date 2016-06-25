@@ -20,7 +20,7 @@ public class TestPermissionHandDeck {
 	@Test
 	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("blue", "0x0000ff");
+		GameColor gameColor = new GameColor("blue");
 		Card card = new PoliticCard(gameColor);
 		cards.add(card);
 		Deck politicDeck = new PoliticDeck(cards);

@@ -38,11 +38,11 @@ class RMIClient implements ClientInterface {
 	}
 
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
+		//@SuppressWarnings("resource")
+		//Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
-		output.print("Welcome, what's your name? ");
-		String playerName = scanner.next();
+		output.print("Welcome, what's your name (only letters)? ");
+		String playerName = "Giuseppe";
 		try {
 			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
 			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);

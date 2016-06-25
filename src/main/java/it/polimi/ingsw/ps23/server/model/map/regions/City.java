@@ -32,7 +32,7 @@ public class City implements Serializable {
 	}
 	
 	public String getColor() {
-		return color.getName();
+		return color.toString();
 	}
 	
 	public boolean isCapital() {

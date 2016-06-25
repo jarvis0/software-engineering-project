@@ -21,7 +21,7 @@ public class TestPlayerSet {
 	@Test
 	public void test() {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("orange", "0xffa500");
+		GameColor gameColor = new GameColor("orange");
 		cards.add(new PoliticCard(gameColor));
 		Deck politicDeck = new PoliticDeck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));

@@ -36,7 +36,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
-public class SwingUI {
+class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
@@ -53,7 +53,7 @@ public class SwingUI {
 		components = new HashMap<>();
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
-		Dimension dimension = new Dimension(800, 464);
+		Dimension dimension = new Dimension(814, 503);
 		frame.setMinimumSize(dimension);
 		frame.setIconImage(readImage(CONFIGURATION_PATH + "images/victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
@@ -152,21 +152,22 @@ public class SwingUI {
         mapPanel.add(scrollPane, BorderLayout.LINE_END);
 	}
 
-	public static void main(String[] args) {
-		new SwingUI();
-	}
-
-	private void drawRewardTokenBonus(Bonus bonus, int xCoord, int yCoord) {
-		int x = xCoord;
-		int y = yCoord;
-		for(int i = 0; i < bonus.getValue(); i++) {
-			BufferedImage bonusImage = readImage(CONFIGURATION_PATH + "images/" + bonus.getName() + ".png");
-			Image resizedBonusImage = bonusImage.getScaledInstance(23, 23, Image.SCALE_SMOOTH);
-			JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
-			bonusLabel.setBounds(0, 0, 23, 23);
-			bonusLabel.setLocation(x + 30, y - 30);
-			mapPanel.add(bonusLabel, 0);
-			x += 22;
+	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
+		BufferedImage bonusImage = readImage(CONFIGURATION_PATH + "images/" + bonus.getName() + ".png");
+		Image resizedBonusImage = bonusImage.getScaledInstance(23, 25, Image.SCALE_SMOOTH);
+		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
+		bonusLabel.setBounds(0, 0, 23, 25);
+		bonusLabel.setLocation(x + 40, y - 35);
+		mapPanel.add(bonusLabel, 0);
+		int bonusNumber = bonus.getValue();
+		if(bonusNumber > 1 || "victoryPoint".equals(bonus.getName())) {
+			JLabel bonusValue = new JLabel();
+			bonusValue.setBounds(0, 0, 23, 25);
+			bonusValue.setLocation(x + 40 + 8, y - 35);
+			bonusValue.setFont(new Font("Sans serif", Font.BOLD, 9));
+			bonusValue.setForeground(Color.decode("0xFFFFFF"));
+			bonusValue.setText(String.valueOf(bonusNumber));
+			mapPanel.add(bonusValue, 0);
 		}
 	}
 	
@@ -182,6 +183,7 @@ public class SwingUI {
 				List<Bonus> rewardTokenBonuses = ((NormalCity) city).getRewardToken().getBonuses();
 				for(Bonus bonus : rewardTokenBonuses) {
 					drawRewardTokenBonus(bonus, x, y);
+					x += 22;
 				}
 			}
 		}
@@ -213,6 +215,10 @@ public class SwingUI {
 		refreshKingPosition(currentState.getKing().getPosition().getName(), currentState.getGameMap().getCities());
 		refreshPlayersTable(currentState.getPlayerSet());
 		frame.repaint();
+	}
+
+	public static void main(String[] args) {
+		new SwingUI();
 	}
 
 }

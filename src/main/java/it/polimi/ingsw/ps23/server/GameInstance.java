@@ -16,8 +16,19 @@ import it.polimi.ingsw.ps23.server.model.PlayersResumeHandler;
 import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
+/**
+ * Provides a compact way to handle both socket and RMI game
+ * instance.
+ * <p>
+ * Constructs the game and the MVC objects to make
+ * the game work.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class GameInstance {
 
+	private static final String PLAYER_PRINT = "Player ";
+	
 	private Model model;
 	private List<SocketView> socketViews;
 	private ServerController controller;
@@ -119,8 +130,19 @@ public class GameInstance {
 		return currentPlayer;
 	}
 	
+	/**
+	 * Provides all procedures to kick-out a RMI client from the game
+	 * due to connection timeout.
+	 * <p>
+	 * Notifies to the other game socket and RMI clients that the
+	 * specified client has been kicked-out.
+	 * <p>
+	 * Sets the specified player offline to make him reconnect and
+	 * resume the same game.
+	 * @param client
+	 */
 	public void disconnectRMIClient(ClientInterface client) {
-		String message = "Player " +  model.getCurrentPlayer() + " has been disconnected from the game due to connection timeout.";
+		String message = PLAYER_PRINT +  model.getCurrentPlayer() + " has been disconnected from the game due to connection timeout.";
 		System.out.println(message);
 		sendSocketInfoMessage(message);
 		try {
@@ -142,7 +164,7 @@ public class GameInstance {
 	}
 
 	void reconnectPlayer(String name, Connection connection) {
-		String message = "Player " + name + " has been reconnected to the game.";
+		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
 		for(SocketView gameSocketView : socketViews) {
 			gameSocketView.sendNoInput(message);
 		}
@@ -153,7 +175,7 @@ public class GameInstance {
 	}
 	
 	void reconnectPlayer(String name, ClientInterface client) {
-		model.sendRMIInfoMessage("Player " + name + " has been reconnected to the game.");
+		model.sendRMIInfoMessage(PLAYER_PRINT + name + " has been reconnected to the game.");
 		createRMIGame(name, client, controller);
 		model.setOnlinePlayer(name);
 	}

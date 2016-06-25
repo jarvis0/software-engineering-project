@@ -18,7 +18,7 @@ public class TestPlayer {
 	@Test
 	public void test() {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("blue", "0x0000ff");
+		GameColor gameColor = new GameColor("blue");
 		Card card = new PoliticCard(gameColor);
 		cards.add(card);
 		Deck politicDeck = new PoliticDeck(cards);

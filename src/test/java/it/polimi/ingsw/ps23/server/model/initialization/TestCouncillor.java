@@ -12,7 +12,7 @@ public class TestCouncillor {
 
 	@Test
 	public void test() {
-		GameColor color = GameColorFactory.makeColor("White", "0xffffff");
+		GameColor color = GameColorFactory.makeColor("White");
 		Councillor councillor = new Councillor(color);
 		assertTrue(councillor.toString().equals("White"));
 		assertTrue(councillor.getColor().equals(color));

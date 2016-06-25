@@ -29,7 +29,7 @@ public class FreeCouncillorsSet implements Serializable {
 	
 	public void electCouncillor(String councillorColor, Council nameCouncil) throws InvalidCouncillorException {
 		for(Councillor freeCouncillor : freeCouncillors) {
-			if(freeCouncillor.getColorName().equals(councillorColor)) {
+			if(freeCouncillor.toString().equals(councillorColor)) {
 				int i = freeCouncillors.indexOf(freeCouncillor);
 				freeCouncillors.set(i, nameCouncil.pushCouncillor(freeCouncillors.get(i)));
 				return;

@@ -30,8 +30,8 @@ public class TestLoadPoliticDeck {
 		assertTrue(politicDeck.getDeck().size() == 17);
 		boolean foundShuffled = false;
 		boolean foundJolly = false;
-		GameColor orange = GameColorFactory.makeColor("orange", "0xffa500");
-		GameColor multi = GameColorFactory.makeColor("multi", "0xa1ff8f");
+		GameColor orange = GameColorFactory.makeColor("orange");
+		GameColor multi = GameColorFactory.makeColor("multi");
 		for(int i = 0; i < (politicDeck.getDeck().size() - 1) / 2; i++) {
 			if(politicDeck.getDeck().get(i) != politicDeck.getDeck().get(i+1)) {
 				foundShuffled = true;
@@ -44,6 +44,6 @@ public class TestLoadPoliticDeck {
 		assertTrue(foundShuffled && foundJolly);
 		Card card = (PoliticCard) politicDeck.getDeck().get(0);
 		assertTrue(multi.equals(((PoliticCard)card).getColor()) || orange.equals(((PoliticCard)card).getColor()));
-		assertTrue(multi.isSameColor(((PoliticCard)card).getColor().getName()) || orange.isSameColor(((PoliticCard)card).getColor().getName()));
+		assertTrue(multi.isSameColor(((PoliticCard)card).getColor().toString()) || orange.isSameColor(((PoliticCard)card).getColor().toString()));
 	}
 }

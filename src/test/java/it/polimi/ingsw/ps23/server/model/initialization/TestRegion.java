@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
@@ -31,6 +32,7 @@ public class TestRegion {
 	
 	@Test
 	public void test() {
+		BonusCache.loadCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		CitiesFactory citiesFactory = new CitiesFactory();
@@ -44,7 +46,7 @@ public class TestRegion {
 		List<String[]> rawCouncillors = new RawObject(TEST_CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
 		FreeCouncillorsSet freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		((GroupRegionalCity) regions.get(0)).setCouncil(new CouncilFactory().makeCouncil(freeCouncillors));
-		GameColor blue = GameColorFactory.makeColor("blue", "0x0000ff");
+		GameColor blue = GameColorFactory.makeColor("blue");
 		Councillor councillor = new Councillor(blue);
 		Iterator<Councillor> iterator = ((GroupRegionalCity) regions.get(0)).getCouncil().getCouncil().iterator();
 		assertTrue(iterator.next().equals(((GroupRegionalCity) regions.get(0)).getCouncil().pushCouncillor(councillor)));
@@ -88,7 +90,7 @@ public class TestRegion {
 		}
 		iterator = ((GroupRegionalCity)regions.get(0)).getCouncil().getCouncil().iterator();
 		while(iterator.hasNext()) {
-			assertTrue(iterator.next().getColorName().equals("orange"));
+			assertTrue(iterator.next().toString().equals("orange"));
 		}
 	}
 
