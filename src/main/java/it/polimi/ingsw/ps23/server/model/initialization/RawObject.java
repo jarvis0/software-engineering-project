@@ -30,7 +30,7 @@ public class RawObject {
 			raw = parseCSVFile(path);
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error loading " + path + " file.", e);
-		}
+		}	
 	}
 	
 	public List<String[]> getRawObject() {

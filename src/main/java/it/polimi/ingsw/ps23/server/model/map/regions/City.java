@@ -17,11 +17,13 @@ public class City implements Serializable {
 	private static final long serialVersionUID = -4628045111105663222L;
 	private String name;
 	private GameColor color;
+	private boolean capital;
 	private List<Player> emporiumsList;
 	
-	protected City(String name, GameColor color) {
+	protected City(String name, GameColor color, boolean capital) {
 		this.name = name;
 		this.color = color;
+		this.capital = capital;
 		emporiumsList = new ArrayList<>();
 	}
 
@@ -31,6 +33,10 @@ public class City implements Serializable {
 	
 	public String getColor() {
 		return color.getName();
+	}
+	
+	public boolean isCapital() {
+		return capital;
 	}
 	
 	public int buildEmporium(Player player) throws AlreadyBuiltHereException, InsufficientResourcesException { 

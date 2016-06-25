@@ -21,11 +21,11 @@ public class RMIGUIView extends RMIView {
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
-
+	
 	RMIGUIView(String playerName) {
 		super(playerName);
 	}
-	
+
 	public State getCurrentState() {
 		return state;
 	}
@@ -33,78 +33,79 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(StartTurnState currentState) {
 		swingUI.refreshUI(currentState);
+		pause();
 	}
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(ChangePermitsTileState currenState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -115,20 +116,21 @@ public class RMIGUIView extends RMIView {
 		waiting = false;
 		do {
 			state.acceptView(this);
-		} while(!endGame);
+		} while (!endGame);
 	}
 
 	private boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState
+				|| state instanceof MarketOfferPhaseState;
 	}
 
 	@Override
 	public void update(State state) {
 		this.state = state;
-		if(waitResumeCondition() && waiting) {
+		if (waitResumeCondition() && waiting) {
 			resume();
 			waiting = false;
 		}
 	}
-	
+
 }

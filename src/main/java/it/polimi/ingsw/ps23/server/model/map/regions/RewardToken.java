@@ -22,6 +22,10 @@ public class RewardToken implements BonusSlot {
 		bonuses = new ArrayList<>();
 	}
 	
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	
 	@Override
 	public void addBonus(Bonus bonus) {
 		bonuses.add(bonus);

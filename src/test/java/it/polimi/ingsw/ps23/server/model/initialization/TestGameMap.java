@@ -42,7 +42,7 @@ public class TestGameMap {
 		}
 		GameMap gameMap = new GameMap(citiesFactory.getHashMap(), citiesGraphFactory.getCitiesGraph(), groupRegional, groupColored);
 		assertTrue(citiesGraphFactory.getCitiesGraph().equals(gameMap.getCitiesGraph()));
-		assertTrue(citiesFactory.getHashMap().equals(gameMap.getCitiesMap()));
+		assertTrue(citiesFactory.getHashMap().equals(gameMap.getCities()));
 		assertTrue(groupRegional.equals(gameMap.getGroupRegionalCity()));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegion("seaside")));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegionMap().get("seaside")));

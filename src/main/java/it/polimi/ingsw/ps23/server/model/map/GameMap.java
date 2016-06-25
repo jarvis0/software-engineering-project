@@ -53,7 +53,7 @@ public class GameMap implements Serializable {
 		return citiesGraph;
 	}
 
-	public Map<String, City> getCitiesMap() {
+	public Map<String, City> getCities() {
 		return citiesMap;
 	}	
 

@@ -164,7 +164,7 @@ public class Initialization {
 	}
 	
 	private void createKing() {
-		Map<String, City> cities = gameMap.getCitiesMap();		
+		Map<String, City> cities = gameMap.getCities();		
 		Set<Entry<String, City>> citiesMapEntrySet = cities.entrySet();
 		for(Entry<String, City> city : citiesMapEntrySet) {
 			City currentCity = city.getValue();
