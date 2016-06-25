@@ -1,7 +1,10 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -11,17 +14,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
+import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 public class SwingUI {
@@ -34,6 +47,9 @@ public class SwingUI {
 	private Map<String, Component> components;
 	private JFrame frame;
 	private JPanel mapPanel;
+	private JTable playersTable;
+	private JPanel tablePanel;
+	private DefaultTableModel tableModel; 
 
 	private BufferedImage readImage(String path) {
 		try {
@@ -101,11 +117,27 @@ public class SwingUI {
 		mapLabel.setBounds(0, 0, 800, 464);
 		mapPanel.add(mapLabel);
 	}
+	
+	private void loadPlayersTable() {
+		tablePanel = new JPanel();
+		int numRows = 0;
+		String columnNames[] = new String[] {"Name", "VictoryPoints", "Coins", "Assistants", "Nobility Points"};
+		tableModel = new DefaultTableModel(numRows, columnNames.length);
+		tableModel.setColumnIdentifiers(columnNames);
+		playersTable = new JTable(tableModel);
+		mapPanel.setLayout(new BorderLayout());
+		JScrollPane scrollPane = new JScrollPane(playersTable);
+        scrollPane.getViewport().setViewPosition(new Point(800,0));
+        mapPanel.add(scrollPane, BorderLayout.LINE_END);
+	}
 
 	SwingUI() {
 		components = new HashMap<>();
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
+		Dimension dimension = new Dimension(800, 600);
+		frame.setMinimumSize(dimension);
+		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		mapPanel = new JPanel();
 		mapPanel.setLayout(null);
@@ -113,8 +145,9 @@ public class SwingUI {
 		loadCities();
 		loadStreets();
 		loadMapBackground();
+		loadPlayersTable();
 		frame.add(mapPanel);
-		JTable playersTable = new JTable();
+		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -127,9 +160,25 @@ public class SwingUI {
 		Point point = getComponents(city).getLocationOnScreen();
 		getComponents("king").setLocation(point);
 	}
+	private void refreshPlayersTable(PlayersSet playerSet) {
+		for(int i=tableModel.getRowCount(); i>0; i--) {
+			tableModel.removeRow(i);
+		}
+		for (Player player : playerSet.getPlayers()) {
+			Vector vector = new Vector<>();
+			vector.add(0, player.getName());
+			vector.add(1, player.getVictoryPoints());
+			vector.add(2, player.getCoins());
+			vector.add(3, player.getAssistants());
+			vector.add(4, player.getNobilityTrackPoints());
+			tableModel.addRow(vector);	
+		}
+		
+	}
 	
 	void refreshUI(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKing().getPosition().getName());
+		refreshPlayersTable(currentState.getPlayerSet());
 	}
-	
+
 }
