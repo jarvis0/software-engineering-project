@@ -20,8 +20,8 @@ public class GameColor implements Serializable {
 	/**
 	 * Creates a new game color identified by a name and a 
 	 * hexadecimal format string representing the color.
-	 * @param colorName
-	 * @param colorHex
+	 * @param colorName - name of the color
+	 * @param colorHex - hexadecimal number for the specified color name.
 	 */
 	public GameColor(String colorName, String colorHex) {
 		this.colorName = colorName;
@@ -38,7 +38,7 @@ public class GameColor implements Serializable {
 	
 	/**
 	 * Checks if two colors are the same.
-	 * @param other
+	 * @param other - color name to be compared with
 	 * @return true if the specified color is equals to the parametric
 	 * color, false if it's different.
 	 */

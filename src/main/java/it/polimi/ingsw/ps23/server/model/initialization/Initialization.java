@@ -55,7 +55,7 @@ public class Initialization {
 	/**
 	 * Initializes game resources in order to provide a new game setup
 	 * from given map choice and in game players.
-	 * @param playersName
+	 * @param playersName - players name to be part of the game
 	 */
 	public Initialization(List<String> playersName) {
 		loadPoliticDeck();

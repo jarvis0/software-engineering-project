@@ -110,7 +110,7 @@ public class Player implements Serializable {
 	}
 
 	public String showSecretStatus() {
-		return politicHandDeck.toString();
+		return "politic cards: " + politicHandDeck.toString();
 	}
 
 	public HandDeck getPoliticHandDeck() {
@@ -209,7 +209,7 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCitiesPrint();	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
 		if(isOnline()) {
 			print += " online";
 		}

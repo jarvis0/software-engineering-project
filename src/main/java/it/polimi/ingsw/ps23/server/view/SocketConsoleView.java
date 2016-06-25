@@ -67,7 +67,7 @@ public class SocketConsoleView extends SocketView {
 		return connection.receive();
 	}
 	
-	private synchronized void pause() {
+	private synchronized void pause() {//TODO maybe in super-class
 		try {
 			wait();
 		} catch (InterruptedException e) {
@@ -153,7 +153,7 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		sendWithInput("Choose a region:" + currentState.getPermitsMap());
+		sendWithInput("Choose a region:" + currentState.printRegionalPermissionDecks());
 		String chosenRegion = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenRegion));
 	}

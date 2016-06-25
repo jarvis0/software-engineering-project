@@ -20,8 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
@@ -129,7 +127,7 @@ public class SwingUI {
 	}
 
 	public static void main(String[] args) {
-		SwingUI swingUI = new SwingUI();
+		new SwingUI();
 	}
 
 	private void refreshKingPosition(String city) {

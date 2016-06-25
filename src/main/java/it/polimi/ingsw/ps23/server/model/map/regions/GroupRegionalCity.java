@@ -20,7 +20,7 @@ public class GroupRegionalCity extends Region {
 	private Council council;
 	private Deck permissionDeckDown;
 	private Deck permissionDeckUp;
-	private Map<String, List<String>> citiesConnections; //TODO sonar vuole che sia serializzabile ma lo è già
+	private Map<String, List<String>> citiesConnections;
 	
 	public GroupRegionalCity(String name, Bonus bonus, Map<String, List<String>> citiesConnections) {
 		super(name, bonus);
@@ -65,7 +65,7 @@ public class GroupRegionalCity extends Region {
 		print += "\t- CITIES:\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(City city : getCitiesList()) {
-			loopPrint.append("\t\t» " + city.toString() + " / connections with: " + citiesConnections.get(city.getName()) + "\n");
+			loopPrint.append("\t\t» " + city + " / connections with: " + citiesConnections.get(city.getName()) + "\n");
 		}
 		print += loopPrint;
 		print += "\t- REGIONAL BONUS TILE: " + getBonusTile();

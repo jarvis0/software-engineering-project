@@ -10,6 +10,12 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
+/**
+ * Superclass for both groupRegionalCities and groupColoredCities.
+ * Provides useful and shared methods used by subclasses.
+ * @author Alessandro Erba
+ *
+ */
 public abstract class Region implements Serializable {
 	
 	/**
@@ -22,6 +28,12 @@ public abstract class Region implements Serializable {
 	private List<City> citiesList;
 	private boolean alreadyAcquiredBonusTile;
 	
+	/**
+	 * Initializes some class attributes. More attributes will be
+	 * initialized by subclasses.
+	 * @param name - name of the region
+	 * @param bonusTile - bonus tile associate to the specified region parameter
+	 */
 	public Region(String name, Bonus bonusTile) {
 		this.name = name;
 		this.bonusTile = bonusTile;
@@ -30,11 +42,15 @@ public abstract class Region implements Serializable {
 		alreadyAcquiredBonusTile = false;
 	}
 	
+	/**
+	 * Converts game cities from HashMap to List for further
+	 * better code implementations.
+	 */
 	public void toCitiesList() {
 		citiesList.addAll(cities.values());
 	}
 	
-	public List<City> getCitiesList() { //TODO era protected ma mi serviva per javaFx
+	protected List<City> getCitiesList() {
 		return citiesList;
 	}
 
@@ -42,6 +58,13 @@ public abstract class Region implements Serializable {
 		return cities;
 	}
 	
+	/**
+	 * Adds a game city to the cities HashMap.
+	 * @param city - game city to be added to the related
+	 * data structure
+	 * @throws InvalidCityException if the specified city has been already
+	 * inserted
+	 */
 	public void addCity(City city) throws InvalidCityException {
 		String cityName = city.getName();
 		if(!cities.containsKey(cityName)) {
@@ -51,6 +74,11 @@ public abstract class Region implements Serializable {
 			throw new InvalidCityException();
 	}
 	
+	/**
+	 * Set the bonus tile of the specified region or colored cities group
+	 * as acquired so no one else can acquire this bonus tile.
+	 * @return the acquired regional or colored cities group bonus tile.
+	 */
 	public Bonus acquireBonusTile() {
 		alreadyAcquiredBonusTile = true;
 		return bonusTile;

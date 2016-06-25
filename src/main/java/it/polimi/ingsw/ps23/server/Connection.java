@@ -60,7 +60,6 @@ public class Connection implements Runnable {
 	 * socket client is online.
 	 * 
 	 * @param message to be sent to the socket client
-	 * @see {@link receive()}
 	 */
 	public void send(String message) {
  		textOut.print(message + "EOM");
@@ -75,7 +74,7 @@ public class Connection implements Runnable {
 	 * It starts an implicit timer which for socket connection timeout
 	 * trace. The timeout is set by default by the server application.
 	 * 
-	 * @return received socket message
+	 * @return received socket message.
 	 */
  	public String receive() {
 		Timer timer = new Timer();

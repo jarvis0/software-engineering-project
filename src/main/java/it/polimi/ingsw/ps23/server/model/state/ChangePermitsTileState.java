@@ -15,25 +15,25 @@ public class ChangePermitsTileState extends ActionState {
 	 * 
 	 */
 	private static final long serialVersionUID = -6241571475175211290L;
-	private Map<String, Deck> permitsMap;
+	private Map<String, Deck> regionalPermissionDecks;
 
 	ChangePermitsTileState(String name) {
 		super(name);
-		permitsMap = new HashMap<>();
+		regionalPermissionDecks = new HashMap<>();
 	}
 
 	public Action createAction(String chosenRegionTile) {
 		return new ChangePermitsTile(chosenRegionTile);
 	}
 	
-	public String getPermitsMap() {
-		return permitsMap.toString();
+	public String printRegionalPermissionDecks() {
+		return regionalPermissionDecks.toString();
 	}
 
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		permitsMap = game.getGameMap().getPermissionCardsUp();
+		regionalPermissionDecks = game.getGameMap().getPermissionCardsUp();
 	}
 
 	@Override

@@ -64,12 +64,7 @@ public class BuiltEmporiumsSet implements Serializable {
 			city = builtEmporiums.get(i);
 			loopString.append(", " + city.getName() + " " + city.getColor());
 		}
-		return "[" + loopString + "]";//TODO verificare
-	}
-
-	@Override
-	public String toString() {
-		return builtEmporiums.toString();
+		return "[" + loopString + "]";
 	}
 
 }

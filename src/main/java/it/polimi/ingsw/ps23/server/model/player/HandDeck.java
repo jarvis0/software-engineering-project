@@ -47,10 +47,9 @@ public abstract class HandDeck implements Serializable {
 		}
 		return cards.get(index);
 	}
-
+	
 	@Override
 	public String toString() {
 		return cards.toString();
 	}
-
 }

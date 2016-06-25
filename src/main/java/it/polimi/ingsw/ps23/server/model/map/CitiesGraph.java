@@ -31,7 +31,7 @@ public class CitiesGraph implements Serializable {
 	/**
 	 * Saves the already created graph from citiesFactory in order to
 	 * easy manipulate this object for further uses.
-	 * @param graph
+	 * @param graph - created by the citiesFactory
 	 */
 	public CitiesGraph(DirectedGraph<City, DefaultEdge> graph) {
 		this.graph = graph;
@@ -43,10 +43,10 @@ public class CitiesGraph implements Serializable {
 	
 	/**
 	 * Calculates the minimum walk into the game cities graph and gives
-	 * the reached rewards token to the player.
-	 * @param game
-	 * @param turnHandler
-	 * @param arriveCity
+	 * the reached rewards token to the player during the walk.
+	 * @param game - game resources
+	 * @param turnHandler - game turn handler
+	 * @param arrivalCity - end point city for the game king move
 	 */
 	public void rewardTokenGiver(Game game, TurnHandler turnHandler, City arrivalCity) {
 		List<City> citiesContainingPlayer = new ArrayList<>();
@@ -77,17 +77,6 @@ public class CitiesGraph implements Serializable {
 		}
 	}
 	
-	/*@Override
-	public String toString() {
-		List<String> cities = new ArrayList<>();
-		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(graph);
-		while(iterator.hasNext()){
-			 cities.add(iterator.next().toString());
-		}
-		return cities.toString();
-		//TODO forse mai usata
-	}*/
-		
 }
 
 

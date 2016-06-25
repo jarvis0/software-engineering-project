@@ -22,7 +22,7 @@ public class Deck implements Serializable {
 	
 	/**
 	 * Shuffles the specified deck.
-	 * @param cards
+	 * @param cards - list of card to be assumed as a deck to be shuffled
 	 */
 	public Deck(List<Card> cards) {
 		Collections.shuffle(cards);
@@ -39,7 +39,7 @@ public class Deck implements Serializable {
 	 * <p>
 	 * Removes the picked cards from the specified deck.
 	 * @param cardsNumber - number of cards to be picked
-	 * @return cards picked
+	 * @return cards picked from the deck
 	 */
 	public List<Card> pickCards(int cardsNumber) {
 		List<Card> pickedCards = new ArrayList<>();
@@ -51,7 +51,7 @@ public class Deck implements Serializable {
 
 	/**
 	 * Picks the top card of the specified deck and removes it.
-	 * @return card picked
+	 * @return card picked from the deck
 	 */
 	public Card pickCard() {
 		return cards.remove(0);
