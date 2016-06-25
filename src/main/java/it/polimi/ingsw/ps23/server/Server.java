@@ -27,7 +27,7 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
-	private static final int MINIMUM_PLAYERS_NUMBER = 2;
+	private static final int MINIMUM_PLAYERS_NUMBER = 7;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
 	private static final int CONNECTION_TIMEOUT = 10000;
@@ -142,10 +142,23 @@ class Server implements ServerInterface {
 		}
 	}
 	
+	/**
+	 * This method is a RMIClient entry point into the Server.
+	 * It's a remote call invocation from the client who wants to 
+	 * register his ClientInterface into the Server.
+	 * <p>
+	 * It checks whether the specified name parameter is in a valid format.
+	 * If so, then checks if there is a double name for the games system.
+	 * It solves the eventual name duplication and notifies the client providing the new name.
+	 * <p>
+	 * It adds a new entry into the RMI waiting connections list and checks if a new game
+	 * can be started or the specified client name is a former player who has been disconnected
+	 * earlier due to connection timeout.
+	 */
 	@Override
 	public void registerRMIClient(String name, ClientInterface client) {
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
-		if(!formerPlayer && !name.matches("[a-zA-Z]")) {
+		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
 			infoMessage(client, "Invalid name format.");
 			//TODO devo chiudere la connessione?
 		}
@@ -225,7 +238,7 @@ class Server implements ServerInterface {
 
 	synchronized void joinToSocketWaitingList(String name, Connection connection) {
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
-		if(!formerPlayer && !name.matches("[a-zA-Z]")) {
+		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
 			connection.send(NO_INPUT + "\nInvalid name format.");
 			connection.closeConnection();
 		}
@@ -284,6 +297,12 @@ class Server implements ServerInterface {
 		}
 	}
 
+	/**
+	 * This static method is the entry point for the Server.java application.
+	 * It starts RMI and Socket server side connections.
+	 * @author Giuseppe Mascellaro
+	 * @param args received from command prompt
+	 */
 	public static void main(String[] args) {
 		Server server = new Server();
 		server.startRMI();

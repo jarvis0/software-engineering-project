@@ -94,7 +94,7 @@ public class StartTurnState extends State {
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.getColoredBonusTileString() + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {

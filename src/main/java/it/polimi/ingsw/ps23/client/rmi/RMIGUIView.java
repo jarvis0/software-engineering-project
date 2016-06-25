@@ -36,6 +36,7 @@ public class RMIGUIView extends RMIView {
 	public void visit(StartTurnState currentState) {
 		swingUI.refreshUI(currentState);
 		//pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
+
 	}
 
 	@Override

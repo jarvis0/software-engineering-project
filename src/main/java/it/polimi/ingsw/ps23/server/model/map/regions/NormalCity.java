@@ -13,7 +13,7 @@ public class NormalCity extends City {
 	private RewardToken rewardToken;
 	
 	public NormalCity(String name, GameColor color, RewardToken rewardToken) { 
-		super(name, color);
+		super(name, color, false);
 		this.rewardToken = rewardToken;
 	}
 	

@@ -140,7 +140,7 @@ class RMIConsoleView extends RMIView {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		output.println("Choose a region:" + currentState.getPermitsMap());
+		output.println("Choose a region:" + currentState.printRegionalPermissionDecks());
 		String chosenRegion = scanner.nextLine().toLowerCase();
 		sendAction(currentState.createAction(chosenRegion));
 	}

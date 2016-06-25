@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
@@ -20,6 +21,11 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
+/**
+ * Initializes game resources from configuration files.
+ * @author Giuseppe Mascellaro & Mirco Manzoni & Alessandro Erba
+ *
+ */
 public class Initialization {
 	
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
@@ -46,9 +52,15 @@ public class Initialization {
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playerSet;
 	
+	/**
+	 * Initializes game resources in order to provide a new game setup
+	 * from given map choice and in game players.
+	 * @param playersName - players name to be part of the game
+	 */
 	public Initialization(List<String> playersName) {
 		loadPoliticDeck();
 		loadCouncillors();
+		BonusCache.loadCache();//TODO
 		loadMap();
 		createKing();
 		loadKingTiles();
@@ -152,7 +164,7 @@ public class Initialization {
 	}
 	
 	private void createKing() {
-		Map<String, City> cities = gameMap.getCitiesMap();		
+		Map<String, City> cities = gameMap.getCities();		
 		Set<Entry<String, City>> citiesMapEntrySet = cities.entrySet();
 		for(Entry<String, City> city : citiesMapEntrySet) {
 			City currentCity = city.getValue();
