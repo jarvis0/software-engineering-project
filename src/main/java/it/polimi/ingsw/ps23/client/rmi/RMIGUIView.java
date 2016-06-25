@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.util.function.ToDoubleBiFunction;
+
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -33,6 +35,7 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(StartTurnState currentState) {
 		swingUI.refreshUI(currentState);
+		//pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
 	}
 
 	@Override

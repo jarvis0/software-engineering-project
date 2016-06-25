@@ -5,7 +5,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,7 +22,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,8 +47,11 @@ public class SwingUI {
 	private Map<String, Component> components;
 	private JFrame frame;
 	private JPanel mapPanel;
+	private JPanel tablePanel;
 	private JTable playersTable;
 	private DefaultTableModel tableModel; 
+	private JTable table;
+	private JScrollPane scrollPane;
 
 	private BufferedImage readImage(String path) {
 		try {
@@ -113,25 +122,27 @@ public class SwingUI {
 	
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String columnNames[] = new String[] {"Name", "VictoryPoints", "Coins", "Assistants", "Nobility Points"};
+		String columnNames[] = new String[] {"Name", "Victory Points", "Coins", "Assistants", "Nobility Points"};
 		tableModel = new DefaultTableModel(numRows, columnNames.length);
 		tableModel.setColumnIdentifiers(columnNames);
 		playersTable = new JTable(tableModel);
-		mapPanel.setLayout(new BorderLayout());
-		JScrollPane scrollPane = new JScrollPane(playersTable);
-		Dimension dimension = new Dimension(550, 90);
-        scrollPane.setPreferredSize(dimension);
-        mapPanel.add(scrollPane, BorderLayout.LINE_END);
+		scrollPane = new JScrollPane();
+		scrollPane.setViewportView(playersTable);
+		/*tablePanel =  new JPanel();
+		tablePanel.setLayout(null);
+		tablePanel.setLayout(new GridBagLayout());*/
+		scrollPane.setBounds(810, 24, 534, 70);
 	}
 
 	SwingUI() {
 		components = new HashMap<>();
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
-		Dimension dimension = new Dimension(800, 600);
+		Dimension dimension = new Dimension(900, 600);
 		frame.setMinimumSize(dimension);
 		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		frame.getContentPane().setLayout(new GridLayout());
 		mapPanel = new JPanel();
 		mapPanel.setLayout(null);
 		loadKing();
@@ -139,7 +150,8 @@ public class SwingUI {
 		loadStreets();
 		loadMapBackground();
 		loadPlayersTable();
-		frame.add(mapPanel);
+		frame.getContentPane().add(mapPanel);
+		mapPanel.add(scrollPane);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -158,7 +170,7 @@ public class SwingUI {
 			tableModel.removeRow(i);
 		}
 		for (Player player : playerSet.getPlayers()) {
-			Vector vector = new Vector<>();
+			Vector<Object> vector = new Vector<>();
 			vector.add(0, player.getName());
 			vector.add(1, player.getVictoryPoints());
 			vector.add(2, player.getCoins());
@@ -173,5 +185,4 @@ public class SwingUI {
 		refreshKingPosition(currentState.getKing().getPosition().getName());
 		refreshPlayersTable(currentState.getPlayerSet());
 	}
-
 }
