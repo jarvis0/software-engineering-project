@@ -42,6 +42,14 @@ public class PermissionCard implements Card, BonusSlot {
 		}
 	}
 	
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	
+	public List<City> getCities() {
+		return cities;
+	}
+	
 	@Override
 	public String toString() {
 		String print = bonuses.toString() + " ~ ";
