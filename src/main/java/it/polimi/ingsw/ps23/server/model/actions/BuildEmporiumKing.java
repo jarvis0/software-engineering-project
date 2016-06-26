@@ -42,14 +42,13 @@ public class BuildEmporiumKing implements Action {
 		checkAction(game);
 		City finalCity = game.getGameMap().getCities().get(arriveCity);
 		Player player = game.getCurrentPlayer();
-		int assistantsCost = 0;
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedCards);
 		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), game.getKing().getPosition() , finalCity);
 		cost = cost + (int) (ROAD_COST * dijkstraShortestPath.getPathLength());
 		if(Math.abs(cost) > player.getCoins()) {
 			throw new InsufficientResourcesException();
 		}
-		assistantsCost = finalCity.buildEmporium(player);
+		int assistantsCost = finalCity.buildEmporium(player);
 		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedCards);
 		player.updateCoins(cost);
 		player.updateAssistants(assistantsCost);

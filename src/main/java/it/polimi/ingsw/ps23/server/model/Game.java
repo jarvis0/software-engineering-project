@@ -21,11 +21,12 @@ public class Game implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9200411232887252524L;
+	private String mapType;
 	private Deck politicDeck;
 	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private transient KingTileSet kingTiles; //TODO cambiare quando si inviano i kingtile
+	private transient KingTileSet kingTiles;//TODO cambiare quando si inviano i kingtile
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playersSet;
 	private Player currentPlayer;
@@ -34,6 +35,7 @@ public class Game implements Serializable {
 
 	public Game(List<String> playersName) {
 		Initialization init = new Initialization(playersName);
+		mapType = init.getChosenMap();
 		politicDeck = init.getPoliticDeck();
 		freeCouncillors = init.getFreeCouncillors();
 		gameMap = init.getGameMap();
@@ -42,6 +44,10 @@ public class Game implements Serializable {
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
 		stateCache = new StateCache();
+	}
+	
+	public String getMapType() {
+		return mapType;
 	}
 	
 	public GameMap getGameMap() {

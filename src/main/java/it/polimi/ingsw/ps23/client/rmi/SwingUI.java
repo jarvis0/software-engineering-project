@@ -268,7 +268,7 @@ class SwingUI {
 	void refreshUI(StartTurnState currentState) {
 		addRewardTokens(currentState.getGameMap().getCities());
 		refreshKingPosition(currentState.getKing().getPosition().getName(), currentState.getGameMap().getCities());
-		refreshPlayersTable(currentState.getPlayerSet());
+		refreshPlayersTable(currentState.getPlayersSet());
 		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
 		frame.repaint();
 	}

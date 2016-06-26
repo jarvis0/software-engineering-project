@@ -19,18 +19,26 @@ public class Deck implements Serializable {
 	private static final long serialVersionUID = 1360173791794831347L;
 	
 	private List<Card> cards;
+	private List<Card> originalCards;
 	
 	/**
 	 * Shuffles the specified deck.
 	 * @param cards - list of card to be assumed as a deck to be shuffled
 	 */
 	public Deck(List<Card> cards) {
+		originalCards = new ArrayList<>();
+		originalCards.addAll(cards);
 		Collections.shuffle(cards);
 		this.cards = cards;
 	}
 
 	public List<Card> getDeck() {
 		return cards;
+	}
+	
+	private void reinitializeDeck() {
+		cards.addAll(originalCards);
+		Collections.shuffle(cards);
 	}
 	
 	/**

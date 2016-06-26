@@ -75,7 +75,6 @@ class Server implements ServerInterface {
 		}
 		initializeGame();
 	}
-	
 
 	private synchronized void startCountdownFromRMI() {
 		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
@@ -213,7 +212,6 @@ class Server implements ServerInterface {
 	private synchronized void startCountdownFromSocket() {
 		if(socketWaitingConnections.size() + rmiWaitingConnections.size() == MINIMUM_PLAYERS_NUMBER) {
 			launchingGame = true;
-			
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			for(Connection connection : socketWaitingConnections.values()) {

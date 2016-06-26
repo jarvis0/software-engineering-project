@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
@@ -29,6 +30,7 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 public class Initialization {
 	
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
+	private static final String MAPS_CSV = "maps.csv";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String COUNCILLORS_CSV = "councillors.csv";
@@ -45,6 +47,7 @@ public class Initialization {
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
 	private String mapPath;
+	private String chosenMap;
 	private Deck politicDeck;
 	private FreeCouncillorsSet freeCouncillors;
 	private BonusCache bonusCache;
@@ -60,8 +63,7 @@ public class Initialization {
 	 * @param playersName - players name to be part of the game
 	 */
 	public Initialization(List<String> playersName) {
-		String chosenMap = "medium/";
-		mapPath = CONFIGURATION_PATH + chosenMap;
+		chooseMap();
 		loadPoliticDeck();
 		loadCouncillors();
 		bonusCache = new BonusCache();
@@ -70,6 +72,10 @@ public class Initialization {
 		loadKingTiles();
 		loadNobilityTrack();
 		loadPlayers(playersName);
+	}
+	
+	public String getChosenMap() {
+		return chosenMap;
 	}
 	
 	public Deck getPoliticDeck() {
@@ -98,6 +104,13 @@ public class Initialization {
 
 	public PlayersSet getPlayersSet() {
 		return playerSet;
+	}
+	
+	private void chooseMap() {
+		List<String[]> rawMaps = new RawObject(CONFIGURATION_PATH + MAPS_CSV).getRawObject();
+		chosenMap = rawMaps.get(new Random().nextInt(rawMaps.size()))[0];
+		mapPath = CONFIGURATION_PATH + chosenMap;
+		chosenMap = chosenMap.substring(0, chosenMap.indexOf('/'));
 	}
 	
 	private void loadPoliticDeck() {

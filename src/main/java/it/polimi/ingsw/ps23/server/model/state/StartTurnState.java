@@ -16,6 +16,7 @@ public class StartTurnState extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = -6709781155533826821L;
+	private String mapType;
 	private Player currentPlayer;
 	private TurnHandler turnHandler;
 	private GameMap gameMap;
@@ -29,7 +30,7 @@ public class StartTurnState extends State {
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
-
+	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -45,25 +46,53 @@ public class StartTurnState extends State {
 		return avaiableAction;
 	}
 
-	public StateCache getStateCache() {
-		return stateCache;
-	}
-	
 	public GameMap getGameMap() {
 		return gameMap;
 	}
 	
-	public PlayersSet getPlayerSet() {//TODO playersssss
+	public PlayersSet getPlayersSet() {
 		return gamePlayersSet;
 	}
 	
 	public King getKing() {
 		return king;
+	}	
+
+	public StateCache getStateCache() {
+		return stateCache;
 	}
+	
+	public String getStatus() {
+		String print = "\n===============================================================================================================\n";
+		print += "===============================================================================================================\n\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+    GAME STATUS    +\n";
+		print += "\t\t\t\t\t+                   +\n";
+		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
+		print += "~ " + mapType + " type map ~\n";
+		print += gameMap;
+		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
+		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
+		StringBuilder loopPrint = new StringBuilder();
+		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
+			loopPrint.append("> " + gamePlayer + "\n");
+		}
+		print += loopPrint;
+		print += "\n\n===============================================================================================================\n";
+		print += "===============================================================================================================\n";
+		if(finalTurn) {
+			print += "This is the final round.";
+		}
+		return print;
+	}
+	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
 		currentPlayer = game.getCurrentPlayer();
+		mapType = game.getMapType();
 		gameMap = game.getGameMap();
 		gamePlayersSet = game.getGamePlayersSet();
 		kingCouncil = game.getKing().getCouncil();
@@ -83,30 +112,5 @@ public class StartTurnState extends State {
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);
 	}
-	
-	public String getStatus() {
-		String print = "\n===============================================================================================================\n";
-		print += "===============================================================================================================\n\n";
-		print += "\t\t\t\t\t+++++++++++++++++++++\n";
-		print += "\t\t\t\t\t+                   +\n";
-		print += "\t\t\t\t\t+    GAME STATUS    +\n";
-		print += "\t\t\t\t\t+                   +\n";
-		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
-		print += gameMap;
-		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
-		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
-		StringBuilder loopPrint = new StringBuilder();
-		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
-			loopPrint.append("> " + gamePlayer + "\n");
-		}
-		print += loopPrint;
-		print += "\n\n===============================================================================================================\n";
-		print += "===============================================================================================================\n";
-		if(finalTurn) {
-			print += "This is the final round.";
-		}
-		return print;
-	}
-	
+
 }

@@ -29,8 +29,8 @@ class RMIClient implements ClientInterface {
 	private ExecutorService executor;
 	
 	private RMIClient(String playerName) {
-		//rmiView = new RMIConsoleView(playerName);
-		rmiView = new RMIGUIView(playerName);
+		rmiView = new RMIConsoleView(playerName);
+		//rmiView = new RMIGUIView(playerName);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
 		output = new PrintStream(System.out);

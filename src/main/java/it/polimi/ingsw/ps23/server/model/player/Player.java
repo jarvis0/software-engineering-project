@@ -110,7 +110,7 @@ public class Player implements Serializable {
 	}
 
 	public String showSecretStatus() {
-		return "politic cards: " + politicHandDeck.toString();
+		return "\npoliticHandDeck: " + politicHandDeck.toString();
 	}
 
 	public HandDeck getPoliticHandDeck() {
