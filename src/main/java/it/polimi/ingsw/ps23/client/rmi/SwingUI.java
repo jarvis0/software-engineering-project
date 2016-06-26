@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
@@ -255,18 +256,37 @@ class SwingUI {
 		int x = xCoord;
 		int y = yCoord;
 		for(Councillor councillor : council) {
-			x -= 32;
+			x -= 22;
 			drawCouncillor(councillor.getColor().toString(), x , y);
 		}
 	}
 	
 	private void drawCouncillor(String color, int x, int y) {
 		BufferedImage councillorImage = readImage(IMAGES_PATH + color + "Councillor.png");
-		Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
+		Image resizedCouncillorImage = councillorImage.getScaledInstance(20, 44, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
-		councillorLabel.setBounds(0, 0, 28, 52);
+		councillorLabel.setBounds(0, 0, 20, 44);
 		councillorLabel.setLocation(x , y);
 		mapPanel.add(councillorLabel, 0);
+	}
+
+	private void refreshPermitTiles(List<Region> regions) {
+		for(Region region : regions) {
+			Point point = getCouncilPoint(region.getName());
+			int x = point.x - 10;
+			int y = point.y;
+			drawPermitsTile(((GroupRegionalCity) region).getPermissionDeckUp(), x, y);
+		}	
+
+	}
+
+	private void drawPermitsTile(Deck permissionDeckUp, int x, int y) {
+		BufferedImage permissionTileImage = readImage(IMAGES_PATH + "permissionCard.png");
+		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
+		permissionTileLabel.setBounds(0, 0, 50, 50);
+		permissionTileLabel.setLocation(x , y);	
+		mapPanel.add( permissionTileLabel, 0);
 	}
 
 	void refreshUI(StartTurnState currentState) {
@@ -274,6 +294,7 @@ class SwingUI {
 		refreshKingPosition(currentState.getKing().getPosition().getName());
 		refreshPlayersTable(currentState.getPlayersSet());
 		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
+		//refreshPermitTiles(currentState.getGameMap().getGroupRegionalCity());
 		frame.repaint();
 	}
 
