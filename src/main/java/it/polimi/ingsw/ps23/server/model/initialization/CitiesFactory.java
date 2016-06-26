@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.initialization.RewardTokenFactory;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -34,8 +35,8 @@ class CitiesFactory {
 		return citiesMap;
 	}
 
-	void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens) {
-		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens);
+	void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens, BonusCache bonusCache) {
+		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens, bonusCache);
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[CITY_TYPE_POSITION].equals(CAPITAL)) {
 				citiesList.add(new NormalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION]), rewardTokens.removeRewardToken(rewardTokens.rewardTokenSize() - 1)));

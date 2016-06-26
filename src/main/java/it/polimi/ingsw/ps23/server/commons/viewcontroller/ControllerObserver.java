@@ -7,7 +7,10 @@ import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 /**
- * 
+ * This interface is part of MVC - Observer/Observable pattern.
+ * In particular, it defines the update methods that will be
+ * called after a notify observers method in the relative 
+ * observable class.
  * @author Alessandro Erba & Mirco Manzoni & Giuseppe Mascellaro
  *
  */

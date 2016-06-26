@@ -56,10 +56,9 @@ class PermissionDecksFactory {
 		return permissionDecks;
 	}
 	
-	Map<String, Deck> makeDecks() {
+	Map<String, Deck> makeDecks(BonusCache bonusCache) {
 		List<Card> permissionCards;
 		Map<String, List<Card>> cardsMap = new HashMap<>();
-		BonusCache.loadCache();
 		String[] fields = rawPermissionCards.remove(rawPermissionCards.size() - 1);
 		for(String[] rawPermissionCard : rawPermissionCards) {
 			String[] rawBonuses = subString(rawPermissionCard);
@@ -69,7 +68,7 @@ class PermissionDecksFactory {
 				permissionCards = new ArrayList<>();
 				cardsMap.put(regionName, permissionCards);
 			}
-			cardsMap.get(regionName).add((Card) new BonusesFactory().makeBonuses(fields, rawBonuses, permissionCard));
+			cardsMap.get(regionName).add((Card) new BonusesFactory(bonusCache).makeBonuses(fields, rawBonuses, permissionCard));
 		}
 		return toDecks(cardsMap);
 	}

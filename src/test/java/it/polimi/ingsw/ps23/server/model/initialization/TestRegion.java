@@ -32,11 +32,11 @@ public class TestRegion {
 	
 	@Test
 	public void test() {
-		BonusCache.loadCache();
+		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		CitiesFactory citiesFactory = new CitiesFactory();
-		citiesFactory.makeCities(rawCities, rawRewardTokens);
+		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		List<String[]> rawCitiesConnections = new RawObject(TEST_CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
 		CitiesGraphFactory citiesGraphFactory = new CitiesGraphFactory();
 		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, citiesFactory.getHashMap());
@@ -61,7 +61,7 @@ public class TestRegion {
 		Bonus bonusTile = regions.get(0).acquireBonusTile();
 		assertTrue(bonusTile.getName().equals("victoryPoint") && bonusTile.getValue() == 5);
 		List<String[]> rawPermissionCards = new RawObject(TEST_CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
-		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, citiesFactory.getHashMap()).makeDecks();
+		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, citiesFactory.getHashMap()).makeDecks(bonusCache);
 		for(Region region : regions) {
 			((GroupRegionalCity) region).setPermissionDeck(deck.get(region.getName()));
 		}

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.server.model.bonus;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import it.polimi.ingsw.ps23.server.model.bonus.AdditionalMainActionBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.AssistantBonus;
@@ -12,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 
 public class BonusCache {
 
-	private static HashMap<String, Bonus> bonusesMap = new HashMap<>();
+	private Map<String, Bonus> bonusesMap;
 	private static final String ASSISTANT = "assistant";
 	private static final String COIN = "coin";
 	private static final String VICTORY_POINT = "victoryPoint";
@@ -24,21 +25,23 @@ public class BonusCache {
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
 
-	private BonusCache() {
+	public BonusCache() {
+		bonusesMap = new HashMap<>();
+		loadCache();
 	}
 	
-	public static Bonus getBonus(String bonusName, int value) {
+	public Bonus getBonus(String bonusName, int value) {
 		Bonus cachedBonus = bonusesMap.get(bonusName);
 		Bonus bonus = (Bonus) cachedBonus.clone();
 		bonus.setValue(value);
 		return bonus;
 	}
 	
-	private static void putBonus(Bonus bonus) {
+	private void putBonus(Bonus bonus) {
 		bonusesMap.put(bonus.getName(), bonus);
 	}
 	
-	public static void loadCache() {
+	private void loadCache() {
 		
 		Bonus assistantBonus = new AssistantBonus(ASSISTANT);
 		putBonus(assistantBonus);

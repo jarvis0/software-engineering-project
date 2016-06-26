@@ -1,15 +1,11 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,17 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import org.junit.experimental.theories.PotentialAssignment.CouldNotGenerateValueException;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
@@ -61,10 +53,8 @@ class SwingUI {
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
-	private JPanel tablePanel;
 	private JTable playersTable;
-	private DefaultTableModel tableModel; 
-	private JTable table;
+	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	
 	SwingUI() {
@@ -74,7 +64,7 @@ class SwingUI {
 		frame.setTitle("Council of Four");
 		Dimension dimension = new Dimension(900, 600);
 		frame.setMinimumSize(dimension);
-		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
+		frame.setIconImage(readImage(CONFIGURATION_PATH + "images/victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.getContentPane().setLayout(new GridLayout());
 		mapPanel = new JPanel();
@@ -108,7 +98,6 @@ class SwingUI {
 	Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
 	}
-	
 	
 	private void loadKing() {
 		BufferedImage kingImage = readImage(CONFIGURATION_PATH + KING_PATH);
@@ -178,13 +167,14 @@ class SwingUI {
 	
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String columnNames[] = new String[] {"Name", "Victory Points", "Coins", "Assistants", "Nobility Points"};
+		String[] columnNames = new String[] {"Name", "Victory Points", "Coins", "Assistants", "Nobility Points"};
 		tableModel = new DefaultTableModel(numRows, columnNames.length);
 		tableModel.setColumnIdentifiers(columnNames);
 		playersTable = new JTable(tableModel);
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(playersTable);
-		scrollPane.setBounds(810, 24, 534, 70);
+		scrollPane.setBounds(0, 0, 534, 70);
+		scrollPane.setLocation(810, 24);
 	}
 
 	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
@@ -233,7 +223,7 @@ class SwingUI {
 		for(int i = tableModel.getRowCount(); i > 0; i--) {
 			tableModel.removeRow(i);
 		}
-		for (Player player : playerSet.getPlayers()) {
+		for(Player player : playerSet.getPlayers()) {
 			Vector<Object> vector = new Vector<>();
 			vector.add(0, player.getName());
 			vector.add(1, player.getVictoryPoints());
@@ -254,13 +244,13 @@ class SwingUI {
 			
 		}
 		Point point = getCouncilPoint("kingdom");
-		int x = point.x;
-		int y = point.y;
-		drawCouncil(kingCouncil.getCouncil(), x, y);
+		drawCouncil(kingCouncil.getCouncil(), point.x, point.y);
 	}
 	
-	private void drawCouncil(Queue<Councillor> council, int x, int y) {
-		for (Councillor councillor : council) {
+	private void drawCouncil(Queue<Councillor> council, int xCoord, int yCoord) {
+		int x = xCoord;
+		int y = yCoord;
+		for(Councillor councillor : council) {
 			x += 32;
 			drawCouncillor(councillor.getColor().toString(), x , y);
 		}
@@ -270,7 +260,7 @@ class SwingUI {
 		BufferedImage councillorImage = readImage(CONFIGURATION_PATH + "images/" + color + "Councillor.png");
 		Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
-		councillorLabel.setBounds(0, 0, 28, 52);;
+		councillorLabel.setBounds(0, 0, 28, 52);
 		councillorLabel.setLocation(x , y);
 		mapPanel.add(councillorLabel, 0);
 	}

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
@@ -35,7 +36,7 @@ public class TestLoadPermissionDeck {
 		cities.put(city.getName(), city);
 		city = new CapitalCity("J",iron);
 		cities.put(city.getName(), city);
-		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, cities).makeDecks();
+		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, cities).makeDecks(new BonusCache());
 		Card permissionCard = new PermissionCard();
 		((PermissionCard)permissionCard).addCity(city);
 		assertTrue(((PermissionCard)permissionCard).containCity(city));
