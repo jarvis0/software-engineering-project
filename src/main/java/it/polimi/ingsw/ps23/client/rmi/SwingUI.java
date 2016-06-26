@@ -52,6 +52,8 @@ class SwingUI {
 	private static final String ICON_PATH = "victoryPoint.png";
 	private static final String BACKGROUND_PATH = "mapBackground.png";
 	private static final String KING_PATH = "king.png";
+	private static final String COUNCILLOR_PATH = "Councillor.png";
+	private static final String PERMISSION_CARD_PATH = "permissionCard.png";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
 	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
@@ -270,7 +272,7 @@ class SwingUI {
 	}
 
 	private void drawCouncillor(String color, int x, int y) {
-		BufferedImage councillorImage = readImage(IMAGES_PATH + color + "Councillor.png");
+		BufferedImage councillorImage = readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
 		Image resizedCouncillorImage = councillorImage.getScaledInstance(14, 39, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 		councillorLabel.setBounds(0, 0, 15, 39);
@@ -285,40 +287,45 @@ class SwingUI {
 			int y = point.y - 10;
 			drawPermitsTile(((GroupRegionalCity) region).getPermissionDeckUp(), x, y);
 		}
-
 	}
 
-	private void drawPermitsTile(Deck permissionDeckUp, int x, int y) {
+	private void drawPermitsTile(Deck permissionDeckUp, int xCoord, int yCoord) {
 		List<Card> permissionCards = permissionDeckUp.getCards();
-		int xCoord = x;
+		int x = xCoord;
+		int y = yCoord;
 		for(Card permissionCard : permissionCards) {
-			BufferedImage permissionTileImage = readImage(IMAGES_PATH + "permissionCard.png");
+			BufferedImage permissionTileImage = readImage(IMAGES_PATH + PERMISSION_CARD_PATH);
 			Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
 			permissionTileLabel.setBounds(0, 0, 50, 50);
-			permissionTileLabel.setLocation(xCoord, y);
+			permissionTileLabel.setLocation(x, y);
 			mapPanel.add(permissionTileLabel, 0);
 			List<Bonus> bonuses = ((PermissionCard) permissionCard).getBonuses();
-			int bonusCoordX = xCoord - 47;
+			int bonusCoordX = x - 47;
 			int bonusCoordY = y + 40;
 			for(Bonus bonus : bonuses) {
 				drawBonus(bonus, bonusCoordX, bonusCoordY);
 				bonusCoordX = bonusCoordX + 24;
 			}
 			List<City> cities = ((PermissionCard)permissionCard).getCities();
-			int cityCoordX = xCoord + 15;
+			int cityCoordX = x + 15;
 			int	cityCoordY = y;
-			for(City city : cities) {
+			for(int i = 0; i < cities.size(); i++) {
+				City city = cities.get(i);
 				JLabel cityInitial = new JLabel();
 				cityInitial.setBounds(0, 0, 23, 25);
 				cityInitial.setLocation(cityCoordX, cityCoordY);
 				cityInitial.setFont(new Font("Sans serif", Font.BOLD, 12));
 				cityInitial.setForeground(Color.decode("0x000000"));
-				cityInitial.setText(Character.toString(city.getName().charAt(0)) + "  ");
+				String slash = new String();
+				if(i != cities.size() - 1) {
+					slash = " / ";
+				}
+				cityInitial.setText(Character.toString(city.getName().charAt(0)) + slash);
 				mapPanel.add(cityInitial, 0);
-				cityCoordX += 10;
+				cityCoordX += 17;
 			}
-			xCoord -= 52;
+			x -= 52;
 		}
 	}
 
