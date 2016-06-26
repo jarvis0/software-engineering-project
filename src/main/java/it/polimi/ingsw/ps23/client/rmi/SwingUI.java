@@ -64,7 +64,7 @@ class SwingUI {
 		frame.setTitle("Council of Four");
 		Dimension dimension = new Dimension(900, 600);
 		frame.setMinimumSize(dimension);
-		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
+		frame.setIconImage(readImage(CONFIGURATION_PATH + "images/victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.getContentPane().setLayout(new GridLayout());
 		mapPanel = new JPanel();
@@ -98,7 +98,6 @@ class SwingUI {
 	Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
 	}
-	
 	
 	private void loadKing() {
 		BufferedImage kingImage = readImage(CONFIGURATION_PATH + KING_PATH);
@@ -168,13 +167,14 @@ class SwingUI {
 	
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String columnNames[] = new String[] {"Name", "Victory Points", "Coins", "Assistants", "Nobility Points"};
+		String[] columnNames = new String[] {"Name", "Victory Points", "Coins", "Assistants", "Nobility Points"};
 		tableModel = new DefaultTableModel(numRows, columnNames.length);
 		tableModel.setColumnIdentifiers(columnNames);
 		playersTable = new JTable(tableModel);
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(playersTable);
-		scrollPane.setBounds(810, 24, 534, 70);
+		scrollPane.setBounds(0, 0, 534, 70);
+		scrollPane.setLocation(810, 24);
 	}
 
 	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
@@ -223,7 +223,7 @@ class SwingUI {
 		for(int i = tableModel.getRowCount(); i > 0; i--) {
 			tableModel.removeRow(i);
 		}
-		for (Player player : playerSet.getPlayers()) {
+		for(Player player : playerSet.getPlayers()) {
 			Vector<Object> vector = new Vector<>();
 			vector.add(0, player.getName());
 			vector.add(1, player.getVictoryPoints());
@@ -244,9 +244,7 @@ class SwingUI {
 			
 		}
 		Point point = getCouncilPoint("kingdom");
-		int x = point.x;
-		int y = point.y;
-		drawCouncil(kingCouncil.getCouncil(), x, y);
+		drawCouncil(kingCouncil.getCouncil(), point.x, point.y);
 	}
 	
 	private void drawCouncil(Queue<Councillor> council, int x, int y) {
@@ -260,7 +258,7 @@ class SwingUI {
 		BufferedImage councillorImage = readImage(CONFIGURATION_PATH + "images/" + color + "Councillor.png");
 		Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
-		councillorLabel.setBounds(0, 0, 28, 52);;
+		councillorLabel.setBounds(0, 0, 28, 52);
 		councillorLabel.setLocation(x , y);
 		mapPanel.add(councillorLabel, 0);
 	}

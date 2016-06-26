@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 
 public class TestGroupColored {
@@ -20,7 +21,7 @@ public class TestGroupColored {
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		CitiesFactory citiesFactory = new CitiesFactory();
-		citiesFactory.makeCities(rawCities, rawRewardTokens);
+		citiesFactory.makeCities(rawCities, rawRewardTokens, new BonusCache());
 		List<String[]> rawColoredCities = new RawObject(TEST_CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
 		List<Region> groupColored = new GroupColoredCitiesFactory().makeGroup(rawColoredCities, citiesFactory.getCities());
 		assertTrue(groupColored.get(0).getName().equals("iron"));

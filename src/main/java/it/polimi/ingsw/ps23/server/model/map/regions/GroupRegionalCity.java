@@ -51,7 +51,7 @@ public class GroupRegionalCity extends Region {
 	}
 
 	public void changePermitTiles() {
-		int i=0;
+		int i = 0;
 		for(Card card : permissionDeckUp.getDeck()) {
 			permissionDeckDown.getDeck().add(card);
 			permissionDeckUp.getDeck().set(i, permissionDeckDown.pickCard());

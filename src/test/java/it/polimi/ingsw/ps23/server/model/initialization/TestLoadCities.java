@@ -27,6 +27,7 @@ public class TestLoadCities {
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	
+	private BonusCache bonusCache;
 	private CitiesFactory citiesFactory;
 	private List<City> cities;
 	private int initialCitiesSize;
@@ -37,9 +38,9 @@ public class TestLoadCities {
 	public void test() {		
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
-		BonusCache.loadCache();
+		bonusCache = new BonusCache();
 		citiesFactory = new CitiesFactory();
-		citiesFactory.makeCities(rawCities, rawRewardTokens);
+		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		cities = citiesFactory.getCities();
 		initialCitiesSize = cities.size();		
 		citiesTest();
@@ -57,20 +58,19 @@ public class TestLoadCities {
 	}
 	
 	private void bonusesTest() {
-		BonusCache.loadCache();
 		RewardToken rewardToken = new RewardToken();
-		rewardToken.addBonus(BonusCache.getBonus("nobilityTrackStep", 1));
+		rewardToken.addBonus(bonusCache.getBonus("nobilityTrackStep", 1));
 		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(((NormalCity) city).hasNobilityTrackBonus());
 		rewardToken = new RewardToken();
-		rewardToken.addBonus(BonusCache.getBonus("assistant", 1));
+		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
 		city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(!((NormalCity) city).hasNobilityTrackBonus());
 	}
 	
 	private void colorAndNameTest () {
 		RewardToken rewardToken = new RewardToken();
-		rewardToken.addBonus(BonusCache.getBonus("assistant", 1));
+		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
 		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(city.getColor() == "test");
 		assertTrue(city.getName() == "test");
