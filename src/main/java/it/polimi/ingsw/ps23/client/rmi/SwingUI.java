@@ -45,10 +45,11 @@ class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
 	private static final String IMAGES_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/images/";
+	private static final String ICON_PATH = "victoryPoint.png";
 	private static final String BACKGROUND_PATH = "mapBackground.png";
+	private static final String KING_PATH = "king.png";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
-	private static final String KING_PATH = "king.png";
 	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
 
 	private String mapPath;
@@ -66,9 +67,9 @@ class SwingUI {
 		councilPoints = new HashMap<>();
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
-		Dimension dimension = new Dimension(900, 600);
+		Dimension dimension = new Dimension(814, 503);
 		frame.setMinimumSize(dimension);
-		frame.setIconImage(readImage(IMAGES_PATH + "victoryPoint.png"));
+		frame.setIconImage(readImage(IMAGES_PATH + ICON_PATH));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.getContentPane().setLayout(new GridLayout());
 		mapPanel = new JPanel();
@@ -178,8 +179,8 @@ class SwingUI {
 		playersTable = new JTable(tableModel);
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(playersTable);
-		scrollPane.setBounds(0, 0, 534, 70);
-		scrollPane.setLocation(810, 24);
+		scrollPane.setBounds(0, 0, 567, 70);
+		scrollPane.setLocation(800, 0);
 	}
 
 	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
