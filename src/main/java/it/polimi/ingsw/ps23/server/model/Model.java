@@ -26,6 +26,12 @@ import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
+/**
+ * This class is the game core class which contains all game data and
+ * business logic for the application.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class Model extends ModelObservable {
 
 	private Game game;
@@ -34,18 +40,29 @@ public class Model extends ModelObservable {
 	private int currentPlayerIndex;
 	private PlayersResumeHandler playersResumeHandler;
 	
-	private void newGame(List<String> playersName) {
-		game = new Game(playersName);
+	private void newGame(List<String> playerNames) {
+		game = new Game(playerNames);
 		currentPlayerIndex++;
 		changePlayer();
 	}
-
-	public void setUpModel(List<String> playersName, PlayersResumeHandler playersResumeHandler) {
+	
+	/**
+	 * Sets up external from model parameters, such as: connected player names and
+	 * a player resume handler useful to wake up socket connection threads.
+	 * @param playerNames - connected clients who want to play a game
+	 * @param playersResumeHandler - socket connection thread handler
+	 */
+	public void setUpModel(List<String> playerNames, PlayersResumeHandler playersResumeHandler) {
 		setStartingPlayerIndex();
 		this.playersResumeHandler = playersResumeHandler;
-		newGame(playersName);
+		newGame(playerNames);
 	}
 	
+	/**
+	 * Set the right start turn state.
+	 * Called externally in order to make clients to receive the map type
+	 * and then set up their view.
+	 */
 	public void startGame() {
 		setStartTurnState();
 	}
@@ -104,6 +121,12 @@ public class Model extends ModelObservable {
 		}
 	}
 	
+	/**
+	 * Looks for the next player turn.
+	 * It performs various checks in order to jump over players who are offline,
+	 * start the market phase, start the last game round due to a player who has already built
+	 * all his emporiums.
+	 */
 	public void setPlayerTurn() {
 		if(game.getCurrentPlayer().isOnline()) {
 			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
@@ -225,6 +248,17 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
+	/**
+	 * Sets the current player offline due to his connection timeout and reset.
+	 * A connection timeout occur when a remote client does not send any valid signal
+	 * to the server within the default set timeout.
+	 * <p>
+	 * The specified player will jump the turns but his game resources remain
+	 * effective until the end of the game.
+	 * <p>
+	 * A player can reconnect and resume his game status, but first he will wait his turn as
+	 * set at the game startup.
+	 */
 	public void setCurrentPlayerOffline() {
 		//if(game.getGamePlayersSet().isAnyoneOnline()) {
 			State currentState = context.getState();
@@ -255,6 +289,13 @@ public class Model extends ModelObservable {
 		}
 	}
 
+	/**
+	 * Checks whether the specified player name is online for the game.
+	 * @param player - to be checked his online or offline status
+	 * @return the specified player online or offline status (true or false)
+	 * or false by default whether the specified player has not been found in the game
+	 * which will be an inconsistent situation which will never occur.
+	 */
 	public boolean isOnline(String player) {
 		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
 			if(gamePlayer.getName().equals(player)) {

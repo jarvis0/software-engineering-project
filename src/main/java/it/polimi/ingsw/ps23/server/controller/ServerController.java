@@ -14,11 +14,22 @@ import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
-//TODO va in questo package?
+/**
+ * This class is an extension for the classic MVC controller.
+ * In particular, it act like a remote controller for connected
+ * RMI clients.
+ * @author Mirco Manzoni & Giuseppe Mascellaro
+ *
+ */
 public class ServerController extends Controller implements ServerControllerInterface {
 
 	private static final String POLICY_NAME = "COFServer";
 
+	/**
+	 * Saves the model which is a remote MVC component.
+	 * @param model - game model representation of data and business logical functions
+	 * of the whole application
+	 */
 	public ServerController(Model model) {
 		super(model);
 	}

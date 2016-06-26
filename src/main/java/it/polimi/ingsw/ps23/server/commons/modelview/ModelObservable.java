@@ -21,7 +21,7 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 /**
  * Provides all needed to make both MVC and Observer/Observable
  * pattern work.
- * @author Alessandro Erba & Mirco Manzoni & Giuseppe Mascellaro
+ * @author Giuseppe Mascellaro
  *
  */
 public class ModelObservable {
@@ -60,7 +60,8 @@ public class ModelObservable {
 	 * Adds to classic MVC pattern observers, the specified view.	
 	 * <p>
 	 * Permits to notify the view with model updates.
-	 * @param observer - the view you want to start being notified from the model.
+	 * @param observer - the views you want to notify when a model update
+	 * occur
 	 */
 	public void attach(ViewObserver observer) {
 		observers.add(observer);

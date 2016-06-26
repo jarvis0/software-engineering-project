@@ -15,6 +15,12 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StateCache;
 
+/**
+ * This class provides all game components and their relative
+ * getters.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class Game implements Serializable {
 
 	/**
@@ -33,8 +39,16 @@ public class Game implements Serializable {
 	private Market currentMarket;
 	private StateCache stateCache;
 
-	public Game(List<String> playersName) {
-		Initialization init = new Initialization(playersName);
+	/**
+	 * Create a new game initialization object taking game player names
+	 * and then stores all references to game resources in class attributes.
+	 * <p>
+	 * Useful to split game initialization part (with raw configuration files) from
+	 * an higher level game representation of resources.
+	 * @param playerNames - to be part of the new creating game
+	 */
+	public Game(List<String> playerNames) {
+		Initialization init = new Initialization(playerNames);
 		mapType = init.getChosenMap();
 		politicDeck = init.getPoliticDeck();
 		freeCouncillors = init.getFreeCouncillors();

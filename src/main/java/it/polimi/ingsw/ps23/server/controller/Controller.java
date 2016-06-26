@@ -18,10 +18,22 @@ import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
+/**
+ * This class implements Controller Observer methods in order
+ * to receive views updates. It performs parameter check to be sure
+ * that no invalid data would be sent to the model.
+ * @author Mirco Manzoni
+ *
+ */
 public class Controller implements ControllerObserver {
 
 	private final Model model;
 	
+	/**
+	 * Saves the model which is a MVC component.
+	 * @param model - game model representation of data and business logical functions
+	 * of the whole application
+	 */
 	public Controller(Model model) {
 		this.model = model;
 	}

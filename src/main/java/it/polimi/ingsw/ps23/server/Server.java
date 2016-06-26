@@ -298,7 +298,7 @@ class Server implements ServerInterface {
 	}
 
 	/**
-	 * This static method is the entry point for the Server.java application.
+	 * This static method is the entry point for the Server application.
 	 * It starts RMI and Socket server side connections.
 	 * @author Giuseppe Mascellaro
 	 * @param args received from command prompt

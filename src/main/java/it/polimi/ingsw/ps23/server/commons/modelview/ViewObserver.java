@@ -14,8 +14,8 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 public interface ViewObserver {
 
 	/**
-	 * Receives the new game model state to make the view show the
-	 * right content to the user.
+	 * Receives and saves the new game model state to make the view show the
+	 * right content to the user and returns immediately.
 	 * @param state - new game state
 	 */
 	public void update(State state);
