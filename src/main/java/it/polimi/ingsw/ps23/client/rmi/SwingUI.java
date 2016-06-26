@@ -1,15 +1,11 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,17 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import org.junit.experimental.theories.PotentialAssignment.CouldNotGenerateValueException;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
@@ -61,10 +53,8 @@ class SwingUI {
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
-	private JPanel tablePanel;
 	private JTable playersTable;
-	private DefaultTableModel tableModel; 
-	private JTable table;
+	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	
 	SwingUI() {
@@ -261,7 +251,7 @@ class SwingUI {
 	
 	private void drawCouncil(Queue<Councillor> council, int x, int y) {
 		for (Councillor councillor : council) {
-			x += 32;
+			x -= 32;
 			drawCouncillor(councillor.getColor().toString(), x , y);
 		}
 	}
