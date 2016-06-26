@@ -248,11 +248,9 @@ class SwingUI {
 		drawCouncil(kingCouncil.getCouncil(), point.x, point.y);
 	}
 	
-	private void drawCouncil(Queue<Councillor> council, int xCoord, int yCoord) {
-		int x = xCoord;
-		int y = yCoord;
-		for(Councillor councillor : council) {
-			x += 32;
+	private void drawCouncil(Queue<Councillor> council, int x, int y) {
+		for (Councillor councillor : council) {
+			x -= 32;
 			drawCouncillor(councillor.getColor().toString(), x , y);
 		}
 	}

@@ -5,8 +5,8 @@ Dorful,Castrum,Graden
 Esti,Burgen,Hellar
 Framek,Castrum,Graden,Indur
 Graden,Framek,Dorful,Indur,Hellar
-Hellar,Graden,Indur,Esti
-Indur,Hellar,Lyram,Merkatim
+Hellar,Graden,Esti,Javelar
+Indur,Garden,Kultos,Framek
 Javelar,Hellar,Lyram,Merkatim
 Kultos,Indur,Lyram
 Lyram,Javelar,Kultos,Naris
