@@ -28,9 +28,9 @@ public class TestRegion {
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String REGIONS_CSV = "regions.csv";
 	private static final String COUNCILLORS_CSV = "councillors.csv";
-	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
+	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";
 	
-	@Test
+	@Test//TODO manca da verificare quando un deck viene reinizializzato
 	public void test() {
 		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
@@ -66,12 +66,13 @@ public class TestRegion {
 			((GroupRegionalCity) region).setPermissionDeck(deck.get(region.getName()));
 		}
 		List<Card> deckUp = new ArrayList<>();
-		for(Card card : ((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getDeck()) {
+		for(Card card : ((GroupRegionalCity) regions.get(0)).getPermissionDeckUp().getCards()) {
 			deckUp.add(card);
 		}
-		((GroupRegionalCity)regions.get(0)).changePermitTiles();
+		((GroupRegionalCity) regions.get(0)).changePermitTiles();
 		boolean changed = true;
-		for(Card card : ((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getDeck()) {
+		List<Card> cards = ((GroupRegionalCity) regions.get(0)).getPermissionDeckUp().getCards();
+		for(Card card : cards) {
 			for(Card oldCard : deckUp) {
 				if(card.equals(oldCard)) {
 					changed = false;
@@ -80,9 +81,9 @@ public class TestRegion {
 		}
 		assertTrue(changed);
 		deckUp.clear();
-		deckUp.add(((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getDeck().get(0));
+		deckUp.add(((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getCards().get(0));
 		assertTrue(((GroupRegionalCity)regions.get(0)).pickPermissionCard(0).equals(deckUp.get(0)));
-		assertTrue(!((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getDeck().get(0).equals(deckUp.get(0)));
+		assertTrue(!((GroupRegionalCity)regions.get(0)).getPermissionDeckUp().getCards().get(0).equals(deckUp.get(0)));
 		for(int i = 0; i < 4; i++) {
 			try {
 				freeCouncillors.electCouncillor("orange", ((GroupRegionalCity)regions.get(0)).getCouncil());

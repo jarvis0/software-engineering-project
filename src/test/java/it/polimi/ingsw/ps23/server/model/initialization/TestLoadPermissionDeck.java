@@ -21,7 +21,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 public class TestLoadPermissionDeck {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
-	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
+	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";
 	
 	private static final String NOBILITY_TRACK_STEP = "nobilityTrackStep";
 	
@@ -44,7 +44,7 @@ public class TestLoadPermissionDeck {
 		bonus.setValue(1);
 		((PermissionCard)permissionCard).addBonus(bonus);
 		boolean found = false;
-		for(Card card : deck.get("seaside").getDeck()) {
+		for(Card card : deck.get("seaside").getCards()) {
 			if (card.toString().equals(permissionCard.toString())) {
 				found = true;
 			}

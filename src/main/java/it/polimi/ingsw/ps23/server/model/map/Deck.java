@@ -32,7 +32,7 @@ public class Deck implements Serializable {
 		this.cards = cards;
 	}
 
-	public List<Card> getDeck() {
+	public List<Card> getCards() {
 		return cards;
 	}
 	
@@ -52,6 +52,9 @@ public class Deck implements Serializable {
 	public List<Card> pickCards(int cardsNumber) {
 		List<Card> pickedCards = new ArrayList<>();
 		for(int i = 0; i < cardsNumber; i++) {
+			if(cards.isEmpty()) {
+				reinitializeDeck();
+			}
 			pickedCards.add(cards.remove(cards.size() - 1));
 		}
 		return pickedCards;
@@ -62,12 +65,15 @@ public class Deck implements Serializable {
 	 * @return card picked from the deck
 	 */
 	public Card pickCard() {
-		return cards.remove(0);
+		if(cards.isEmpty()) {
+			reinitializeDeck();
+		}
+		return cards.remove(cards.size() - 1);
 	}
 	
 	@Override
 	public String toString() {
-		return getDeck().toString();
+		return getCards().toString();
 	}
 	
 }

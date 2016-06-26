@@ -17,6 +17,7 @@ public class AssistantToElectCouncillorState extends ElectCouncillorActionState 
 		super(name);
 	}
 
+	@Override
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
 		return new AssistantToElectCouncillor(chosenCouncillor, chosenBalcony);
 	}

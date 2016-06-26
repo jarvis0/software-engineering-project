@@ -45,16 +45,16 @@ public class GroupRegionalCity extends Region {
 	}
 	
 	public Card pickPermissionCard(int index) {
-		Card card = permissionDeckUp.getDeck().get(index);
-		permissionDeckUp.getDeck().set(index, permissionDeckDown.pickCard());
+		Card card = permissionDeckUp.getCards().get(index);
+		permissionDeckUp.getCards().set(index, permissionDeckDown.pickCard());
 		return card;
 	}
 
 	public void changePermitTiles() {
 		int i = 0;
-		for(Card card : permissionDeckUp.getDeck()) {
-			permissionDeckDown.getDeck().add(card);
-			permissionDeckUp.getDeck().set(i, permissionDeckDown.pickCard());
+		for(Card card : permissionDeckUp.getCards()) {
+			permissionDeckDown.getCards().add(0, card);
+			permissionDeckUp.getCards().set(i, permissionDeckDown.pickCard());
 			i++;
 		}
 	}
@@ -74,8 +74,8 @@ public class GroupRegionalCity extends Region {
 		}
 		print += "\n\t- REGIONAL COUNCIL: " + council + "\n\t" + "- PERMISSION DECKS UP:";
 		loopPrint = new StringBuilder();
-		for(int i = 0; i < permissionDeckUp.getDeck().size(); i++) {
-			loopPrint.append("\n\t\t» " + permissionDeckUp.getDeck().get(i).toString());
+		for(int i = 0; i < permissionDeckUp.getCards().size(); i++) {
+			loopPrint.append("\n\t\t» " + permissionDeckUp.getCards().get(i).toString());
 		}
 		return print + loopPrint;
 	}

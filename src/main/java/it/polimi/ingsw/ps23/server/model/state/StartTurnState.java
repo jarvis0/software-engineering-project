@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.state;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
+import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
@@ -24,6 +25,8 @@ public class StartTurnState extends State {
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
 	private King king;
+	private Bonus currentKingTile;
+	
 	private StateCache stateCache;
 	private boolean finalTurn;
 	
@@ -73,7 +76,7 @@ public class StartTurnState extends State {
 		print += "~ " + mapType + " type map ~\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
@@ -98,6 +101,7 @@ public class StartTurnState extends State {
 		kingCouncil = game.getKing().getCouncil();
 		nobilityTrack = game.getNobilityTrack();
 		king = game.getKing();
+		currentKingTile = game.getKingTilesSet().getCurrentTile();
 		stateCache = game.getStateCache();
 		finalTurn = false;
 		for(Player player : gamePlayersSet.getPlayers()) {

@@ -6,7 +6,6 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 
 class PoliticDeckFactory {
 	
@@ -25,6 +24,6 @@ class PoliticDeckFactory {
 				cards.add(new PoliticCard(GameColorFactory.makeColor(rawPoliticCard[CARD_COLOR_NAME_POSITION])));
 			}
 		}
-		return new PoliticDeck(cards);
+		return new Deck(cards);
 	}
 }

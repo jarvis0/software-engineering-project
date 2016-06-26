@@ -117,18 +117,17 @@ public class RMIGUIView extends RMIView {
 		waiting = false;
 		do {
 			state.acceptView(this);
-		} while (!endGame);
+		} while(!endGame);
 	}
 
 	protected boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState
-				|| state instanceof MarketOfferPhaseState;
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}
 
 	@Override
 	public void update(State state) {
 		this.state = state;
-		if (waitResumeCondition() && waiting) {
+		if(waitResumeCondition() && waiting) {
 			resume();
 			waiting = false;
 		}

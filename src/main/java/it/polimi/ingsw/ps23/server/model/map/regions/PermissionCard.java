@@ -46,7 +46,7 @@ public class PermissionCard implements Card, BonusSlot {
 	public String toString() {
 		String print = bonuses.toString() + " ~ ";
 		if(!cities.isEmpty()) {
-			print += cities.get(0).getName().charAt(0);
+			print += Character.toString(cities.get(0).getName().charAt(0));
 		}
 		StringBuilder loopPrint = new StringBuilder();
 		for(int i = 1; i < cities.size(); i++) {

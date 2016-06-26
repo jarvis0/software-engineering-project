@@ -13,7 +13,6 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionDeck;
 
 class PermissionDecksFactory {
 
@@ -51,7 +50,7 @@ class PermissionDecksFactory {
 		Map<String, Deck> permissionDecks = new HashMap<>();
 		Set<Entry<String, List<Card>>> cardsMapEntrySet = cardsMap.entrySet();
 		for(Entry<String, List<Card>> decks : cardsMapEntrySet) {
-			permissionDecks.put(decks.getKey(), new PermissionDeck(decks.getValue()));
+			permissionDecks.put(decks.getKey(), new Deck(decks.getValue()));
 		}
 		return permissionDecks;
 	}

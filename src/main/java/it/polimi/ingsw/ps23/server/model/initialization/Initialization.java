@@ -17,7 +17,7 @@ import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
+import it.polimi.ingsw.ps23.server.model.player.KingTilesSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
@@ -53,7 +53,7 @@ public class Initialization {
 	private BonusCache bonusCache;
 	private GameMap gameMap;
 	private King king;
-	private KingTileSet kingTiles;
+	private KingTilesSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playerSet;
 	
@@ -94,7 +94,7 @@ public class Initialization {
 		return king;
 	}
 
-	public KingTileSet getKingTiles() {
+	public KingTilesSet getKingTiles() {
 		return kingTiles;
 	}
 

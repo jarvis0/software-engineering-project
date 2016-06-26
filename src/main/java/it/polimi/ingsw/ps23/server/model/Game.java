@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.market.Market;
-import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
+import it.polimi.ingsw.ps23.server.model.player.KingTilesSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StateCache;
@@ -26,7 +26,7 @@ public class Game implements Serializable {
 	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private transient KingTileSet kingTiles;//TODO cambiare quando si inviano i kingtile
+	private KingTilesSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playersSet;
 	private Player currentPlayer;
@@ -78,7 +78,7 @@ public class Game implements Serializable {
 		return king;
 	}
 	 
-	public KingTileSet getKingTileSet() {
+	public KingTilesSet getKingTilesSet() {
 		return kingTiles;
 	}
 

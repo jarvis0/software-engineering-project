@@ -44,6 +44,7 @@ import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
+	private static final String IMAGES_PATH = CONFIGURATION_PATH + "images/";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
 	private static final String KING_PATH = "images/king.png";
@@ -64,7 +65,7 @@ class SwingUI {
 		frame.setTitle("Council of Four");
 		Dimension dimension = new Dimension(900, 600);
 		frame.setMinimumSize(dimension);
-		frame.setIconImage(readImage(CONFIGURATION_PATH + "images/victoryPoint.png"));
+		frame.setIconImage(readImage(IMAGES_PATH + "victoryPoint.png"));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.getContentPane().setLayout(new GridLayout());
 		mapPanel = new JPanel();
@@ -158,7 +159,7 @@ class SwingUI {
 	}
 	
 	private void loadMapBackground() {
-		BufferedImage mapImage = readImage(CONFIGURATION_PATH + "images/mapBackground.png");
+		BufferedImage mapImage = readImage(IMAGES_PATH + "mapBackground.png");
 		Image resizedMapImage = mapImage.getScaledInstance(800, 464, Image.SCALE_SMOOTH);
 		JLabel mapLabel = new JLabel(new ImageIcon(resizedMapImage));
 		mapLabel.setBounds(0, 0, 800, 464);
@@ -178,7 +179,7 @@ class SwingUI {
 	}
 
 	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
-		BufferedImage bonusImage = readImage(CONFIGURATION_PATH + "images/" + bonus.getName() + ".png");
+		BufferedImage bonusImage = readImage(IMAGES_PATH + bonus.getName() + ".png");
 		Image resizedBonusImage = bonusImage.getScaledInstance(23, 25, Image.SCALE_SMOOTH);
 		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
 		bonusLabel.setBounds(0, 0, 23, 25);
@@ -214,7 +215,7 @@ class SwingUI {
 		}
 	}
 
-	private void refreshKingPosition(String city, Map<String, City> cities) {
+	private void refreshKingPosition(String city) {
 		Point point = getComponents(city).getLocationOnScreen();
 		getComponents("king").setLocation(point);
 	}
@@ -257,7 +258,7 @@ class SwingUI {
 	}
 	
 	private void drawCouncillor(String color, int x, int y) {
-		BufferedImage councillorImage = readImage(CONFIGURATION_PATH + "images/" + color + "Councillor.png");
+		BufferedImage councillorImage = readImage(IMAGES_PATH + color + "Councillor.png");
 		Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 		councillorLabel.setBounds(0, 0, 28, 52);
@@ -267,7 +268,7 @@ class SwingUI {
 
 	void refreshUI(StartTurnState currentState) {
 		addRewardTokens(currentState.getGameMap().getCities());
-		refreshKingPosition(currentState.getKing().getPosition().getName(), currentState.getGameMap().getCities());
+		refreshKingPosition(currentState.getKing().getPosition().getName());
 		refreshPlayersTable(currentState.getPlayersSet());
 		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
 		frame.repaint();

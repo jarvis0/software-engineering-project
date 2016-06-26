@@ -16,6 +16,7 @@ public class ElectCouncillorState extends ElectCouncillorActionState {
 		super(name);
 	}
 
+	@Override
 	public Action createAction(String chosenCouncillor, String chosenBalcony) {
 		return new ElectCouncillor(chosenCouncillor, chosenBalcony);
 	}

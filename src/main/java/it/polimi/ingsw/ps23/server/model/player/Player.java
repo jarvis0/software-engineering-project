@@ -30,7 +30,7 @@ public class Player implements Serializable {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
-	private BonusTile bonusTile; //TODO maybe we have to print also this
+	private BonusTile bonusTile;
 	private boolean online;
 	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
@@ -194,15 +194,15 @@ public class Player implements Serializable {
 		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
-			if(!(game.getKingTileSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTileSet().pop());
+			if(!(game.getKingTilesSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTilesSet().pop());
 			}
 		}
 		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
-			if(!(game.getKingTileSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTileSet().pop());
+			if(!(game.getKingTilesSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTilesSet().pop());
 			}
 		}
 	}
