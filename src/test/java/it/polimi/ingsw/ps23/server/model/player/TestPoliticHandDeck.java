@@ -19,7 +19,7 @@ public class TestPoliticHandDeck {
 	@Test
 	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("blue", "0x0000ff");
+		GameColor gameColor = new GameColor("blue");
 		Card card = new PoliticCard(gameColor);
 		cards.add(card);
 		Deck politicDeck = new PoliticDeck(cards);
@@ -39,7 +39,7 @@ public class TestPoliticHandDeck {
 		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card) && player.getNumberOfPoliticCard() == 1);
 		player.soldPoliticCards(soldBuyCards);
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 0);
-		gameColor = new GameColor("multi", "0xa1ff8f");
+		gameColor = new GameColor("multi");
 		card = new PoliticCard(gameColor);
 		soldBuyCards.add(card);
 		player.buyPoliticCards(soldBuyCards);
@@ -52,7 +52,7 @@ public class TestPoliticHandDeck {
 		try {
 			assertTrue(((PoliticHandDeck)player.getPoliticHandDeck()).checkCost(removedCards) == -8);
 		} catch (InvalidCardException e) { }
-		gameColor = new GameColor("orange", "0xffa500");
+		gameColor = new GameColor("orange");
 		card = new PoliticCard(gameColor);
 		player.getPoliticHandDeck().addCard(card);
 		player.getPoliticHandDeck().addCard(card);

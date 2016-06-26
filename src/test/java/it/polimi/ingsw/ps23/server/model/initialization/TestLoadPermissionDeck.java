@@ -27,7 +27,7 @@ public class TestLoadPermissionDeck {
 	@Test
 	public void test() {
 		List<String[]> rawPermissionCards = new RawObject(TEST_CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
-		GameColor iron = GameColorFactory.makeColor("iron", "0xe6e7e8");
+		GameColor iron = GameColorFactory.makeColor("iron");
 		City city = new CapitalCity("A",iron);
 		Map<String, City> cities = new HashMap<>();
 		cities.put(city.getName(), city);

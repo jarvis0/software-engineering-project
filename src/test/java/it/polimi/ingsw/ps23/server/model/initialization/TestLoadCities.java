@@ -31,12 +31,13 @@ public class TestLoadCities {
 	private List<City> cities;
 	private int initialCitiesSize;
 	private City firstRemovedCity;
-	Map<String, List<String>> citiesConnections;
+	private Map<String, List<String>> citiesConnections;
 	
 	@Test
 	public void test() {		
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
+		BonusCache.loadCache();
 		citiesFactory = new CitiesFactory();
 		citiesFactory.makeCities(rawCities, rawRewardTokens);
 		cities = citiesFactory.getCities();
@@ -59,18 +60,18 @@ public class TestLoadCities {
 		BonusCache.loadCache();
 		RewardToken rewardToken = new RewardToken();
 		rewardToken.addBonus(BonusCache.getBonus("nobilityTrackStep", 1));
-		City city = new NormalCity("test", GameColorFactory.makeColor("test", "0xFFFFFF"), rewardToken);
+		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(((NormalCity) city).hasNobilityTrackBonus());
 		rewardToken = new RewardToken();
 		rewardToken.addBonus(BonusCache.getBonus("assistant", 1));
-		city = new NormalCity("test", GameColorFactory.makeColor("test", "0xFFFFFF"), rewardToken);
+		city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(!((NormalCity) city).hasNobilityTrackBonus());
 	}
 	
 	private void colorAndNameTest () {
 		RewardToken rewardToken = new RewardToken();
 		rewardToken.addBonus(BonusCache.getBonus("assistant", 1));
-		City city = new NormalCity("test", GameColorFactory.makeColor("test", "0xFFFFFF"), rewardToken);
+		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
 		assertTrue(city.getColor() == "test");
 		assertTrue(city.getName() == "test");
 	}

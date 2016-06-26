@@ -23,12 +23,12 @@ public class PoliticCard implements Card {
 	}
 	
 	public boolean isJoker() {
-		return color.getName().equals(MULTI);
+		return color.toString().equals(MULTI);
 	}
 	
 	@Override
 	public String toString() {
-		return color.getName();
+		return color.toString();
 	}
 
 }

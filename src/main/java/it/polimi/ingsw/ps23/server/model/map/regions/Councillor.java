@@ -20,10 +20,6 @@ public class Councillor implements Serializable {
 		return color;
 	}
 	
-	public String getColorName() {
-		return color.getName();
-	}
-	
 	@Override
 	public String toString() {
 		return color.toString();

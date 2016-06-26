@@ -27,11 +27,12 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
-	private static final int MINIMUM_PLAYERS_NUMBER = 7;
+	private static final int MINIMUM_PLAYERS_NUMBER = 1;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
 	private static final int CONNECTION_TIMEOUT = 10000;
 	private static final String SECONDS_PRINT =  " seconds...";
+	private static final String PLAYER_PRINT = "Player ";
 	private static final String NO_INPUT = "NOINPUTNEEDED";
 	private static final int RANDOM_NUMBERS_POOL = 20;
 	
@@ -173,7 +174,7 @@ class Server implements ServerInterface {
 				infoMessage(client, "Here you are your unique in-game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				rmiChangeName(client, playerName);
 				rmiWaitingConnections.put(playerName,  client);
-				output.println("Player " + playerName + " has been added to the waiting list.");
+				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
 				String message = new String();
 				if(launchingGame) {
 					message += "A new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
@@ -182,7 +183,7 @@ class Server implements ServerInterface {
 				startCountdownFromRMI();
 			}
 			else {
-				output.println("Player " + name + " is being prompted to his previous game.");
+				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
 				gameInstances.reconnectPlayer(name, client);
 				infoMessage(client, "You have been prompted to your previous game, please wait your turn.");
 			}
@@ -202,7 +203,7 @@ class Server implements ServerInterface {
 	}
 
 	synchronized void deregisterSocketConnection(Connection connection) throws ViewNotFoundException {
-		output.println("Player " + gameInstances.disconnectSocketPlayer(connection) + " has been disconnected from the game due to connection timeout.");
+		output.println(PLAYER_PRINT + gameInstances.disconnectSocketPlayer(connection) + " has been disconnected from the game due to connection timeout.");
 	}
 
 	synchronized void setSocketTimerEnd() {
@@ -251,7 +252,7 @@ class Server implements ServerInterface {
 					playerName = solveDoubles(playerName, 1);
 				}
 				connection.send(NO_INPUT + "Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
-				output.println("Player " + playerName + " has been added to the waiting list.");
+				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
 				socketWaitingConnections.put(playerName, connection);
 				String message = new String();
 				if(launchingGame) {
@@ -261,7 +262,7 @@ class Server implements ServerInterface {
 				startCountdownFromSocket();
 			}
 			else {
-				output.println("Player " + name + " is being prompted to his previous game.");
+				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
 				gameInstances.reconnectPlayer(name, connection);
 				connection.send(NO_INPUT + "You have been prompted to your previous game, please wait your turn.");
 			}

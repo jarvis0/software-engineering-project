@@ -49,14 +49,16 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
-public class SwingUI {
+class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
 	private static final String KING_PATH = "images/king.png";
+	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
 
 	private Map<String, Component> components;
+	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
 	private JPanel tablePanel;
@@ -64,6 +66,31 @@ public class SwingUI {
 	private DefaultTableModel tableModel; 
 	private JTable table;
 	private JScrollPane scrollPane;
+	
+	SwingUI() {
+		components = new HashMap<>();
+		councilPoints = new HashMap<>();
+		frame = new JFrame();
+		frame.setTitle("Council of Four");
+		Dimension dimension = new Dimension(900, 600);
+		frame.setMinimumSize(dimension);
+		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
+		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		frame.getContentPane().setLayout(new GridLayout());
+		mapPanel = new JPanel();
+		mapPanel.setLayout(null);
+		loadCouncilsPositions();
+		loadKing();
+		loadCities();
+		loadStreets();
+		loadMapBackground();
+		loadPlayersTable();
+		frame.getContentPane().add(mapPanel);
+		mapPanel.add(scrollPane);
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
 
 	private BufferedImage readImage(String path) {
 		try {
@@ -73,10 +100,15 @@ public class SwingUI {
 		}
 		return null;
 	}
-
+	
 	Component getComponents(String componentName) {
 		return components.get(componentName);
 	}
+	
+	Point getCouncilPoint(String region) {
+		return councilPoints.get(region);
+	}
+	
 	
 	private void loadKing() {
 		BufferedImage kingImage = readImage(CONFIGURATION_PATH + KING_PATH);
@@ -87,6 +119,15 @@ public class SwingUI {
 		components.put("king", kingLabel);
 	}
 	
+	private void loadCouncilsPositions() {
+		List<String[]> rawCouncilsPosition = new RawObject(CONFIGURATION_PATH + COUNCILS_POSITION_CSV).getRawObject();
+		for(String[] rawCouncilPosition : rawCouncilsPosition) {
+			Point councilPoint = new Point();
+			councilPoint.x = Integer.parseInt(rawCouncilPosition[1]);
+			councilPoint.y = Integer.parseInt(rawCouncilPosition[2]);
+			councilPoints.put(rawCouncilPosition[0], councilPoint);
+		}
+	}
 	
 	private void loadCities() {
 		List<String[]> rawCitiesPosition = new RawObject(CONFIGURATION_PATH + CITIES_POSITION_CSV).getRawObject();
@@ -143,50 +184,25 @@ public class SwingUI {
 		playersTable = new JTable(tableModel);
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(playersTable);
-		/*tablePanel =  new JPanel();
-		tablePanel.setLayout(null);
-		tablePanel.setLayout(new GridBagLayout());*/
 		scrollPane.setBounds(810, 24, 534, 70);
 	}
 
-	SwingUI() {
-		components = new HashMap<>();
-		frame = new JFrame();
-		frame.setTitle("Council of Four");
-		Dimension dimension = new Dimension(900, 600);
-		frame.setMinimumSize(dimension);
-		frame.setIconImage(readImage(CONFIGURATION_PATH+"images/victoryPoint.png"));
-		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		frame.getContentPane().setLayout(new GridLayout());
-		mapPanel = new JPanel();
-		mapPanel.setLayout(null);
-		loadKing();
-		loadCities();
-		loadStreets();
-		loadMapBackground();
-		loadPlayersTable();
-		frame.getContentPane().add(mapPanel);
-		mapPanel.add(scrollPane);
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		new SwingUI();
-	}
-
-	private void drawRewardTokenBonus(Bonus bonus, int xCoord, int yCoord) {
-		int x = xCoord;
-		int y = yCoord;
-		for(int i = 0; i < bonus.getValue(); i++) {
-			BufferedImage bonusImage = readImage(CONFIGURATION_PATH + "images/" + bonus.getName() + ".png");
-			Image resizedBonusImage = bonusImage.getScaledInstance(23, 23, Image.SCALE_SMOOTH);
-			JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
-			bonusLabel.setBounds(0, 0, 23, 23);
-			bonusLabel.setLocation(x + 30, y - 30);
-			mapPanel.add(bonusLabel, 0);
-			x += 22;
+	private void drawRewardTokenBonus(Bonus bonus, int x, int y) {
+		BufferedImage bonusImage = readImage(CONFIGURATION_PATH + "images/" + bonus.getName() + ".png");
+		Image resizedBonusImage = bonusImage.getScaledInstance(23, 25, Image.SCALE_SMOOTH);
+		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
+		bonusLabel.setBounds(0, 0, 23, 25);
+		bonusLabel.setLocation(x + 40, y - 35);
+		mapPanel.add(bonusLabel, 0);
+		int bonusNumber = bonus.getValue();
+		if(bonusNumber > 1 || "victoryPoint".equals(bonus.getName())) {
+			JLabel bonusValue = new JLabel();
+			bonusValue.setBounds(0, 0, 23, 25);
+			bonusValue.setLocation(x + 40 + 8, y - 35);
+			bonusValue.setFont(new Font("Sans serif", Font.BOLD, 9));
+			bonusValue.setForeground(Color.decode("0xFFFFFF"));
+			bonusValue.setText(String.valueOf(bonusNumber));
+			mapPanel.add(bonusValue, 0);
 		}
 	}
 	
@@ -202,13 +218,14 @@ public class SwingUI {
 				List<Bonus> rewardTokenBonuses = ((NormalCity) city).getRewardToken().getBonuses();
 				for(Bonus bonus : rewardTokenBonuses) {
 					drawRewardTokenBonus(bonus, x, y);
+					x += 22;
 				}
 			}
 		}
 	}
 
-	private void refreshKingPosition(String acity, Map<String, City> cities) {
-		Point point = getComponents(acity).getLocationOnScreen();
+	private void refreshKingPosition(String city, Map<String, City> cities) {
+		Point point = getComponents(city).getLocationOnScreen();
 		getComponents("king").setLocation(point);
 	}
 	
@@ -230,14 +247,34 @@ public class SwingUI {
 	
 	private void refreshCouncils(List<Region> regions, Council kingCouncil){
 		for (Region region : regions) {
-			Queue<Councillor> council = ((GroupRegionalCity) region).getCouncil().getCouncil();
-			for (Councillor councillor : council) {
-				councillor.getColor();
-			}
+			Point point = getCouncilPoint(region.getName());
+			int x = point.x;
+			int y = point.y;
+			drawCouncil(((GroupRegionalCity) region).getCouncil().getCouncil(), x, y);
+			
 		}
-		
+		Point point = getCouncilPoint("kingdom");
+		int x = point.x;
+		int y = point.y;
+		drawCouncil(kingCouncil.getCouncil(), x, y);
 	}
 	
+	private void drawCouncil(Queue<Councillor> council, int x, int y) {
+		for (Councillor councillor : council) {
+			x += 32;
+			drawCouncillor(councillor.getColor().toString(), x , y);
+		}
+	}
+	
+	private void drawCouncillor(String color, int x, int y) {
+		BufferedImage councillorImage = readImage(CONFIGURATION_PATH + "images/" + color + "Councillor.png");
+		Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
+		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
+		councillorLabel.setBounds(0, 0, 28, 52);;
+		councillorLabel.setLocation(x , y);
+		mapPanel.add(councillorLabel, 0);
+	}
+
 	void refreshUI(StartTurnState currentState) {
 		addRewardTokens(currentState.getGameMap().getCities());
 		refreshKingPosition(currentState.getKing().getPosition().getName(), currentState.getGameMap().getCities());
@@ -245,4 +282,9 @@ public class SwingUI {
 		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
 		frame.repaint();
 	}
+
+	public static void main(String[] args) {
+		new SwingUI();
+	}
+
 }

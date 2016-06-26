@@ -18,12 +18,11 @@ public class TestFreeCouncillors {
 	
 	@Test
 	public void test() {
-		
 		List<String[]> rawCouncillors = new RawObject(TEST_CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 		boolean foundShuffled = false;
-		GameColor orange = GameColorFactory.makeColor("orange", "0xffa500");
-		GameColor blue = GameColorFactory.makeColor("blue", "0x0000ff");
+		GameColor orange = GameColorFactory.makeColor("orange");
+		GameColor blue = GameColorFactory.makeColor("blue");
 		int size = freeCouncillors.getFreeCouncillors().size();
 		for(int i = 0; i < (size - 1) / 2; i++) {
 			if(freeCouncillors.getFreeCouncillors().get(i) != freeCouncillors.getFreeCouncillors().get(i+1)) {
@@ -34,10 +33,11 @@ public class TestFreeCouncillors {
 		int countOrange = 0;
 		int countBlue = 0;
 		for(int i = 0; i < size; i++) {
-			if(freeCouncillors.getFreeCouncillors().get(i).getColor().equals(blue)) {
+			GameColor color = freeCouncillors.getFreeCouncillors().get(i).getColor();
+			if(color.equals(blue)) {
 				countBlue++;
 			}
-			if(freeCouncillors.getFreeCouncillors().get(i).getColor().equals(orange)) {
+			if(color.equals(orange)) {
 				countOrange++;
 			}
 		}

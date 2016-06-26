@@ -122,7 +122,7 @@ public class RMIGUIView extends RMIView {
 		} while (!endGame);
 	}
 
-	private boolean waitResumeCondition() {
+	protected boolean waitResumeCondition() {
 		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState
 				|| state instanceof MarketOfferPhaseState;
 	}
