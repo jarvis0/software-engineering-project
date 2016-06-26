@@ -44,12 +44,14 @@ import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
-	private static final String IMAGES_PATH = CONFIGURATION_PATH + "images/";
+	private static final String IMAGES_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/images/";
+	private static final String BACKGROUND_PATH = "mapBackground.png";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
-	private static final String KING_PATH = "images/king.png";
+	private static final String KING_PATH = "king.png";
 	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
 
+	private String mapPath;
 	private Map<String, Component> components;
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
@@ -58,7 +60,8 @@ class SwingUI {
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	
-	SwingUI() {
+	SwingUI(String mapType) {
+		mapPath = CONFIGURATION_PATH + mapType + "/";
 		components = new HashMap<>();
 		councilPoints = new HashMap<>();
 		frame = new JFrame();
@@ -101,7 +104,7 @@ class SwingUI {
 	}
 	
 	private void loadKing() {
-		BufferedImage kingImage = readImage(CONFIGURATION_PATH + KING_PATH);
+		BufferedImage kingImage = readImage(IMAGES_PATH + KING_PATH);
 		Image resizedKingImage = kingImage.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
 		JLabel kingLabel = new JLabel(new ImageIcon(resizedKingImage));
 		kingLabel.setBounds(0, 0, 35, 35);
@@ -110,7 +113,7 @@ class SwingUI {
 	}
 	
 	private void loadCouncilsPositions() {
-		List<String[]> rawCouncilsPosition = new RawObject(CONFIGURATION_PATH + COUNCILS_POSITION_CSV).getRawObject();
+		List<String[]> rawCouncilsPosition = new RawObject(mapPath + COUNCILS_POSITION_CSV).getRawObject();
 		for(String[] rawCouncilPosition : rawCouncilsPosition) {
 			Point councilPoint = new Point();
 			councilPoint.x = Integer.parseInt(rawCouncilPosition[1]);
@@ -120,20 +123,21 @@ class SwingUI {
 	}
 	
 	private void loadCities() {
-		List<String[]> rawCitiesPosition = new RawObject(CONFIGURATION_PATH + CITIES_POSITION_CSV).getRawObject();
+		List<String[]> rawCitiesPosition = new RawObject(mapPath + CITIES_POSITION_CSV).getRawObject();
 		for(String[] rawCityPosition : rawCitiesPosition) {
-			BufferedImage cityImage = readImage(CONFIGURATION_PATH + rawCityPosition[5]);
+			BufferedImage cityImage = readImage(IMAGES_PATH + rawCityPosition[5] + ".png");
 			int x = Integer.parseInt(rawCityPosition[3]);
 			int y = Integer.parseInt(rawCityPosition[4]);
 			int width = Integer.parseInt(rawCityPosition[1]);
 			int height = Integer.parseInt(rawCityPosition[2]);
 			Image resizedCityImage = cityImage.getScaledInstance(width - 8, height - 8, Image.SCALE_SMOOTH);
 			JLabel cityLabel = new JLabel(new ImageIcon(resizedCityImage));
-			cityLabel.setBounds(x, y, width - 8, height - 8);
+			cityLabel.setBounds(0, 0, width - 8, height - 8);
+			cityLabel.setLocation(x, y);
 			JLabel cityName = new JLabel();
 			cityName.setBounds(0, 0, width, height);
-			cityName.setLocation(x, y - 38);
-			cityName.setFont(new Font("Algerian", Font.BOLD, 24));
+			cityName.setLocation(x - 18, y - 38);
+			cityName.setFont(new Font("Algerian", Font.ROMAN_BASELINE, 14));
 			cityName.setForeground(Color.decode(rawCityPosition[6]));
 			cityName.setText(rawCityPosition[0]);
 			mapPanel.add(cityName);
@@ -143,9 +147,9 @@ class SwingUI {
 	}
 	
 	private void loadStreets() {
-		List<String[]> rawCitiesConnection = new RawObject(CONFIGURATION_PATH + CITIES_CONNECTION_CSV).getRawObject();
+		List<String[]> rawCitiesConnection = new RawObject(mapPath + CITIES_CONNECTION_CSV).getRawObject();
 		for(String[] rawCityConnection : rawCitiesConnection) {
-			BufferedImage connectionImage = readImage(CONFIGURATION_PATH + rawCityConnection[0]);
+			BufferedImage connectionImage = readImage(IMAGES_PATH + rawCityConnection[0] + ".png");
 			int x = Integer.parseInt(rawCityConnection[3]);
 			int y = Integer.parseInt(rawCityConnection[4]);
 			int width = Integer.parseInt(rawCityConnection[1]);
@@ -159,7 +163,7 @@ class SwingUI {
 	}
 	
 	private void loadMapBackground() {
-		BufferedImage mapImage = readImage(IMAGES_PATH + "mapBackground.png");
+		BufferedImage mapImage = readImage(IMAGES_PATH + BACKGROUND_PATH);
 		Image resizedMapImage = mapImage.getScaledInstance(800, 464, Image.SCALE_SMOOTH);
 		JLabel mapLabel = new JLabel(new ImageIcon(resizedMapImage));
 		mapLabel.setBounds(0, 0, 800, 464);
@@ -183,13 +187,13 @@ class SwingUI {
 		Image resizedBonusImage = bonusImage.getScaledInstance(23, 25, Image.SCALE_SMOOTH);
 		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
 		bonusLabel.setBounds(0, 0, 23, 25);
-		bonusLabel.setLocation(x + 40, y - 35);
+		bonusLabel.setLocation(x + 50, y - 20);
 		mapPanel.add(bonusLabel, 0);
 		int bonusNumber = bonus.getValue();
 		if(bonusNumber > 1 || "victoryPoint".equals(bonus.getName())) {
 			JLabel bonusValue = new JLabel();
 			bonusValue.setBounds(0, 0, 23, 25);
-			bonusValue.setLocation(x + 40 + 8, y - 35);
+			bonusValue.setLocation(x + 50 + 8, y - 20);
 			bonusValue.setFont(new Font("Sans serif", Font.BOLD, 9));
 			bonusValue.setForeground(Color.decode("0xFFFFFF"));
 			bonusValue.setText(String.valueOf(bonusNumber));
@@ -233,11 +237,10 @@ class SwingUI {
 			vector.add(4, player.getNobilityTrackPoints());
 			tableModel.addRow(vector);	
 		}
-		
 	}
 	
 	private void refreshCouncils(List<Region> regions, Council kingCouncil){
-		for (Region region : regions) {
+		for(Region region : regions) {
 			Point point = getCouncilPoint(region.getName());
 			int x = point.x;
 			int y = point.y;
@@ -248,8 +251,10 @@ class SwingUI {
 		drawCouncil(kingCouncil.getCouncil(), point.x, point.y);
 	}
 	
-	private void drawCouncil(Queue<Councillor> council, int x, int y) {
-		for (Councillor councillor : council) {
+	private void drawCouncil(Queue<Councillor> council, int xCoord, int yCoord) {
+		int x = xCoord;
+		int y = yCoord;
+		for(Councillor councillor : council) {
 			x -= 32;
 			drawCouncillor(councillor.getColor().toString(), x , y);
 		}
@@ -273,7 +278,7 @@ class SwingUI {
 	}
 
 	public static void main(String[] args) {
-		new SwingUI();
+		new SwingUI("hard");
 	}
 
 }

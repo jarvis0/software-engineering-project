@@ -99,6 +99,10 @@ public class GameInstance {
 		playersName.addAll(rmiPlayersName);
 		Collections.shuffle(playersName);
 		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
+		String mapType = model.getMapType() + "<MapType>";
+		sendSocketInfoMessage(mapType);//TODO
+		model.sendRMIInfoMessage(mapType);
+		model.startGame();
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
 		}

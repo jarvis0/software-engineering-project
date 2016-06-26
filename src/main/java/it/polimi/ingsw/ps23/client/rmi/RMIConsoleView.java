@@ -51,6 +51,11 @@ class RMIConsoleView extends RMIView {
 		output = new PrintStream(System.out, true);
 	}
 
+	@Override
+	void setMapType(String mapType) {
+		output.println("\nMap type: " + mapType + ".");
+	}
+
 	private void sendAction(Action action) {
 		try {
 			getControllerInterface().wakeUpServer(action);

@@ -66,7 +66,7 @@ class SocketClient {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
-		output.print("Welcome, what's your name (only letters)? ");
+		output.print("Welcome, what's your name (only letters or your previus in-game name)? ");
 		String playerName = scanner.next();
 		try {
 			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);

@@ -44,7 +44,14 @@ public class Model extends ModelObservable {
 		setStartingPlayerIndex();
 		this.playersResumeHandler = playersResumeHandler;
 		newGame(playersName);
+	}
+	
+	public void startGame() {
 		setStartTurnState();
+	}
+	
+	public String getMapType() {
+		return game.getMapType();
 	}
 	
 	private Player setCurrentGamePlayer() {

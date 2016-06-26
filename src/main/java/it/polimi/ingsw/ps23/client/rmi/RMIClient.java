@@ -29,8 +29,8 @@ class RMIClient implements ClientInterface {
 	private ExecutorService executor;
 	
 	private RMIClient(String playerName) {
-		rmiView = new RMIConsoleView(playerName);
-		//rmiView = new RMIGUIView(playerName);
+		//rmiView = new RMIConsoleView(playerName);
+		rmiView = new RMIGUIView(playerName);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
 		output = new PrintStream(System.out);
@@ -40,7 +40,7 @@ class RMIClient implements ClientInterface {
 		//@SuppressWarnings("resource")
 		//Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
-		output.print("Welcome, what's your name (only letters)? ");
+		output.print("Welcome, what's your name (only letters or your previus in-game name)? ");
 		String playerName = "AleGiuMir";
 		try {
 			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
@@ -60,7 +60,12 @@ class RMIClient implements ClientInterface {
 
 	@Override
 	public void infoMessage(String message) {
-		output.println(message);
+		if(!message.contains("<MapType>")) {
+			output.println(message);
+		}
+		else {
+			((RMIView) rmiView).setMapType(message.replace("<MapType>", ""));
+		}
 	}
 
 	@Override

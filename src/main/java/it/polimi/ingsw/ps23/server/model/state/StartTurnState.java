@@ -17,7 +17,6 @@ public class StartTurnState extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = -6709781155533826821L;
-	private String mapType;
 	private Player currentPlayer;
 	private TurnHandler turnHandler;
 	private GameMap gameMap;
@@ -73,7 +72,6 @@ public class StartTurnState extends State {
 		print += "\t\t\t\t\t+    GAME STATUS    +\n";
 		print += "\t\t\t\t\t+                   +\n";
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
-		print += "~ " + mapType + " type map ~\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
 		print += "> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
@@ -95,7 +93,6 @@ public class StartTurnState extends State {
 	public void changeState(Context context, Game game) {
 		context.setState(this);
 		currentPlayer = game.getCurrentPlayer();
-		mapType = game.getMapType();
 		gameMap = game.getGameMap();
 		gamePlayersSet = game.getGamePlayersSet();
 		kingCouncil = game.getKing().getCouncil();

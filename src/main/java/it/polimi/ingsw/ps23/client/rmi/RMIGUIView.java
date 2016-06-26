@@ -29,7 +29,12 @@ public class RMIGUIView extends RMIView {
 	public State getCurrentState() {
 		return state;
 	}
-	
+
+	@Override
+	void setMapType(String mapType) {
+		swingUI = new SwingUI(mapType);
+	}
+
 	@Override
 	public void visit(StartTurnState currentState) {
 		swingUI.refreshUI(currentState);
@@ -109,17 +114,6 @@ public class RMIGUIView extends RMIView {
 
 	}
 
-	@Override
-	public synchronized void run() {
-		waiting = true;
-		swingUI = new SwingUI();
-		pause();
-		waiting = false;
-		do {
-			state.acceptView(this);
-		} while(!endGame);
-	}
-
 	protected boolean waitResumeCondition() {
 		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}
@@ -131,6 +125,16 @@ public class RMIGUIView extends RMIView {
 			resume();
 			waiting = false;
 		}
+	}
+
+	@Override
+	public synchronized void run() {
+		waiting = true;
+		pause();
+		waiting = false;
+		do {
+			state.acceptView(this);
+		} while(!endGame);
 	}
 
 }

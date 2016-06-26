@@ -14,6 +14,8 @@ abstract class RMIView extends View {
 	protected RMIView(String clientName) {
 		this.clientName = clientName;
 	}
+
+	abstract void setMapType(String mapType);
 	
 	protected String getClientName() {
 		return clientName;
