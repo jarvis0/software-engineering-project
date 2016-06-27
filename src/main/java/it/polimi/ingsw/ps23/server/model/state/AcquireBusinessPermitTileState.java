@@ -49,8 +49,8 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	
 	private void checkCards(String chosenCouncil, List<String> removedPoliticCards) throws InvalidCardException {
 		String council = ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getCouncil().toString();
-		for (String string : removedPoliticCards) {
-			if (council.contains(string) || string.equals("multi")) {
+		for(String string : removedPoliticCards) {
+			if(council.contains(string) || "multi".equals(string)) {
 				council = council.replaceFirst(string, "");
 			}
 			else {

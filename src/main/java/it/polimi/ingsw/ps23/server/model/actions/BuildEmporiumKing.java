@@ -32,7 +32,7 @@ public class BuildEmporiumKing implements Action {
 	}
 	
 	private void checkAction(Game game) throws InvalidCityException {
-		if(game.getGameMap().getCitiesMap().get(arriveCity) == null) {
+		if(game.getGameMap().getCities().get(arriveCity) == null) {
 			throw new InvalidCityException();
 		}
 	}
@@ -40,16 +40,15 @@ public class BuildEmporiumKing implements Action {
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException {
 		checkAction(game);
-		City finalCity = game.getGameMap().getCitiesMap().get(arriveCity);
+		City finalCity = game.getGameMap().getCities().get(arriveCity);
 		Player player = game.getCurrentPlayer();
-		int assistantsCost = 0;
 		int cost = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).checkCost(removedCards);
 		DijkstraShortestPath<City, DefaultEdge> dijkstraShortestPath = new DijkstraShortestPath<>(game.getGameMap().getCitiesGraph().getGraph(), game.getKing().getPosition() , finalCity);
 		cost = cost + (int) (ROAD_COST * dijkstraShortestPath.getPathLength());
 		if(Math.abs(cost) > player.getCoins()) {
 			throw new InsufficientResourcesException();
 		}
-		assistantsCost = finalCity.buildEmporium(player);
+		int assistantsCost = finalCity.buildEmporium(player);
 		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedCards);
 		player.updateCoins(cost);
 		player.updateAssistants(assistantsCost);

@@ -39,27 +39,21 @@ class RMIConsoleView extends RMIView {
 
 	private Scanner scanner;
 	private PrintStream output;
-	private String clientName;
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
-
-	RMIConsoleView(RMIClient client, String playerName) {
-		super(client);
+	
+	RMIConsoleView(String playerName) {
+		super(playerName);
 		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
-		clientName = playerName;
 	}
 
-	private synchronized void pause() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
-			Thread.currentThread().interrupt();
-		}
+	@Override
+	void setMapType(String mapType) {
+		output.println("\nMap type: " + mapType + ".");
 	}
 
 	private void sendAction(Action action) {
@@ -74,9 +68,8 @@ class RMIConsoleView extends RMIView {
 	public void visit(StartTurnState currentState) {
 		Player player = currentState.getCurrentPlayer();
 		output.println(currentState.getStatus());
-		if (player.getName().equals(clientName)) {
-			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n"
-					+ currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+		if(player.getName().equals(getClientName())) {
+			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
 				getControllerInterface()
 						.wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
@@ -152,7 +145,7 @@ class RMIConsoleView extends RMIView {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		output.println("Choose a region:" + currentState.getPermitsMap());
+		output.println("Choose a region:" + currentState.printRegionalPermissionDecks());
 		String chosenRegion = scanner.nextLine().toLowerCase();
 		sendAction(currentState.createAction(chosenRegion));
 	}
@@ -252,7 +245,7 @@ class RMIConsoleView extends RMIView {
 	public void visit(MarketOfferPhaseState currentState) {
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		if (player.equals(clientName)) {
+		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermissionCard(currentState);
 			int chosenAssistants = sellAssistant(currentState);
@@ -277,7 +270,7 @@ class RMIConsoleView extends RMIView {
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
 		output.println("It's " + player + " market phase turn.");
-		if (player.equals(clientName)) {
+		if(player.equals(getClientName())) {
 			try {
 				if (currentState.canBuy()) {
 					output.println("Avaible offers: " + currentState.getAvaiableOffers());
@@ -311,9 +304,7 @@ class RMIConsoleView extends RMIView {
 				}
 				output.println(currentState.useBonus(currentBonus));
 				List<String> bonusesSelections = new ArrayList<>();
-				if (selectedBonuses.containsKey(currentBonus)) { // TODO
-																	// verificare
-																	// modifiche
+				if (selectedBonuses.containsKey(currentBonus)) { // TODO verificare modifiche
 					bonusesSelections = selectedBonuses.get(currentBonus);
 				}
 				if (currentState.isBuildingPemitTileBonus(currentBonus)) {
@@ -336,10 +327,6 @@ class RMIConsoleView extends RMIView {
 	public void visit(EndGameState currentState) {
 		output.println(currentState.getWinner());
 		endGame = true;
-	}
-
-	private synchronized void resume() {
-		notifyAll();
 	}
 
 	private boolean waitResumeCondition() {

@@ -21,8 +21,6 @@ class SocketClient {
 	private PrintStream textOut;
 	
 	private RemoteConsoleView remoteConsoleView;
-
-	private boolean connectionTimedOut;
 	
 	private SocketClient(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
@@ -36,20 +34,15 @@ class SocketClient {
 	void send(String message) {
  		textOut.print(message + "EOM");
  	}
- 	
- 	String receive() {
- 		String message = new String();
- 		try {
- 			message = textIn.next();
- 		} catch (NoSuchElementException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Connection timed out.", e);
-			output.println("Connection timed out. Reconnect to resume the game.");
-			if(remoteConsoleView != null) {
-				remoteConsoleView.setConnectionTimedOut();
-			}
-			else {
-				connectionTimedOut = true;
-			}
+	
+	String receive() {
+		String message = new String();
+		try {
+			message = textIn.next();
+		} catch (NoSuchElementException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Connection reset.", e);
+			output.println("Connection reset. Reconnect to resume the game.");
+			remoteConsoleView.setConnectionTimedOut();
 			closeConnection();
  		}
 		return message;
@@ -63,26 +56,24 @@ class SocketClient {
 		}
 	}
 	
-	void start() {
-		String message = receive();
-		output.print(message);
-		send(scanner.nextLine());
-		output.println("Waiting others players to connect...\n");
-		output.println(receive());
-		if(!connectionTimedOut) {
-			remoteConsoleView = new RemoteConsoleView(this, scanner, output);
-			remoteConsoleView.run();
-		}
+	void start(String playerName) {
+		send(playerName);
+		remoteConsoleView = new RemoteConsoleView(this, scanner, output);
+		remoteConsoleView.run();
 	}
 	
 	public static void main(String[] args) {
-		SocketClient client;
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		PrintStream output = new PrintStream(System.out, true);
+		output.print("Welcome, what's your name (only letters or previous in-game name)? ");
+		String playerName = scanner.next();
 		try {
-			client = new SocketClient(SOCKET_PORT_NUMBER);
-			client.start();
+			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
+			client.start(playerName);
 		} catch(IOException e) {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
-	
+
 }

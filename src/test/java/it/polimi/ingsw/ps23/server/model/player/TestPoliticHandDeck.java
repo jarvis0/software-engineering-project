@@ -12,17 +12,16 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 
 public class TestPoliticHandDeck {
 
 	@Test
 	public void test() throws InvalidCardException {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("blue", "0x0000ff");
+		GameColor gameColor = new GameColor("blue");
 		Card card = new PoliticCard(gameColor);
 		cards.add(card);
-		Deck politicDeck = new PoliticDeck(cards);
+		Deck politicDeck = new Deck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));
 		player.getPoliticHandDeck().getCardInPosition(0).equals(card);
 		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card));
@@ -34,12 +33,12 @@ public class TestPoliticHandDeck {
 		cards.add(card);
 		List<Card> soldBuyCards = new ArrayList<>();
 		soldBuyCards.addAll(cards);
-		politicDeck = new PoliticDeck(cards);
+		politicDeck = new Deck(cards);
 		player.pickCard(politicDeck, 1);
 		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card) && player.getNumberOfPoliticCard() == 1);
 		player.soldPoliticCards(soldBuyCards);
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 0);
-		gameColor = new GameColor("multi", "0xa1ff8f");
+		gameColor = new GameColor("multi");
 		card = new PoliticCard(gameColor);
 		soldBuyCards.add(card);
 		player.buyPoliticCards(soldBuyCards);
@@ -52,7 +51,7 @@ public class TestPoliticHandDeck {
 		try {
 			assertTrue(((PoliticHandDeck)player.getPoliticHandDeck()).checkCost(removedCards) == -8);
 		} catch (InvalidCardException e) { }
-		gameColor = new GameColor("orange", "0xffa500");
+		gameColor = new GameColor("orange");
 		card = new PoliticCard(gameColor);
 		player.getPoliticHandDeck().addCard(card);
 		player.getPoliticHandDeck().addCard(card);

@@ -18,7 +18,6 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayerResumeHandler;
 import it.polimi.ingsw.ps23.server.model.state.Context;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
@@ -27,25 +26,49 @@ import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
+/**
+ * This class is the game core class which contains all game data and
+ * business logic for the application.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class Model extends ModelObservable {
 
 	private Game game;
 	private Context context;
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
-	private PlayerResumeHandler playerResumeHandler;
+	private PlayersResumeHandler playersResumeHandler;
 	
-	private void newGame(List<String> playersName) {
-		game = new Game(playersName);
+	private void newGame(List<String> playerNames) {
+		game = new Game(playerNames);
 		currentPlayerIndex++;
 		changePlayer();
 	}
-
-	public void setUpModel(List<String> playersName, PlayerResumeHandler playerResumeHandler) {
+	
+	/**
+	 * Sets up external from model parameters, such as: connected player names and
+	 * a player resume handler useful to wake up socket connection threads.
+	 * @param playerNames - connected clients who want to play a game
+	 * @param playersResumeHandler - socket connection thread handler
+	 */
+	public void setUpModel(List<String> playerNames, PlayersResumeHandler playersResumeHandler) {
 		setStartingPlayerIndex();
-		this.playerResumeHandler = playerResumeHandler;
-		newGame(playersName);
+		this.playersResumeHandler = playersResumeHandler;
+		newGame(playerNames);
+	}
+	
+	/**
+	 * Set the right start turn state.
+	 * Called externally in order to make clients to receive the map type
+	 * and then set up their view.
+	 */
+	public void startGame() {
 		setStartTurnState();
+	}
+	
+	public String getMapType() {
+		return game.getMapType();
 	}
 	
 	private Player setCurrentGamePlayer() {
@@ -64,7 +87,7 @@ public class Model extends ModelObservable {
 		StartTurnState startTurnState = new StartTurnState(turnHandler);		
 		startTurnState.changeState(context, game);
 		wakeUp(startTurnState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 
 	private boolean nextPlayerIndex() {
@@ -98,6 +121,12 @@ public class Model extends ModelObservable {
 		}
 	}
 	
+	/**
+	 * Looks for the next player turn.
+	 * It performs various checks in order to jump over players who are offline,
+	 * start the market phase, start the last game round due to a player who has already built
+	 * all his emporiums.
+	 */
 	public void setPlayerTurn() {
 		if(game.getCurrentPlayer().isOnline()) {
 			if(!(turnHandler.isAvailableMainAction() || (turnHandler.isAvailableQuickAction() && !(context.getState() instanceof StartTurnState)))) {
@@ -173,7 +202,7 @@ public class Model extends ModelObservable {
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
 		marketOfferPhaseState.changeState(context, game);
 		wakeUp(marketOfferPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void chooseNextBuyMarketStep() {
@@ -203,7 +232,7 @@ public class Model extends ModelObservable {
 		MarketBuyPhaseState marketBuyPhaseState = new MarketBuyPhaseState();
 		marketBuyPhaseState.changeState(context, game);
 		wakeUp(marketBuyPhaseState);
-		playerResumeHandler.resume();
+		playersResumeHandler.resume();
 	}
 	
 	private void setStartingPlayerIndex() {
@@ -219,7 +248,18 @@ public class Model extends ModelObservable {
 		setPlayerTurn();
 	}
 
-	public void setCurrentPLayerOffline() {
+	/**
+	 * Sets the current player offline due to his connection timeout and reset.
+	 * A connection timeout occur when a remote client does not send any valid signal
+	 * to the server within the default set timeout.
+	 * <p>
+	 * The specified player will jump the turns but his game resources remain
+	 * effective until the end of the game.
+	 * <p>
+	 * A player can reconnect and resume his game status, but first he will wait his turn as
+	 * set at the game startup.
+	 */
+	public void setCurrentPlayerOffline() {
 		//if(game.getGamePlayersSet().isAnyoneOnline()) {
 			State currentState = context.getState();
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
@@ -241,7 +281,28 @@ public class Model extends ModelObservable {
 	}
 	
 	public void setOnlinePlayer(String player) {
-		//game.getGamePlayersSet().;
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				gamePlayer.setOnline(true);
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Checks whether the specified player name is online for the game.
+	 * @param player - to be checked his online or offline status
+	 * @return the specified player online or offline status (true or false)
+	 * or false by default whether the specified player has not been found in the game
+	 * which will be an inconsistent situation which will never occur.
+	 */
+	public boolean isOnline(String player) {
+		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
+			if(gamePlayer.getName().equals(player)) {
+				return gamePlayer.isOnline();
+			}
+		}
+		return false;
 	}
 
 	public void rollBack(Exception e) {

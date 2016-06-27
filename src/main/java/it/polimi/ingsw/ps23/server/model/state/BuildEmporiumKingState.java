@@ -57,7 +57,7 @@ public class BuildEmporiumKingState extends ActionState {
 	private void checkCards(List<String> removedPoliticCards) throws InvalidCardException {
 		String council = kingCouncil.toString();
 		for (String string : removedPoliticCards) {
-			if (council.contains(string) || string.equals("multi")) {
+			if (council.contains(string) || "multi".equals(string)) {
 				council = council.replaceFirst(string, "");
 			}
 			else {

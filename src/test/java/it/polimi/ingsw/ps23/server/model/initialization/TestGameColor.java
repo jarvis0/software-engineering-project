@@ -10,7 +10,7 @@ public class TestGameColor {
 
 	@Test
 	public void test() {
-		GameColor color = new GameColor("White", "0xfffff");
+		GameColor color = new GameColor("White");
 		assertTrue(color.toString().equals("White"));
 	}
 

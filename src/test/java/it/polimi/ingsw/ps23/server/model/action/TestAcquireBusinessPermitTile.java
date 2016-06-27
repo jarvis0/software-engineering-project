@@ -40,9 +40,9 @@ public class TestAcquireBusinessPermitTile {
 				for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
 					Iterator<Councillor> iterator = council.getCouncil().iterator();
 					while(iterator.hasNext()) {
-						if(iterator.next().getColorName().equals(((PoliticCard)card).getColor().getName()) && cards.size() < 4 && !cardsString.contains(((PoliticCard)card).getColor().getName())) {
+						if(iterator.next().getColor().toString().equals(((PoliticCard)card).getColor().toString()) && cards.size() < 4 && !cardsString.contains(((PoliticCard)card).getColor().toString())) {
 							cards.add(card);
-							cardsString.add(((PoliticCard)card).getColor().getName());
+							cardsString.add(((PoliticCard)card).getColor().toString());
 						}
 					}
 				}
@@ -51,7 +51,7 @@ public class TestAcquireBusinessPermitTile {
 		i--;
 		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCard();
 		List<Card> permissionCard = new ArrayList<>();
-		permissionCard.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getDeck().get(0));
+		permissionCard.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getCards().get(0));
 		AcquireBusinessPermitTile action = new AcquireBusinessPermitTile(cardsString, game.getGameMap().getGroupRegionalCity().get(i).getName(), 0);
 		action.doAction(game, turnHandler);
 		assertFalse(turnHandler.isAvailableMainAction());

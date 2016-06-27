@@ -13,7 +13,6 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionDeck;
 
 class PermissionDecksFactory {
 
@@ -51,15 +50,14 @@ class PermissionDecksFactory {
 		Map<String, Deck> permissionDecks = new HashMap<>();
 		Set<Entry<String, List<Card>>> cardsMapEntrySet = cardsMap.entrySet();
 		for(Entry<String, List<Card>> decks : cardsMapEntrySet) {
-			permissionDecks.put(decks.getKey(), new PermissionDeck(decks.getValue()));
+			permissionDecks.put(decks.getKey(), new Deck(decks.getValue()));
 		}
 		return permissionDecks;
 	}
 	
-	Map<String, Deck> makeDecks() {
+	Map<String, Deck> makeDecks(BonusCache bonusCache) {
 		List<Card> permissionCards;
 		Map<String, List<Card>> cardsMap = new HashMap<>();
-		BonusCache.loadCache();
 		String[] fields = rawPermissionCards.remove(rawPermissionCards.size() - 1);
 		for(String[] rawPermissionCard : rawPermissionCards) {
 			String[] rawBonuses = subString(rawPermissionCard);
@@ -69,7 +67,7 @@ class PermissionDecksFactory {
 				permissionCards = new ArrayList<>();
 				cardsMap.put(regionName, permissionCards);
 			}
-			cardsMap.get(regionName).add((Card) new BonusesFactory().makeBonuses(fields, rawBonuses, permissionCard));
+			cardsMap.get(regionName).add((Card) new BonusesFactory(bonusCache).makeBonuses(fields, rawBonuses, permissionCard));
 		}
 		return toDecks(cardsMap);
 	}

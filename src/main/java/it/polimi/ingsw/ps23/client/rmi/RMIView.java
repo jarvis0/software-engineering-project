@@ -1,27 +1,51 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.view.View;
 
-public abstract class RMIView extends View {
+abstract class RMIView extends View {
 	
-	private RMIClient client;//TODO unused
 	private ServerControllerInterface controllerInterface;
+	private String clientName;
 	
-	RMIView(RMIClient client) {
-		this.client = client;
+	protected RMIView(String clientName) {
+		this.clientName = clientName;
+	}
+
+	abstract void setMapType(String mapType);
+	
+	protected String getClientName() {
+		return clientName;
 	}
 	
-	public RMIClient getClient() {//TODO unused
-		return client;
+	protected void setNewClientName(String clientName) {
+		this.clientName = clientName;
 	}
 	
-	void setController(ServerControllerInterface controllerInterface) {
+	protected void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
 	
 	protected ServerControllerInterface getControllerInterface() {
 		return controllerInterface;
 	}
+	
+	protected synchronized void pause() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + clientName + " on hold.", e);
+			Thread.currentThread().interrupt();
+		}
+	}
+	
+	protected synchronized void resume() {
+		notifyAll();
+	}
+	
+	
 	
 }

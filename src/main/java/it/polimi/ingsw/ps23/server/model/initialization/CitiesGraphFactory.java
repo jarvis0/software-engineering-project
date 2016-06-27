@@ -29,7 +29,7 @@ class CitiesGraphFactory {
 			rawCitiesGraph.addVertex(cities.get(rawConnections[CITY_VERTEX_POSITION]));
 		}
 		for(String[] rawConnections : rawCitiesConnections) {		
-			List<String> currentConnections = new ArrayList<>();	
+			List<String> currentConnections = new ArrayList<>();
 			for(int i = 1 ; i < rawConnections.length; i++) {
 				rawCitiesGraph.addEdge(cities.get(rawConnections[CITY_VERTEX_POSITION]), cities.get(rawConnections[i]));
 				currentConnections.add(rawConnections[i]);

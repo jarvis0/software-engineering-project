@@ -38,11 +38,15 @@ public class SocketConsoleView extends SocketView {
 	private String clientName;
 	private State state;
 	private boolean endGame;
+
+	private boolean reconnected;
 	
 	public SocketConsoleView(String clientName, Connection connection) {
 		this.connection = connection;
 		this.clientName = clientName;
 		this.connection = connection;
+		endGame = false;
+		reconnected = false;
 	}
 
 	@Override
@@ -54,7 +58,7 @@ public class SocketConsoleView extends SocketView {
 	public void sendNoInput(String message) {
 		connection.send(NO_INPUT + message);
 	}
-	
+
 	private void sendWithInput(String message) {
 		connection.send(message);
 	}
@@ -63,7 +67,7 @@ public class SocketConsoleView extends SocketView {
 		return connection.receive();
 	}
 	
-	private synchronized void pause() {
+	private synchronized void pause() {//TODO maybe in super-class
 		try {
 			wait();
 		} catch (InterruptedException e) {
@@ -149,7 +153,7 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		sendWithInput("Choose a region:" + currentState.getPermitsMap());
+		sendWithInput("Choose a region:" + currentState.printRegionalPermissionDecks());
 		String chosenRegion = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenRegion));
 	}
@@ -322,6 +326,9 @@ public class SocketConsoleView extends SocketView {
 	
 	@Override
 	public synchronized void run() {
+		if(reconnected) {
+			pause();
+		}
 		do {
 			state.acceptView(this);
 			if(state.arePresentException()) {
@@ -329,5 +336,10 @@ public class SocketConsoleView extends SocketView {
 			}
 		} while(!endGame);
 	}
-	
+
+	@Override
+	public void setReconnected(boolean reconnected) {
+		this.reconnected = reconnected;
+	}
+
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.initialization;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +12,13 @@ final class GameColorFactory {
 	private GameColorFactory() {
 	}
 	
-	static final GameColor makeColor(String colorName, String colorHex) {
+	static final GameColor makeColor(String colorName) {
 		for(GameColor color : COLORS) {
-			if(color.toString().equals(colorName) && color.getHex().equals(Color.decode(colorHex))) {
+			if(color.toString().equals(colorName)) {
 				return color;
 			}
 		}
-		GameColor color = new GameColor(colorName, colorHex);
+		GameColor color = new GameColor(colorName);
 		COLORS.add(color);
 		return color;
 	}

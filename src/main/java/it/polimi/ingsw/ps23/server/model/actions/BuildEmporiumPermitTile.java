@@ -25,7 +25,7 @@ public class BuildEmporiumPermitTile implements Action {
 	}
 	
 	private void checkAction(Game game) throws InvalidCityException, InvalidCardException {
-		City selectedCity = game.getGameMap().getCitiesMap().get(buildInThisCity);
+		City selectedCity = game.getGameMap().getCities().get(buildInThisCity);
 		if(selectedCity == null || !((PermissionCard) game.getCurrentPlayer().getPermissionHandDeck().getCardInPosition(chosenCard)).containCity(selectedCity)) {
 			throw new InvalidCityException();
 		}
@@ -34,7 +34,7 @@ public class BuildEmporiumPermitTile implements Action {
 	@Override
 	public void doAction(Game game, TurnHandler turnHandler) throws InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException, InvalidCardException {
 		checkAction(game);
-		City selectedCity = game.getGameMap().getCitiesMap().get(buildInThisCity);
+		City selectedCity = game.getGameMap().getCities().get(buildInThisCity);
 		Player player = game.getCurrentPlayer();
 		selectedCity.buildEmporium(player);
 		player.updateEmporiumSet(game, turnHandler, selectedCity);		

@@ -9,5 +9,7 @@ public abstract class SocketView extends View {
 	public abstract void threadWakeUp();
 
 	public abstract void sendNoInput(String string);
+
+	public abstract void setReconnected(boolean reconnected);
 	
 }

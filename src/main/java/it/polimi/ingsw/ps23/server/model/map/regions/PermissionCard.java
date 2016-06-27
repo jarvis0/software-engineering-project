@@ -42,15 +42,23 @@ public class PermissionCard implements Card, BonusSlot {
 		}
 	}
 	
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	
+	public List<City> getCities() {
+		return cities;
+	}
+	
 	@Override
 	public String toString() {
 		String print = bonuses.toString() + " ~ ";
 		if(!cities.isEmpty()) {
-			print += cities.get(0).getName();
+			print += Character.toString(cities.get(0).getName().charAt(0));
 		}
 		StringBuilder loopPrint = new StringBuilder();
 		for(int i = 1; i < cities.size(); i++) {
-			loopPrint.append("/" + cities.get(i).getName());
+			loopPrint.append("/" + cities.get(i).getName().charAt(0));
 		}
 		return print + loopPrint;
 	}

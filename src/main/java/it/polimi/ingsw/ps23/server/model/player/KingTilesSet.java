@@ -1,15 +1,24 @@
 package it.polimi.ingsw.ps23.server.model.player;
 
+import java.io.Serializable;
 import java.util.Deque;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-//TODO inviare anche questi al client
-public class KingTileSet {
+
+public class KingTilesSet implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8347713800996719320L;
 	private Deque<Bonus> kingTiles;
 	
-	public KingTileSet(Deque<Bonus> tilesStack) {
-		this.kingTiles = tilesStack;
+	public KingTilesSet(Deque<Bonus> kingTiles) {
+		this.kingTiles = kingTiles;
+	}
+	
+	public Bonus getCurrentTile() {
+		return kingTiles.getFirst();
 	}
 	
 	Bonus pop() {

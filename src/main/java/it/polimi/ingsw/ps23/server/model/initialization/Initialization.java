@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Random;
 
+import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
@@ -15,19 +17,24 @@ import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.server.model.player.KingTileSet;
+import it.polimi.ingsw.ps23.server.model.player.KingTilesSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
+/**
+ * Initializes game resources from configuration files.
+ * @author Giuseppe Mascellaro & Mirco Manzoni & Alessandro Erba
+ *
+ */
 public class Initialization {
 	
-	//TODO è corretto organizzare così le costanti?
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
+	private static final String MAPS_CSV = "maps.csv";
 	private static final String CITIES_CSV = "cities.csv";
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	private static final String COUNCILLORS_CSV = "councillors.csv";
-	private static final String PERMISSION_DECK_CSV = "permissionDeck.csv";
+	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";
 	private static final String POLITIC_DECK_CSV = "politicDeck.csv";
 	private static final String REWARD_TOKENS_CSV = "rewardTokens.csv";
 	private static final String REGIONS_CSV = "regions.csv";
@@ -39,22 +46,36 @@ public class Initialization {
 	private static final int STARTING_ASSISTANTS = 1;
 	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
 	
+	private String mapPath;
+	private String chosenMap;
 	private Deck politicDeck;
 	private FreeCouncillorsSet freeCouncillors;
+	private BonusCache bonusCache;
 	private GameMap gameMap;
 	private King king;
-	private KingTileSet kingTiles;
+	private KingTilesSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playerSet;
 	
+	/**
+	 * Initializes game resources in order to provide a new game setup
+	 * from given map choice and in game players.
+	 * @param playersName - players name to be part of the game
+	 */
 	public Initialization(List<String> playersName) {
+		chooseMap();
 		loadPoliticDeck();
 		loadCouncillors();
+		bonusCache = new BonusCache();
 		loadMap();
 		createKing();
 		loadKingTiles();
 		loadNobilityTrack();
 		loadPlayers(playersName);
+	}
+	
+	public String getChosenMap() {
+		return chosenMap;
 	}
 	
 	public Deck getPoliticDeck() {
@@ -73,7 +94,7 @@ public class Initialization {
 		return king;
 	}
 
-	public KingTileSet getKingTiles() {
+	public KingTilesSet getKingTiles() {
 		return kingTiles;
 	}
 
@@ -85,33 +106,40 @@ public class Initialization {
 		return playerSet;
 	}
 	
+	private void chooseMap() {
+		List<String[]> rawMaps = new RawObject(CONFIGURATION_PATH + MAPS_CSV).getRawObject();
+		chosenMap = rawMaps.get(new Random().nextInt(rawMaps.size()))[0];
+		mapPath = CONFIGURATION_PATH + chosenMap;
+		chosenMap = chosenMap.substring(0, chosenMap.indexOf('/'));
+	}
+	
 	private void loadPoliticDeck() {
-		List<String[]> rawPoliticCards = new RawObject(CONFIGURATION_PATH + POLITIC_DECK_CSV).getRawObject();
+		List<String[]> rawPoliticCards = new RawObject(mapPath + POLITIC_DECK_CSV).getRawObject();
 		politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);	
 	}
 	
 	private void loadCouncillors() {
-		List<String[]> rawCouncillors = new RawObject(CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
+		List<String[]> rawCouncillors = new RawObject(mapPath + COUNCILLORS_CSV).getRawObject();
 		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
 	}
 	
 	private CitiesFactory loadCities() {
-		List<String[]> rawCities = new RawObject(CONFIGURATION_PATH + CITIES_CSV).getRawObject();
-		List<String[]> rawRewardTokens = new RawObject(CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
+		List<String[]> rawCities = new RawObject(mapPath + CITIES_CSV).getRawObject();
+		List<String[]> rawRewardTokens = new RawObject(mapPath + REWARD_TOKENS_CSV).getRawObject();
 		CitiesFactory citiesFactory = new CitiesFactory();
-		citiesFactory.makeCities(rawCities, rawRewardTokens);
+		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		return citiesFactory;
 	}
 	
 	private CitiesGraphFactory loadCitiesConnections(Map<String, City> cities) {
-		List<String[]> rawCitiesConnections = new RawObject(CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
+		List<String[]> rawCitiesConnections = new RawObject(mapPath + CONNECTIONS_CSV).getRawObject();
 		CitiesGraphFactory citiesGraphFactory = new CitiesGraphFactory();
 		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, cities);
 		return citiesGraphFactory;
 	}
 
 	private List<Region> loadRegions(Map<String, City> citiesMap, Map<String, List<String>> citiesConnections) {
-		List<String[]> rawRegions = new RawObject(CONFIGURATION_PATH + REGIONS_CSV).getRawObject();
+		List<String[]> rawRegions = new RawObject(mapPath + REGIONS_CSV).getRawObject();
 		return new GroupRegionalCitiesFactory().makeRegions(rawRegions, citiesMap, citiesConnections);
 	}
 	
@@ -122,8 +150,8 @@ public class Initialization {
 	}
 
 	private Map<String, Deck> loadPermissionDecks(Map<String, City> cities) {
-		List<String[]> rawPermissionCards = new RawObject(CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
-		return new PermissionDecksFactory(rawPermissionCards, cities).makeDecks();
+		List<String[]> rawPermissionCards = new RawObject(mapPath + PERMISSION_DECK_CSV).getRawObject();
+		return new PermissionDecksFactory(rawPermissionCards, cities).makeDecks(bonusCache);
 	}
 	
 	private void regionalPermissionDecks(Map<String, City> cities, List<Region> regions) {
@@ -134,7 +162,7 @@ public class Initialization {
 	}
 
 	private List<Region> loadColoredRegions(List<City> cities) {
-		List<String[]> rawColoredCities = new RawObject(CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
+		List<String[]> rawColoredCities = new RawObject(mapPath + GROUP_COLORED_CSV).getRawObject();
 		return new GroupColoredCitiesFactory().makeGroup(rawColoredCities, cities);
 	}
 
@@ -153,7 +181,7 @@ public class Initialization {
 	}
 	
 	private void createKing() {
-		Map<String, City> cities = gameMap.getCitiesMap();		
+		Map<String, City> cities = gameMap.getCities();		
 		Set<Entry<String, City>> citiesMapEntrySet = cities.entrySet();
 		for(Entry<String, City> city : citiesMapEntrySet) {
 			City currentCity = city.getValue();
@@ -165,13 +193,13 @@ public class Initialization {
 	}
 	
 	private void loadKingTiles() {
-		List<String[]> rawKingTiles = new RawObject(CONFIGURATION_PATH + KING_BONUS_TILE_CSV).getRawObject();
+		List<String[]> rawKingTiles = new RawObject(mapPath + KING_BONUS_TILE_CSV).getRawObject();
 		kingTiles = new KingTileFactory().makeTiles(rawKingTiles);
 	}
 	
 	private void loadNobilityTrack() {
-		List<String[]> rawNobilityTrackSteps = new RawObject(CONFIGURATION_PATH + NOBILY_TRACK_CSV).getRawObject();
-		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps);
+		List<String[]> rawNobilityTrackSteps = new RawObject(mapPath + NOBILY_TRACK_CSV).getRawObject();
+		nobilityTrack = new NobilityTrackFactory().makeNobilityTrack(rawNobilityTrackSteps, bonusCache);
 	}
 
 	private void loadPlayers(List<String> playersName) {

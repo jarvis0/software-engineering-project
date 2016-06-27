@@ -68,18 +68,18 @@ public class TestBonusCache {
 		bonuses.add(new RecycleBuildingPermitBonus(RECYCLE_BUILDING_PERMIT));
 		bonuses.get(bonuses.size() - 1).setValue(1);		
 
-		BonusCache.loadCache();
+		BonusCache bonusCache = new BonusCache();
 		List<Bonus> cachedBonuses = new ArrayList<>();
-		cachedBonuses.add(BonusCache.getBonus(ASSISTANT, 1));
-		cachedBonuses.add(BonusCache.getBonus(COIN, 1));
-		cachedBonuses.add(BonusCache.getBonus(VICTORY_POINT, 1));
-		cachedBonuses.add(BonusCache.getBonus(POLITIC_CARD, 1));
-		cachedBonuses.add(BonusCache.getBonus(ADDITIONAL_MAIN_ACTION, 1));
-		cachedBonuses.add(BonusCache.getBonus(NOBILITY_TRACK_STEP, 1));
-		cachedBonuses.add(BonusCache.getBonus(NULL_BONUS, 1));
-		cachedBonuses.add(BonusCache.getBonus(RECYCLE_REWARD_TOKEN, 1));
-		cachedBonuses.add(BonusCache.getBonus(BUILDING_PERMIT, 1));
-		cachedBonuses.add(BonusCache.getBonus(RECYCLE_BUILDING_PERMIT, 1));
+		cachedBonuses.add(bonusCache.getBonus(ASSISTANT, 1));
+		cachedBonuses.add(bonusCache.getBonus(COIN, 1));
+		cachedBonuses.add(bonusCache.getBonus(VICTORY_POINT, 1));
+		cachedBonuses.add(bonusCache.getBonus(POLITIC_CARD, 1));
+		cachedBonuses.add(bonusCache.getBonus(ADDITIONAL_MAIN_ACTION, 1));
+		cachedBonuses.add(bonusCache.getBonus(NOBILITY_TRACK_STEP, 1));
+		cachedBonuses.add(bonusCache.getBonus(NULL_BONUS, 1));
+		cachedBonuses.add(bonusCache.getBonus(RECYCLE_REWARD_TOKEN, 1));
+		cachedBonuses.add(bonusCache.getBonus(BUILDING_PERMIT, 1));
+		cachedBonuses.add(bonusCache.getBonus(RECYCLE_BUILDING_PERMIT, 1));
 		
 		int n = cachedBonuses.size();
 		assertTrue(n == bonuses.size());

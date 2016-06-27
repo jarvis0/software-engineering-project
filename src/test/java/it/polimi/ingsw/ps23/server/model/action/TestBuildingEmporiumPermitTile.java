@@ -45,18 +45,18 @@ public class TestBuildingEmporiumPermitTile {
 			for (Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
 				Iterator<Councillor> iterator = council.getCouncil().iterator();
 				while (iterator.hasNext()) {
-					if (iterator.next().getColorName().equals(((PoliticCard) card).getColor().getName()) && cards.size() < 4 && !cardsString.contains(((PoliticCard) card).getColor().getName())) {
+					if (iterator.next().getColor().toString().equals(((PoliticCard) card).getColor().toString()) && cards.size() < 4 && !cardsString.contains(((PoliticCard) card).getColor().toString())) {
 						cards.add(card);
-						cardsString.add(((PoliticCard) card).getColor().getName());
+						cardsString.add(((PoliticCard) card).getColor().toString());
 					}
 				}
 			}
 		}
 		i--;
 		List<Card> permissionCards = new ArrayList<>();
-		permissionCards.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getDeck().get(0));
+		permissionCards.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getCards().get(0));
 		game.getCurrentPlayer().buyPermissionCards(permissionCards);
-		Set<Entry<String, City>> citiesEntry = game.getGameMap().getCitiesMap().entrySet();
+		Set<Entry<String, City>> citiesEntry = game.getGameMap().getCities().entrySet();
 		City city = null;
 		String cityString = new String();
 		for(Entry<String, City> cityEntry : citiesEntry) {

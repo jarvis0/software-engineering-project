@@ -11,7 +11,6 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-import it.polimi.ingsw.ps23.server.model.map.board.PoliticDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
@@ -21,9 +20,9 @@ public class TestPlayerSet {
 	@Test
 	public void test() {
 		List<Card> cards = new ArrayList<>();
-		GameColor gameColor = new GameColor("orange", "0xffa500");
+		GameColor gameColor = new GameColor("orange");
 		cards.add(new PoliticCard(gameColor));
-		Deck politicDeck = new PoliticDeck(cards);
+		Deck politicDeck = new Deck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));
 		PlayersSet playersSet = new PlayersSet();
 		playersSet.addPlayer(player);

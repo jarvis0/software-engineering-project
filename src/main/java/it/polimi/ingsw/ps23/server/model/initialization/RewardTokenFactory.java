@@ -10,12 +10,11 @@ import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
 
 class RewardTokenFactory {
 	
-	RewardTokenSet makeRewardTokenSet(List<String[]> rawRewardTokens) {
+	RewardTokenSet makeRewardTokenSet(List<String[]> rawRewardTokens, BonusCache bonusCache) {
 		List<RewardToken> rewardTokens = new ArrayList<>();
-		BonusCache.loadCache();//TODO remove static BonusCache
 		String[] fields = rawRewardTokens.remove(rawRewardTokens.size() - 1);
 		for(String[] rawRewardToken : rawRewardTokens) {
-			rewardTokens.add((RewardToken) new BonusesFactory().makeBonuses(fields, rawRewardToken, new RewardToken()));
+			rewardTokens.add((RewardToken) new BonusesFactory(bonusCache).makeBonuses(fields, rawRewardToken, new RewardToken()));
 		}
 		return new RewardTokenSet(rewardTokens);
 	}

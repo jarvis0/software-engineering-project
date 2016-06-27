@@ -14,7 +14,7 @@ public class BuiltEmporiumsSet implements Serializable {
 	 */
 	private static final long serialVersionUID = 6249094998409712661L;
 
-	private static final int MAX_EMPORIUMS = 2;
+	private static final int MAX_EMPORIUMS = 2;//TODO reset to real game default value
 	
 	private List<City> builtEmporiums;
 	
@@ -44,7 +44,7 @@ public class BuiltEmporiumsSet implements Serializable {
 		return citiesWithoutNobilityTrackPoints;				
 	}
 
-	public NormalCity getChosenCity(String cityName) { //TODO sistemare la return null
+	public NormalCity getChosenCity(String cityName) {
 		for(City city : builtEmporiums) {
 			if(city.getName().equals(cityName)) {
 				return (NormalCity) city;
@@ -53,7 +53,7 @@ public class BuiltEmporiumsSet implements Serializable {
 		return null;
 	}
 
-	public String getCities() {
+	public String getCitiesPrint() {
 		StringBuilder loopString = new StringBuilder();
 		City city;
 		if(!builtEmporiums.isEmpty()) {
@@ -64,12 +64,7 @@ public class BuiltEmporiumsSet implements Serializable {
 			city = builtEmporiums.get(i);
 			loopString.append(", " + city.getName() + " " + city.getColor());
 		}
-		return "[" + new String() + loopString + "]";
-	}
-
-	@Override
-	public String toString() {
-		return builtEmporiums.toString();
+		return "[" + loopString + "]";
 	}
 
 }

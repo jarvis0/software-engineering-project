@@ -30,7 +30,7 @@ public class Player implements Serializable {
 	private HandDeck permissionHandDeck;
 	private HandDeck politicHandDeck;
 	private HandDeck permissionUsedHandDeck;
-	private BonusTile bonusTile; //TODO maybe we have to print also this
+	private BonusTile bonusTile;
 	private boolean online;
 	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
@@ -110,7 +110,7 @@ public class Player implements Serializable {
 	}
 
 	public String showSecretStatus() {
-		return politicHandDeck.toString();
+		return "\npoliticHandDeck: " + politicHandDeck.toString();
 	}
 
 	public HandDeck getPoliticHandDeck() {
@@ -130,7 +130,7 @@ public class Player implements Serializable {
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		builtEmporiumsSet.addBuiltEmporium(city);
-		game.getGameMap().getCitiesGraph().getBonuses(game, turnHandler, city);	
+		game.getGameMap().getCitiesGraph().rewardTokenGiver(game, turnHandler, city);	
 	}
 
 	public void usePermissionCard(int chosenCard) {
@@ -188,27 +188,28 @@ public class Player implements Serializable {
 	public int getNumberOfPoliticCard() {
 		return politicHandDeck.getHandSize();
 	}
+	
 
 	public void checkEmporiumsGroups(Game game) {
 		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
-			if(!(game.getKingTileSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTileSet().pop());
+			if(!(game.getKingTilesSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTilesSet().pop());
 			}
 		}
 		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
 			bonusTile.addTile(completedRegion.acquireBonusTile());
-			if(!(game.getKingTileSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTileSet().pop());
+			if(!(game.getKingTilesSet().isEmpty())) {
+				bonusTile.addTile(game.getKingTilesSet().pop());
 			}
 		}
 	}
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " Built Emporiums: " + builtEmporiumsSet.getCities();	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
 		if(isOnline()) {
 			print += " online";
 		}

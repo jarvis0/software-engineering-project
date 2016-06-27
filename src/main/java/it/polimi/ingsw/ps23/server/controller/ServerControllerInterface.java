@@ -9,12 +9,44 @@ import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
+/**
+ * This interface defines a set of remote method which
+ * can be invoked and executed by a remote connected RMI client.
+ * @author Mirco Manzoni & Giuseppe Mascellaro
+ *
+ */
 public interface ServerControllerInterface extends Remote {
 
+	/**
+	 * The remote client can invoke this method in order to register his RMI stub.
+	 * This is fundamental to make RMI connection work.
+	 * @return the server controller interface to be used by the client in order
+	 * to reach remote methods into the server.
+	 * @throws RemoteException if the remote server is unreachable
+	 */
+	public ServerControllerInterface setStub() throws RemoteException;
+	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update()}
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer() throws RemoteException;
 	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(State)}
+	 * @param state - state request to be set in the Controller class
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(State state) throws RemoteException;
 	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(Action)}
+	 * @param action - action parameters to be set in the Controller class
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(Action action) throws RemoteException;
 	
 	public void wakeUpServer(MarketObject marketObject) throws RemoteException;
@@ -25,6 +57,4 @@ public interface ServerControllerInterface extends Remote {
 	
 	public void wakeUpServer(Exception e) throws RemoteException;
 
-	public ServerControllerInterface setStub() throws RemoteException;
-	
 }
