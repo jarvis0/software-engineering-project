@@ -125,7 +125,7 @@ public class Player implements Serializable {
 		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
 		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
-		return permissionHandDeck;
+		return permissionTotalHandDeck;
 	}
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {

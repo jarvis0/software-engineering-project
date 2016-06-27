@@ -56,7 +56,7 @@ public class TestAcquireBusinessPermitTile {
 		action.doAction(game, turnHandler);
 		assertFalse(turnHandler.isAvailableMainAction());
 		assertTrue(initialCards == game.getCurrentPlayer().getNumberOfPoliticCard() + cards.size());
-		assertTrue(game.getCurrentPlayer().getTotalPermissionHandDeck().getCards().get(0).equals(permissionCard.get(0)));
+		assertTrue(game.getCurrentPlayer().getTotalPermissionHandDeck().getHandSize() == 1);
 		assertTrue(game.getCurrentPlayer().getNumberOfPermissionCard() == 1);	
 	}
 

@@ -70,7 +70,7 @@ public class TestBuildingEmporiumPermitTile {
 		assertFalse(turnHandler.isAvailableMainAction());
 		assertTrue(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet().contains(city));
 		assertTrue(game.getCurrentPlayer().getNumberOfPermissionCard() == 1);
-		assertTrue(game.getCurrentPlayer().getTotalPermissionHandDeck().getHandSize() == 1);
+		assertTrue(game.getCurrentPlayer().getTotalPermissionHandDeck().getCards().size() == 1);
 		assertTrue(game.getCurrentPlayer().getPermissionHandDeck().getCards().isEmpty());
 		
 	}
