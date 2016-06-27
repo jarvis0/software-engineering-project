@@ -44,8 +44,10 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
+import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class SwingUI {
@@ -63,6 +65,7 @@ class SwingUI {
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
 	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
 	private static final String SANS_SERIF_FONT = "Sans serif";
+	private static final String POLITIC_CARD_PATH = "Card.png";
 
 	private String mapPath;
 	private Map<String, Component> components;
@@ -72,8 +75,10 @@ class SwingUI {
 	private JTable playersTable;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
+	private String playerName;
 
-	SwingUI(String mapType) {
+	SwingUI(String mapType , String playerName) {
+		this.playerName = playerName;
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		components = new HashMap<>();
 		councilPoints = new HashMap<>();
@@ -413,6 +418,21 @@ class SwingUI {
 		}
 		
 	}
+	
+	private void refreshPoliticCards(HandDeck politicHandDeck) {
+		int x = 0;
+		int y = 535;
+		for(Card card : ((PoliticHandDeck) politicHandDeck).getCards()) {
+			BufferedImage cardImage = readImage(IMAGES_PATH + card.toString() + POLITIC_CARD_PATH);
+			Image resizedCardImage = cardImage.getScaledInstance(42, 66, Image.SCALE_SMOOTH);
+			JLabel cardLabel = new JLabel(new ImageIcon(resizedCardImage));
+			cardLabel.setBounds(0, 0, 42, 66);
+			cardLabel.setLocation(x, y);
+			x+=44;
+			mapPanel.add(cardLabel, 0);
+		}
+		
+	}
 
 	void refreshUI(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKing().getPosition().getName());
@@ -420,18 +440,26 @@ class SwingUI {
 		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
 		refreshFreeCouncillors(currentState.getFreeCouncillors());
 		refreshPermitTiles(currentState.getGameMap().getGroupRegionalCity());
+		int playerIndex = searchPlayer(currentState.getPlayersSet().getPlayers());
+		refreshPoliticCards((currentState.getPlayersSet().getPlayer(playerIndex)).getPoliticHandDeck());
 		frame.repaint();
 	}
 	
+	private int searchPlayer(List<Player> playersList) {
+		for(Player player : playersList){
+			if(playerName.equals(player.getName())) {
+				return playersList.indexOf(player);
+			}
+		 }
+		return -1;
+	}
+
 	public void loadStaticContents(StartTurnState currentState) {
 		addRewardTokens(currentState.getGameMap().getCities());
 		addNobilityTrackBonuses(currentState.getNobilityTrack());
 	}
 
 	public static void main(String[] args) {
-		new SwingUI("hard");
-	}
-
-
-	
+		new SwingUI("hard", "ale");
+	}	
 }
