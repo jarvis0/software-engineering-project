@@ -1,0 +1,37 @@
+package it.polimi.ingsw.ps23.server.model.map.regions;
+
+import it.polimi.ingsw.ps23.server.model.Game;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
+import it.polimi.ingsw.ps23.server.model.map.GameColor;
+
+public class NormalCity extends City {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1228258945749359973L;
+	private RewardToken rewardToken;
+	
+	public NormalCity(String name, GameColor color, RewardToken rewardToken) { 
+		super(name, color, false);
+		this.rewardToken = rewardToken;
+	}
+	
+	public void useRewardToken(Game game, TurnHandler turnHandler) {
+		rewardToken.useBonus(game, turnHandler);
+	}
+	
+	public RewardToken getRewardToken() {
+		return rewardToken;
+	}
+	
+	public boolean hasNobilityTrackBonus() {
+		return rewardToken.hasNobilityTrackBonus();
+	}
+	
+	@Override
+	public String toString() {
+		return getName() + " " + getColor() + " " + rewardToken + " " + getEmporiumsPlayersList();
+	}
+	
+}
