@@ -20,16 +20,16 @@ public class TurnHandler implements Serializable {
 	private static final long serialVersionUID = 5789375179006568941L;
 	private int mainActionsNumber;
 	private boolean quickAction;
-	private List<Bonus> superBonusSet;
+	private List<Bonus> superBonusesSet;
 	
 	/**
 	 * Initialize a new turn handler for the current player setting
-	 * the initiali turn settings.
+	 * the initial turn settings.
 	 */
 	public TurnHandler() {
 		mainActionsNumber = 1;
 		quickAction = true;
-		resetSuperBonusSet();
+		resetSuperBonusesSet();
 	}
 	
 	public boolean isAvailableMainAction() {
@@ -61,23 +61,25 @@ public class TurnHandler implements Serializable {
 		quickAction = false;
 	}
 	
-	/**
-	 * 
-	 */
-	public void resetSuperBonusSet() {
-		superBonusSet = new ArrayList<>();
+	private void resetSuperBonusesSet() {
+		superBonusesSet = new ArrayList<>();
 	}
 	
+	/**
+	 * Adds a nobility track super bonus to super bonuses set.
+	 * @param superBonus - the found nobility track super bonus during the nobility track walk
+	 */
 	public void addSuperBonus(Bonus superBonus) {
-		superBonusSet.add(superBonus);
+		superBonusesSet.add(superBonus);
 	}
 	
 	public boolean isStartSuperTurnState() {
-		return !superBonusSet.isEmpty();
+		return !superBonusesSet.isEmpty();
 		
 	}
 	
 	public List<Bonus> getSuperBonuses() {
-		return superBonusSet;
+		return superBonusesSet;
 	}
+	
 }

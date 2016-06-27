@@ -9,6 +9,12 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class AcquireBusinessPermitTile implements Action {
 
 	/**
@@ -19,6 +25,12 @@ public class AcquireBusinessPermitTile implements Action {
 	private String chosenRegion;
 	private int chosenPermissionCard;
 	
+	/**
+	 * Saves all specified action parameters in order to perform the game action.
+	 * @param removedPoliticCards - politic cards to be used for satisfy a regional council
+	 * @param chosenRegion - the regional council to be satisfied
+	 * @param chosenPermissionCard - 1 for left permission card, 2 for right permission card
+	 */
 	public AcquireBusinessPermitTile(List<String> removedPoliticCards, String chosenRegion, int chosenPermissionCard) {
 		this.removedPoliticCards = removedPoliticCards;
 		this.chosenRegion = chosenRegion;
