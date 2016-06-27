@@ -201,7 +201,7 @@ class SwingUI {
 
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String[] columnNames = new String[] { "Name", "Victory Points", "Coins", "Assistants", "Nobility Points" };
+		String[] columnNames = new String[] { "Name", "Victory Points", "Coins", "Assistants", "Nobility Points", "Additional Infos" };
 		tableModel = new DefaultTableModel(numRows, columnNames.length);
 		tableModel.setColumnIdentifiers(columnNames);
 		playersTable = new JTable(tableModel);
@@ -212,17 +212,24 @@ class SwingUI {
 	}
 
 	private void drawBonus(Bonus bonus, int x, int y, int width, int height, int yOffset) {
-		BufferedImage bonusImage = readImage(IMAGES_PATH + bonus.getName() + PNG_EXTENTION);
-		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		String bonusName = bonus.getName();
+		BufferedImage bonusImage = readImage(IMAGES_PATH + bonusName + PNG_EXTENTION);
+		int widthOffset = 0;
+		int xOffset = 0;
+		if("assistant".equals(bonusName)) {
+			widthOffset -= 8;
+			xOffset -= 3;
+		}
+		Image resizedBonusImage = bonusImage.getScaledInstance(width + widthOffset, height, Image.SCALE_SMOOTH);
 		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
-		bonusLabel.setBounds(0, 0, width, height);
+		bonusLabel.setBounds(0, 0, width + widthOffset, height);
 		bonusLabel.setLocation(x, y + yOffset);
 		mapPanel.add(bonusLabel, 0);
 		int bonusNumber = bonus.getValue();
 		if(bonusNumber > 1 || "victoryPoint".equals(bonus.getName())) {
 			JLabel bonusValue = new JLabel();
 			bonusValue.setBounds(0, 0, width, height);
-			bonusValue.setLocation(x + 8, y + yOffset);
+			bonusValue.setLocation(x + 8 + xOffset, y + yOffset);
 			bonusValue.setFont(new Font(SANS_SERIF_FONT, Font.BOLD, 9));
 			if(bonus instanceof CoinBonus) {
 				bonusValue.setForeground(Color.black);
@@ -252,30 +259,36 @@ class SwingUI {
 		}
 	}
 	
+	private void drawNobilityTrackStep(NobilityTrackStep step, int xCoord, int yCoord, int yOffsetCoord) {
+		int x = xCoord;
+		int y = yCoord;
+		int yOffset = yOffsetCoord;
+		for(Bonus bonus : step.getBonuses()) {
+			if(!("nullBonus").equals(bonus.getName())) {
+				int width = 23;
+				int height = 25;
+				if (step.getBonuses().size() == 1) {
+					y = 490;
+				}
+				if(("recycleRewardToken").equals(bonus.getName())) {
+					y = 476;
+					height = 40;
+				}
+				drawBonus(bonus, x, y, width, height, yOffset);
+				yOffset -= 25;
+			}
+		}
+	}
+	
 	private void addNobilityTrackBonuses(NobilityTrack nobilityTrack) {
 		int stepNumber = 0;
 		for(NobilityTrackStep step : nobilityTrack.getSteps()) {
 			int yOffset = 0;
 			int x = (int) 38.1 * stepNumber + 8;
 			int y = 495;
-			for(Bonus bonus : step.getBonuses()) {
-				if(!("nullBonus").equals(bonus.getName())) {
-					int width = 23;
-					int height = 25;
-					if (step.getBonuses().size() == 1) {
-						y = 490;
-					}
-					if(("recycleRewardToken").equals(bonus.getName())) {
-						y = 476;
-						height = 40;
-					}
-					drawBonus(bonus, x, y, width, height, yOffset);
-					yOffset -= 25;
-				}
-			}
+			drawNobilityTrackStep(step, x, y, yOffset);
 			stepNumber++;
 		}
-		
 	}
 
 	private void refreshKingPosition(String city) {
@@ -431,7 +444,4 @@ class SwingUI {
 	public static void main(String[] args) {
 		new SwingUI("hard");
 	}
-
-
-	
 }
