@@ -305,11 +305,26 @@ public class Model extends ModelObservable {
 		return false;
 	}
 
+	/**
+	 * Adds the specified exception to the next game state
+	 * in order to print it information to players and give the control to
+	 * views.
+	 * @param e - the exception information
+	 */
 	public void rollBack(Exception e) {
 		context.addExceptionText(e);
 		wakeUp(context.getState());		
 	}
 
+	/**
+	 * Adds the specified exception to the next game state
+	 * in order to print error information to players and give the control to
+	 * views.
+	 * <p>
+	 * Unlike to {@link Model#rollBack(Exception)} this method handles
+	 * a graver exception therefore it reinitializes the whole player turn.
+	 * @param e - the exception information
+	 */
 	public void restartTurn(Exception e) {
 		context = new Context();
 		StartTurnState startTurnState = new StartTurnState(turnHandler);

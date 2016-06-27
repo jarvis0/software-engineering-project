@@ -4,6 +4,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
+import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
@@ -25,6 +26,7 @@ public class StartTurnState extends State {
 	private NobilityTrack nobilityTrack;
 	private King king;
 	private Bonus currentKingTile;
+	private FreeCouncillorsSet freeCouncillors;
 	
 	private StateCache stateCache;
 	private boolean finalTurn;
@@ -59,6 +61,10 @@ public class StartTurnState extends State {
 	public King getKing() {
 		return king;
 	}	
+	
+	public FreeCouncillorsSet getFreeCouncillors() {
+		return freeCouncillors;
+	}
 
 	public StateCache getStateCache() {
 		return stateCache;
@@ -100,6 +106,7 @@ public class StartTurnState extends State {
 		king = game.getKing();
 		currentKingTile = game.getKingTilesSet().getCurrentTile();
 		stateCache = game.getStateCache();
+		freeCouncillors = game.getFreeCouncillors();
 		finalTurn = false;
 		for(Player player : gamePlayersSet.getPlayers()) {
 			if(player.hasFinished()) {

@@ -6,6 +6,11 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
+/**
+ * 
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class TurnHandler implements Serializable {
 
 	/**
@@ -14,7 +19,7 @@ public class TurnHandler implements Serializable {
 	private static final long serialVersionUID = 5789375179006568941L;
 	private int mainActionsNumber;
 	private boolean quickAction;
-	private transient List<Bonus> superBonusSet; //TODO serve al client questo attributo?
+	private List<Bonus> superBonusSet;
 	
 	public TurnHandler() {
 		mainActionsNumber = 1;
