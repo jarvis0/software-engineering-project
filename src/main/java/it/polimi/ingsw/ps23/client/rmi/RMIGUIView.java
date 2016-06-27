@@ -21,9 +21,11 @@ public class RMIGUIView extends RMIView {
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
+	private boolean firstUIRefresh;
 	
 	RMIGUIView(String playerName) {
 		super(playerName);
+		firstUIRefresh = true;
 	}
 
 	public State getCurrentState() {
@@ -37,8 +39,12 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
+		if(firstUIRefresh) {
+			swingUI.loadStaticContents(currentState);
+			firstUIRefresh = false;
+		}
 		swingUI.refreshUI(currentState);
-		//pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
+		pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
 
 	}
 

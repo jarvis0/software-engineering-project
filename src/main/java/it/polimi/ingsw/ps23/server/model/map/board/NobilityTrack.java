@@ -24,6 +24,10 @@ public class NobilityTrack implements Serializable {
 		}	
 	}
 	
+	public List<NobilityTrackStep> getSteps() {
+		return steps;		
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder loopPrint = new StringBuilder();

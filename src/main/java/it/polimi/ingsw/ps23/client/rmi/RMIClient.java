@@ -64,13 +64,13 @@ class RMIClient implements ClientInterface {
 			output.println(message);
 		}
 		else {
-			((RMIView) rmiView).setMapType(message.replace("<MapType>", ""));
+			 rmiView.setMapType(message.replace("<MapType>", ""));
 		}
 	}
 
 	@Override
 	public void changeState(State currentState) {
-		((RMIView) rmiView).update(currentState);
+		 rmiView.update(currentState);
 	}
 
 	@Override

@@ -27,6 +27,10 @@ public class NobilityTrackStep implements BonusSlot {
 		}
 	}
 	
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	
 	@Override
 	public void addBonus(Bonus bonus) {
 		bonuses.add(bonus);		

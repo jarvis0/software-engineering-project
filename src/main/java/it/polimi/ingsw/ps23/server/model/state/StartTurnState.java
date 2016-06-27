@@ -57,6 +57,10 @@ public class StartTurnState extends State {
 	public PlayersSet getPlayersSet() {
 		return gamePlayersSet;
 	}
+
+	public NobilityTrack getNobilityTrack() {
+		return nobilityTrack;
+	}
 	
 	public King getKing() {
 		return king;
