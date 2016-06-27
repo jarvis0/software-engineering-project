@@ -35,7 +35,7 @@ public abstract class ElectCouncillorActionState extends ActionState {
 	
 	void setParameters(Game game) {
 		freeCouncillors = game.getFreeCouncillors();
-		councilsMap.put("King", game.getKing().getCouncil());
+		councilsMap.put("king", game.getKing().getCouncil());
 		for(Region region : game.getGameMap().getGroupRegionalCity()) {
 			councilsMap.put(region.getName(), ((GroupRegionalCity) region).getCouncil());
 		}

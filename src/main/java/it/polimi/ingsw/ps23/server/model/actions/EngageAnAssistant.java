@@ -4,7 +4,7 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesExcep
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-public class EngageAnAssitant implements Action {
+public class EngageAnAssistant implements Action {
 
 	/**
 	 * 
