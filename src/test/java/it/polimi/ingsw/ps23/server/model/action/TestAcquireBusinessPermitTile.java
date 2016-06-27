@@ -29,13 +29,14 @@ public class TestAcquireBusinessPermitTile {
 		Game game = new Game(playersName);
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		game.getCurrentPlayer().updateCoins(10);
+		game.getCurrentPlayer().pickCard(game.getPoliticDeck(), 30);
 		TurnHandler turnHandler = new TurnHandler();
 		Council council;
 		List<Card> cards = new ArrayList<>();
 		List<String> cardsString = new ArrayList<>();
 		int i;
 		for(i = 0; i < game.getGameMap().getGroupRegionalCity().size() && cards.isEmpty(); i++) {
-			if(!((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().toString().contains("politic")) {
+			if(!(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().toString().contains("politic") || ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().toString().contains("additional"))) {
 				council = ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getCouncil();
 				for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
 					Iterator<Councillor> iterator = council.getCouncil().iterator();
@@ -47,11 +48,16 @@ public class TestAcquireBusinessPermitTile {
 					}
 				}
 			}
+			else {
+				((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).changePermitTiles();
+				i--;
+			}
 		}
 		i--;
 		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCard();
 		List<Card> permissionCard = new ArrayList<>();
 		permissionCard.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getCards().get(0));
+		System.out.println(cardsString + game.getGameMap().getGroupRegionalCity().get(i).getName() + permissionCard.get(0));
 		AcquireBusinessPermitTile action = new AcquireBusinessPermitTile(cardsString, game.getGameMap().getGroupRegionalCity().get(i).getName(), 0);
 		action.doAction(game, turnHandler);
 		assertFalse(turnHandler.isAvailableMainAction());

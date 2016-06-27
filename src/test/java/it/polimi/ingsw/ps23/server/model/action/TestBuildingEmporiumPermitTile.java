@@ -31,7 +31,6 @@ public class TestBuildingEmporiumPermitTile {
 	public void test() throws InsufficientResourcesException, AlreadyBuiltHereException, InvalidCityException, InvalidCardException {
 		List<String> playersName = new ArrayList<>();
 		playersName.add("a");
-		playersName.add("b");
 		Game game = new Game(playersName);
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		game.getCurrentPlayer().updateCoins(20);
