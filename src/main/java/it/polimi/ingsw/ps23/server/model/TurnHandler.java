@@ -7,7 +7,8 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
 /**
- * 
+ * This classes provides methods for handling game turn system differentating
+ * main, quick action and nobility track super bonus.
  * @author Alessandro Erba & Mirco Manzoni
  *
  */
@@ -21,6 +22,10 @@ public class TurnHandler implements Serializable {
 	private boolean quickAction;
 	private List<Bonus> superBonusSet;
 	
+	/**
+	 * Initialize a new turn handler for the current player setting
+	 * the initiali turn settings.
+	 */
 	public TurnHandler() {
 		mainActionsNumber = 1;
 		quickAction = true;
@@ -35,18 +40,30 @@ public class TurnHandler implements Serializable {
 		return quickAction;
 	}
 	
+	/**
+	 * Adds a main action due to additional main action bonus or quick action.
+	 */
 	public void addMainAction() {
 		mainActionsNumber++;
 	}
 	
+	/**
+	 * Decrease the number of available main actions.
+	 */
 	public void useMainAction() {
 		mainActionsNumber--;
 	}
 	
+	/**
+	 * Sets the current player turn quick action as already used.
+	 */
 	public void useQuickAction() {
 		quickAction = false;
 	}
 	
+	/**
+	 * 
+	 */
 	public void resetSuperBonusSet() {
 		superBonusSet = new ArrayList<>();
 	}
