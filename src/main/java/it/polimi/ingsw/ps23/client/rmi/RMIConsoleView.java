@@ -174,7 +174,7 @@ class RMIConsoleView extends RMIView {
 			}
 			output.println("please insert the route for the king.[king's initial position: "
 					+ currentState.getKingPosition() + "] insert the arrival city: ");
-			String arrivalCity = scanner.nextLine().toUpperCase();
+			String arrivalCity = scanner.nextLine();
 			sendAction(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
@@ -190,7 +190,7 @@ class RMIConsoleView extends RMIView {
 			int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
 			output.println(
 					"Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
-			String chosenCity = scanner.nextLine().toUpperCase();
+			String chosenCity = scanner.nextLine();
 			sendAction(currentState.createAction(chosenCity, chosenCard));
 		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);

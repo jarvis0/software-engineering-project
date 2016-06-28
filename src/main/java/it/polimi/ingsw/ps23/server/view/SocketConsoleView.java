@@ -126,7 +126,7 @@ public class SocketConsoleView extends SocketView {
 				removedCards.add(chosenCard);
 			}
 			getConnection().sendYesInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
-			String arrivalCity = receive().toUpperCase();
+			String arrivalCity = receive();
 			try {
 				wakeUp(currentState.createAction(removedCards, arrivalCity));
 			} catch (InvalidCardException e) {
@@ -145,7 +145,7 @@ public class SocketConsoleView extends SocketView {
 			getConnection().sendYesInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
 			int chosenCard = Integer.parseInt(receive()) - 1;
 			getConnection().sendYesInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
-			String chosenCity = receive().toUpperCase();
+			String chosenCity = receive();
 			wakeUp(currentState.createAction(chosenCity, chosenCard));
 		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
