@@ -19,12 +19,14 @@ public class EndGame implements Serializable {
 	
 	private Game game;
 	private TurnHandler turnHandler;
+	private boolean finishedNobilityPoints;
 	
 	public boolean isGameEnded(Game game, TurnHandler turnHandler) {
 		//for(Player player : game.getGamePlayersSet().getPlayers()) {TODO
 			if(game.getCurrentPlayer().hasFinished()) {
 				this.game = game;
 				this.turnHandler = turnHandler;
+				finishedNobilityPoints = false;
 				applyFinalBonus();
 				return true;
 			}
@@ -50,15 +52,18 @@ public class EndGame implements Serializable {
 		players.addAll(game.getGamePlayersSet().getPlayers());
 		Collections.sort(players, new NobilityTrackComparator());
 		players = takeFirstPlace(players);
-		takeSecondPlace(players);
+		if(!finishedNobilityPoints) {
+			takeSecondPlace(players);
+		}
 	}
 	
 	private List<Player> takeFirstPlace(List<Player> players) {
-		int max = players.get(0).getAssistants();
+		int max = players.get(0).getNobilityTrackPoints();
 		players.remove(players.size() - 1).updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
-		for(int i = players.size(); i >= 0; i--) {
-			if(players.get(i).getAssistants() == max) {
+		for(int i = players.size() - 1; i >= 0; i--) {
+			if(players.get(i).getNobilityTrackPoints() == max) {
 				players.remove(i).updateVictoryPoints(NOBILITY_TRACK_POINTS_FIRST_PLACE);
+				finishedNobilityPoints = true;
 			}
 			else {
 				return players;
@@ -68,10 +73,10 @@ public class EndGame implements Serializable {
 	}
 	
 	private void takeSecondPlace(List<Player> players) {
-		int max = players.get(0).getAssistants();
+		int max = players.get(0).getNobilityTrackPoints();
 		players.remove(players.size() - 1).updateVictoryPoints(NOBILITY_TRACK_POINTS_SECOND_PLACE);
-		for(int i = players.size(); i >= 0; i--) {
-			if(players.get(i).getAssistants() == max) {
+		for(int i = players.size() - 1; i >= 0; i--) {
+			if(players.get(i).getNobilityTrackPoints() == max) {
 				players.remove(i).updateVictoryPoints(NOBILITY_TRACK_POINTS_SECOND_PLACE);
 			}
 			else {
@@ -82,10 +87,11 @@ public class EndGame implements Serializable {
 
 	private void getVictoryPointsForPermissionHandDeck() {
 		List<Player> players = new ArrayList<>();
+		players.addAll(game.getGamePlayersSet().getPlayers());
 		Collections.sort(players, new PermissionTileComparator());
 		players.get(0).updateVictoryPoints(PERMISSION_CARD_POINTS);
 		int max = players.remove(0).getNumberOfPermissionCard();
-		for(Player player : game.getGamePlayersSet().getPlayers()) {
+		for(Player player : players) {
 			if(player.getNumberOfPermissionCard() < max) {
 				return;
 			}
