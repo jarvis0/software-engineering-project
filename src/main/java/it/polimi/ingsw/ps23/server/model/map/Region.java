@@ -84,7 +84,7 @@ public abstract class Region implements Serializable {
 		return bonusTile;
 	}
 	
-	protected Bonus getBonusTile() {
+	public Bonus getBonusTile() {
 		return bonusTile;
 	}
 	

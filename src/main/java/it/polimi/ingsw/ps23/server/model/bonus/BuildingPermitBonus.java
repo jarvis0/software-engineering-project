@@ -43,7 +43,7 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	@Override
 	public String checkBonus(Player currentPlayer) {
 		if(!writeSecondOutput) {
-			return "You have enconutred a Building Permit Bonus on Nobility Track\n Choose the Region where to pick a permission card: " +regionMap.toString();
+			return "You have encountred a Building Permit Bonus on Nobility Track\n Choose the Region where to pick a permission card: " + regionMap.toString();
 		}
 		else {
 			return "Choose a permission card (press 1 or 2): " + permitDeck.toString();
