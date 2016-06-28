@@ -21,8 +21,8 @@ public class NoInputExpression implements Parser {
 	}
 	
 	private MapTypeExpression getMapTypeExpression() {
-		Expression expression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
-		return new MapTypeExpression(output, expression);
+		Expression mapTypeExpression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
+		return new MapTypeExpression(output, mapTypeExpression);
 	}
 	
 	@Override

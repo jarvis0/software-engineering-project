@@ -34,14 +34,13 @@ class RemoteConsoleView extends RemoteView {
 
 	@Override
 	void run() {
-		String message;
 		YesInputExpression isYesInput = getYesInputExpression();
 		NoInputExpression isNoInput = getNoInputExpression();
-		String updatedMessage;
+		String message;
 		do {
 			message = getClient().receive();
-			updatedMessage = isYesInput.parse(message);
-			isNoInput.parse(updatedMessage);
+			message = isYesInput.parse(message);
+			isNoInput.parse(message);
 		} while(!getConnectionTimedOut());
 		getClient().closeConnection();
 	}

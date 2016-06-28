@@ -18,6 +18,10 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
 
+	public SocketGUIView(String clientName, Connection connection) {
+		super(clientName, connection);
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
