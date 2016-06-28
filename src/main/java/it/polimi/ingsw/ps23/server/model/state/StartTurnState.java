@@ -39,7 +39,7 @@ public class StartTurnState extends State {
 		return currentPlayer;
 	}
 	
-	public String getAvaiableAction() {
+	public String getAvailableAction() {
 		String avaiableAction = new String();
 		if(turnHandler.isAvailableMainAction()) {
 			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";

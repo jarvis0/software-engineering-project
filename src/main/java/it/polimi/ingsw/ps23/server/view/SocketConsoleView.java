@@ -86,7 +86,7 @@ public class SocketConsoleView extends SocketView {
 		Player player = currentState.getCurrentPlayer();
 		sendNoInput(currentState.getStatus());
 		if(player.getName().equals(clientName)) {
-			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+			sendWithInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? ");
 			try {
 				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}
