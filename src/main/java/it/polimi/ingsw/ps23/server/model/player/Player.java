@@ -172,10 +172,6 @@ public class Player implements Serializable {
 	public boolean hasFinished() {
 		return builtEmporiumsSet.containsMaxEmporium();
 	}
-	
-	void addBonusTile(Bonus bonus) {
-		bonusTile.addTile(bonus);
-	}
 
 	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
 		bonusTile.useBonus(game, turnHandler);
