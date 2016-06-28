@@ -59,7 +59,7 @@ public class RMIGUIView extends RMIView {
 			};
 			
 		} else {
-			rmiSwingUI.showAvailableActions(false, false, this);
+			rmiSwingUI.showAvailableActions(false, false, this); //TODO creare metodo per stampare che è il turno di un altro player
 			waiting = true;
 			pause();
 		}
