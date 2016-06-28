@@ -126,11 +126,6 @@ public class RMISwingUI extends SwingUI {
 
 	}
 
-	private void refreshKingPosition(String city) {
-		Point point = getComponents(city).getLocationOnScreen();
-		getComponents("king").setLocation(point);
-	}
-
 	private void refreshPlayersTable(PlayersSet playerSet) {
 		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 			tableModel.removeRow(i);
@@ -340,5 +335,10 @@ public class RMISwingUI extends SwingUI {
 	
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");
+	}
+
+	public void showAvailableActions(String availableAction) {
+		
+		
 	}
 }

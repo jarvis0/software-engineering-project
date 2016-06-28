@@ -269,5 +269,10 @@ abstract class SwingUI {
 		loadNobiltyTrack();
 		loadPlayersTable();
 	}
+	
+	protected void refreshKingPosition(String city) {
+		Point point = getComponents(city).getLocationOnScreen();
+		getComponents("king").setLocation(point);
+	}
 
 }
