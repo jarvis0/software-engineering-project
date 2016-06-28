@@ -27,7 +27,6 @@ import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
-import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketConsoleView extends SocketView {
@@ -272,24 +271,6 @@ public class SocketConsoleView extends SocketView {
 		getConnection().sendNoInput(currentState.getWinner());
 		setEndGame(true);
 		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
-	}
-
-	@Override
-	public void update(State state) {
-		setState(state);
-	}
-	
-	@Override
-	public synchronized void run() {
-		if(isReconnected()) {
-			pause();
-		}
-		do {
-			getState().acceptView(this);
-			if(getState().arePresentException()) {
-				getConnection().sendNoInput(getState().getExceptionString());
-			}
-		} while(!isEndGame());
 	}
 
 }

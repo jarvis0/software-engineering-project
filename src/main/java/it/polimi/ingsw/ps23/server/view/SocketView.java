@@ -12,7 +12,6 @@ public abstract class SocketView extends View {
 	private String clientName;
 	private State state;
 	private boolean endGame;
-
 	private boolean reconnected;
 	
 	public SocketView(String clientName, Connection connection) {
@@ -30,7 +29,19 @@ public abstract class SocketView extends View {
 	protected String getClientName() {
 		return clientName;
 	}
-	
+
+	protected State getState() {
+		return state;
+	}
+
+	protected void setEndGame(boolean endGame) {
+		this.endGame = endGame;
+	}
+
+	public void setReconnected(boolean reconnected) {
+		this.reconnected = reconnected;
+	}
+
 	protected String receive() {
 		return connection.receive();
 	}
@@ -48,28 +59,22 @@ public abstract class SocketView extends View {
 		notifyAll();
 	}
 
-	public void setReconnected(boolean reconnected) {
-		this.reconnected = reconnected;
-	}
-	
-	protected void setState(State state) {
+	@Override
+	public void update(State state) {
 		this.state = state;
 	}
-	
-	protected State getState() {
-		return state;
+
+	@Override
+	public synchronized void run() {
+		if(reconnected) {
+			pause();
+		}
+		do {
+			getState().acceptView(this);
+			if(state.arePresentException()) {
+				connection.sendNoInput(state.getExceptionString());
+			}
+		} while(!endGame);
 	}
-	
-	protected void setEndGame(boolean endGame) {
-		this.endGame = endGame;
-	}
-	
-	protected boolean isEndGame() {
-		return endGame;
-	}
-	
-	protected boolean isReconnected() {
-		return reconnected;
-	}
-	
+
 }

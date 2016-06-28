@@ -76,7 +76,7 @@ public class Connection implements Runnable {
 	 * 
 	 * @param message to be sent to the socket client
 	 */
-	private void send(String message) {
+	public void send(String message) {
  		textOut.print(message + END_OF_MESSAGE_TAG);
  	}
  	

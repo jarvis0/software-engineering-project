@@ -35,7 +35,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMIConsoleView extends RMIView {
 
-	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
 
 	private Scanner scanner;
 	private PrintStream output;

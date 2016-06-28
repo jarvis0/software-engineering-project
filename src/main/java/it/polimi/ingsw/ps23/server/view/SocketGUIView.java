@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ps23.server.view;
 
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -13,7 +14,6 @@ import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
-import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
@@ -23,21 +23,24 @@ public class SocketGUIView extends SocketView {
 	}
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(State state) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void visit(StartTurnState currentState) {
-		// TODO Auto-generated method stub
-		
+		Player player = currentState.getCurrentPlayer();
+		getConnection().send(new SocketParameterCreator().createUIStatus(currentState));
+		/*if(player.getName().equals(getClientName())) {
+			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+			try {
+				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
+			}
+			catch(NullPointerException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
+				wakeUp();
+			}
+		}
+		else {
+			getConnection().sendNoInput("It's player " + player.getName() + " turn.");
+			pause();
+		}*/
+		pause();		
 	}
 
 	@Override
@@ -108,24 +111,6 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(EndGameState currentState) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Connection getConnection() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void threadWakeUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setReconnected(boolean reconnected) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -26,7 +26,7 @@ class Server implements ServerInterface {
 	
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final String CONSOLE_TAG = "<console>";
-	private static final String GUI_TAG = "<rmi>";
+	private static final String GUI_TAG = "<gui>";
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 1;

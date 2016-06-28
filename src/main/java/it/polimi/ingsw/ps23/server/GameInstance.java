@@ -14,6 +14,7 @@ import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.PlayersResumeHandler;
 import it.polimi.ingsw.ps23.server.view.SocketConsoleView;
+import it.polimi.ingsw.ps23.server.view.SocketGUIView;
 import it.polimi.ingsw.ps23.server.view.SocketView;
 
 /**
@@ -65,8 +66,12 @@ public class GameInstance {
 		for(int i = 0; i < socketPlayersName.size(); i++) {
 			String socketPlayerName = socketPlayersName.get(i);
 			Connection connection = socketWaitingConnections.get(socketPlayerName);
-			//TODO se GUI ==> guiview se no Console
-			createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
+			if(connection.isConsole()) {
+				createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
+			}
+			else {
+				createSocketGame(new SocketGUIView(socketPlayerName, connection), connection);
+			}
 		}
 		return socketPlayersName;
 	}
