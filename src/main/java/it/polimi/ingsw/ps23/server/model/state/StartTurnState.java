@@ -66,6 +66,10 @@ public class StartTurnState extends State {
 		return king;
 	}	
 	
+	public Bonus getCurrentKingTile() {
+		return currentKingTile;		
+	}
+	
 	public FreeCouncillorsSet getFreeCouncillors() {
 		return freeCouncillors;
 	}

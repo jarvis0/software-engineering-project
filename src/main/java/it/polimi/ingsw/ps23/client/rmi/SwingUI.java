@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,9 +64,10 @@ class SwingUI {
 	private static final String PERMISSION_CARD_PATH = "permissionCard.png";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
-	private static final String COUNCILS_POSITION_CSV = "councilsPosition.csv";
+	private static final String OBJECTS_POSITION_CSV = "objectsPosition.csv";
 	private static final String SANS_SERIF_FONT = "Sans serif";
 	private static final String POLITIC_CARD_PATH = "Card.png";
+	private static final String BONUS_TILE_PATH = "BonusTile.png";
 
 	private String mapPath;
 	private Map<String, Component> components;
@@ -138,7 +140,7 @@ class SwingUI {
 	}
 
 	private void loadCouncilsPositions() {
-		List<String[]> rawCouncilsPosition = new RawObject(mapPath + COUNCILS_POSITION_CSV).getRawObject();
+		List<String[]> rawCouncilsPosition = new RawObject(mapPath + OBJECTS_POSITION_CSV).getRawObject();
 		for (String[] rawCouncilPosition : rawCouncilsPosition) {
 			Point councilPoint = new Point();
 			councilPoint.x = Integer.parseInt(rawCouncilPosition[1]);
@@ -397,7 +399,7 @@ class SwingUI {
 		for (Map.Entry<String,Integer> entry : freeCouncillorsMap.entrySet()) {
 		    String color = entry.getKey();
 		    BufferedImage councillorImage = readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
-			Image resizedCouncillorImage = councillorImage.getScaledInstance(28, 52, Image.SCALE_SMOOTH);
+			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
@@ -414,7 +416,7 @@ class SwingUI {
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
 			mapPanel.add(councillorsValue, 0);
-			y += 54;
+			y += 41;
 		}
 		
 	}
@@ -433,17 +435,6 @@ class SwingUI {
 		}
 		
 	}
-
-	void refreshUI(StartTurnState currentState) {
-		refreshKingPosition(currentState.getKing().getPosition().getName());
-		refreshPlayersTable(currentState.getPlayersSet());
-		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
-		refreshFreeCouncillors(currentState.getFreeCouncillors());
-		refreshPermitTiles(currentState.getGameMap().getGroupRegionalCity());
-		int playerIndex = searchPlayer(currentState.getPlayersSet().getPlayers());
-		refreshPoliticCards((currentState.getPlayersSet().getPlayer(playerIndex)).getPoliticHandDeck());
-		frame.repaint();
-	}
 	
 	private int searchPlayer(List<Player> playersList) {
 		for(Player player : playersList){
@@ -453,7 +444,54 @@ class SwingUI {
 		 }
 		return -1;
 	}
+	
+	private void refreshBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
+		List<Region> allRegions = new ArrayList<>();
+		allRegions.addAll(groupRegionalCity);
+		allRegions.addAll(groupColoredCity);
+		for (Region region : allRegions) {
+			if(!(region.alreadyUsedBonusTile())){
+				drawBonusTile(region.getName(), region.getBonusTile());
+			}
+		}
+		if(currentKingTile != null) {
+			drawBonusTile("kingdom", currentKingTile);
+		}
+	}
 
+	private void drawBonusTile(String name, Bonus bonusTile) {
+		Point regionPoint = getCouncilPoint(name);
+		int x = regionPoint.x;
+		int y = regionPoint.y;
+		if(("seaside").equals(name) || ("hill").equals(name) || ("mountain").equals(name)) {
+			x += 7;
+			y -= 8;
+		}
+		if(("kingdom").equals(name)) {
+			x -= 63;
+			y -= 40;
+		}
+		BufferedImage tileImage = readImage(IMAGES_PATH + name + BONUS_TILE_PATH);
+		Image resizedTileImage = tileImage.getScaledInstance(50, 35, Image.SCALE_SMOOTH);
+		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
+		tileLabel.setBounds(0, 0, 50, 35);
+		tileLabel.setLocation(x, y);
+		mapPanel.add(tileLabel, 0);
+		drawBonus(bonusTile, x + 25, y + 10, 23, 25, -5);
+	}
+
+	void refreshUI(StartTurnState currentState) {
+		refreshKingPosition(currentState.getKing().getPosition().getName());
+		refreshPlayersTable(currentState.getPlayersSet());
+		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
+		refreshFreeCouncillors(currentState.getFreeCouncillors());
+		refreshPermitTiles(currentState.getGameMap().getGroupRegionalCity());
+		refreshBonusTiles(currentState.getGameMap().getGroupRegionalCity(), currentState.getGameMap().getGroupColoredCity(), currentState.getCurrentKingTile());
+		int playerIndex = searchPlayer(currentState.getPlayersSet().getPlayers());
+		refreshPoliticCards((currentState.getPlayersSet().getPlayer(playerIndex)).getPoliticHandDeck());
+		frame.repaint();
+	}
+	
 	public void loadStaticContents(StartTurnState currentState) {
 		addRewardTokens(currentState.getGameMap().getCities());
 		addNobilityTrackBonuses(currentState.getNobilityTrack());
