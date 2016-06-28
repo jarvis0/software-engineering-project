@@ -34,7 +34,7 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	void setMapType(String mapType) {
-		swingUI = new SwingUI(mapType);
+		swingUI = new SwingUI(mapType, getClientName());
 	}
 
 	@Override
