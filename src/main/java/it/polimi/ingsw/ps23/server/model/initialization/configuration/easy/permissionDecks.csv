@@ -13,7 +13,7 @@
 4,5,0,0,0,0,seaside,Burgen,Castrum
 3,0,0,0,0,0,seaside,Arkon,Burgen,Castrum
 0,4,5,0,0,0,seaside,Arkon,Esti
-4,0,4,0,0,1,hill,Graden,Hellar
+4,0,4,0,0,0,hill,Graden,Hellar
 4,0,0,3,0,0,hill,Indur,Javelar
 2,0,0,0,0,1,hill,Framek,Indur,Javelar
 4,0,0,0,0,0,hill,Hellar,Graden
@@ -31,7 +31,7 @@
 0,8,0,0,0,0,mountain,Lyram,Naris
 0,0,0,4,0,0,mountain,Kultos,Osium
 0,0,0,3,0,1,mountain,Naris,Osium
-0,2,0,2,0,1,mountain,Osium,Kultos
+0,2,0,2,0,0,mountain,Osium,Kultos
 0,3,0,1,0,0,mountain,Kultos,Lyram,Osium
 0,0,6,0,0,1,mountain,Merkatim,Naris
 1,2,0,0,0,0,mountain,Kultos,Lyram,Merkatim

@@ -4,6 +4,12 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesExcep
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Mirco Manzoni
+ *
+ */
 public class AdditionalMainAction implements Action {
 
 	/**

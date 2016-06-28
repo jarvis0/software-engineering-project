@@ -273,7 +273,7 @@ class RMIConsoleView extends RMIView {
 		if(player.equals(getClientName())) {
 			try {
 				if (currentState.canBuy()) {
-					output.println("Avaible offers: " + currentState.getAvaiableOffers());
+					output.println("Available offers: " + currentState.getAvaiableOffers());
 					getControllerInterface()
 							.wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
 				} else {

@@ -84,6 +84,10 @@ public abstract class Region implements Serializable {
 		return bonusTile;
 	}
 	
+	/**
+	 * get the bonus tile of the specified region or colored cities group
+	 * @return the bonus tile of the specified region
+	 */
 	public Bonus getBonusTile() {
 		return bonusTile;
 	}
@@ -91,8 +95,12 @@ public abstract class Region implements Serializable {
 	public String getName() {
 		return name;
 	}
-
-	protected boolean alreadyUsedBonusTile() {
+	
+	/**
+	 * check if the bonus tile of a specified region is already acquired or not
+	 * @return the boolean variable that indicates if the bonus tile is acquired or not
+	 */
+	public boolean alreadyUsedBonusTile() {
 		return alreadyAcquiredBonusTile;
 	}
 
