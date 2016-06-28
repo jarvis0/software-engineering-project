@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +29,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 abstract class SwingUI {
 
@@ -45,16 +50,28 @@ abstract class SwingUI {
 	private static final String SANS_SERIF_FONT = "Sans serif";
 	private static final String POLITIC_CARD_PATH = "Card.png";
 	private static final String BONUS_TILE_PATH = "BonusTile.png";
-
+	private static final String ELECT_COUNCILLOR = "elect councillor";
+	private static final String ACQUIRE_BUSINESS_PERMIT_TILE = "acquire business permit tile";
+	private static final String ASSISTANT_TO_ELECT_COUNCILLOR = "assistant to elect councillor";
+	private static final String ADDITIONAL_MAIN_ACTION = "additional main action";
+	private static final String ENGAGE_ASSITANT= "engage assistant";
+	private static final String CHANGE_PERMIT_TILE= "change permit tile";
+	private static final String BUILD_EMPORIUM_KING= "build emporium king";
+	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
+	
 	private String mapPath;
 	private Map<String, Component> components;
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
+	private JPanel mainActionPanel;
+	private JPanel quickActionPanel;
 	private JTable playersTable;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	private String playerName;
+	private RMIGUIView rmiguiView;
+	private String chosenAction;
 
 	protected SwingUI(String mapType, String playerName) {
 		this.playerName = playerName;
@@ -82,6 +99,10 @@ abstract class SwingUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
+	
+	protected void setRmiguiView(RMIGUIView rmiguiView) {
+		this.rmiguiView = rmiguiView;
+	}
 
 	public Map<String, Component> getComponents() {
 		return components;
@@ -105,6 +126,18 @@ abstract class SwingUI {
 
 	public String getPlayerName() {
 		return playerName;
+	}
+	
+	protected String getChosenAction() {
+		return chosenAction;
+	}
+	
+	protected JPanel getMainActionPanel() {
+		return mainActionPanel;
+	}
+	
+	protected JPanel getQuickActionPanel() {
+		return quickActionPanel;
 	}
 
 	public static String getCouncillorPath() {
@@ -268,11 +301,174 @@ abstract class SwingUI {
 		loadRegionButtons();
 		loadNobiltyTrack();
 		loadPlayersTable();
+		loadMainActionButtons();
+		loadQuickActionPanel();
 	}
 	
 	protected void refreshKingPosition(String city) {
 		Point point = getComponents(city).getLocationOnScreen();
 		getComponents("king").setLocation(point);
 	}
-
+	
+	protected void loadMainActionButtons() {
+		mainActionPanel = new JPanel();
+		mainActionPanel.setBounds(895, 181, 215, 272);
+		mapPanel.add(mainActionPanel,0);
+		mainActionPanel.setVisible(false);
+		GridBagLayout gblMainActionPanel = new GridBagLayout();
+		gblMainActionPanel.columnWidths = new int[]{0, 0};
+		gblMainActionPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gblMainActionPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gblMainActionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		mainActionPanel.setLayout(gblMainActionPanel);
+		
+		JButton btnAcquireBusinessPermitTile = new JButton();
+		btnAcquireBusinessPermitTile.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = ACQUIRE_BUSINESS_PERMIT_TILE;
+            	rmiguiView.resume();
+            }
+        });      
+		BufferedImage acquireBusinessPermitTileImage = readImage(IMAGES_PATH + "acquireBusinessPermitTile.png");
+		btnAcquireBusinessPermitTile.setIcon(new ImageIcon(acquireBusinessPermitTileImage));
+		GridBagConstraints gbcbtnAcquireBusinessPermitTile = new GridBagConstraints();
+		gbcbtnAcquireBusinessPermitTile.insets = new Insets(0, 0, 5, 0);
+		gbcbtnAcquireBusinessPermitTile.gridx = 0;
+		gbcbtnAcquireBusinessPermitTile.gridy = 0;
+		mainActionPanel.add(btnAcquireBusinessPermitTile, gbcbtnAcquireBusinessPermitTile);
+		
+		JButton btnBuildEmporiumKing = new JButton();
+		btnBuildEmporiumKing.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = BUILD_EMPORIUM_KING;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage buildEmporiumKingImage = readImage(IMAGES_PATH + "buildEmporiumKing.png");
+		btnBuildEmporiumKing.setIcon(new ImageIcon(buildEmporiumKingImage));
+		btnBuildEmporiumKing.setBounds(0, 0, 182, 54);
+		GridBagConstraints gbcbtnBuildEmporiumKing = new GridBagConstraints();
+		gbcbtnBuildEmporiumKing.insets = new Insets(0, 0, 5, 0);
+		gbcbtnBuildEmporiumKing.gridx = 0;
+		gbcbtnBuildEmporiumKing.gridy = 1;
+		mainActionPanel.add(btnBuildEmporiumKing, gbcbtnBuildEmporiumKing);
+		
+		JButton btnElectCouncillor = new JButton();
+		btnElectCouncillor.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = ELECT_COUNCILLOR;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage electCouncillorImage = readImage(IMAGES_PATH + "electCouncillor.png");
+		btnElectCouncillor.setIcon(new ImageIcon(electCouncillorImage));
+		GridBagConstraints gbcbtnElectCouncillor = new GridBagConstraints();
+		gbcbtnElectCouncillor.insets = new Insets(0, 0, 5, 0);
+		gbcbtnElectCouncillor.gridx = 0;
+		gbcbtnElectCouncillor.gridy = 2;
+		mainActionPanel.add(btnElectCouncillor, gbcbtnElectCouncillor);
+		
+		JButton btnBuildEmporiumPermitTile = new JButton();
+		btnBuildEmporiumPermitTile.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = BUILD_EMPORIUM_TILE;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage builEmporiumPermitTileImage = readImage(IMAGES_PATH + "buildEmporiumPermitTile.png");
+		btnBuildEmporiumPermitTile.setIcon(new ImageIcon(builEmporiumPermitTileImage));
+		GridBagConstraints gbcbtnBuildEmporiumPermitTile = new GridBagConstraints();
+		gbcbtnBuildEmporiumPermitTile.gridx = 0;
+		gbcbtnBuildEmporiumPermitTile.gridy = 3;
+		mainActionPanel.add(btnBuildEmporiumPermitTile, gbcbtnBuildEmporiumPermitTile);
+	}
+	
+	protected void loadQuickActionPanel() {
+		quickActionPanel = new JPanel();
+		quickActionPanel.setBounds(1120, 181, 199, 272);
+		mapPanel.add(quickActionPanel,0);
+		quickActionPanel.setVisible(false);
+		GridBagLayout gblQuickActionPanel = new GridBagLayout();
+		gblQuickActionPanel.columnWidths = new int[]{0, 0};
+		gblQuickActionPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gblQuickActionPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gblQuickActionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		quickActionPanel.setLayout(gblQuickActionPanel);
+		
+		JButton btnEngageAssistant = new JButton();
+		btnEngageAssistant.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = ENGAGE_ASSITANT;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage engageAssistantImage = readImage(IMAGES_PATH + "engageAssistant.png");
+		btnEngageAssistant.setIcon(new ImageIcon(engageAssistantImage));
+		GridBagConstraints gbcbtnEngageAssistant = new GridBagConstraints();
+		gbcbtnEngageAssistant.insets = new Insets(0, 0, 5, 0);
+		gbcbtnEngageAssistant.gridx = 0;
+		gbcbtnEngageAssistant.gridy = 0;
+		quickActionPanel.add(btnEngageAssistant, gbcbtnEngageAssistant);
+		
+		JButton btnChangePermitsTile= new JButton();
+		btnChangePermitsTile.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = CHANGE_PERMIT_TILE;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage changePermitsTileImage = readImage(IMAGES_PATH + "changePermitsTile.png");
+		btnChangePermitsTile.setIcon(new ImageIcon(changePermitsTileImage));
+		GridBagConstraints gbcbtnChangePermitsTile = new GridBagConstraints();
+		gbcbtnChangePermitsTile.insets = new Insets(0, 0, 5, 0);
+		gbcbtnChangePermitsTile.gridx = 0;
+		gbcbtnChangePermitsTile.gridy = 1;
+		quickActionPanel.add(btnChangePermitsTile, gbcbtnChangePermitsTile);
+		
+		JButton btnAssistantToElectCouncillor = new JButton();
+		btnAssistantToElectCouncillor.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = ASSISTANT_TO_ELECT_COUNCILLOR;
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage assistantToElectCouncillorImage = readImage(IMAGES_PATH + "assistantToElectCouncillor.png");
+		btnAssistantToElectCouncillor.setIcon(new ImageIcon(assistantToElectCouncillorImage));
+		GridBagConstraints gbcbtnAssistantToElectCouncillor = new GridBagConstraints();
+		gbcbtnAssistantToElectCouncillor.insets = new Insets(0, 0, 5, 0);
+		gbcbtnAssistantToElectCouncillor.gridx = 0;
+		gbcbtnAssistantToElectCouncillor.gridy = 2;
+		quickActionPanel.add(btnAssistantToElectCouncillor, gbcbtnAssistantToElectCouncillor);
+		
+		JButton btnAdditionalMainAction= new JButton();
+		btnAdditionalMainAction.addActionListener(new ActionListener() {
+			@Override  
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = ADDITIONAL_MAIN_ACTION; 
+            	rmiguiView.resume();
+            }
+        });
+		BufferedImage additionalMainActionImage = readImage(IMAGES_PATH + "buyMainAction.png");
+		btnAdditionalMainAction.setIcon(new ImageIcon(additionalMainActionImage));
+		GridBagConstraints gbcbtnAdditionalMainAction = new GridBagConstraints();
+		gbcbtnAdditionalMainAction.gridx = 0;
+		gbcbtnAdditionalMainAction.gridy = 3;
+		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
+	}
+	
 }

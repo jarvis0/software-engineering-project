@@ -1,13 +1,17 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
+import java.util.List;
+
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
+import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
+import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
@@ -57,6 +61,10 @@ public class StartTurnState extends State {
 	public PlayersSet getPlayersSet() {
 		return gamePlayersSet;
 	}
+	
+	public List<Player> getPlayersList() {
+		return gamePlayersSet.getPlayers();
+	}
 
 	public NobilityTrack getNobilityTrack() {
 		return nobilityTrack;
@@ -70,13 +78,15 @@ public class StartTurnState extends State {
 		return currentKingTile;		
 	}
 	
-	public FreeCouncillorsSet getFreeCouncillors() {
-		return freeCouncillors;
+	public List<Councillor> getFreeCouncillors() {
+		return freeCouncillors.getFreeCouncillors();
 	}
 
 	public StateCache getStateCache() {
 		return stateCache;
 	}
+	
+	
 	
 	public String getStatus() {
 		String print = "\n===============================================================================================================\n";
@@ -127,6 +137,30 @@ public class StartTurnState extends State {
 	@Override
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);
+	}
+
+	public String getKingPosition() {
+		return king.getPosition().getName();
+	}
+
+	public List<Region> getGroupRegionalCity() {
+		return gameMap.getGroupRegionalCity();
+	}
+
+	public Council getKingCouncil() {
+		return kingCouncil;
+	}
+
+	public List<Region> getGroupColoredCity() {
+		return gameMap.getGroupColoredCity();
+	}
+
+	public Boolean isAvailableMainAction() {
+		return turnHandler.isAvailableMainAction();
+	}
+	
+	public Boolean isAvailableQuickAction() {
+		return turnHandler.isAvailableQuickAction();
 	}
 
 }
