@@ -102,7 +102,7 @@ public class GameInstance {
 		Collections.shuffle(playersName);
 		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
 		String mapType = MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE;
-		sendSocketInfoMessage(mapType);//TODO
+		sendSocketInfoMessage(mapType);
 		model.sendRMIInfoMessage(mapType);
 		model.startGame();
 		for(Connection connection : socketWaitingConnections.values()) {

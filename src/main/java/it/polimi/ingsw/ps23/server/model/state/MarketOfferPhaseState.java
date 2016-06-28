@@ -56,9 +56,7 @@ public class MarketOfferPhaseState extends State {
 	}
 	
 	private void checkMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException, InvalidNumberOfAssistantException, InvalidCostException {
-		for (String card : chosenPoliticCards) {
-			((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card);
-		}
+		((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardsByName(chosenPoliticCards);
 		for (int index : chosenPermissionCards) {
 			currentPlayer.getPermissionHandDeck().getCardInPosition(index);
 		}

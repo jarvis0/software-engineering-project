@@ -50,8 +50,13 @@ public class EndGameTest {
 		List<Card> permissionCards = new ArrayList<>();
 		permissionCards.add(new PermissionCard());
 		third.buyPermissionCards(permissionCards);
+		third.buyPermissionCards(permissionCards);
+		second.buyPermissionCards(permissionCards);
+		third.updateNobilityPoints(10);
+		second.updateNobilityPoints(2);		
 		second.updateVictoryPoints(- second.getVictoryPoints());
 		third.updateVictoryPoints(- third.getVictoryPoints());
+		game.setCurrentPlayer(winner);
 		endGame.isGameEnded(game, turnHandler);
 		assertTrue(new WinnerComparator().compare(second, third) >= 1);
 	}
