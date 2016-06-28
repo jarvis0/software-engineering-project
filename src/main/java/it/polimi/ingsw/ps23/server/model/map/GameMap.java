@@ -60,6 +60,9 @@ public class GameMap implements Serializable {
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;
 	}
+	public List<Region> getGroupColoredCity() {
+		return groupColoredCities;
+	}
 	
 	/**
 	 * Tries to find the region specified in the parameter.
@@ -159,5 +162,4 @@ public class GameMap implements Serializable {
 		}
 		return print + loopPrint;
 	}
-
 }
