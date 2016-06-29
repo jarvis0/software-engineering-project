@@ -1,7 +1,14 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -19,6 +26,8 @@ import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
+	
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
 	
 	private RMISwingUI rmiSwingUI;
 	private State state;
@@ -86,7 +95,29 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
-		// TODO Auto-generated method stub
+		try {
+			rmiSwingUI.enableButtons();
+			List<String> removedCards = new ArrayList<>();
+			pause();
+			String chosenCouncil = rmiSwingUI.getChosenAction();
+			int numberOfCards = 4;
+			boolean finish = false;
+			int i = 0;
+			while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
+				pause();
+				finish = rmiSwingUI.hasFinished();
+				if(!finish) {
+					removedCards.add(rmiSwingUI.getChosenCard());
+				}
+				i++;
+			}
+			pause();
+			int chosenTile = rmiSwingUI.getChosenTile();
+			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
+		} catch (InvalidCardException | NumberFormatException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			state.setExceptionString(e.toString());
+		}
 
 	}
 
@@ -136,6 +167,14 @@ public class RMIGUIView extends RMIView {
 	public void visit(EndGameState currentState) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void sendAction(Action action) {
+		try {
+			getControllerInterface().wakeUpServer(action);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+		}
 	}
 
 	protected boolean waitResumeCondition() {

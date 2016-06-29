@@ -5,6 +5,10 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +20,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,8 +51,10 @@ public class RMISwingUI extends SwingUI {
 	private JPanel mapPanel;
 	private DefaultTableModel tableModel;
 	private String playerName;
-	
-
+	private String chosenCard;
+	private int chosenTile;
+	private List<JLabel> cardsList;
+	private boolean finish;
 	RMISwingUI(String mapType, String playerName) {
 		super(mapType, playerName);
 		councilPoints = getCouncilPoints();
@@ -55,6 +62,8 @@ public class RMISwingUI extends SwingUI {
 		mapPanel = getMapPanel();
 		tableModel = getTableModel();
 		this.playerName = getPlayerName();
+		cardsList = new ArrayList<>();
+		finish = false;
 	}
 	
 	public String getChosenActionUI() {
@@ -185,12 +194,33 @@ public class RMISwingUI extends SwingUI {
 		List<Card> permissionCards = permissionDeckUp.getCards();
 		int x = xCoord;
 		int y = yCoord;
+		int indexOfTile = 1;
+		final int firstTile = 0;
+		final int seconTile = 1;
 		for (Card permissionCard : permissionCards) {
 			BufferedImage permissionTileImage = readImage(SwingUI.getImagesPath() + SwingUI.getPermissionCardPath());
 			Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
 			permissionTileLabel.setBounds(0, 0, 50, 50);
 			permissionTileLabel.setLocation(x, y);
+			if(indexOfTile == 1){
+			permissionTileLabel.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					chosenTile = firstTile;
+	            	getRmiGUIView().resume();
+                }
+				}); 
+			}
+			if(indexOfTile == 2){
+				permissionTileLabel.addMouseListener(new MouseAdapter() {
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						chosenTile = seconTile;
+		            	getRmiGUIView().resume();
+	                }
+					}); 
+				}
 			mapPanel.add(permissionTileLabel, 0);
 			List<Bonus> bonuses = ((PermissionCard) permissionCard).getBonuses();
 			int bonusCoordX = x - 47;
@@ -218,6 +248,7 @@ public class RMISwingUI extends SwingUI {
 				cityCoordX += 17;
 			}
 			x -= 52;
+			indexOfTile++;
 		}
 	}
 
@@ -265,12 +296,31 @@ public class RMISwingUI extends SwingUI {
 			BufferedImage cardImage = readImage(SwingUI.getImagesPath() + card.toString() + SwingUI.getPoliticCardPath());
 			Image resizedCardImage = cardImage.getScaledInstance(42, 66, Image.SCALE_SMOOTH);
 			JLabel cardLabel = new JLabel(new ImageIcon(resizedCardImage));
+			cardsList.add(cardLabel);
+			cardLabel.addMouseListener(new MouseAdapter() {
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						chosenCard = card.toString();
+		            	getRmiGUIView().resume();
+	                }
+	        });      
 			cardLabel.setBounds(0, 0, 42, 66);
 			cardLabel.setLocation(x, y);
 			x += 44;
 			mapPanel.add(cardLabel, 0);
+			cardLabel.setEnabled(false);
 		}
-
+		JButton finished = new JButton("finished");
+		finished.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+				finish = true;
+				resumeRMIGUIView();
+            }
+        });
+		finished.setBounds(x, y, 70, 30);
+		mapPanel.add(finished, 0);
 	}
 
 	private int searchPlayer(List<Player> playersList) {
@@ -341,11 +391,32 @@ public class RMISwingUI extends SwingUI {
 	
 	public void showAvailableActions(Boolean isAvailableMainAction, Boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
 		setRmiguiView(rmiguiView);
+		if(isAvailableMainAction && isAvailableQuickAction) {
+			enableCards();
+		}
 		getMainActionPanel().setVisible(isAvailableMainAction);
 		getQuickActionPanel().setVisible(isAvailableQuickAction);
 	}
 
+	public String getChosenCard() {
+		return chosenCard;
+	}
+	
+	public int getChosenTile() {
+		return chosenTile;
+	}
 
+	private void enableCards() {
+		for (JLabel jLabel : cardsList) {
+			jLabel.setEnabled(true);
+		}
+	}
+	public void enableButtons() {
+		enableRegionButtons();
+	}
 
+	public boolean hasFinished() {
+		return finish;
+	}
 	
 }

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.JTextField;
 
 abstract class SwingUI {
 
@@ -72,9 +74,12 @@ abstract class SwingUI {
 	private String playerName;
 	private RMIGUIView rmiguiView;
 	private String chosenAction;
+	private JTextField textField;
+	private List<JButton> regionsButtons;
 
 	protected SwingUI(String mapType, String playerName) {
 		this.playerName = playerName;
+		regionsButtons = new ArrayList<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		components = new HashMap<>();
 		councilPoints = new HashMap<>();
@@ -95,6 +100,10 @@ abstract class SwingUI {
 		frame.getContentPane().add(mapPanel);
 		mapPanel.add(scrollPane);
 		mapPanel.add(backgroundLabel);
+		textField = new JTextField();
+		textField.setBounds(897, 503, 447, 191);
+		mapPanel.add(textField,0);
+		textField.setColumns(10);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -102,6 +111,10 @@ abstract class SwingUI {
 	
 	protected void setRmiguiView(RMIGUIView rmiguiView) {
 		this.rmiguiView = rmiguiView;
+	}
+	
+	protected RMIGUIView getRmiGUIView() {
+		return rmiguiView;
 	}
 
 	public Map<String, Component> getComponents() {
@@ -166,6 +179,13 @@ abstract class SwingUI {
 	
 	public static String getPngExtension() {
 		return PNG_EXTENSION;
+	}
+	
+	protected void enableRegionButtons() {
+		for (JButton regionButton : regionsButtons) {
+			regionButton.setEnabled(true);
+		}
+		
 	}
 
 
@@ -277,19 +297,49 @@ abstract class SwingUI {
 	private void loadRegionButtons() {
 		BufferedImage seasideImage = readImage(IMAGES_PATH + "seasideRegion.png");
 		JButton btnSeaside = new JButton("");
+		btnSeaside.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = "seaside";
+            	rmiguiView.resume();
+            }
+        });
 		btnSeaside.setIcon(new ImageIcon(seasideImage));
 		btnSeaside.setBounds(120, 0, 50, 50);
 		mapPanel.add(btnSeaside, 0);
+		regionsButtons.add(btnSeaside);
+		btnSeaside.setEnabled(false);
 		BufferedImage hillImage = readImage(IMAGES_PATH + "hillRegion.png");
 		JButton btnHill = new JButton("");
+		btnHill.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = "hill";
+            	rmiguiView.resume();
+            }
+        });
 		btnHill.setIcon(new ImageIcon(hillImage));
 		btnHill.setBounds(370, 0, 50, 50);
 		mapPanel.add(btnHill, 0);
+		regionsButtons.add(btnHill);
+		btnHill.setEnabled(false);
 		BufferedImage mountainImage = readImage(IMAGES_PATH + "mountainRegion.png");
 		JButton btnMountain = new JButton("");
+		btnSeaside.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenAction = "mountain";
+            	rmiguiView.resume();
+            }
+        });
 		btnMountain.setIcon(new ImageIcon(mountainImage));
 		btnMountain.setBounds(670, 0, 50, 50);
 		mapPanel.add(btnMountain, 0);
+		regionsButtons.add(btnMountain);
+		btnMountain.setEnabled(false);
 	}
 
 	private void loadUI() {
@@ -321,7 +371,6 @@ abstract class SwingUI {
 		gblMainActionPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gblMainActionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		mainActionPanel.setLayout(gblMainActionPanel);
-		
 		JButton btnAcquireBusinessPermitTile = new JButton();
 		btnAcquireBusinessPermitTile.addActionListener(new ActionListener() {
 			@Override  
@@ -470,5 +519,11 @@ abstract class SwingUI {
 		gbcbtnAdditionalMainAction.gridy = 3;
 		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
 	}
+	public SwingUI() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	protected void resumeRMIGUIView() {
+		rmiguiView.resume();
+	}
 }
