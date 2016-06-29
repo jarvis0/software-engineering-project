@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
 @SuppressWarnings("serial")
-public abstract class ElectCouncillorActionState extends ActionState {
+abstract class ElectCouncillorActionState extends ActionState {
 
 	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;

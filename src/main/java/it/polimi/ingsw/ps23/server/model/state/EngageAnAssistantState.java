@@ -5,7 +5,7 @@ import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssistant;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class EngageAnAssistantState extends ActionState {
+public class EngageAnAssistantState extends QuickActionState {
 	
 	/**
 	 * 

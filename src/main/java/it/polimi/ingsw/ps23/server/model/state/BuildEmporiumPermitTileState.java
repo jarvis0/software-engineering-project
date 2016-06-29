@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.PermissionHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class BuildEmporiumPermitTileState extends ActionState {
+public class BuildEmporiumPermitTileState extends MainActionState {
 
 	/**
 	 * 

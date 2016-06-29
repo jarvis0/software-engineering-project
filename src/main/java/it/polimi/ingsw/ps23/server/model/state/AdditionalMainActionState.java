@@ -5,7 +5,7 @@ import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.AdditionalMainAction;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class AdditionalMainActionState extends ActionState {
+public class AdditionalMainActionState extends QuickActionState {
 
 	/**
 	 * 
