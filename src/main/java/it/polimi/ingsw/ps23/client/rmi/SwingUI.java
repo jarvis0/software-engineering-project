@@ -181,13 +181,12 @@ abstract class SwingUI {
 		return PNG_EXTENSION;
 	}
 	
-	protected void enableRegionButtons() {
+	protected void enableRegionButtons(boolean display) {
 		for (JButton regionButton : regionsButtons) {
-			regionButton.setEnabled(true);
+			regionButton.setEnabled(display);
 		}
 		
 	}
-
 
 	protected BufferedImage readImage(String path) {
 		try {
@@ -351,7 +350,7 @@ abstract class SwingUI {
 		loadRegionButtons();
 		loadNobiltyTrack();
 		loadPlayersTable();
-		loadMainActionButtons();
+		loadMainActionPanel();
 		loadQuickActionPanel();
 	}
 	
@@ -360,7 +359,7 @@ abstract class SwingUI {
 		getComponents("king").setLocation(point);
 	}
 	
-	protected void loadMainActionButtons() {
+	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
 		mainActionPanel.setBounds(895, 181, 215, 272);
 		mapPanel.add(mainActionPanel,0);
@@ -519,10 +518,7 @@ abstract class SwingUI {
 		gbcbtnAdditionalMainAction.gridy = 3;
 		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
 	}
-	public SwingUI() {
-		// TODO Auto-generated constructor stub
-	}
-	
+
 	protected void resumeRMIGUIView() {
 		rmiguiView.resume();
 	}
