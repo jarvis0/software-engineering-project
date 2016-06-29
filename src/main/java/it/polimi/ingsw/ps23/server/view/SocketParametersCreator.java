@@ -1,11 +1,13 @@
 package it.polimi.ingsw.ps23.server.view;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
+import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
@@ -14,8 +16,12 @@ class SocketParametersCreator {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
+	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
+	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
 	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";
+	private static final String NOBILITY_TRACK_TAG_OPEN = "<nobility_track>";
+	private static final String NOBILITY_TRACK_TAG_CLOSE = "</nobility_track>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -26,8 +32,8 @@ class SocketParametersCreator {
 		StringBuilder citiesSend = new StringBuilder();
 		for(Entry<String, City> cityEntry : citiesEntry) {
 			City city = cityEntry.getValue();
-			citiesSend.append(city.getName());
 			if(!city.isCapital()) {
+				citiesSend.append(city.getName());
 				int rewardTokensNumber = ((NormalCity) city).getRewardToken().getBonuses().size();
 				citiesSend.append("," + rewardTokensNumber);
 				StringBuilder rewardTokens = new StringBuilder();
@@ -36,10 +42,26 @@ class SocketParametersCreator {
 					rewardTokens.append("," + bonus.getName());
 					rewardTokens.append("," + bonus.getValue());
 				}
-				citiesSend.append(rewardTokens + "#");
+				citiesSend.append(rewardTokens + ",");
 			}
 		}
 		return REWARD_TOKENS_TAG_OPEN + citiesSend + REWARD_TOKENS_TAG_CLOSE;
+	}
+
+	private String addNobilityTrackSteps(List<NobilityTrackStep> steps) {
+		StringBuilder nobilityTrackSend = new StringBuilder();
+		for(int i = 0; i < steps.size(); i++) {
+			List<Bonus> bonuses = steps.get(i).getBonuses();
+			int n = bonuses.size();
+			nobilityTrackSend.append(n);
+			for(int j = 0; j < n; j++) {
+				nobilityTrackSend.append(',' + bonuses.get(j).getName());
+				int value = bonuses.get(j).getValue();
+				nobilityTrackSend.append(',' + String.valueOf(value));
+			}
+			nobilityTrackSend.append(',');
+		}
+		return NOBILITY_TRACK_TAG_OPEN + nobilityTrackSend + NOBILITY_TRACK_TAG_CLOSE;
 	}
 	
 	String createUIStatus(StartTurnState currentState) {
@@ -48,8 +70,7 @@ class SocketParametersCreator {
 	}
 
 	String createUIStaticContent(Map<String, City> cities, NobilityTrack nobilityTrack) {
-		String message = addRewardTokens(cities);
-		return message;
+		return STATIC_CONTENT_TAG_OPEN + addRewardTokens(cities) + addNobilityTrackSteps(nobilityTrack.getSteps()) + STATIC_CONTENT_TAG_CLOSE;
 	}
-	
+
 }

@@ -60,6 +60,7 @@ public class GameMap implements Serializable {
 	public List<Region> getGroupRegionalCity() {
 		return groupRegionalCities;
 	}
+	
 	public List<Region> getGroupColoredCity() {
 		return groupColoredCities;
 	}

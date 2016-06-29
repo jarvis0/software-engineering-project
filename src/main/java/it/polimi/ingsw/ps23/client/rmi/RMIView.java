@@ -42,7 +42,7 @@ abstract class RMIView extends View {
 		}
 	}
 	
-	protected synchronized void resume() {
+	public synchronized void resume() {
 		notifyAll();
 	}
 	

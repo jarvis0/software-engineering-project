@@ -1,10 +1,13 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,17 +19,14 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
 
+import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.bonus.CoinBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
-import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
@@ -39,97 +39,26 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
-public class RMISwingUI extends SwingUI {
+class RMISwingUI extends SwingUI {
 
-	private Map<String, Point> councilPoints;
-	private JFrame frame;
-	private JPanel mapPanel;
-	private DefaultTableModel tableModel;
-	private String playerName;
-
-	RMISwingUI(String mapType, String playerName) {//TODO refactor this class
+	private String chosenCard;
+	private int chosenTile;
+	private List<JLabel> cardsList;
+	private boolean finish;
+	
+	RMISwingUI(String mapType, String playerName) {
 		super(mapType, playerName);
-		councilPoints = getCouncilPoints();
-		frame = getFrame();
-		mapPanel = getMapPanel();
-		tableModel = getTableModel();
-		this.playerName = getPlayerName();
+		cardsList = new ArrayList<>();
+		finish = false;
 	}
 	
-	public String getChosenActionUI() {
+	String getChosenActionUI() {
 		return getChosenAction();
 	}
 
-	private void drawBonus(Bonus bonus, int x, int y, int width, int height, int yOffset) {
-		BufferedImage bonusImage = readImage(SwingUI.getImagesPath()+ bonus.getName() + SwingUI.getPngExtension());
-		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
-		bonusLabel.setBounds(0, 0, width, height);
-		bonusLabel.setLocation(x, y + yOffset);
-		mapPanel.add(bonusLabel, 0);
-		int bonusNumber = bonus.getValue();
-		if (bonusNumber > 1 || "victoryPoint".equals(bonus.getName())) {
-			JLabel bonusValue = new JLabel();
-			bonusValue.setBounds(0, 0, width, height);
-			bonusValue.setLocation(x + 8, y + yOffset);
-			bonusValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 9));
-			if (bonus instanceof CoinBonus) {
-				bonusValue.setForeground(Color.black);
-			} else {
-				bonusValue.setForeground(Color.white);
-			}
-			bonusValue.setText(String.valueOf(bonusNumber));
-			mapPanel.add(bonusValue, 0);
-		}
-	}
-
-	private void addRewardTokens(Map<String, City> cities) {
-		Set<Entry<String, City>> cityEntries = cities.entrySet();
-		for (Entry<String, City> cityEntry : cityEntries) {
-			Component cityComponent = getComponents(cityEntry.getKey());
-			Point point = cityComponent.getLocationOnScreen();
-			int x = point.x;
-			int y = point.y;
-			City city = cityEntry.getValue();
-			if (!city.isCapital()) {
-				List<Bonus> rewardTokenBonuses = ((NormalCity) city).getRewardToken().getBonuses();
-				for (Bonus bonus : rewardTokenBonuses) {
-					drawBonus(bonus, x + 50, y - 20, 23, 25, 0);
-					x += 22;
-				}
-			}
-		}
-	}
-
-	private void addNobilityTrackBonuses(NobilityTrack nobilityTrack) {
-		int stepNumber = 0;
-		for (NobilityTrackStep step : nobilityTrack.getSteps()) {
-			int yOffset = 0;
-			int x = (int) 38.1 * stepNumber + 8;
-			int y = 495;
-			for (Bonus bonus : step.getBonuses()) {
-				if (!("nullBonus").equals(bonus.getName())) {
-					int width = 23;
-					int height = 25;
-					if (step.getBonuses().size() == 1) {
-						y = 490;
-					}
-					if (("recycleRewardToken").equals(bonus.getName())) {
-						y = 476;
-						height = 40;
-					}
-					drawBonus(bonus, x, y, width, height, yOffset);
-					yOffset -= 25;
-				}
-			}
-			stepNumber++;
-		}
-
-	}
-
 	private void refreshPlayersTable(List<Player> playersList) {
-		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
-			tableModel.removeRow(i);
+		for (int i = getTableModel().getRowCount() - 1; i >= 0; i--) {
+			getTableModel().removeRow(i);
 		}
 		for (Player player : playersList) {
 			Vector<Object> vector = new Vector<>();
@@ -138,7 +67,7 @@ public class RMISwingUI extends SwingUI {
 			vector.add(2, player.getCoins());
 			vector.add(3, player.getAssistants());
 			vector.add(4, player.getNobilityTrackPoints());
-			tableModel.addRow(vector);
+			getTableModel().addRow(vector);
 		}
 	}
 
@@ -168,7 +97,7 @@ public class RMISwingUI extends SwingUI {
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 		councillorLabel.setBounds(0, 0, 15, 39);
 		councillorLabel.setLocation(x, y);
-		mapPanel.add(councillorLabel, 0);
+		getMapPanel().add(councillorLabel, 0);
 	}
 
 	private void refreshPermitTiles(List<Region> regions) {
@@ -184,18 +113,39 @@ public class RMISwingUI extends SwingUI {
 		List<Card> permissionCards = permissionDeckUp.getCards();
 		int x = xCoord;
 		int y = yCoord;
+		int indexOfTile = 1;
+		final int firstTile = 0;
+		final int seconTile = 1;
 		for (Card permissionCard : permissionCards) {
 			BufferedImage permissionTileImage = readImage(SwingUI.getImagesPath() + SwingUI.getPermissionCardPath());
 			Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
 			permissionTileLabel.setBounds(0, 0, 50, 50);
 			permissionTileLabel.setLocation(x, y);
-			mapPanel.add(permissionTileLabel, 0);
+			if(indexOfTile == 1){
+			permissionTileLabel.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					chosenTile = firstTile;
+	            	getRmiGUIView().resume();
+                }
+				}); 
+			}
+			if(indexOfTile == 2){
+				permissionTileLabel.addMouseListener(new MouseAdapter() {
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						chosenTile = seconTile;
+		            	getRmiGUIView().resume();
+	                }
+					}); 
+				}
+			getMapPanel().add(permissionTileLabel, 0);
 			List<Bonus> bonuses = ((PermissionCard) permissionCard).getBonuses();
 			int bonusCoordX = x - 47;
 			int bonusCoordY = y + 40;
 			for (Bonus bonus : bonuses) {
-				drawBonus(bonus, bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);
+				//drawBonus(bonus, bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);TODO
 				bonusCoordX = bonusCoordX + 24;
 			}
 			List<City> cities = ((PermissionCard) permissionCard).getCities();
@@ -213,15 +163,16 @@ public class RMISwingUI extends SwingUI {
 					slash = " / ";
 				}
 				cityInitial.setText(Character.toString(city.getName().charAt(0)) + slash);
-				mapPanel.add(cityInitial, 0);
+				getMapPanel().add(cityInitial, 0);
 				cityCoordX += 17;
 			}
 			x -= 52;
+			indexOfTile++;
 		}
 	}
 
 	private void refreshFreeCouncillors(List<Councillor> freeCouncillors) {
-		Point freeCouncillorsPoint = councilPoints.get("free");
+		Point freeCouncillorsPoint = getCouncilPoints().get("free");
 		int x = freeCouncillorsPoint.x;
 		int y = freeCouncillorsPoint.y;
 		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
@@ -233,14 +184,14 @@ public class RMISwingUI extends SwingUI {
 				freeCouncillorsMap.put(councillorColor, 1);
 			}
 		}
-		for (Map.Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
+		for (Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
 			String color = entry.getKey();
 			BufferedImage councillorImage = readImage(SwingUI.getImagesPath() + color + SwingUI.getCouncillorPath());
 			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
-			mapPanel.add(councillorLabel, 0);
+			getMapPanel().add(councillorLabel, 0);
 			JLabel councillorsValue = new JLabel();
 			councillorsValue.setBounds(0, 0, 23, 25);
 			councillorsValue.setLocation(x + 11, y + 16);
@@ -251,7 +202,7 @@ public class RMISwingUI extends SwingUI {
 				councillorsValue.setForeground(Color.black);
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
-			mapPanel.add(councillorsValue, 0);
+			getMapPanel().add(councillorsValue, 0);
 			y += 41;
 		}
 
@@ -264,25 +215,43 @@ public class RMISwingUI extends SwingUI {
 			BufferedImage cardImage = readImage(SwingUI.getImagesPath() + card.toString() + SwingUI.getPoliticCardPath());
 			Image resizedCardImage = cardImage.getScaledInstance(42, 66, Image.SCALE_SMOOTH);
 			JLabel cardLabel = new JLabel(new ImageIcon(resizedCardImage));
+			cardsList.add(cardLabel);
+			cardLabel.addMouseListener(new MouseAdapter() {
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						chosenCard = card.toString();
+		            	getRmiGUIView().resume();
+	                }
+	        });      
 			cardLabel.setBounds(0, 0, 42, 66);
 			cardLabel.setLocation(x, y);
 			x += 44;
-			mapPanel.add(cardLabel, 0);
+			getMapPanel().add(cardLabel, 0);
+			cardLabel.setEnabled(false);
 		}
-
+		JButton finished = new JButton("finished");
+		finished.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+				finish = true;
+				resumeRMIGUIView();
+            }
+        });
+		finished.setBounds(x, y, 70, 30);
+		getMapPanel().add(finished, 0);
 	}
 
 	private int searchPlayer(List<Player> playersList) {
 		for (Player player : playersList) {
-			if (playerName.equals(player.getName())) {
+			if (getPlayerName().equals(player.getName())) {
 				return playersList.indexOf(player);
 			}
 		}
 		return -1;
 	}
 
-	private void refreshBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity,
-			Bonus currentKingTile) {
+	private void refreshBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		List<Region> allRegions = new ArrayList<>();
 		allRegions.addAll(groupRegionalCity);
 		allRegions.addAll(groupColoredCity);
@@ -296,55 +265,91 @@ public class RMISwingUI extends SwingUI {
 		}
 	}
 
-	private void drawBonusTile(String name, Bonus bonusTile) {
-		Point regionPoint = getCouncilPoint(name);
-		int x = regionPoint.x;
-		int y = regionPoint.y;
-		if (("seaside").equals(name) || ("hill").equals(name) || ("mountain").equals(name)) {
-			x += 7;
-			y -= 8;
-		}
-		if (("kingdom").equals(name)) {
-			x -= 63;
-			y -= 40;
-		}
-		BufferedImage tileImage = readImage(SwingUI.getImagesPath() + name + SwingUI.getBonusTilePath());
-		Image resizedTileImage = tileImage.getScaledInstance(50, 35, Image.SCALE_SMOOTH);
-		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
-		tileLabel.setBounds(0, 0, 50, 35);
-		tileLabel.setLocation(x, y);
-		mapPanel.add(tileLabel, 0);
-		drawBonus(bonusTile, x + 25, y + 10, 23, 25, -5);
-	}
-
 	void refreshUI(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
-		refreshPlayersTable(currentState.getPlayersList());
+		/*refreshPlayersTable(currentState.getPlayersList());//TODO
 		refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
 		refreshFreeCouncillors(currentState.getFreeCouncillors());
 		refreshPermitTiles(currentState.getGroupRegionalCity());
 		refreshBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
 		int playerIndex = searchPlayer(currentState.getPlayersList());
-		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());
-		frame.repaint();
+		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());*/
+		getFrame().repaint();
 	}
 
-	public void loadStaticContents(StartTurnState currentState) {
-		addRewardTokens(currentState.getGameMap().getCities());
-		addNobilityTrackBonuses(currentState.getNobilityTrack());
+	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
+		for(int i = 0; i < bonuses.size(); i++)  {
+			bonusesName.add(bonuses.get(i).getName());
+			bonusesValue.add(String.valueOf(bonuses.get(i).getValue()));
+		}
 	}
+	
+	public void loadStaticContents(StartTurnState currentState) {
+		Map<String, City> cityMap = currentState.getGameMap().getCities();
+		Set<Entry<String, City>> citiesEntries = cityMap.entrySet();
+		List<String> citiesName = new ArrayList<>();
+		List<List<String>> citiesBonusesName = new ArrayList<>();
+		List<List<String>> citiesBonusesValue = new ArrayList<>();
+		for(Entry<String, City> cityEntry : citiesEntries) {
+			City city = cityEntry.getValue();
+			if(!city.isCapital()) {
+				citiesName.add(city.getName());
+				List<Bonus> bonuses = ((NormalCity) city).getRewardToken().getBonuses();
+				List<String> bonusesName = new ArrayList<>();
+				List<String> bonusesValue = new ArrayList<>();
+				bonusesToStrings(bonuses, bonusesName, bonusesValue);
+				citiesBonusesName.add(bonusesName);
+				citiesBonusesValue.add(bonusesValue);
+			}
+		}
+		addRewardTokens(citiesName, citiesBonusesName, citiesBonusesValue);
+		List<NobilityTrackStep> steps = currentState.getNobilityTrack().getSteps();
+		List<List<String>> stepsBonusesName = new ArrayList<>();
+		List<List<String>> stepsBonusesValue = new ArrayList<>();
+		for(NobilityTrackStep step : steps) {
+			List<Bonus> bonuses = step.getBonuses();		
+			List<String> bonusesName = new ArrayList<>();
+			List<String> bonusesValue = new ArrayList<>();
+			bonusesToStrings(bonuses, bonusesName, bonusesValue);
+			stepsBonusesName.add(bonusesName);
+			stepsBonusesValue.add(bonusesValue);
+		}
+		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
+	}
+	
 	
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
 	
-	public void showAvailableActions(Boolean isAvailableMainAction, Boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
+	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
 		setRmiguiView(rmiguiView);
+		if(isAvailableMainAction && isAvailableQuickAction) {
+			enableCards();
+		}
 		getMainActionPanel().setVisible(isAvailableMainAction);
 		getQuickActionPanel().setVisible(isAvailableQuickAction);
 	}
 
+	public String getChosenCard() {
+		return chosenCard;
+	}
+	
+	public int getChosenTile() {
+		return chosenTile;
+	}
 
+	private void enableCards() {
+		for (JLabel jLabel : cardsList) {
+			jLabel.setEnabled(true);
+		}
+	}
+	public void enableButtons() {
+		enableRegionButtons();
+	}
 
+	public boolean hasFinished() {
+		return finish;
+	}
 	
 }

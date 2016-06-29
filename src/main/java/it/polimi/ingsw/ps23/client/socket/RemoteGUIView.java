@@ -3,15 +3,15 @@ package it.polimi.ingsw.ps23.client.socket;
 import java.io.PrintStream;
 
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
-import it.polimi.ingsw.ps23.client.socket.gui.RewardTokensExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.KingPositionExpression;
 
 public class RemoteGUIView extends RemoteView {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
-	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
-	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";
+	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
+	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -33,12 +33,12 @@ public class RemoteGUIView extends RemoteView {
 		Expression expression = new TerminalExpression(KING_POSITION_TAG_OPEN, KING_POSITION_TAG_CLOSE);
 		return new KingPositionExpression(swingUI, expression);
 	}
-
-	private RewardTokensExpression getRewardTokensExpression() {
-		Expression expression = new TerminalExpression(REWARD_TOKENS_TAG_OPEN, REWARD_TOKENS_TAG_CLOSE);
-		return new RewardTokensExpression(swingUI, expression);
-	}
 	
+	private StaticContentExpression getStaticContentExpression() {
+		Expression expression = new TerminalExpression(STATIC_CONTENT_TAG_OPEN, STATIC_CONTENT_TAG_CLOSE);
+		return new StaticContentExpression(swingUI, expression);
+	}
+
 	public void setEndCLIPrints() {
 		endCLIPrints = true;
 	}
@@ -56,14 +56,12 @@ public class RemoteGUIView extends RemoteView {
 	@Override
 	protected void run() {
 		CLIPrints();
-		
+		getStaticContentExpression().parse(getClient().receive());
 		KingPositionExpression isKingPosition = getKingPositionExpression();
-		RewardTokensExpression isRewardToken = getRewardTokensExpression();
 		String message;
 		do {
 			message = getClient().receive();//TODO ricevo info su player disconnessi
 			message = isKingPosition.parse(message);
-			message = isRewardTokens.parse(message);
 		} while(!getConnectionTimedOut());
 		getClient().closeConnection();
 	}
