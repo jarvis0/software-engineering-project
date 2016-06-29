@@ -23,7 +23,7 @@ public class TestNobilityTrack {
 		turnHandler.useMainAction();
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayer(game.getPlayersNumber() - 1));
 		List<NobilityTrackStep> nobilityTrackSteps = game.getNobilityTrack().getSteps();
-		game.getNobilityTrack().walkOnNobilityTrack(0, nobilityTrackSteps.size(), game, turnHandler);
+		game.getNobilityTrack().walkOnNobilityTrack(0, nobilityTrackSteps.size() - 1, game, turnHandler);
 		TurnHandler turnHandler2 = new TurnHandler();
 		turnHandler2.useMainAction();
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayer(game.getPlayersNumber() - 2));
@@ -33,7 +33,7 @@ public class TestNobilityTrack {
 			}
 		}
 		assertAll(game, turnHandler, turnHandler2);
-		game.getNobilityTrack().walkOnNobilityTrack(nobilityTrackSteps.size(), nobilityTrackSteps.size() + 5, game, turnHandler);
+		game.getNobilityTrack().walkOnNobilityTrack(nobilityTrackSteps.size() - 1, nobilityTrackSteps.size() + 5, game, turnHandler);
 		assertAll(game, turnHandler, turnHandler2);		
 	}
 	
