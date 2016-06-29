@@ -17,13 +17,20 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
 
+	private SocketParametersCreator gameParameters;
+	
 	public SocketGUIView(String clientName, Connection connection) {
 		super(clientName, connection);
+		gameParameters = new SocketParametersCreator();
 	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
-		getConnection().send(new SocketParameterCreator().createUIStatus(currentState));
+		//TODO if first time then...
+		getConnection().send(gameParameters.createUIStaticContent(currentState.getGameMap().getCities(), currentState.getNobilityTrack()));
+		
+		
+		getConnection().send(gameParameters.createUIStatus(currentState));
 		/*List<Region> regions = currentState.getGameMap().getGroupRegionalCity();
 		String message = "<regions>" + currentState.getGameMap().getGroupRegionalCity().size() + ",";
 		for()*/

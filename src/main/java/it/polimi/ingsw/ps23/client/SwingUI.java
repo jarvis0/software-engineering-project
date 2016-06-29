@@ -28,7 +28,7 @@ import javax.swing.JButton;
 
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 
-public abstract class SwingUI {
+abstract class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
 	private static final String IMAGES_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/images/";

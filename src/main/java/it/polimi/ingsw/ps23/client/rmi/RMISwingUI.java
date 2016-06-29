@@ -21,13 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
-import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.CoinBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
-import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -38,7 +36,6 @@ import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
@@ -57,6 +54,10 @@ public class RMISwingUI extends SwingUI {
 		mapPanel = getMapPanel();
 		tableModel = getTableModel();
 		this.playerName = getPlayerName();
+	}
+	
+	public String getChosenActionUI() {
+		return getChosenAction();
 	}
 
 	private void drawBonus(Bonus bonus, int x, int y, int width, int height, int yOffset) {
@@ -126,11 +127,11 @@ public class RMISwingUI extends SwingUI {
 
 	}
 
-	private void refreshPlayersTable(PlayersSet playerSet) {
+	private void refreshPlayersTable(List<Player> playersList) {
 		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 			tableModel.removeRow(i);
 		}
-		for (Player player : playerSet.getPlayers()) {
+		for (Player player : playersList) {
 			Vector<Object> vector = new Vector<>();
 			vector.add(0, player.getName());
 			vector.add(1, player.getVictoryPoints());
@@ -219,12 +220,12 @@ public class RMISwingUI extends SwingUI {
 		}
 	}
 
-	private void refreshFreeCouncillors(FreeCouncillorsSet freeCouncillors) {
+	private void refreshFreeCouncillors(List<Councillor> freeCouncillors) {
 		Point freeCouncillorsPoint = councilPoints.get("free");
 		int x = freeCouncillorsPoint.x;
 		int y = freeCouncillorsPoint.y;
 		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
-		for (Councillor freeCouncillor : freeCouncillors.getFreeCouncillors()) {
+		for (Councillor freeCouncillor : freeCouncillors) {
 			String councillorColor = freeCouncillor.getColor().toString();
 			if (freeCouncillorsMap.containsKey(councillorColor)) {
 				freeCouncillorsMap.put(councillorColor, freeCouncillorsMap.get(councillorColor) + 1);
@@ -317,14 +318,14 @@ public class RMISwingUI extends SwingUI {
 	}
 
 	void refreshUI(StartTurnState currentState) {
-		refreshKingPosition(currentState.getKing().getPosition().getName());
-		refreshPlayersTable(currentState.getPlayersSet());
-		refreshCouncils(currentState.getGameMap().getGroupRegionalCity(), currentState.getKing().getCouncil());
+		refreshKingPosition(currentState.getKingPosition());
+		refreshPlayersTable(currentState.getPlayersList());
+		refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
 		refreshFreeCouncillors(currentState.getFreeCouncillors());
-		refreshPermitTiles(currentState.getGameMap().getGroupRegionalCity());
-		refreshBonusTiles(currentState.getGameMap().getGroupRegionalCity(), currentState.getGameMap().getGroupColoredCity(), currentState.getCurrentKingTile());
-		int playerIndex = searchPlayer(currentState.getPlayersSet().getPlayers());
-		refreshPoliticCards((currentState.getPlayersSet().getPlayer(playerIndex)).getPoliticHandDeck());
+		refreshPermitTiles(currentState.getGroupRegionalCity());
+		refreshBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
+		int playerIndex = searchPlayer(currentState.getPlayersList());
+		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());
 		frame.repaint();
 	}
 
@@ -336,9 +337,14 @@ public class RMISwingUI extends SwingUI {
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
-
-	public void showAvailableActions(String availableAction) {
-		
-		
+	
+	public void showAvailableActions(Boolean isAvailableMainAction, Boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
+		setRmiguiView(rmiguiView);
+		getMainActionPanel().setVisible(isAvailableMainAction);
+		getQuickActionPanel().setVisible(isAvailableQuickAction);
 	}
+
+
+
+	
 }

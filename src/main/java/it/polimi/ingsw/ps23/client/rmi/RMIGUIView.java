@@ -1,7 +1,9 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
 import java.io.PrintStream;
+import java.rmi.RemoteException;
 
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -49,29 +51,22 @@ public class RMIGUIView extends RMIView {
 			firstUIRefresh = false;
 		}
 		rmiSwingUI.refreshUI(currentState);
-		/*Player player = currentState.getCurrentPlayer();
+		Player player = currentState.getCurrentPlayer();
 		if(player.getName().equals(getClientName())) {
 			player.toString();
-			rmiSwingUI.showAvailableActions(currentState.getAvailableAction());
+			rmiSwingUI.showAvailableActions(currentState.isAvailableMainAction(), currentState.isAvailableQuickAction(), this);
+			pause();
 			try {
-				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
-			} catch (NullPointerException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find the action.", e);
-				try {
-					getControllerInterface().wakeUpServer();
-				} catch (RemoteException e1) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
-				}
+				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(rmiSwingUI.getChosenAction()));
 			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-			}
+				e.printStackTrace();
+			}			
 		} else {
-			output.println("It's player " + player.getName() + " turn.");
+			rmiSwingUI.showAvailableActions(false, false, this); //TODO creare metodo per stampare che è il turno di un altro player
 			waiting = true;
 			pause();
-		}*/
-		//pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
-
+		}
+		
 	}
 
 	@Override
@@ -168,5 +163,6 @@ public class RMIGUIView extends RMIView {
 			state.acceptView(this);
 		} while(!endGame);
 	}
+
 	
 }
