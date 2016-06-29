@@ -108,7 +108,7 @@ public class Model extends ModelObservable {
 
 	private void selectNextGameState() {
 		if(nextPlayerIndex()) {
-			if(new EndGame().isGameEnded(game, turnHandler)) {
+			if(new EndGame(game, turnHandler).isGameEnded()) {
 				setEndGameState();
 			}
 			else {
@@ -197,6 +197,9 @@ public class Model extends ModelObservable {
 	
 	private void launchOfferMarket() {
 		nextPlayerIndex();
+		if(currentPlayerIndex < 0) {
+			currentPlayerIndex++;
+		}
 		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
 		game.setCurrentPlayer(currentPlayer);
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
@@ -260,10 +263,10 @@ public class Model extends ModelObservable {
 	 * set at the game startup.
 	 */
 	public void setCurrentPlayerOffline() {
-		//if(game.getGamePlayersSet().isAnyoneOnline()) {
+		if(game.getGamePlayersSet().canContinue()) {
 			State currentState = context.getState();
+			game.getCurrentPlayer().setOnline(false);
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
-				game.getCurrentPlayer().setOnline(false);
 				setPlayerTurn();
 			}
 			else {
@@ -274,10 +277,11 @@ public class Model extends ModelObservable {
 					chooseNextBuyMarketStep();
 				}
 			}
-		//}
-		//else {
-			//TODO endgame?
-		//}
+		}
+		else {
+			(new EndGame(game, turnHandler)).applyFinalBonus();
+			setEndGameState();
+		}
 	}
 	
 	public void setOnlinePlayer(String player) {

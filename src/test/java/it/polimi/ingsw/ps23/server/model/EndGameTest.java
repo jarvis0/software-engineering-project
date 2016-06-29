@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23;
+package it.polimi.ingsw.ps23.server.model;
 
 import static org.junit.Assert.*;
 
@@ -33,13 +33,13 @@ public class EndGameTest {
 		Player third = game.getGamePlayersSet().getPlayer(1);
 		game.setCurrentPlayer(winner);
 		winner.updateVictoryPoints(100);
-		EndGame endGame = new EndGame();
+		EndGame endGame = new EndGame(game, turnHandler);
 		Iterator<Entry<String,City>> iterator = game.getGameMap().getCities().entrySet().iterator();
 		while(!winner.hasFinished() && iterator.hasNext()) {
-			assertFalse(endGame.isGameEnded(game, turnHandler));
+			assertFalse(endGame.isGameEnded());
 			winner.getEmporiums().getBuiltEmporiumsSet().add(iterator.next().getValue());			
 		}
-		assertTrue(endGame.isGameEnded(game, turnHandler));
+		assertTrue(endGame.isGameEnded());
 		for(Player player : game.getGamePlayersSet().getPlayers()) {
 			if(!player.equals(winner)) {
 				assertTrue(new WinnerComparator().compare(winner, player) >= 1);
@@ -57,7 +57,7 @@ public class EndGameTest {
 		second.updateVictoryPoints(- second.getVictoryPoints());
 		third.updateVictoryPoints(- third.getVictoryPoints());
 		game.setCurrentPlayer(winner);
-		endGame.isGameEnded(game, turnHandler);
+		endGame.isGameEnded();
 		assertTrue(new WinnerComparator().compare(second, third) >= 1);
 	}
 

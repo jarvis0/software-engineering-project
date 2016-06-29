@@ -65,6 +65,7 @@ public class MarketBuyPhaseState extends State {
 	
 	@Override
 	public void changeState(Context context, Game game) {
+		context.setState(this);
 		market = game.getMarket();	
 		currentPlayer = game.getCurrentPlayer();
 	}
