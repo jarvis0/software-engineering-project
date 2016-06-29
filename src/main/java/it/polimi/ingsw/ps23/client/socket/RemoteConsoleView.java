@@ -3,41 +3,46 @@ package it.polimi.ingsw.ps23.client.socket;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-class RemoteConsoleView {
+import it.polimi.ingsw.ps23.client.socket.console.NoInputExpression;
+import it.polimi.ingsw.ps23.client.socket.console.YesInputExpression;
 
-	private static final String NO_INPUT = "NOINPUTNEEDED";
-	
-	private SocketClient client;
+class RemoteConsoleView extends RemoteView {
+
+	private static final String NO_INPUT_TAG_OPEN = "<no_input>";
+	private static final String NO_INPUT_TAG_CLOSE = "</no_input>";
+	private static final String YES_INPUT_TAG_OPEN = "<yes_input>";
+	private static final String YES_INPUT_TAG_CLOSE = "</yes_input>";
 	
 	private Scanner scanner;
 	private PrintStream output;
 	
-	private boolean connectionTimedOut;
-	
 	RemoteConsoleView(SocketClient client, Scanner scanner, PrintStream output) {
-		this.client = client;
+		super(client);
 		this.scanner = scanner;
 		this.output = output;
-		connectionTimedOut = false;
+	}
+
+	private NoInputExpression getNoInputExpression() {
+		Expression expression = new TerminalExpression(NO_INPUT_TAG_OPEN, NO_INPUT_TAG_CLOSE);
+		return new NoInputExpression(output, expression);
 	}
 	
-	void setConnectionTimedOut() {
-		connectionTimedOut = true;
+	private YesInputExpression getYesInputExpression() {
+		Expression expression = new TerminalExpression(YES_INPUT_TAG_OPEN, YES_INPUT_TAG_CLOSE);
+		return new YesInputExpression(scanner, output, getClient(), expression);
 	}
-	
+
+	@Override
 	void run() {
+		YesInputExpression isYesInput = getYesInputExpression();
+		NoInputExpression isNoInput = getNoInputExpression();
 		String message;
 		do {
-			message = client.receive();
-			if(!message.contains(NO_INPUT)) {
-				output.println(message);
-				client.send(scanner.nextLine());
-			}
-			else {
-				output.println(message.replace(NO_INPUT, ""));
-			}
-		} while(!connectionTimedOut);
-		client.closeConnection();
+			message = getClient().receive();
+			message = isYesInput.parse(message);
+			isNoInput.parse(message);
+		} while(!getConnectionTimedOut());
+		getClient().closeConnection();
 	}
 
 }

@@ -21,6 +21,7 @@ public class Player implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 663214081725066833L;
+	private static final int POINTS_MAX_EMPORIUMS_REACHED = 3;
 	private String name;
 	private int coins;
 	private int assistants;
@@ -125,11 +126,15 @@ public class Player implements Serializable {
 		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
 		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
-		return permissionHandDeck;
+		return permissionTotalHandDeck;
 	}
 
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		builtEmporiumsSet.addBuiltEmporium(city);
+		if(game.canTakeBonusLastEmporium()) {
+			updateVictoryPoints(POINTS_MAX_EMPORIUMS_REACHED);
+			game.lastEmporiumBuilt();
+		}
 		game.getGameMap().getCitiesGraph().rewardTokenGiver(game, turnHandler, city);	
 	}
 
@@ -171,10 +176,6 @@ public class Player implements Serializable {
 
 	public boolean hasFinished() {
 		return builtEmporiumsSet.containsMaxEmporium();
-	}
-	
-	void addBonusTile(Bonus bonus) {
-		bonusTile.addTile(bonus);
 	}
 
 	public void getAllTilePoints(Game game, TurnHandler turnHandler) {

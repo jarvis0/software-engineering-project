@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class ChangePermitsTileState extends ActionState {
+public class ChangePermitsTileState extends QuickActionState {
 	
 	/**
 	 * 

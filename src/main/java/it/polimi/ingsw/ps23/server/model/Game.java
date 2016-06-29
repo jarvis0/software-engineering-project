@@ -38,6 +38,7 @@ public class Game implements Serializable {
 	private Player currentPlayer;
 	private Market currentMarket;
 	private StateCache stateCache;
+	private boolean lastEmporiumBuilt;
 
 	/**
 	 * Create a new game initialization object taking game player names
@@ -58,6 +59,7 @@ public class Game implements Serializable {
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
 		stateCache = new StateCache();
+		lastEmporiumBuilt = false;
 	}
 	
 	public String getMapType() {
@@ -118,6 +120,14 @@ public class Game implements Serializable {
 	
 	public Market getMarket() {
 		return currentMarket;
+	}
+	
+	public void lastEmporiumBuilt() {
+		lastEmporiumBuilt = true;
+	}
+	
+	public boolean canTakeBonusLastEmporium() {
+		return lastEmporiumBuilt;
 	}
 	
 }

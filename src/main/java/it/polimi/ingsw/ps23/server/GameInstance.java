@@ -26,7 +26,9 @@ import it.polimi.ingsw.ps23.server.view.SocketView;
  *
  */
 public class GameInstance {
-
+	private static final String MAP_TYPE_TAG_OPEN = "<map_type>";
+	private static final String MAP_TYPE_TAG_CLOSE = "</map_type>";
+	
 	private static final String PLAYER_PRINT = "Player ";
 	
 	private Model model;
@@ -99,8 +101,8 @@ public class GameInstance {
 		playersName.addAll(rmiPlayersName);
 		Collections.shuffle(playersName);
 		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
-		String mapType = "<MapType>" + model.getMapType();
-		sendSocketInfoMessage(mapType);//TODO
+		String mapType = MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE;
+		sendSocketInfoMessage(mapType);
 		model.sendRMIInfoMessage(mapType);
 		model.startGame();
 		for(Connection connection : socketWaitingConnections.values()) {
@@ -119,7 +121,7 @@ public class GameInstance {
 
 	private void sendSocketInfoMessage(String message) {
 		for(SocketView gameSocketView : socketViews) {
-			gameSocketView.sendNoInput(message);
+			gameSocketView.getConnection().sendNoInput(message);
 		}
 	}
 	
@@ -170,7 +172,7 @@ public class GameInstance {
 	void reconnectPlayer(String name, Connection connection) {
 		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
 		for(SocketView gameSocketView : socketViews) {
-			gameSocketView.sendNoInput(message);
+			gameSocketView.getConnection().sendNoInput(message);
 		}
 		model.sendRMIInfoMessage(message);
 		createSocketGame(new SocketConsoleView(name, connection), connection);

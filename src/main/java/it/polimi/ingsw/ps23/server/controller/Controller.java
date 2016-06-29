@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
@@ -45,7 +46,11 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(State state) {
-		model.setActionState(state);
+		try {
+			model.setActionState(state);
+		} catch (IllegalActionSelectedException e) {
+			model.rollBack(e);
+		}
 	}
 
 	@Override

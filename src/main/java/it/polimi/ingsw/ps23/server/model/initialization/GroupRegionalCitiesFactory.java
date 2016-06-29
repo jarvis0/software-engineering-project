@@ -3,10 +3,7 @@ package it.polimi.ingsw.ps23.server.model.initialization;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
@@ -26,13 +23,8 @@ class GroupRegionalCitiesFactory {
 			Bonus bonus = new VictoryPointBonus(rawBonus);
 			bonus.setValue(Integer.parseInt(rawRegion[BONUS_VALUE_POSITION]));
 			Region regionalCity = new GroupRegionalCity(rawRegion[REGION_NAME_POSITION], bonus, citiesConnections);
-			for(int i = BONUS_VALUE_POSITION + 1; i < rawRegion.length; i++){
-				try {
-					regionalCity.addCity(cities.get(rawRegion[i]));
-				}
-				catch(InvalidCityException e) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initializate GroupRegionalCities.", e);
-				}
+			for(int i = BONUS_VALUE_POSITION + 1; i < rawRegion.length; i++) {
+				regionalCity.addCity(cities.get(rawRegion[i]));
 			}
 			regionalCity.toCitiesList();
 			groupRegionalCities.add(regionalCity);

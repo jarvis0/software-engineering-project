@@ -2,10 +2,10 @@ package it.polimi.ingsw.ps23.server.model.state;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssitant;
+import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssistant;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class EngageAnAssistantState extends ActionState {
+public class EngageAnAssistantState extends QuickActionState {
 	
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class EngageAnAssistantState extends ActionState {
 	}
 
 	public Action createAction() {
-		return new EngageAnAssitant();
+		return new EngageAnAssistant();
 	}
 	
 	@Override

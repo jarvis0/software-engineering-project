@@ -15,7 +15,6 @@ import it.polimi.ingsw.ps23.server.model.initialization.CitiesFactory;
 import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
-import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
@@ -54,7 +53,7 @@ public class TestLoadCities {
 	private void citiesTest() {	
 		firstRemovedCity = cities.remove(initialCitiesSize - 1);
 		assertTrue(initialCitiesSize - 1 == cities.size());
-		assertTrue(firstRemovedCity instanceof CapitalCity);
+		assertTrue(firstRemovedCity.isCapital());
 	}
 	
 	private void bonusesTest() {
@@ -65,6 +64,7 @@ public class TestLoadCities {
 		rewardToken = new RewardToken();
 		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
 		city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
+		assertTrue(((NormalCity) city).getRewardToken().getBonuses().containsAll(rewardToken.getBonuses()));
 		assertTrue(!((NormalCity) city).hasNobilityTrackBonus());
 	}
 	

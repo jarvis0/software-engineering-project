@@ -25,6 +25,8 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 class Server implements ServerInterface {
 	
 	private static final int SOCKET_PORT_NUMBER = 12345;
+	private static final String CONSOLE_TAG = "<console>";
+	private static final String GUI_TAG = "<rmi>";
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
@@ -33,7 +35,6 @@ class Server implements ServerInterface {
 	private static final int CONNECTION_TIMEOUT = 10000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
-	private static final String NO_INPUT = "NOINPUTNEEDED";
 	private static final int RANDOM_NUMBERS_POOL = 20;
 	
 	private ExecutorService executor;
@@ -82,7 +83,7 @@ class Server implements ServerInterface {
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			for(Connection connection : socketWaitingConnections.values()) {
-				connection.send(NO_INPUT + message);
+				connection.sendNoInput(message);
 			}
 			for(ClientInterface client : rmiWaitingConnections.values()) {
 				infoMessage(client, message);
@@ -215,7 +216,7 @@ class Server implements ServerInterface {
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			for(Connection connection : socketWaitingConnections.values()) {
-				connection.send(NO_INPUT + message);
+				connection.sendNoInput(message);
 			}
 			for(ClientInterface client : rmiWaitingConnections.values()) {
 				infoMessage(client, message);
@@ -235,35 +236,51 @@ class Server implements ServerInterface {
 			}
 		}
 	}
-
-	synchronized void joinToSocketWaitingList(String name, Connection connection) {
+	
+	private String checkIfConsole(String clientInfos, Connection connection) {
+		String name = new String();
+		if(clientInfos.contains(CONSOLE_TAG)) {
+			name = clientInfos.replace(CONSOLE_TAG,  "");
+			connection.setConsole(true);
+		}
+		else {
+			if(clientInfos.contains(GUI_TAG)) {
+				name = clientInfos.replace(GUI_TAG, "");
+				connection.setConsole(false);
+			}
+		}
+		return name;
+	}
+	
+	synchronized void joinToSocketWaitingList(String clientInfos, Connection connection) {
+		String name = checkIfConsole(clientInfos, connection);
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
 		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
-			connection.send(NO_INPUT + "\nInvalid name format.");
+			connection.sendNoInput("\nInvalid name format.");
 			connection.closeConnection();
 		}
 		else {
 			output.println("New socket client connection received.");
-			connection.send(NO_INPUT + "Connection established at " + new Date().toString() + "\n");
+			connection.sendNoInput("Connection established at " + new Date().toString() + "\n");
 			if(!formerPlayer) {
 				String playerName = newName(name, 1);
 				if(isDouble(playerName)) {
 					playerName = solveDoubles(playerName, 1);
 				}
-				connection.send(NO_INPUT + "Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
+				connection.sendNoInput("Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
 				socketWaitingConnections.put(playerName, connection);
 				String message = new String();
 				if(launchingGame) {
 					message += "A new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
 				}
-				connection.send(NO_INPUT + message + "Waiting other players to connect...");
+				connection.sendNoInput(message + "Waiting other players to connect...");
 				startCountdownFromSocket();
 			}
 			else {
 				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
 				gameInstances.reconnectPlayer(name, connection);
-				connection.send(NO_INPUT + "You have been prompted to your previous game, please wait your turn.");
+				connection.sendNoInput("You have been prompted to your previous game, please wait your turn.");
 			}
 		}
 	}

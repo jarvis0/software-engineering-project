@@ -19,7 +19,7 @@ public class NobilityTrack implements Serializable {
 	}
 	
 	public void walkOnNobilityTrack(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
-		for(int position = initialNobilityTrackPoints+1; position <= finalNobilityTrackPoints; position++) {
+		for(int position = initialNobilityTrackPoints + 1; position <= finalNobilityTrackPoints && position < steps.size(); position++) {
 			steps.get(position).useBonus(game, turnHandler);
 		}	
 	}

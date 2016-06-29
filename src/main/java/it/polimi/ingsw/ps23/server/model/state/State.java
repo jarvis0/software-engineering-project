@@ -5,8 +5,12 @@ import java.io.Serializable;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-@SuppressWarnings("serial")
 public abstract class State implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3883706184904910069L;
 	
 	private String exceptionString = new String();
 	

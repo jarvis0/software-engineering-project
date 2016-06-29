@@ -2,10 +2,7 @@ package it.polimi.ingsw.ps23.server.model.initialization;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
@@ -27,11 +24,7 @@ class GroupColoredCitiesFactory {
 	private void addCities(List<City> cities, String colorName, Region coloredGroup) {
 		for(City city : cities) {
 			if(city.getColor().equals(colorName)) {
-				try {
-					coloredGroup.addCity(city);
-				} catch (InvalidCityException e) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initializate GroupColoredCities.", e);
-				}
+				coloredGroup.addCity(city);
 			}
 		}
 	}

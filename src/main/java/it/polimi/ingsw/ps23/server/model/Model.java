@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
@@ -18,6 +19,7 @@ import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
 import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.state.ActionState;
 import it.polimi.ingsw.ps23.server.model.state.Context;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
@@ -108,7 +110,7 @@ public class Model extends ModelObservable {
 
 	private void selectNextGameState() {
 		if(nextPlayerIndex()) {
-			if(new EndGame().isGameEnded(game, turnHandler)) {
+			if(new EndGame(game, turnHandler).isGameEnded()) {
 				setEndGameState();
 			}
 			else {
@@ -153,7 +155,8 @@ public class Model extends ModelObservable {
 		launchOfferMarket();
 	}
 
-	public void setActionState(State state) {
+	public void setActionState(State state) throws IllegalActionSelectedException {
+		((ActionState)state).canPerformThisAction(turnHandler);
 		context = new Context();
 		state.changeState(context, game);
 		wakeUp(state);
@@ -197,6 +200,9 @@ public class Model extends ModelObservable {
 	
 	private void launchOfferMarket() {
 		nextPlayerIndex();
+		if(currentPlayerIndex < 0) {
+			currentPlayerIndex++;
+		}
 		Player currentPlayer = game.getGamePlayersSet().getPlayer(currentPlayerIndex);
 		game.setCurrentPlayer(currentPlayer);
 		MarketOfferPhaseState marketOfferPhaseState = new MarketOfferPhaseState();
@@ -260,10 +266,10 @@ public class Model extends ModelObservable {
 	 * set at the game startup.
 	 */
 	public void setCurrentPlayerOffline() {
-		//if(game.getGamePlayersSet().isAnyoneOnline()) {
+		if(game.getGamePlayersSet().canContinue()) {
 			State currentState = context.getState();
+			game.getCurrentPlayer().setOnline(false);
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
-				game.getCurrentPlayer().setOnline(false);
 				setPlayerTurn();
 			}
 			else {
@@ -274,10 +280,11 @@ public class Model extends ModelObservable {
 					chooseNextBuyMarketStep();
 				}
 			}
-		//}
-		//else {
-			//TODO endgame?
-		//}
+		}
+		else {
+			(new EndGame(game, turnHandler)).applyFinalBonus();
+			setEndGameState();
+		}
 	}
 	
 	public void setOnlinePlayer(String player) {
