@@ -8,34 +8,30 @@ import it.polimi.ingsw.ps23.client.socket.console.YesInputExpression;
 
 class RemoteConsoleView extends RemoteView {
 
-	private static final String NO_INPUT_TAG_OPEN = "<no_input>";
-	private static final String NO_INPUT_TAG_CLOSE = "</no_input>";
 	private static final String YES_INPUT_TAG_OPEN = "<yes_input>";
 	private static final String YES_INPUT_TAG_CLOSE = "</yes_input>";
 	
 	private Scanner scanner;
-	private PrintStream output;
 	
 	RemoteConsoleView(SocketClient client, Scanner scanner, PrintStream output) {
-		super(client);
+		super(client, output);
 		this.scanner = scanner;
-		this.output = output;
 	}
 
 	private NoInputExpression getNoInputExpression() {
-		Expression expression = new TerminalExpression(NO_INPUT_TAG_OPEN, NO_INPUT_TAG_CLOSE);
-		return new NoInputExpression(output, expression);
+		Expression expression = new TerminalExpression(getNoInputTagOpen(), getNoInputTagClose());
+		return new NoInputExpression(getOutput(), expression);
 	}
 	
 	private YesInputExpression getYesInputExpression() {
 		Expression expression = new TerminalExpression(YES_INPUT_TAG_OPEN, YES_INPUT_TAG_CLOSE);
-		return new YesInputExpression(scanner, output, getClient(), expression);
+		return new YesInputExpression(scanner, getOutput(), getClient(), expression);
 	}
 
 	@Override
-	void run() {
-		YesInputExpression isYesInput = getYesInputExpression();
+	protected void run() {
 		NoInputExpression isNoInput = getNoInputExpression();
+		YesInputExpression isYesInput = getYesInputExpression();
 		String message;
 		do {
 			message = getClient().receive();

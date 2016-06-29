@@ -4,14 +4,18 @@ import java.io.PrintStream;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.Parser;
+import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 
 class MapTypeExpression implements Parser {
 
-	PrintStream output;
+	private RemoteGUIView remoteView;
+	
+	private PrintStream output;
 	
 	private Expression expression;
 	
-	MapTypeExpression(PrintStream output, Expression expression) {
+	MapTypeExpression(RemoteGUIView remoteView, PrintStream output, Expression expression) {
+		this.remoteView = remoteView;
 		this.output = output;
 		this.expression = expression;
 	}
@@ -19,8 +23,10 @@ class MapTypeExpression implements Parser {
 	@Override
 	public String parse(String message) {
 		if(expression.interpret(message)) {
-			output.print("\nMap type: " + expression.removeTag(message) + ".");
-			return expression.removeBlock(message);
+			String mapType = expression.removeTag(message);
+			output.print("\nMap type: " + mapType + ".");
+			remoteView.setEndCLIPrints();
+			return mapType;
 		}
 		return message;
 	}

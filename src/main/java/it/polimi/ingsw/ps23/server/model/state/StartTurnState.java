@@ -39,7 +39,7 @@ public class StartTurnState extends State {
 		return currentPlayer;
 	}
 	
-	public String getAvaiableAction() {
+	public String getAvailableAction() {
 		String avaiableAction = new String();
 		if(turnHandler.isAvailableMainAction()) {
 			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";
@@ -88,7 +88,8 @@ public class StartTurnState extends State {
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "> KING'S POSITION: " + king.getPosition().getName();
+		print += "\n> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {

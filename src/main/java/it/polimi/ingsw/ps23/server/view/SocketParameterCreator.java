@@ -13,6 +13,9 @@ class SocketParameterCreator {
 	
 	String createUIStatus(StartTurnState currentState) {
 		String message = addKingPosition(currentState.getKing().getPosition().getName());
+		
+		//message += add
+		message += new String();
 		return message;
 	}
 	

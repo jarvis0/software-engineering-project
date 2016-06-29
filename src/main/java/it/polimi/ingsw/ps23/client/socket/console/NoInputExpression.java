@@ -15,9 +15,12 @@ public class NoInputExpression implements Parser {
 	
 	private Expression expression;
 	
+	private MapTypeExpression isMapType;
+	
 	public NoInputExpression(PrintStream output, Expression expression) {
 		this.output = output;
 		this.expression = expression;
+		isMapType = getMapTypeExpression();
 	}
 	
 	private MapTypeExpression getMapTypeExpression() {
@@ -27,15 +30,13 @@ public class NoInputExpression implements Parser {
 	
 	@Override
 	public String parse(String message) {
-		MapTypeExpression isMapType = getMapTypeExpression();
-		String updatedMessage;
+		String updatedMessage = message;
 		if(expression.interpret(message)) {
 			updatedMessage = expression.removeTag(message);
 			updatedMessage = isMapType.parse(updatedMessage);
-			//TODO others tags controls
 			output.println(updatedMessage);
 		}
-		return message;
+		return updatedMessage;
 	}
 
 }

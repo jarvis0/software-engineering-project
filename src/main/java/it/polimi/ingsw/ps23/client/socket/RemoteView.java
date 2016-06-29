@@ -1,27 +1,47 @@
 package it.polimi.ingsw.ps23.client.socket;
 
+import java.io.PrintStream;
+
 abstract class RemoteView {
 
+	private static final String NO_INPUT_TAG_OPEN = "<no_input>";
+	private static final String NO_INPUT_TAG_CLOSE = "</no_input>";
+	
 	private SocketClient client;
+	
+	private PrintStream output;
 	
 	private boolean connectionTimedOut;
 
-	RemoteView(SocketClient client) {
+	protected RemoteView(SocketClient client, PrintStream output) {
 		this.client = client;
+		this.output = output;
 	}
 	
-	void setConnectionTimedOut() {
+	protected String getNoInputTagOpen() {
+		return NO_INPUT_TAG_OPEN;
+	}
+	
+	protected String getNoInputTagClose() {
+		return NO_INPUT_TAG_CLOSE;
+	}
+	
+	protected void setConnectionTimedOut() {
 		connectionTimedOut = true;
 	}
 	
-	SocketClient getClient() {
+	protected SocketClient getClient() {
 		return client;
 	}
 	
-	boolean getConnectionTimedOut() {
+	protected boolean getConnectionTimedOut() {
 		return connectionTimedOut;
 	}
 	
-	abstract void run();
+	protected PrintStream getOutput() {
+		return output;
+	}
+	
+	protected abstract void run();
 	
 }

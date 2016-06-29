@@ -46,6 +46,4 @@ abstract class RMIView extends View {
 		notifyAll();
 	}
 	
-	
-	
 }

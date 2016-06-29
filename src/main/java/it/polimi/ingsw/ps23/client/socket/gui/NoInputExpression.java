@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.Parser;
+import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
 public class NoInputExpression implements Parser {
@@ -15,25 +16,29 @@ public class NoInputExpression implements Parser {
 	
 	private Expression expression;
 	
-	public NoInputExpression(PrintStream output, Expression expression) {
+	private MapTypeExpression isMapType;
+	
+	public NoInputExpression(RemoteGUIView remoteView, PrintStream output, Expression expression) {
 		this.output = output;
 		this.expression = expression;
+		isMapType = getMapTypeExpression(remoteView);
 	}
 	
-	private MapTypeExpression getMapTypeExpression() {
-		Expression expression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
-		return new MapTypeExpression(output, expression);
+	private MapTypeExpression getMapTypeExpression(RemoteGUIView remoteView) {
+		Expression mapTypeExpression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
+		return new MapTypeExpression(remoteView, output, mapTypeExpression);
 	}
 	
 	@Override
 	public String parse(String message) {
-		MapTypeExpression isMapType = getMapTypeExpression();
 		String updatedMessage;
 		if(expression.interpret(message)) {
 			updatedMessage = expression.removeTag(message);
-			updatedMessage = isMapType.parse(updatedMessage);
-			//TODO others tags controls
-			output.println(updatedMessage);
+			String mapType = isMapType.parse(updatedMessage);
+			if(mapType.equals(updatedMessage)) {
+				output.println(updatedMessage);
+			}
+			return mapType;
 		}
 		return message;
 	}

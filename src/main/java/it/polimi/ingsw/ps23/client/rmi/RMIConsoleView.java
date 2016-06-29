@@ -43,12 +43,12 @@ class RMIConsoleView extends RMIView {
 	private boolean endGame;
 	private boolean waiting;
 	
-	RMIConsoleView(String playerName) {
+	RMIConsoleView(String playerName, PrintStream output) {
 		super(playerName);
 		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
-		output = new PrintStream(System.out, true);
+		this.output = output;
 	}
 
 	@Override
@@ -69,10 +69,9 @@ class RMIConsoleView extends RMIView {
 		Player player = currentState.getCurrentPlayer();
 		output.println(currentState.getStatus());
 		if(player.getName().equals(getClientName())) {
-			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? ");
 			try {
-				getControllerInterface()
-						.wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
+				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
 			} catch (NullPointerException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find the action.", e);
 				try {

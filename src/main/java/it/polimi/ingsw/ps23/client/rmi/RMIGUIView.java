@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.io.PrintStream;
+
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -17,15 +19,17 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
 	
-	private SwingUI swingUI;
+	private RMISwingUI rmiSwingUI;
+	private PrintStream output;
 	private State state;
 	private boolean endGame;
 	private boolean waiting;
 	private boolean firstUIRefresh;
 	
-	RMIGUIView(String playerName) {
+	RMIGUIView(String playerName, PrintStream output) {
 		super(playerName);
 		firstUIRefresh = true;
+		this.output = output;
 	}
 
 	public State getCurrentState() {
@@ -34,17 +38,39 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	void setMapType(String mapType) {
-		swingUI = new SwingUI(mapType, getClientName());
+		output.print("\nMap type: " + mapType + ".");
+		rmiSwingUI = new RMISwingUI(mapType, getClientName());
 	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
 		if(firstUIRefresh) {
-			swingUI.loadStaticContents(currentState);
+			rmiSwingUI.loadStaticContents(currentState);
 			firstUIRefresh = false;
 		}
-		swingUI.refreshUI(currentState);
-		pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
+		rmiSwingUI.refreshUI(currentState);
+		/*Player player = currentState.getCurrentPlayer();
+		if(player.getName().equals(getClientName())) {
+			player.toString();
+			rmiSwingUI.showAvailableActions(currentState.getAvailableAction());
+			try {
+				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
+			} catch (NullPointerException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find the action.", e);
+				try {
+					getControllerInterface().wakeUpServer();
+				} catch (RemoteException e1) {
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
+				}
+			} catch (RemoteException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			}
+		} else {
+			output.println("It's player " + player.getName() + " turn.");
+			waiting = true;
+			pause();
+		}*/
+		//pause();//TODO rimuovere questa pause, ora serve per non continuare a rifare la visit.
 
 	}
 
@@ -142,5 +168,5 @@ public class RMIGUIView extends RMIView {
 			state.acceptView(this);
 		} while(!endGame);
 	}
-
+	
 }

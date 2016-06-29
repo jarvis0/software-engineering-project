@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.server.view;
 
 import it.polimi.ingsw.ps23.server.Connection;
-import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -24,8 +23,11 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
-		Player player = currentState.getCurrentPlayer();
 		getConnection().send(new SocketParameterCreator().createUIStatus(currentState));
+		/*List<Region> regions = currentState.getGameMap().getGroupRegionalCity();
+		String message = "<regions>" + currentState.getGameMap().getGroupRegionalCity().size() + ",";
+		for()*/
+		//Player player = currentState.getCurrentPlayer();
 		/*if(player.getName().equals(getClientName())) {
 			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {

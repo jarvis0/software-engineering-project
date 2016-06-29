@@ -40,7 +40,7 @@ public class SocketConsoleView extends SocketView {
 		Player player = currentState.getCurrentPlayer();
 		getConnection().sendNoInput(currentState.getStatus());
 		if(player.getName().equals(getClientName())) {
-			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? ");
 			try {
 				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}

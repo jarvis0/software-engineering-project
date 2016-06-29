@@ -27,6 +27,7 @@ import it.polimi.ingsw.ps23.server.view.SocketView;
  *
  */
 public class GameInstance {
+	
 	private static final String MAP_TYPE_TAG_OPEN = "<map_type>";
 	private static final String MAP_TYPE_TAG_CLOSE = "</map_type>";
 	
@@ -107,8 +108,8 @@ public class GameInstance {
 		Collections.shuffle(playersName);
 		model.setUpModel(playersName, new PlayersResumeHandler(socketViews));
 		String mapType = MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE;
-		sendSocketInfoMessage(mapType);//TODO
 		model.sendRMIInfoMessage(mapType);
+		sendSocketInfoMessage(mapType);
 		model.startGame();
 		for(Connection connection : socketWaitingConnections.values()) {
 			connection.startGame();
