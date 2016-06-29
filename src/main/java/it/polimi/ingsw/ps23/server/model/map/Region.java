@@ -65,13 +65,11 @@ public abstract class Region implements Serializable {
 	 * @throws InvalidCityException if the specified city has been already
 	 * inserted
 	 */
-	public void addCity(City city) throws InvalidCityException {
+	public void addCity(City city) {
 		String cityName = city.getName();
 		if(!cities.containsKey(cityName)) {
 			cities.put(cityName, city);
 		}
-		else
-			throw new InvalidCityException();
 	}
 	
 	/**

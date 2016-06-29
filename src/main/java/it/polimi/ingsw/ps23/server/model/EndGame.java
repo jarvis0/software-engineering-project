@@ -24,12 +24,12 @@ class EndGame implements Serializable {
 	EndGame(Game game, TurnHandler turnHandler) {
 		this.game = game;
 		this.turnHandler = turnHandler;
+		finishedNobilityPoints = false;
 	}
 	
 	boolean isGameEnded() {
 		//for(Player player : game.getGamePlayersSet().getPlayers()) {TODO
 			if(game.getCurrentPlayer().hasFinished()) {
-				finishedNobilityPoints = false;
 				applyFinalBonus();
 				return true;
 			}
