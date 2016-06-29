@@ -43,7 +43,7 @@ public class RemoteGUIView extends RemoteView {
 		endCLIPrints = true;
 	}
 
-	private void CLIPrints() {
+	private void cliPrints() {
 		String message;
 		NoInputExpression isNoInput = getNoInputExpression();
 		do {
@@ -55,7 +55,7 @@ public class RemoteGUIView extends RemoteView {
 	
 	@Override
 	protected void run() {
-		CLIPrints();
+		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
 		KingPositionExpression isKingPosition = getKingPositionExpression();
 		String message;
