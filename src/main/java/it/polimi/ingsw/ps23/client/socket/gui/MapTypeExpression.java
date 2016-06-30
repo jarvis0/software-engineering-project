@@ -23,7 +23,7 @@ class MapTypeExpression implements Parser {
 	@Override
 	public String parse(String message) {
 		if(expression.interpret(message)) {
-			String mapType = expression.removeTag(message);
+			String mapType = expression.selectBlock(message);
 			output.print("\nMap type: " + mapType + ".");
 			remoteView.setEndCLIPrints();
 			return mapType;

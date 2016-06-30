@@ -14,5 +14,10 @@ public class SocketSwingUI extends SwingUI {
 		addRewardTokens(citiesName, rewardTokensName, rewardTokensValue);
 		addNobilityTrackBonuses(stepsName, stepsValue);
 	}
+	
+	public void refreshDynamicContent(String kingPosition, List<String> freeCouncillors) {
+		refreshKingPosition(kingPosition);
+		refreshFreeCouncillors(freeCouncillors);
+	}
 
 }

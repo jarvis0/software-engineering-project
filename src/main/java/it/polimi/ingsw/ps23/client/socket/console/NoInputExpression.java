@@ -32,7 +32,7 @@ public class NoInputExpression implements Parser {
 	public String parse(String message) {
 		String updatedMessage = message;
 		if(expression.interpret(message)) {
-			updatedMessage = expression.removeTag(message);
+			updatedMessage = expression.selectBlock(message);
 			updatedMessage = isMapType.parse(updatedMessage);
 			output.println(updatedMessage);
 		}

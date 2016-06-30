@@ -11,7 +11,7 @@ public class TerminalExpression implements Expression {
 	}
 	
 	@Override
-	public String removeTag(String message) {
+	public String selectBlock(String message) {
 		int start = message.indexOf(tagOpen) + tagOpen.length();
 		int end = message.indexOf(tagClose);
 		return message.substring(start, end);

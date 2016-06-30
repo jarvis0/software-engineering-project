@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -206,67 +207,6 @@ public abstract class SwingUI {
 	protected Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
 	}
-	
-	private void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
-		BufferedImage bonusImage = readImage(SwingUI.getImagesPath()+ bonusName + SwingUI.getPngExtension());
-		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
-		bonusLabel.setBounds(0, 0, width, height);
-		bonusLabel.setLocation(x, y + yOffset);
-		getMapPanel().add(bonusLabel, 0);
-		int bonusNumber = Integer.parseInt(bonusValue);
-		if (bonusNumber > 1 || "victoryPoint".equals(bonusName)) {
-			JLabel bonusLabelValue = new JLabel();
-			bonusLabelValue.setBounds(0, 0, width, height);
-			bonusLabelValue.setLocation(x + 8, y + yOffset);
-			bonusLabelValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 9));
-			if ("coin".equals(bonusName)) {
-				bonusLabelValue.setForeground(Color.black);
-			} else {
-				bonusLabelValue.setForeground(Color.white);
-			}
-			bonusLabelValue.setText(String.valueOf(bonusNumber));
-			getMapPanel().add(bonusLabelValue, 0);
-		}
-	}
-
-	protected void addRewardTokens(List<String> citiesName, List<List<String>> citiesBonusesName, List<List<String>> citiesBonusesValue) {
-		for (int i = 0; i < citiesName.size(); i++) {
-			Component cityComponent = getComponents(citiesName.get(i));
-			Point point = cityComponent.getLocationOnScreen();
-			int x = point.x;
-			int y = point.y;
-			for (int j = 0; j < citiesBonusesName.get(i).size(); j++) {
-				drawBonus(citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), x + 50, y - 20, 23, 25, 0);
-				x += 22;
-			}
-		}
-	}
-
-	protected void addNobilityTrackBonuses(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue) {
-		int stepNumber = 0;
-		for (int i = 0; i < stepsBonusesName.size(); i++) {
-			int yOffset = 0;
-			int x = (int) 38.1 * stepNumber + 8;
-			int y = 495;
-			for (int j = 0; j < stepsBonusesName.get(i).size(); j++) {
-				if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
-					int width = 23;
-					int height = 25;
-					if ("1".equals(stepsBonusesValue.get(i).get(j))) {
-						y = 490;
-					}
-					if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
-						y = 476;
-						height = 40;
-					}
-					drawBonus(stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), x, y, width, height, yOffset);
-					yOffset -= 25;
-				}
-			}
-			stepNumber++;
-		}
-	}
 
 	private void loadKing() {
 		BufferedImage kingImage = readImage(IMAGES_PATH + KING_PATH);
@@ -376,6 +316,67 @@ public abstract class SwingUI {
 		scrollPane.setBounds(0, 0, 567, 110);
 		scrollPane.setLocation(800, 0);
 	}
+	
+	private void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
+		BufferedImage bonusImage = readImage(SwingUI.getImagesPath()+ bonusName + SwingUI.getPngExtension());
+		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
+		bonusLabel.setBounds(0, 0, width, height);
+		bonusLabel.setLocation(x, y + yOffset);
+		getMapPanel().add(bonusLabel, 0);
+		int bonusNumber = Integer.parseInt(bonusValue);
+		if (bonusNumber > 1 || "victoryPoint".equals(bonusName)) {
+			JLabel bonusLabelValue = new JLabel();
+			bonusLabelValue.setBounds(0, 0, width, height);
+			bonusLabelValue.setLocation(x + 8, y + yOffset);
+			bonusLabelValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 9));
+			if ("coin".equals(bonusName)) {
+				bonusLabelValue.setForeground(Color.black);
+			} else {
+				bonusLabelValue.setForeground(Color.white);
+			}
+			bonusLabelValue.setText(String.valueOf(bonusNumber));
+			getMapPanel().add(bonusLabelValue, 0);
+		}
+	}
+
+	protected void addRewardTokens(List<String> citiesName, List<List<String>> citiesBonusesName, List<List<String>> citiesBonusesValue) {
+		for (int i = 0; i < citiesName.size(); i++) {
+			Component cityComponent = getComponents(citiesName.get(i));
+			Point point = cityComponent.getLocationOnScreen();
+			int x = point.x;
+			int y = point.y;
+			for (int j = 0; j < citiesBonusesName.get(i).size(); j++) {
+				drawBonus(citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), x + 50, y - 20, 23, 25, 0);
+				x += 22;
+			}
+		}
+	}
+
+	protected void addNobilityTrackBonuses(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue) {
+		int stepNumber = 0;
+		for (int i = 0; i < stepsBonusesName.size(); i++) {
+			int yOffset = 0;
+			int x = (int) 38.1 * stepNumber + 8;
+			int y = 495;
+			for (int j = 0; j < stepsBonusesName.get(i).size(); j++) {
+				if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
+					int width = 23;
+					int height = 25;
+					if ("1".equals(stepsBonusesValue.get(i).get(j))) {
+						y = 490;
+					}
+					if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
+						y = 476;
+						height = 40;
+					}
+					drawBonus(stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), x, y, width, height, yOffset);
+					yOffset -= 25;
+				}
+			}
+			stepNumber++;
+		}
+	}
 
 	private void loadRegionButtons() {
 		BufferedImage seasideImage = readImage(IMAGES_PATH + "seasideRegion.png");
@@ -437,12 +438,7 @@ public abstract class SwingUI {
 		loadMainActionButtons();
 		loadQuickActionPanel();
 	}
-	
-	public void refreshKingPosition(String city) {
-		Point point = getComponents(city).getLocationOnScreen();
-		getComponents("king").setLocation(point);
-	}
-	
+
 	protected void loadMainActionButtons() {
 		mainActionPanel = new JPanel();
 		mainActionPanel.setBounds(895, 181, 215, 272);
@@ -601,6 +597,46 @@ public abstract class SwingUI {
 		gbcbtnAdditionalMainAction.gridx = 0;
 		gbcbtnAdditionalMainAction.gridy = 3;
 		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
+	}
+	
+	protected void refreshKingPosition(String city) {
+		Point point = getComponents(city).getLocationOnScreen();
+		getComponents("king").setLocation(point);
+	}
+
+	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
+		Point freeCouncillorsPoint = getCouncilPoints().get("free");
+		int x = freeCouncillorsPoint.x;
+		int y = freeCouncillorsPoint.y;
+		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
+		for (String freeCouncillor : freeCouncillors) {
+			if (freeCouncillorsMap.containsKey(freeCouncillor)) {
+				freeCouncillorsMap.put(freeCouncillor, freeCouncillorsMap.get(freeCouncillor) + 1);
+			} else {
+				freeCouncillorsMap.put(freeCouncillor, 1);
+			}
+		}
+		for (Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
+			String color = entry.getKey();
+			BufferedImage councillorImage = readImage(SwingUI.getImagesPath() + color + SwingUI.getCouncillorPath());
+			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
+			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
+			councillorLabel.setBounds(0, 0, 28, 52);
+			councillorLabel.setLocation(x, y);
+			getMapPanel().add(councillorLabel, 0);
+			JLabel councillorsValue = new JLabel();
+			councillorsValue.setBounds(0, 0, 23, 25);
+			councillorsValue.setLocation(x + 11, y + 16);
+			councillorsValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 12));
+			if ("black".equals(color) || "purple".equals(color) || "blue".equals(color)) {
+				councillorsValue.setForeground(Color.white);
+			} else {
+				councillorsValue.setForeground(Color.black);
+			}
+			councillorsValue.setText(String.valueOf(entry.getValue()));
+			getMapPanel().add(councillorsValue, 0);
+			y += 41;
+		}
 	}
 
 	protected void resumeRMIGUIView() {

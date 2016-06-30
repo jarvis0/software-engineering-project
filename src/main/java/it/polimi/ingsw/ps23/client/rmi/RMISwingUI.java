@@ -10,7 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -171,43 +170,6 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
-	private void refreshFreeCouncillors(List<Councillor> freeCouncillors) {
-		Point freeCouncillorsPoint = getCouncilPoints().get("free");
-		int x = freeCouncillorsPoint.x;
-		int y = freeCouncillorsPoint.y;
-		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
-		for (Councillor freeCouncillor : freeCouncillors) {
-			String councillorColor = freeCouncillor.getColor().toString();
-			if (freeCouncillorsMap.containsKey(councillorColor)) {
-				freeCouncillorsMap.put(councillorColor, freeCouncillorsMap.get(councillorColor) + 1);
-			} else {
-				freeCouncillorsMap.put(councillorColor, 1);
-			}
-		}
-		for (Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
-			String color = entry.getKey();
-			BufferedImage councillorImage = readImage(SwingUI.getImagesPath() + color + SwingUI.getCouncillorPath());
-			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
-			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
-			councillorLabel.setBounds(0, 0, 28, 52);
-			councillorLabel.setLocation(x, y);
-			getMapPanel().add(councillorLabel, 0);
-			JLabel councillorsValue = new JLabel();
-			councillorsValue.setBounds(0, 0, 23, 25);
-			councillorsValue.setLocation(x + 11, y + 16);
-			councillorsValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 12));
-			if ("black".equals(color) || "purple".equals(color) || "blue".equals(color)) {
-				councillorsValue.setForeground(Color.white);
-			} else {
-				councillorsValue.setForeground(Color.black);
-			}
-			councillorsValue.setText(String.valueOf(entry.getValue()));
-			getMapPanel().add(councillorsValue, 0);
-			y += 41;
-		}
-
-	}
-
 	private void refreshPoliticCards(HandDeck politicHandDeck) {
 		int x = 0;
 		int y = 535;
@@ -267,11 +229,16 @@ class RMISwingUI extends SwingUI {
 
 	void refreshUI(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
-		/*refreshPlayersTable(currentState.getPlayersList());//TODO
-		refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
-		refreshFreeCouncillors(currentState.getFreeCouncillors());
-		refreshPermitTiles(currentState.getGroupRegionalCity());
+		List<String> freeCouncillorsColor = new ArrayList<>();
+		List<Councillor> freeCouncillors = currentState.getFreeCouncillors();
+		for(int i = 0; i < freeCouncillors.size(); i++) {
+			freeCouncillorsColor.add(freeCouncillors.get(i).getColor().toString());
+		}
+		refreshFreeCouncillors(freeCouncillorsColor);
+		//refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
+		/*refreshPermitTiles(currentState.getGroupRegionalCity());
 		refreshBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
+		refreshPlayersTable(currentState.getPlayersList());//TODO
 		int playerIndex = searchPlayer(currentState.getPlayersList());
 		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());*/
 		getFrame().repaint();
@@ -344,6 +311,7 @@ class RMISwingUI extends SwingUI {
 			jLabel.setEnabled(true);
 		}
 	}
+	
 	public void enableButtons() {
 		enableRegionButtons();
 	}

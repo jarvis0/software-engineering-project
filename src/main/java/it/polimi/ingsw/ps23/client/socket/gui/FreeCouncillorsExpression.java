@@ -5,33 +5,27 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 
-class NobilityTrackExpression extends UIComponentsParser {
+class FreeCouncillorsExpression extends UIComponentsParser {
 
 	private Expression expression;
 	
-	private List<List<String>> stepsName;
-	private List<List<String>> stepsValue;
+	private List<String> freeCouncillors;
 	
-	NobilityTrackExpression(Expression expression) {
+	FreeCouncillorsExpression(Expression expression) {
 		this.expression = expression;
 	}
 
-	List<List<String>> getStepsName() {
-		return stepsName;
-	}
-
-	List<List<String>> getStepsValue() {
-		return stepsValue;
+	List<String> getFreeCouncillors() {
+		return freeCouncillors;
 	}
 
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			String parsingMessage = expression.selectBlock(message);
-			stepsName = new ArrayList<>();
-			stepsValue = new ArrayList<>();
+			freeCouncillors = new ArrayList<>();
 			do {
-				parsingMessage = addBonuses(stepsName, stepsValue, parsingMessage);
+				parsingMessage = addField(freeCouncillors, parsingMessage);
 			} while(!parsingMessage.isEmpty());
 		}
 	}

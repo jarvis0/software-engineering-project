@@ -26,7 +26,7 @@ public class YesInputExpression implements Parser {
 	public String parse(String message) {
 		if(expression.interpret(message)) {
 			String updatedMessage = message;
-			updatedMessage = expression.removeTag(updatedMessage);
+			updatedMessage = expression.selectBlock(updatedMessage);
 			output.println(updatedMessage);
 			socketClient.send(scanner.nextLine());
 			return updatedMessage;

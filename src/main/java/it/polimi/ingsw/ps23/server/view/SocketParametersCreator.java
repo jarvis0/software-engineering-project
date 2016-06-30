@@ -9,19 +9,24 @@ import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
+import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class SocketParametersCreator {
 
-	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
-	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
 	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
 	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
 	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";
 	private static final String NOBILITY_TRACK_TAG_OPEN = "<nobility_track>";
 	private static final String NOBILITY_TRACK_TAG_CLOSE = "</nobility_track>";
+	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
+	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
+	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
+	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
+	private static final String FREE_COUNCILLORS_TAG_OPEN = "<free_councillors>";
+	private static final String FREE_COUNCILLORS_TAG_CLOSE = "</free_councillors>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -63,14 +68,23 @@ class SocketParametersCreator {
 		}
 		return NOBILITY_TRACK_TAG_OPEN + nobilityTrackSend + NOBILITY_TRACK_TAG_CLOSE;
 	}
-	
-	String createUIStatus(StartTurnState currentState) {
-		String message = addKingPosition(currentState.getKing().getPosition().getName());
-		return message;
-	}
 
 	String createUIStaticContent(Map<String, City> cities, NobilityTrack nobilityTrack) {
 		return STATIC_CONTENT_TAG_OPEN + addRewardTokens(cities) + addNobilityTrackSteps(nobilityTrack.getSteps()) + STATIC_CONTENT_TAG_CLOSE;
+	}
+
+	private String addFreeCouncillors(List<Councillor> freeCouncillors) {
+		StringBuilder freeCouncillorsSend = new StringBuilder();
+		for(int i = 0; i < freeCouncillors.size(); i++) {
+			freeCouncillorsSend.append(freeCouncillors.get(i).getColor() + ",");
+		}
+		return FREE_COUNCILLORS_TAG_OPEN + freeCouncillorsSend + FREE_COUNCILLORS_TAG_CLOSE;
+	}
+
+	String createUIDynamicContent(StartTurnState currentState) {
+		String message = addKingPosition(currentState.getKing().getPosition().getName());
+		message += addFreeCouncillors(currentState.getFreeCouncillors());
+		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 
 }

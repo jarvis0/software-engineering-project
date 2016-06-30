@@ -4,14 +4,14 @@ import java.io.PrintStream;
 
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
-import it.polimi.ingsw.ps23.client.socket.gui.KingPositionExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentExpression;
 
 public class RemoteGUIView extends RemoteView {
 
-	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
-	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
 	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
 	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
+	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
+	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -28,17 +28,17 @@ public class RemoteGUIView extends RemoteView {
 		Expression expression = new TerminalExpression(getNoInputTagOpen(), getNoInputTagClose());
 		return new NoInputExpression(this, getOutput(), expression);
 	}
-	
-	private KingPositionExpression getKingPositionExpression() {
-		Expression expression = new TerminalExpression(KING_POSITION_TAG_OPEN, KING_POSITION_TAG_CLOSE);
-		return new KingPositionExpression(swingUI, expression);
-	}
-	
+
 	private StaticContentExpression getStaticContentExpression() {
 		Expression expression = new TerminalExpression(STATIC_CONTENT_TAG_OPEN, STATIC_CONTENT_TAG_CLOSE);
 		return new StaticContentExpression(swingUI, expression);
 	}
 
+	private DynamicContentExpression getDynamicContentExpression() {
+		Expression expression = new TerminalExpression(DYNAMIC_CONTENT_TAG_OPEN, DYNAMIC_CONTENT_TAG_CLOSE);
+		return new DynamicContentExpression(swingUI, expression);
+	}
+	
 	public void setEndCLIPrints() {
 		endCLIPrints = true;
 	}
@@ -57,11 +57,11 @@ public class RemoteGUIView extends RemoteView {
 	protected void run() {
 		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
-		KingPositionExpression isKingPosition = getKingPositionExpression();
+		DynamicContentExpression isDynamicContent = getDynamicContentExpression();
 		String message;
 		do {
 			message = getClient().receive();//TODO ricevo info su player disconnessi
-			message = isKingPosition.parse(message);
+			isDynamicContent.parse(message);
 		} while(!getConnectionTimedOut());
 		getClient().closeConnection();
 	}

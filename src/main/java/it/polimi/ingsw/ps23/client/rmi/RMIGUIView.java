@@ -27,7 +27,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView {
 	
-	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
 	
 	private RMISwingUI rmiSwingUI;
 	private PrintStream output;
@@ -67,8 +67,8 @@ public class RMIGUIView extends RMIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(rmiSwingUI.getChosenAction()));
 			} catch (RemoteException e) {
-				e.printStackTrace();
-			}			
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+			}
 		} else {
 			rmiSwingUI.showAvailableActions(false, false, this); //TODO creare metodo per stampare che è il turno di un altro player
 			waiting = true;

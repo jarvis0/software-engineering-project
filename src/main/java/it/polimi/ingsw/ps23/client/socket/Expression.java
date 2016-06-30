@@ -4,7 +4,7 @@ public interface Expression {
 
 	public boolean interpret(String message);
 
-	public String removeTag(String message);
+	public String selectBlock(String message);
 
 	public String removeBlock(String message);
 	

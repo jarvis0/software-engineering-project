@@ -1,11 +1,10 @@
 package it.polimi.ingsw.ps23.client.socket.gui;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
-import it.polimi.ingsw.ps23.client.socket.Parser;
 import it.polimi.ingsw.ps23.client.socket.SocketSwingUI;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
-public class StaticContentExpression implements Parser {
+public class StaticContentExpression extends UIComponentsParser {
 
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
 	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";
@@ -32,16 +31,15 @@ public class StaticContentExpression implements Parser {
 	}
 
 	@Override
-	public String parse(String message) {
+	public void parse(String message) {
 		if(expression.interpret(message)) {
+			String noTagMessage = expression.selectBlock(message);
 			RewardTokensExpression areRewardTokens = getRewardTokensExpression();
-			areRewardTokens.parse(message);
+			areRewardTokens.parse(noTagMessage);
 			NobilityTrackExpression isNobilityTrack = getNobilityTrackExpression();
-			isNobilityTrack.parse(message);
+			isNobilityTrack.parse(noTagMessage);
 			swingUI.loadStaticContent(areRewardTokens.getCitiesName(), areRewardTokens.getRewardTokensName(), areRewardTokens.getRewardTokensValue(), isNobilityTrack.getStepsName(), isNobilityTrack.getStepsValue());	
-			return expression.removeBlock(message);
 		}
-		return message;
 	}
 	
 }

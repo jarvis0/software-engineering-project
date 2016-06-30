@@ -1,6 +1,10 @@
 package it.polimi.ingsw.ps23.server.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -18,25 +22,25 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 public class SocketGUIView extends SocketView {
 
 	private SocketParametersCreator gameParameters;
+	private boolean firstUIrefresh;
 	
 	public SocketGUIView(String clientName, Connection connection) {
 		super(clientName, connection);
 		gameParameters = new SocketParametersCreator();
+		firstUIrefresh = true;
 	}
 
 	@Override
 	public void visit(StartTurnState currentState) {
 		//TODO if first time then...
-		getConnection().send(gameParameters.createUIStaticContent(currentState.getGameMap().getCities(), currentState.getNobilityTrack()));
-		
-		
-		getConnection().send(gameParameters.createUIStatus(currentState));
-		/*List<Region> regions = currentState.getGameMap().getGroupRegionalCity();
-		String message = "<regions>" + currentState.getGameMap().getGroupRegionalCity().size() + ",";
-		for()*/
-		//Player player = currentState.getCurrentPlayer();
-		/*if(player.getName().equals(getClientName())) {
-			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+		if(firstUIrefresh) {
+			getConnection().send(gameParameters.createUIStaticContent(currentState.getGameMap().getCities(), currentState.getNobilityTrack()));
+			firstUIrefresh = false;
+		}		
+		getConnection().send(gameParameters.createUIDynamicContent(currentState));
+		Player player = currentState.getCurrentPlayer();
+		if(player.getName().equals(getClientName())) {
+			//getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
 				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
 			}
@@ -46,9 +50,9 @@ public class SocketGUIView extends SocketView {
 			}
 		}
 		else {
-			getConnection().sendNoInput("It's player " + player.getName() + " turn.");
+			//getConnection().sendNoInput("It's player " + player.getName() + " turn.");
 			pause();
-		}*/
+		}
 		pause();		
 	}
 

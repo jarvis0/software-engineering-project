@@ -19,7 +19,7 @@ class MapTypeExpression implements Parser {
 	@Override
 	public String parse(String message) {
 		if(expression.interpret(message)) {
-			output.print("\nMap type: " + expression.removeTag(message) + ".");
+			output.print("\nMap type: " + expression.selectBlock(message) + ".");
 			return expression.removeBlock(message);
 		}
 		return message;
