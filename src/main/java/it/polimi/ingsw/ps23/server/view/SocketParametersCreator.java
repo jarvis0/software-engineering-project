@@ -33,6 +33,9 @@ class SocketParametersCreator {
 	private static final String FREE_COUNCILLORS_TAG_CLOSE = "</free_councillors>";
 	private static final String COUNCILS_TAG_OPEN = "<councils>";
 	private static final String COUNCILS_TAG_CLOSE = "</councils>";
+	private static final String BONUS_TILES_TAG_OPEN = "<bonus_tiles>";
+	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
+	private static final String KINGDOM = "kingdom";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -61,21 +64,21 @@ class SocketParametersCreator {
 
 	private String addNobilityTrackSteps(List<NobilityTrackStep> steps) {
 		StringBuilder nobilityTrackSend = new StringBuilder();
-		for(int i = 0; i < steps.size(); i++) {
-			List<Bonus> bonuses = steps.get(i).getBonuses();
+		for(NobilityTrackStep step : steps) {
+			List<Bonus> bonuses = step.getBonuses();
 			int bonusesNumber = bonuses.size();
 			nobilityTrackSend.append(bonusesNumber);
-			for(int j = 0; j < bonusesNumber; j++) {
-				nobilityTrackSend.append("," + bonuses.get(j).getName());
-				int value = bonuses.get(j).getValue();
-				nobilityTrackSend.append("," + value);
+			for(int i = 0; i < bonusesNumber; i++) {
+				Bonus bonus = bonuses.get(i);
+				nobilityTrackSend.append("," + bonus.getName());
+				nobilityTrackSend.append("," + bonus.getValue());
 			}
 			nobilityTrackSend.append(",");
 		}
 		return NOBILITY_TRACK_TAG_OPEN + nobilityTrackSend + NOBILITY_TRACK_TAG_CLOSE;
 	}
 
-	String createUIStaticContent(Map<String, City> cities, NobilityTrack nobilityTrack) {
+	String createUIStaticContents(Map<String, City> cities, NobilityTrack nobilityTrack) {
 		return STATIC_CONTENT_TAG_OPEN + addRewardTokens(cities) + addNobilityTrackSteps(nobilityTrack.getSteps()) + STATIC_CONTENT_TAG_CLOSE;
 	}
 
@@ -99,7 +102,7 @@ class SocketParametersCreator {
 			}
 			councilsSend.append(",");
 		}
-		councilsSend.append("kingdom");
+		councilsSend.append(KINGDOM);//evitabile
 		Queue<Councillor> councillors = kingCouncil.getCouncillors();
 		councilsSend.append("," + councillors.size());
 		for(Councillor councillor : councillors) {
@@ -109,10 +112,33 @@ class SocketParametersCreator {
 		return COUNCILS_TAG_OPEN + councilsSend + COUNCILS_TAG_CLOSE;
 	}
 
-	String createUIDynamicContent(StartTurnState currentState) {
+	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
+		StringBuilder bonusTilesSend = new StringBuilder();
+		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
+		bonusTilesSend.append(groupsNumber);//TODO already aquired
+		for(int i = 0; i < groupRegionalCity.size(); i++) {
+			bonusTilesSend.append("," + groupRegionalCity.get(i).getName());
+			Bonus bonus = groupRegionalCity.get(i).getBonusTile();
+			bonusTilesSend.append("," + bonus.getName());
+			bonusTilesSend.append("," + bonus.getValue());
+		}
+		for(int i = 0; i < groupColoredCity.size(); i++) {
+			bonusTilesSend.append("," + groupColoredCity.get(i).getName());
+			Bonus bonus = groupColoredCity.get(i).getBonusTile();
+			bonusTilesSend.append("," + bonus.getName());
+			bonusTilesSend.append("," + bonus.getValue());
+		}
+		bonusTilesSend.append("," + currentKingTile.getName());
+		bonusTilesSend.append("," + currentKingTile.getValue());
+		bonusTilesSend.append(",");
+		return BONUS_TILES_TAG_OPEN + bonusTilesSend + BONUS_TILES_TAG_CLOSE;
+	}
+
+	String createUIDynamicContents(StartTurnState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
 		message += addCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
+		message += addBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 

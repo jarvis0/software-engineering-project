@@ -171,7 +171,7 @@ class Server implements ServerInterface {
 				if(isDouble(playerName)) {
 					playerName = solveDoubles(playerName, 2);
 				}
-				infoMessage(client, "Here you are your unique in-game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
+				infoMessage(client, "Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				rmiChangeName(client, playerName);
 				rmiWaitingConnections.put(playerName,  client);
 				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");

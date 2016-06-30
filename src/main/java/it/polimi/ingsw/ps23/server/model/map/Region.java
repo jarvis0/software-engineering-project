@@ -75,7 +75,7 @@ public abstract class Region implements Serializable {
 	}
 	
 	/**
-	 * Set the bonus tile of the specified region or colored cities group
+	 * Sets the bonus tile of the specified region or colored cities group
 	 * as acquired so no one else can acquire this bonus tile.
 	 * @return the acquired regional or colored cities group bonus tile.
 	 */
@@ -85,7 +85,7 @@ public abstract class Region implements Serializable {
 	}
 	
 	/**
-	 * get the bonus tile of the specified region or colored cities group
+	 * Gets the bonus tile of the specified region or colored cities group
 	 * @return the bonus tile of the specified region
 	 */
 	public Bonus getBonusTile() {
@@ -97,8 +97,8 @@ public abstract class Region implements Serializable {
 	}
 	
 	/**
-	 * check if the bonus tile of a specified region is already acquired or not
-	 * @return the boolean variable that indicates if the bonus tile is acquired or not
+	 * Checks if the bonus tile of a specified region is already acquired or not.
+	 * @return the boolean variable that indicates if the bonus tile is acquired or not.
 	 */
 	public boolean alreadyUsedBonusTile() {
 		return alreadyAcquiredBonusTile;

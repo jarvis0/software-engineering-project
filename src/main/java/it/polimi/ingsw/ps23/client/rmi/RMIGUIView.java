@@ -58,7 +58,7 @@ public class RMIGUIView extends RMIView {
 			rmiSwingUI.loadStaticContents(currentState);
 			firstUIRefresh = false;
 		}
-		rmiSwingUI.refreshUI(currentState);
+		rmiSwingUI.refreshDynamicContents(currentState);
 		Player player = currentState.getCurrentPlayer();
 		if(player.getName().equals(getClientName())) {
 			player.toString();

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ps23.client.socket.gui;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
-import it.polimi.ingsw.ps23.client.socket.SocketSwingUI;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
 public class StaticContentExpression extends UIComponentsParser {
@@ -38,7 +37,7 @@ public class StaticContentExpression extends UIComponentsParser {
 			areRewardTokens.parse(noTagMessage);
 			NobilityTrackExpression isNobilityTrack = getNobilityTrackExpression();
 			isNobilityTrack.parse(noTagMessage);
-			swingUI.loadStaticContent(areRewardTokens.getCitiesName(), areRewardTokens.getRewardTokensName(), areRewardTokens.getRewardTokensValue(), isNobilityTrack.getStepsName(), isNobilityTrack.getStepsValue());	
+			swingUI.loadStaticContents(areRewardTokens.getCitiesName(), areRewardTokens.getRewardTokensName(), areRewardTokens.getRewardTokensValue(), isNobilityTrack.getStepsName(), isNobilityTrack.getStepsValue());	
 		}
 	}
 	

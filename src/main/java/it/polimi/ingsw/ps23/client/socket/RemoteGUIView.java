@@ -2,9 +2,10 @@ package it.polimi.ingsw.ps23.client.socket;
 
 import java.io.PrintStream;
 
-import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
-import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.SocketSwingUI;
+import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
 
 public class RemoteGUIView extends RemoteView {
 
