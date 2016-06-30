@@ -36,10 +36,10 @@ public class TestAcquireBusinessPermitTile {
 		List<String> cardsString = new ArrayList<>();
 		int i;
 		for(i = 0; i < game.getGameMap().getGroupRegionalCity().size() && cards.isEmpty(); i++) {
-			if(!(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().toString().contains("politic") || ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().toString().contains("additional"))) {
+			if(!(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermitTilesUp().toString().contains("politic") || ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermitTilesUp().toString().contains("additional"))) {
 				council = ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getCouncil();
 				for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
-					Iterator<Councillor> iterator = council.getCouncil().iterator();
+					Iterator<Councillor> iterator = council.getCouncillors().iterator();
 					while(iterator.hasNext()) {
 						if(iterator.next().getColor().toString().equals(((PoliticCard)card).getColor().toString()) && cards.size() < 4 && !cardsString.contains(((PoliticCard)card).getColor().toString())) {
 							cards.add(card);
@@ -54,16 +54,16 @@ public class TestAcquireBusinessPermitTile {
 			}
 		}
 		i--;
-		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCard();
+		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCards();
 		List<Card> permissionCard = new ArrayList<>();
-		permissionCard.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermissionDeckUp().getCards().get(0));
+		permissionCard.add(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(i))).getPermitTilesUp().getCards().get(0));
 		System.out.println(cardsString + game.getGameMap().getGroupRegionalCity().get(i).getName() + permissionCard.get(0));
 		AcquireBusinessPermitTile action = new AcquireBusinessPermitTile(cardsString, game.getGameMap().getGroupRegionalCity().get(i).getName(), 0);
 		action.doAction(game, turnHandler);
 		assertFalse(turnHandler.isAvailableMainAction());
-		assertTrue(initialCards == game.getCurrentPlayer().getNumberOfPoliticCard() + cards.size());
-		assertTrue(game.getCurrentPlayer().getTotalPermissionHandDeck().getHandSize() == 1);
-		assertTrue(game.getCurrentPlayer().getNumberOfPermissionCard() == 1);	
+		assertTrue(initialCards == game.getCurrentPlayer().getNumberOfPoliticCards() + cards.size());
+		assertTrue(game.getCurrentPlayer().getAllPermitHandDeck().getHandSize() == 1);
+		assertTrue(game.getCurrentPlayer().getNumberOfPermitCards() == 1);	
 	}
 
 }

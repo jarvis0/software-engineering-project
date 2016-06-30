@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
-class GroupRegionalCitiesFactory {
+class GroupRegionalCitiesBuilder {
 
 	private static final int REGION_NAME_POSITION = 0;
 	private static final int BONUS_VALUE_POSITION = 1;

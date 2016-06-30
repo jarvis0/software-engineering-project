@@ -82,7 +82,7 @@ public class PoliticHandDeck extends HandDeck {
 		List<Card> cards = new ArrayList<>();
 		cards.addAll(getCards());
 		List<Card> returnCards = new ArrayList<>();
-		for(Councillor councillor : council.getCouncil()) {
+		for(Councillor councillor : council.getCouncillors()) {
 			boolean found = false;
 			for(int i = 0; i < cards.size() && !found; i++) {
 				if(councillor.getColor() == ((PoliticCard)(cards.get(i))).getColor()) {

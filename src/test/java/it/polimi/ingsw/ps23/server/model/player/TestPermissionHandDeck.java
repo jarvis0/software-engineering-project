@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 
 public class TestPermissionHandDeck {
 
@@ -24,15 +24,15 @@ public class TestPermissionHandDeck {
 		cards.add(card);
 		Deck politicDeck = new Deck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));
-		PermissionCard permissionCard = new PermissionCard();
-		HandDeck handDeck = new PermissionHandDeck();
+		BusinessPermitTile permissionCard = new BusinessPermitTile();
+		HandDeck handDeck = new PermitHandDeck();
 		List<Card> permissionHandCards = new ArrayList<>();
 		permissionHandCards.add(permissionCard);
-		((PermissionHandDeck)handDeck).addCards(permissionHandCards);
-		player.buyPermissionCards(permissionHandCards);
-		assertTrue(permissionCard.equals(player.getPermissionHandDeck().getCardInPosition(0)));
+		((PermitHandDeck)handDeck).addCards(permissionHandCards);
+		player.buyPermitCards(permissionHandCards);
+		assertTrue(permissionCard.equals(player.getPermitHandDeck().getCardInPosition(0)));
 		player.soldPermissionCards(permissionHandCards);
-		assertTrue(player.getPermissionHandDeck().getHandSize() == 0);
+		assertTrue(player.getPermitHandDeck().getHandSize() == 0);
 	}
 
 }

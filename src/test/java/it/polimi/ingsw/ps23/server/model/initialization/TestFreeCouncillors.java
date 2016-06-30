@@ -19,10 +19,10 @@ public class TestFreeCouncillors {
 	@Test
 	public void test() {
 		List<String[]> rawCouncillors = new RawObject(TEST_CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
-		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
+		freeCouncillors = new CouncillorsBuilder().makeCouncillors(rawCouncillors);
 		boolean foundShuffled = false;
-		GameColor orange = GameColorFactory.makeColor("orange");
-		GameColor blue = GameColorFactory.makeColor("blue");
+		GameColor orange = GameColorsBuilder.makeColor("orange");
+		GameColor blue = GameColorsBuilder.makeColor("blue");
 		int size = freeCouncillors.getFreeCouncillors().size();
 		for(int i = 0; i < (size - 1) / 2; i++) {
 			if(freeCouncillors.getFreeCouncillors().get(i) != freeCouncillors.getFreeCouncillors().get(i+1)) {

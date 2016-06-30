@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 
-public class PermissionCard implements Card, BonusSlot {
+public class BusinessPermitTile implements Card, BonusSlot {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class PermissionCard implements Card, BonusSlot {
 	private List<Bonus> bonuses;
 	private List<City> cities;
 	
-	public PermissionCard() {
+	public BusinessPermitTile() {
 		bonuses = new ArrayList<>();
 		cities = new ArrayList<>();
 	}

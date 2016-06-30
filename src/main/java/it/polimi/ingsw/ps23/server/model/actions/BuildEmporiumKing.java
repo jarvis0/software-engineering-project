@@ -54,7 +54,7 @@ public class BuildEmporiumKing implements Action {
 		player.updateAssistants(assistantsCost);
 		game.getKing().setNewPosition(finalCity);
 		player.updateEmporiumSet(game, turnHandler, finalCity);
-		player.checkEmporiumsGroups(game);
+		player.checkEmporiumsGroup(game);
 		turnHandler.useMainAction();
 	}
 

@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class BuildEmporiumPermitTile implements Action {
@@ -26,7 +26,7 @@ public class BuildEmporiumPermitTile implements Action {
 	
 	private void checkAction(Game game) throws InvalidCityException, InvalidCardException {
 		City selectedCity = game.getGameMap().getCities().get(buildInThisCity);
-		if(selectedCity == null || !((PermissionCard) game.getCurrentPlayer().getPermissionHandDeck().getCardInPosition(chosenCard)).containCity(selectedCity)) {
+		if(selectedCity == null || !((BusinessPermitTile) game.getCurrentPlayer().getPermitHandDeck().getCardInPosition(chosenCard)).containCity(selectedCity)) {
 			throw new InvalidCityException();
 		}
 	}
@@ -38,8 +38,8 @@ public class BuildEmporiumPermitTile implements Action {
 		Player player = game.getCurrentPlayer();
 		selectedCity.buildEmporium(player);
 		player.updateEmporiumSet(game, turnHandler, selectedCity);		
-		player.usePermissionCard(chosenCard);
-		player.checkEmporiumsGroups(game);
+		player.usePermitCard(chosenCard);
+		player.checkEmporiumsGroup(game);
 		turnHandler.useMainAction();
 	}
 

@@ -12,14 +12,14 @@ import org.jgrapht.graph.DefaultEdge;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
-class CitiesGraphFactory {	
+class CitiesGraphBuilder {	
 
 	private static final int CITY_VERTEX_POSITION = 0;
 	
 	private Map<String, List<String>> citiesConnections;
 	private CitiesGraph citiesGraph;
 	
-	CitiesGraphFactory() {
+	CitiesGraphBuilder() {
 		citiesConnections = new HashMap<>();
 	}
 	

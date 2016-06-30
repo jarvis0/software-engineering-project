@@ -51,7 +51,7 @@ public class MarketTransation implements Serializable {
 			politicCards.add(((PoliticHandDeck)playersMap.get(requestedObject.getPlayer()).getPoliticHandDeck()).getCardFromName(card));
 		}
 		for (int index : requestedObject.getPermissionCards()) {
-			permissionCards.add(playersMap.get(requestedObject.getPlayer()).getPermissionHandDeck().getCardInPosition(index));
+			permissionCards.add(playersMap.get(requestedObject.getPlayer()).getPermitHandDeck().getCardInPosition(index));
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class MarketTransation implements Serializable {
 			Player buyer = game.getCurrentPlayer();
 			buyer.buyPoliticCards(politicCards);
 			seller.soldPoliticCards(politicCards);
-			buyer.buyPermissionCards(permissionCards);
+			buyer.buyPermitCards(permissionCards);
 			seller.soldPermissionCards(permissionCards);
 			buyer.updateAssistants(requestedObject.getAssistants());
 			seller.updateAssistants(- requestedObject.getAssistants());

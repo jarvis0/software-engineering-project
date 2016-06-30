@@ -15,7 +15,7 @@ public class Council implements Serializable {
 		this.councilComposition = councilComposition;
 	}
 	
-	public Queue<Councillor> getCouncil() {
+	public Queue<Councillor> getCouncillors() {
 		return councilComposition;
 	}
 	

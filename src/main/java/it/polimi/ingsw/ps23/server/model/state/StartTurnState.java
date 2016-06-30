@@ -85,7 +85,31 @@ public class StartTurnState extends State {
 	public StateCache getStateCache() {
 		return stateCache;
 	}
+
+	public String getKingPosition() {
+		return king.getPosition().getName();
+	}
+
+	public List<Region> getGroupRegionalCity() {
+		return gameMap.getGroupRegionalCity();
+	}
+
+	public Council getKingCouncil() {
+		return kingCouncil;
+	}
+
+	public List<Region> getGroupColoredCity() {
+		return gameMap.getGroupColoredCity();
+	}
+
+	public Boolean isAvailableMainAction() {
+		return turnHandler.isAvailableMainAction();
+	}
 	
+	public Boolean isAvailableQuickAction() {
+		return turnHandler.isAvailableQuickAction();
+	}
+
 	public String getStatus() {
 		String print = "\n===============================================================================================================\n";
 		print += "===============================================================================================================\n\n";
@@ -97,7 +121,7 @@ public class StartTurnState extends State {
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
 		print += "> KING'S POSITION: " + king.getPosition().getName();
-		print += "\n> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
+		print += "\n> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILES:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
 		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
@@ -136,30 +160,6 @@ public class StartTurnState extends State {
 	@Override
 	public void acceptView(ViewVisitor view) {
 		view.visit(this);
-	}
-
-	public String getKingPosition() {
-		return king.getPosition().getName();
-	}
-
-	public List<Region> getGroupRegionalCity() {
-		return gameMap.getGroupRegionalCity();
-	}
-
-	public Council getKingCouncil() {
-		return kingCouncil;
-	}
-
-	public List<Region> getGroupColoredCity() {
-		return gameMap.getGroupColoredCity();
-	}
-
-	public Boolean isAvailableMainAction() {
-		return turnHandler.isAvailableMainAction();
-	}
-	
-	public Boolean isAvailableQuickAction() {
-		return turnHandler.isAvailableQuickAction();
 	}
 
 }

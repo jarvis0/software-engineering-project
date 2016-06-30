@@ -23,7 +23,7 @@ public class TestPlayer {
 		Deck politicDeck = new Deck(cards);
 		Player player = new Player("1", 2, 2, new PoliticHandDeck(politicDeck.pickCards(1)));
 		assertTrue(player.getName().equals("1"));
-		assertTrue(player.getAssistants() == 2 && player.getCoins() == 2 && player.getVictoryPoints() == 0 && player.getNobilityTrackPoints() == 0 && player.getNumberOfPoliticCard() == 1);
+		assertTrue(player.getAssistants() == 2 && player.getCoins() == 2 && player.getVictoryPoints() == 0 && player.getNobilityTrackPoints() == 0 && player.getNumberOfPoliticCards() == 1);
 		player.updateAssistants(1);
 		assertTrue(player.getAssistants() == 3);
 		player.updateCoins(1);

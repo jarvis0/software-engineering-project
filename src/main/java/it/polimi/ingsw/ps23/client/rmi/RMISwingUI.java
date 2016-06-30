@@ -28,11 +28,10 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
@@ -70,41 +69,12 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
-	private void refreshCouncils(List<Region> regions, Council kingCouncil) {
-		for (Region region : regions) {
-			Point point = getCouncilPoint(region.getName());
-			int x = point.x;
-			int y = point.y;
-			drawCouncil(((GroupRegionalCity) region).getCouncil().getCouncil(), x, y);
-		}
-		Point point = getCouncilPoint("kingdom");
-		drawCouncil(kingCouncil.getCouncil(), point.x, point.y);
-	}
-
-	private void drawCouncil(Queue<Councillor> council, int xCoord, int yCoord) {
-		int x = xCoord;
-		int y = yCoord;
-		for (Councillor councillor : council) {
-			x -= 16;
-			drawCouncillor(councillor.getColor().toString(), x, y);
-		}
-	}
-
-	private void drawCouncillor(String color, int x, int y) {
-		BufferedImage councillorImage = readImage(SwingUI.getImagesPath()+ color + SwingUI.getCouncillorPath());
-		Image resizedCouncillorImage = councillorImage.getScaledInstance(14, 39, Image.SCALE_SMOOTH);
-		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
-		councillorLabel.setBounds(0, 0, 15, 39);
-		councillorLabel.setLocation(x, y);
-		getMapPanel().add(councillorLabel, 0);
-	}
-
 	private void refreshPermitTiles(List<Region> regions) {
 		for (Region region : regions) {
 			Point point = getCouncilPoint(region.getName());
 			int x = point.x - 120;
 			int y = point.y - 12;
-			drawPermissionCards(((GroupRegionalCity) region).getPermissionDeckUp(), x, y);
+			drawPermissionCards(((GroupRegionalCity) region).getPermitTilesUp(), x, y);
 		}
 	}
 
@@ -140,14 +110,14 @@ class RMISwingUI extends SwingUI {
 					}); 
 				}
 			getMapPanel().add(permissionTileLabel, 0);
-			List<Bonus> bonuses = ((PermissionCard) permissionCard).getBonuses();
+			List<Bonus> bonuses = ((BusinessPermitTile) permissionCard).getBonuses();
 			int bonusCoordX = x - 47;
 			int bonusCoordY = y + 40;
 			for (Bonus bonus : bonuses) {
 				//drawBonus(bonus, bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);TODO
 				bonusCoordX = bonusCoordX + 24;
 			}
-			List<City> cities = ((PermissionCard) permissionCard).getCities();
+			List<City> cities = ((BusinessPermitTile) permissionCard).getCities();
 			int cityCoordX = x + 5;
 			int cityCoordY = y;
 			for (int i = 0; i < cities.size(); i++) {
@@ -213,20 +183,6 @@ class RMISwingUI extends SwingUI {
 		return -1;
 	}
 
-	private void refreshBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
-		List<Region> allRegions = new ArrayList<>();
-		allRegions.addAll(groupRegionalCity);
-		allRegions.addAll(groupColoredCity);
-		for (Region region : allRegions) {
-			if (!(region.alreadyUsedBonusTile())) {
-				drawBonusTile(region.getName(), region.getBonusTile());
-			}
-		}
-		if (currentKingTile != null) {
-			drawBonusTile("kingdom", currentKingTile);
-		}
-	}
-
 	void refreshUI(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
@@ -235,16 +191,37 @@ class RMISwingUI extends SwingUI {
 			freeCouncillorsColor.add(freeCouncillors.get(i).getColor().toString());
 		}
 		refreshFreeCouncillors(freeCouncillorsColor);
-		//refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
-		/*refreshPermitTiles(currentState.getGroupRegionalCity());
+		List<List<String>> councilsColor = new ArrayList<>();
+		List<String> councilsName = new ArrayList<>();
+		List<Region> regions = currentState.getGroupRegionalCity();
+		for(int i = 0; i < regions.size(); i++) {
+			GroupRegionalCity region = (GroupRegionalCity) regions.get(i);
+			councilsName.add(region.getName());
+			Queue<Councillor> councillors = region.getCouncil().getCouncillors();
+			List<String> council = new ArrayList<>();
+			for(Councillor councillor : councillors) {
+				council.add(councillor.getColor().toString());
+			}
+			councilsColor.add(council);
+		}
+		List<String> council = new ArrayList<>();
+		councilsName.add("kingdom");
+		Queue<Councillor> councillors = currentState.getKingCouncil().getCouncillors();
+		for(Councillor councillor : councillors) {
+			council.add(councillor.getColor().toString());
+		}
+		councilsColor.add(council);
+		refreshCouncils(councilsName, councilsColor);
+		/*refreshPermitTiles(currentState.getGroupRegionalCity());*/
+		
 		refreshBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
-		refreshPlayersTable(currentState.getPlayersList());//TODO
+		/*refreshPlayersTable(currentState.getPlayersList());//TODO
 		int playerIndex = searchPlayer(currentState.getPlayersList());
 		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());*/
 		getFrame().repaint();
 	}
 
-	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
+	private void bonusesToString(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
 		for(int i = 0; i < bonuses.size(); i++)  {
 			bonusesName.add(bonuses.get(i).getName());
 			bonusesValue.add(String.valueOf(bonuses.get(i).getValue()));
@@ -264,7 +241,7 @@ class RMISwingUI extends SwingUI {
 				List<Bonus> bonuses = ((NormalCity) city).getRewardToken().getBonuses();
 				List<String> bonusesName = new ArrayList<>();
 				List<String> bonusesValue = new ArrayList<>();
-				bonusesToStrings(bonuses, bonusesName, bonusesValue);
+				bonusesToString(bonuses, bonusesName, bonusesValue);
 				citiesBonusesName.add(bonusesName);
 				citiesBonusesValue.add(bonusesValue);
 			}
@@ -277,18 +254,13 @@ class RMISwingUI extends SwingUI {
 			List<Bonus> bonuses = step.getBonuses();		
 			List<String> bonusesName = new ArrayList<>();
 			List<String> bonusesValue = new ArrayList<>();
-			bonusesToStrings(bonuses, bonusesName, bonusesValue);
+			bonusesToString(bonuses, bonusesName, bonusesValue);
 			stepsBonusesName.add(bonusesName);
 			stepsBonusesValue.add(bonusesValue);
 		}
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
-	
-	
-	public static void main(String[] args) {
-		new RMISwingUI("hard", "ale");//TODO remove this method
-	}
-	
+
 	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
 		setRmiguiView(rmiguiView);
 		if(isAvailableMainAction && isAvailableQuickAction) {
@@ -307,8 +279,8 @@ class RMISwingUI extends SwingUI {
 	}
 
 	private void enableCards() {
-		for (JLabel jLabel : cardsList) {
-			jLabel.setEnabled(true);
+		for (JLabel label : cardsList) {
+			label.setEnabled(true);
 		}
 	}
 	
@@ -318,6 +290,10 @@ class RMISwingUI extends SwingUI {
 
 	public boolean hasFinished() {
 		return finish;
+	}
+	
+	public static void main(String[] args) {
+		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
 	
 }

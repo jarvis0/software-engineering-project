@@ -33,7 +33,7 @@ public class TestElectCouncillor {
 		ElectCouncillor action = new ElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
 		assertTrue(!turnHandler.isAvailableMainAction());
-		Iterator<Councillor> iterator = council.getCouncil().iterator();
+		Iterator<Councillor> iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();
@@ -46,7 +46,7 @@ public class TestElectCouncillor {
 		councilName = "king";
 		action = new ElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
-		iterator = council.getCouncil().iterator();
+		iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();

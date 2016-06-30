@@ -115,7 +115,7 @@ public class GameMap implements Serializable {
 	public Map<String, Deck> getPermissionCardsUp() {
 		Map<String, Deck> permissionDecksUp = new HashMap<>();
 		for(Region region : getGroupRegionalCity()) {
-			permissionDecksUp.put(region.getName(), ((GroupRegionalCity) region).getPermissionDeckUp());
+			permissionDecksUp.put(region.getName(), ((GroupRegionalCity) region).getPermitTilesUp());
 		}
 		return permissionDecksUp;
 	}

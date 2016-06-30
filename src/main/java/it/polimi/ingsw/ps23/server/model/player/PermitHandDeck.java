@@ -5,14 +5,14 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
 
-public class PermissionHandDeck extends HandDeck {
+public class PermitHandDeck extends HandDeck {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8754158271215617734L;
 
-	PermissionHandDeck() {
+	PermitHandDeck() {
 		super();
 	}
 	
@@ -25,7 +25,7 @@ public class PermissionHandDeck extends HandDeck {
 	public HandDeck getAvaiblePermissionCards() {
 		List<Card> returnCards = new ArrayList<>();
 		returnCards.addAll(getCards());
-		PermissionHandDeck returnHandDeck = new PermissionHandDeck();
+		PermitHandDeck returnHandDeck = new PermitHandDeck();
 		returnHandDeck.addCards(returnCards);
 		return returnHandDeck;
 	}

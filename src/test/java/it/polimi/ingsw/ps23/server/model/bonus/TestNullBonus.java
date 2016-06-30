@@ -31,7 +31,7 @@ public class TestNullBonus {
 		assertTrue(game.getCurrentPlayer().getNobilityTrackPoints() == player.getNobilityTrackPoints());
 		assertTrue(game.getCurrentPlayer().isOnline() == player.isOnline());
 		assertTrue(game.getCurrentPlayer().getPoliticHandDeck().getCards().containsAll(player.getPoliticHandDeck().getCards()));
-		assertTrue(game.getCurrentPlayer().getPermissionHandDeck().getCards().containsAll(player.getPermissionHandDeck().getCards()));
+		assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().containsAll(player.getPermitHandDeck().getCards()));
 	}
 
 }

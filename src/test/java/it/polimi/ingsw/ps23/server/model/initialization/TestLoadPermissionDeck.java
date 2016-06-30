@@ -16,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 
 public class TestLoadPermissionDeck {
 
@@ -28,7 +28,7 @@ public class TestLoadPermissionDeck {
 	@Test
 	public void test() {
 		List<String[]> rawPermissionCards = new RawObject(TEST_CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
-		GameColor iron = GameColorFactory.makeColor("iron");
+		GameColor iron = GameColorsBuilder.makeColor("iron");
 		City city = new CapitalCity("A",iron);
 		Map<String, City> cities = new HashMap<>();
 		cities.put(city.getName(), city);
@@ -36,13 +36,13 @@ public class TestLoadPermissionDeck {
 		cities.put(city.getName(), city);
 		city = new CapitalCity("J",iron);
 		cities.put(city.getName(), city);
-		Map<String, Deck> deck = new PermissionDecksFactory(rawPermissionCards, cities).makeDecks(new BonusCache());
-		Card permissionCard = new PermissionCard();
-		((PermissionCard)permissionCard).addCity(city);
-		assertTrue(((PermissionCard)permissionCard).containCity(city));
+		Map<String, Deck> deck = new PermitTilesBuilder(rawPermissionCards, cities).makeDecks(new BonusCache());
+		Card permissionCard = new BusinessPermitTile();
+		((BusinessPermitTile)permissionCard).addCity(city);
+		assertTrue(((BusinessPermitTile)permissionCard).containCity(city));
 		Bonus bonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
 		bonus.setValue(1);
-		((PermissionCard)permissionCard).addBonus(bonus);
+		((BusinessPermitTile)permissionCard).addBonus(bonus);
 		boolean found = false;
 		for(Card card : deck.get("seaside").getCards()) {
 			if (card.toString().equals(permissionCard.toString())) {

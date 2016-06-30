@@ -71,7 +71,7 @@ public class AcquireBusinessPermitTileState extends ActionState {
 	}
 		
 	public String getAvailablePermitTile(String chosenCouncil) {
-		return ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getPermissionDeckUp().toString();
+		return ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getPermitTilesUp().toString();
 	}
 
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) throws InvalidCardException {

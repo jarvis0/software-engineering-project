@@ -7,8 +7,8 @@ abstract class UIComponentsParser {
 
 	protected abstract void parse(String message);
 	
-	protected String addField(List<String> bonusList, String parsingMessage) {
-		bonusList.add(parsingMessage.substring(0, parsingMessage.indexOf(',')));
+	protected String addField(List<String> list, String parsingMessage) {
+		list.add(parsingMessage.substring(0, parsingMessage.indexOf(',')));
 		return parsingMessage.substring(parsingMessage.indexOf(',') + 1);
 	}
 

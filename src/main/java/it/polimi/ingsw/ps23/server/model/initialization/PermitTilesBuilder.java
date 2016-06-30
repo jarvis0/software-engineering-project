@@ -12,16 +12,16 @@ import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 
-class PermissionDecksFactory {
+class PermitTilesBuilder {
 
 	private static final int BONUSES_NUMBER = 6;
 	
 	private List<String[]> rawPermissionCards;
 	private Map<String, City> cities;
 	
-	PermissionDecksFactory(List<String[]> rawPermissionCards, Map<String, City> cities) {
+	PermitTilesBuilder(List<String[]> rawPermissionCards, Map<String, City> cities) {
 		super();
 		this.rawPermissionCards = rawPermissionCards;
 		this.cities = cities;
@@ -37,11 +37,11 @@ class PermissionDecksFactory {
 	
 	private BonusSlot addCitiesToPermissionCard(String[] rawPermissionCard) {
 		StringBuilder cityName;
-		BonusSlot permissionCard = new PermissionCard();
+		BonusSlot permissionCard = new BusinessPermitTile();
 		for(int i = BONUSES_NUMBER + 1; i < rawPermissionCard.length; i++) {
 			cityName = new StringBuilder();
 			cityName.append(cityName + rawPermissionCard[i]);
-			((PermissionCard) permissionCard).addCity(cities.get(new String() + cityName));
+			((BusinessPermitTile) permissionCard).addCity(cities.get(new String() + cityName));
 		}
 		return permissionCard;
 	}
@@ -67,7 +67,7 @@ class PermissionDecksFactory {
 				permissionCards = new ArrayList<>();
 				cardsMap.put(regionName, permissionCards);
 			}
-			cardsMap.get(regionName).add((Card) new BonusesFactory(bonusCache).makeBonuses(fields, rawBonuses, permissionCard));
+			cardsMap.get(regionName).add((Card) new BonusesBuilder(bonusCache).makeBonuses(fields, rawBonuses, permissionCard));
 		}
 		return toDecks(cardsMap);
 	}

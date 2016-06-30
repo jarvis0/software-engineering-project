@@ -5,11 +5,11 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 
-final class GameColorFactory {
+final class GameColorsBuilder {
 	
 	private static final List<GameColor> COLORS = new ArrayList<>();
 
-	private GameColorFactory() {
+	private GameColorsBuilder() {
 	}
 	
 	static final GameColor makeColor(String colorName) {

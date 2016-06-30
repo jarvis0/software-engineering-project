@@ -5,7 +5,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
@@ -27,8 +27,8 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public String checkBonus(Player currentPlayer) {
-		if(!currentPlayer.getTotalPermissionHandDeck().getCards().isEmpty()){
-		return  "You have encountred a Recycle Building Permit Bonus on Nobility Track \nchoose the used permit tile for take bonuses: " +currentPlayer.getTotalPermissionHandDeck().toString();
+		if(!currentPlayer.getAllPermitHandDeck().getCards().isEmpty()){
+		return  "You have encountred a Recycle Building Permit Bonus on Nobility Track \nchoose the used permit tile for take bonuses: " +currentPlayer.getAllPermitHandDeck().toString();
 		}
 	return "Impossible using Recycle Building Permit Bonus because your Permission Hand Deck is empty (0 to skip)";
 	}	
@@ -36,7 +36,7 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	@Override
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) throws InvalidCardException {
 		if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
-			((PermissionCard) game.getCurrentPlayer().getTotalPermissionHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
+			((BusinessPermitTile) game.getCurrentPlayer().getAllPermitHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
 		}
 	}
 

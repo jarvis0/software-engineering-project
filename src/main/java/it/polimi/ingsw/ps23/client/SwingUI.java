@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import it.polimi.ingsw.ps23.client.rmi.RMIGUIView;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import it.polimi.ingsw.ps23.server.model.map.Region;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -48,14 +49,15 @@ public abstract class SwingUI {
 	private static final String NOBILITY_TRACK_PATH = "nobilityTrack.png";
 	private static final String KING_PATH = "king.png";
 	private static final String COUNCILLOR_PATH = "Councillor.png";
-	private static final String PNG_EXTENSION = ".png";
 	private static final String PERMISSION_CARD_PATH = "permissionCard.png";
+	private static final String POLITIC_CARD_PATH = "Card.png";
+	private static final String BONUS_TILE_PATH = "BonusTile.png";
+	private static final String PNG_EXTENSION = ".png";
 	private static final String CITIES_POSITION_CSV = "citiesPosition.csv";
 	private static final String CITIES_CONNECTION_CSV = "citiesConnection.csv";
 	private static final String OBJECTS_POSITION_CSV = "objectsPosition.csv";
+	private static final String KINGDOM = "kingdom";
 	private static final String SANS_SERIF_FONT = "Sans serif";
-	private static final String POLITIC_CARD_PATH = "Card.png";
-	private static final String BONUS_TILE_PATH = "BonusTile.png";
 	private static final String ELECT_COUNCILLOR = "elect councillor";
 	private static final String ACQUIRE_BUSINESS_PERMIT_TILE = "acquire business permit tile";
 	private static final String ASSISTANT_TO_ELECT_COUNCILLOR = "assistant to elect councillor";
@@ -100,7 +102,7 @@ public abstract class SwingUI {
 		mapPanel = new JPanel();
 		mapPanel.setLayout(null);
 		backgroundLabel.setBounds(0, 0, 1366, 768);
-		loadUI();
+		loadComponents();
 		frame.getContentPane().add(mapPanel);
 		mapPanel.add(scrollPane);
 		mapPanel.add(backgroundLabel);
@@ -215,27 +217,6 @@ public abstract class SwingUI {
 		kingLabel.setBounds(0, 0, 35, 35);
 		mapPanel.add(kingLabel);
 		components.put("king", kingLabel);
-	}
-
-	protected void drawBonusTile(String name, Bonus bonusTile) {
-		Point regionPoint = getCouncilPoint(name);
-		int x = regionPoint.x;
-		int y = regionPoint.y;
-		if ("seaside".equals(name) || "hill".equals(name) || "mountain".equals(name)) {
-			x += 7;
-			y -= 8;
-		}
-		if ("kingdom".equals(name)) {
-			x -= 63;
-			y -= 40;
-		}
-		BufferedImage tileImage = readImage(SwingUI.getImagesPath() + name + SwingUI.getBonusTilePath());
-		Image resizedTileImage = tileImage.getScaledInstance(50, 35, Image.SCALE_SMOOTH);
-		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
-		tileLabel.setBounds(0, 0, 50, 35);
-		tileLabel.setLocation(x, y);
-		getMapPanel().add(tileLabel, 0);
-		drawBonus(bonusTile.getName(), String.valueOf(bonusTile.getValue()), x + 25, y + 10, 23, 25, -5);
 	}
 
 	private void loadCouncilsPositions() {
@@ -379,7 +360,7 @@ public abstract class SwingUI {
 	}
 
 	private void loadRegionButtons() {
-		BufferedImage seasideImage = readImage(IMAGES_PATH + "seasideRegion.png");
+		BufferedImage seasideImage = readImage(IMAGES_PATH + "seasideRegion.png");//TODO????????
 		JButton btnSeaside = new JButton("");
 		btnSeaside.addActionListener(new ActionListener() {
 			@Override 
@@ -426,7 +407,7 @@ public abstract class SwingUI {
 		btnMountain.setEnabled(false);
 	}
 
-	private void loadUI() {
+	private void loadComponents() {
 		loadCouncilsPositions();
 		loadKing();
 		loadCities();
@@ -636,6 +617,66 @@ public abstract class SwingUI {
 			councillorsValue.setText(String.valueOf(entry.getValue()));
 			getMapPanel().add(councillorsValue, 0);
 			y += 41;
+		}
+	}
+
+	private void drawCouncillor(String color, int x, int y) {
+		BufferedImage councillorImage = readImage(SwingUI.getImagesPath()+ color + SwingUI.getCouncillorPath());
+		Image resizedCouncillorImage = councillorImage.getScaledInstance(14, 39, Image.SCALE_SMOOTH);
+		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
+		councillorLabel.setBounds(0, 0, 15, 39);
+		councillorLabel.setLocation(x, y);
+		getMapPanel().add(councillorLabel, 0);
+	}
+
+	private void drawCouncil(List<String> council, int xCoord, int yCoord) {
+		int x = xCoord;
+		int y = yCoord;
+		for (String councillor : council) {
+			x -= 16;
+			drawCouncillor(councillor, x, y);
+		}
+	}
+
+	protected void refreshCouncils(List<String> councilsName, List<List<String>> councilsColor) {
+		for(int i = 0; i < councilsName.size(); i++) {
+			Point point = getCouncilPoint(councilsName.get(i));
+			drawCouncil(councilsColor.get(i), point.x, point.y);
+		}
+	}
+
+	protected void drawBonusTile(String name, Bonus bonusTile) {
+		Point regionPoint = getCouncilPoint(name);
+		int x = regionPoint.x;
+		int y = regionPoint.y;
+		if (KINGDOM.equals(name)) {
+			x -= 63;
+			y -= 40;
+		}
+		else {
+			x += 7;
+			y -= 8;
+		}
+		BufferedImage tileImage = readImage(SwingUI.getImagesPath() + name + SwingUI.getBonusTilePath());
+		Image resizedTileImage = tileImage.getScaledInstance(50, 35, Image.SCALE_SMOOTH);
+		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
+		tileLabel.setBounds(0, 0, 50, 35);
+		tileLabel.setLocation(x, y);
+		getMapPanel().add(tileLabel, 0);
+		drawBonus(bonusTile.getName(), String.valueOf(bonusTile.getValue()), x + 25, y + 10, 23, 25, -5);
+	}
+
+	protected void refreshBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
+		List<Region> allRegions = new ArrayList<>();
+		allRegions.addAll(groupRegionalCity);
+		allRegions.addAll(groupColoredCity);
+		for (Region region : allRegions) {
+			if (!(region.alreadyUsedBonusTile())) {
+				drawBonusTile(region.getName(), region.getBonusTile());
+			}
+		}
+		if (currentKingTile != null) {
+			drawBonusTile(KINGDOM, currentKingTile);
 		}
 	}
 

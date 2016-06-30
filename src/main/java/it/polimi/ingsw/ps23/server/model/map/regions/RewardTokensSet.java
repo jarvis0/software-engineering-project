@@ -3,11 +3,11 @@ package it.polimi.ingsw.ps23.server.model.map.regions;
 import java.util.Collections;
 import java.util.List;
 
-public class RewardTokenSet {
+public class RewardTokensSet {
 
 	private List<RewardToken> rewardTokens;
 	
-	public RewardTokenSet(List<RewardToken> rewardTokenSet) {
+	public RewardTokensSet(List<RewardToken> rewardTokenSet) {
 		Collections.shuffle(rewardTokenSet);
 		this.rewardTokens = rewardTokenSet;
 	}

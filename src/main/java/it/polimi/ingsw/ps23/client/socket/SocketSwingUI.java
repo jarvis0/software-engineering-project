@@ -15,9 +15,10 @@ public class SocketSwingUI extends SwingUI {
 		addNobilityTrackBonuses(stepsName, stepsValue);
 	}
 	
-	public void refreshDynamicContent(String kingPosition, List<String> freeCouncillors) {
+	public void refreshDynamicContent(String kingPosition, List<String> freeCouncillors, List<String> councilsName, List<List<String>> councilsColor) {
 		refreshKingPosition(kingPosition);
 		refreshFreeCouncillors(freeCouncillors);
+		refreshCouncils(councilsName, councilsColor);
 	}
 
 }

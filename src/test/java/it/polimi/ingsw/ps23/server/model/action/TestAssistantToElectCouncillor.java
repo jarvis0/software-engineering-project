@@ -34,7 +34,7 @@ public class TestAssistantToElectCouncillor {
 		AssistantToElectCouncillor action = new AssistantToElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
 		assertTrue(!turnHandler.isAvailableQuickAction());
-		Iterator<Councillor> iterator = council.getCouncil().iterator();
+		Iterator<Councillor> iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();

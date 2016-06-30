@@ -43,7 +43,7 @@ public class EndGame implements Serializable {
 	private void getTilePoints() {
 		for (Player player : game.getGamePlayersSet().getPlayers()) {
 			game.setCurrentPlayer(player);
-			player.getAllTilePoints(game, turnHandler);
+			player.getAllTilesPoints(game, turnHandler);
 		}
 	}
 	
@@ -90,9 +90,9 @@ public class EndGame implements Serializable {
 		players.addAll(game.getGamePlayersSet().getPlayers());
 		Collections.sort(players, new PermissionTileComparator());
 		players.get(0).updateVictoryPoints(PERMISSION_CARD_POINTS);
-		int max = players.remove(0).getNumberOfPermissionCard();
+		int max = players.remove(0).getNumberOfPermitCards();
 		for(Player player : players) {
-			if(player.getNumberOfPermissionCard() < max) {
+			if(player.getNumberOfPermitCards() < max) {
 				return;
 			}
 			player.updateVictoryPoints(PERMISSION_CARD_POINTS);

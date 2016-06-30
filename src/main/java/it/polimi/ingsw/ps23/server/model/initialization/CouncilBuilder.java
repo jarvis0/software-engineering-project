@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 
-class CouncilFactory {
+class CouncilBuilder {
 	
 	private static final int COUNCILLORS_NUMBER = 4;
 	

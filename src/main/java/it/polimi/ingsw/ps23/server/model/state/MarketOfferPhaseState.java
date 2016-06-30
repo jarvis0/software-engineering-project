@@ -28,7 +28,7 @@ public class MarketOfferPhaseState extends State {
 	}
 	
 	public String getPermissionHandDeck() {
-		return "Permission Hand Deck: " + currentPlayer.getPermissionHandDeck().toString();
+		return "Permission Hand Deck: " + currentPlayer.getPermitHandDeck().toString();
 	}
 	
 	public String getAssistants() {
@@ -44,11 +44,11 @@ public class MarketOfferPhaseState extends State {
 	}
 	
 	public boolean canSellPermissionCards() {
-		return currentPlayer.getPermissionHandDeck().getHandSize() > 0;
+		return currentPlayer.getPermitHandDeck().getHandSize() > 0;
 	}
 	
 	public int getPermissionHandSize() {
-		return currentPlayer.getPermissionHandDeck().getHandSize();
+		return currentPlayer.getPermitHandDeck().getHandSize();
 	}
 	
 	public boolean canSellAssistants() {
@@ -60,7 +60,7 @@ public class MarketOfferPhaseState extends State {
 			((PoliticHandDeck)currentPlayer.getPoliticHandDeck()).getCardFromName(card);
 		}
 		for (int index : chosenPermissionCards) {
-			currentPlayer.getPermissionHandDeck().getCardInPosition(index);
+			currentPlayer.getPermitHandDeck().getCardInPosition(index);
 		}
 		if(chosenAssistants < 0 || chosenAssistants > currentPlayer.getAssistants()) {
 			throw new InvalidNumberOfAssistantException();

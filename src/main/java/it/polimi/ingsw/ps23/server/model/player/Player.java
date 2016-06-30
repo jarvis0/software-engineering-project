@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 
 public class Player implements Serializable {
 	
@@ -27,10 +27,10 @@ public class Player implements Serializable {
 	private BuiltEmporiumsSet builtEmporiumsSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
-	private HandDeck permissionHandDeck;
+	private HandDeck permitHandDeck;
 	private HandDeck politicHandDeck;
-	private HandDeck permissionUsedHandDeck;
-	private BonusTile bonusTile;
+	private HandDeck permitUsedHandDeck;
+	private BonusTilesSet bonusTiles;
 	private boolean online;
 	
 	public Player(String name, int coins, int assistants, HandDeck politicHandDeck) {
@@ -41,9 +41,9 @@ public class Player implements Serializable {
 		victoryPoints = 0;
 		nobilityTrackPoints = 0;
 		builtEmporiumsSet = new BuiltEmporiumsSet();
-		permissionHandDeck = new PermissionHandDeck();
-		permissionUsedHandDeck = new PermissionHandDeck();
-		bonusTile = new BonusTile();
+		permitHandDeck = new PermitHandDeck();
+		permitUsedHandDeck = new PermitHandDeck();
+		bonusTiles = new BonusTilesSet();
 		online = true;
 	}
 	
@@ -84,9 +84,9 @@ public class Player implements Serializable {
 	}
 	
 	public void pickPermitCard(Game game, TurnHandler turnHandler, Region region, int index) {
-		Card permissionCard = ((GroupRegionalCity)region).pickPermissionCard(index);
-		((PermissionCard)permissionCard).useBonus(game, turnHandler);
-		((PermissionHandDeck) permissionHandDeck).addCard(permissionCard);
+		Card permissionCard = ((GroupRegionalCity)region).pickPermitTile(index);
+		((BusinessPermitTile)permissionCard).useBonus(game, turnHandler);
+		((PermitHandDeck) permitHandDeck).addCard(permissionCard);
 	}
 	
 	public void updateVictoryPoints(int value) {
@@ -117,14 +117,14 @@ public class Player implements Serializable {
 		return politicHandDeck;
 	}
 
-	public HandDeck getPermissionHandDeck() {
-		return permissionHandDeck;
+	public HandDeck getPermitHandDeck() {
+		return permitHandDeck;
 	}
 	
-	public HandDeck getTotalPermissionHandDeck() {
-		HandDeck permissionTotalHandDeck = new PermissionHandDeck();
-		permissionTotalHandDeck.getCards().addAll(permissionHandDeck.getCards());
-		permissionTotalHandDeck.getCards().addAll(permissionUsedHandDeck.getCards());
+	public HandDeck getAllPermitHandDeck() {
+		HandDeck permissionTotalHandDeck = new PermitHandDeck();
+		permissionTotalHandDeck.getCards().addAll(permitHandDeck.getCards());
+		permissionTotalHandDeck.getCards().addAll(permitUsedHandDeck.getCards());
 		return permissionTotalHandDeck;
 	}
 
@@ -133,8 +133,8 @@ public class Player implements Serializable {
 		game.getGameMap().getCitiesGraph().rewardTokenGiver(game, turnHandler, city);	
 	}
 
-	public void usePermissionCard(int chosenCard) {
-		permissionUsedHandDeck.addCard(permissionHandDeck.getAndRemove(chosenCard));	
+	public void usePermitCard(int chosenCard) {
+		permitUsedHandDeck.addCard(permitHandDeck.getAndRemove(chosenCard));	
 	}
 	
 	public void soldPoliticCards(List<Card> cards) {
@@ -145,7 +145,7 @@ public class Player implements Serializable {
 	
 	public void soldPermissionCards(List<Card> cards) {
 		for(Card card : cards) {
-			permissionHandDeck.removeCard(card);
+			permitHandDeck.removeCard(card);
 		}
 	}
 	
@@ -155,14 +155,14 @@ public class Player implements Serializable {
 		}		
 	}
 	
-	public void buyPermissionCards(List<Card> cards) {
+	public void buyPermitCards(List<Card> cards) {
 		for(Card card : cards) {
-			permissionHandDeck.addCard(card);
+			permitHandDeck.addCard(card);
 		}
 	}
 
 	HandDeck getPermissionUsedHandDeck() {
-		return permissionUsedHandDeck;
+		return permitUsedHandDeck;
 	}
 	
 	public BuiltEmporiumsSet getEmporiumForRecycleRewardToken() {
@@ -173,39 +173,39 @@ public class Player implements Serializable {
 		return builtEmporiumsSet.containsMaxEmporium();
 	}
 
-	public void getAllTilePoints(Game game, TurnHandler turnHandler) {
-		bonusTile.useBonus(game, turnHandler);
+	public void getAllTilesPoints(Game game, TurnHandler turnHandler) {
+		bonusTiles.useBonus(game, turnHandler);
 	}
 	
-	public int getNumberOfPermissionCard() {
-		return permissionHandDeck.getHandSize() + permissionUsedHandDeck.getHandSize();
+	public int getNumberOfPermitCards() {
+		return permitHandDeck.getHandSize() + permitUsedHandDeck.getHandSize();
 	}
 	
-	public int getNumberOfPoliticCard() {
+	public int getNumberOfPoliticCards() {
 		return politicHandDeck.getHandSize();
 	}
 	
 
-	public void checkEmporiumsGroups(Game game) {
+	public void checkEmporiumsGroup(Game game) {
 		Region completedRegion = game.getGameMap().groupRegionalCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
-			bonusTile.addTile(completedRegion.acquireBonusTile());
+			bonusTiles.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTilesSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTilesSet().pop());
+				bonusTiles.addTile(game.getKingTilesSet().pop());
 			}
 		}
 		completedRegion = game.getGameMap().groupColoredCitiesComplete(builtEmporiumsSet);
 		if(completedRegion != null) {
-			bonusTile.addTile(completedRegion.acquireBonusTile());
+			bonusTiles.addTile(completedRegion.acquireBonusTile());
 			if(!(game.getKingTilesSet().isEmpty())) {
-				bonusTile.addTile(game.getKingTilesSet().pop());
+				bonusTiles.addTile(game.getKingTilesSet().pop());
 			}
 		}
 	}
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permissionHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permitHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
 		if(isOnline()) {
 			print += " online";
 		}

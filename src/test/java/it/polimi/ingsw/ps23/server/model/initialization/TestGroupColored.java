@@ -23,7 +23,7 @@ public class TestGroupColored {
 		CitiesFactory citiesFactory = new CitiesFactory();
 		citiesFactory.makeCities(rawCities, rawRewardTokens, new BonusCache());
 		List<String[]> rawColoredCities = new RawObject(TEST_CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
-		List<Region> groupColored = new GroupColoredCitiesFactory().makeGroup(rawColoredCities, citiesFactory.getCities());
+		List<Region> groupColored = new GroupColoredCitiesBuilder().makeGroup(rawColoredCities, citiesFactory.getCities());
 		assertTrue(groupColored.get(0).getName().equals("iron"));
 		assertTrue(groupColored.get(1).getName().equals("bronze"));
 		assertTrue(groupColored.get(2).getName().equals("silver"));

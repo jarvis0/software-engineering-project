@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
-class BonusTile implements Serializable {
+class BonusTilesSet implements Serializable {
 	
 	/**
 	 * 
@@ -16,7 +16,7 @@ class BonusTile implements Serializable {
 	private static final long serialVersionUID = 8693190914348433544L;
 	private List<Bonus> bonuses;
 	
-	BonusTile() {
+	BonusTilesSet() {
 		bonuses = new ArrayList<>();
 	}
 	

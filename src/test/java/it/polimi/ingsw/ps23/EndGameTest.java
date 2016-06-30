@@ -15,7 +15,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-import it.polimi.ingsw.ps23.server.model.map.regions.PermissionCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class EndGameTest {
@@ -48,8 +48,8 @@ public class EndGameTest {
 		assertTrue(new WinnerComparator().compare(second, third) >= 1);
 		second.updateNobilityPoints(10);
 		List<Card> permissionCards = new ArrayList<>();
-		permissionCards.add(new PermissionCard());
-		third.buyPermissionCards(permissionCards);
+		permissionCards.add(new BusinessPermitTile());
+		third.buyPermitCards(permissionCards);
 		second.updateVictoryPoints(- second.getVictoryPoints());
 		third.updateVictoryPoints(- third.getVictoryPoints());
 		endGame.isGameEnded(game, turnHandler);

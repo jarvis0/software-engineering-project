@@ -10,6 +10,8 @@ public class DynamicContentExpression extends UIComponentsParser {
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
 	private static final String FREE_COUNCILLORS_TAG_OPEN = "<free_councillors>";
 	private static final String FREE_COUNCILLORS_TAG_CLOSE = "</free_councillors>";
+	private static final String COUNCILS_TAG_OPEN = "<councils>";
+	private static final String COUNCILS_TAG_CLOSE = "</councils>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -30,6 +32,11 @@ public class DynamicContentExpression extends UIComponentsParser {
 		return new FreeCouncillorsExpression(freeCouncillorsExpression);
 	}
 	
+	private CouncilsExpression getCouncilsExpression() {
+		Expression councilsExpression = new TerminalExpression(COUNCILS_TAG_OPEN, COUNCILS_TAG_CLOSE);
+		return new CouncilsExpression(councilsExpression);
+	}
+	
 	@Override
 	public void parse(String message) {
 		if(expression.interpret(message)) {
@@ -38,7 +45,9 @@ public class DynamicContentExpression extends UIComponentsParser {
 			isKingPosition.parse(noTagMessage);
 			FreeCouncillorsExpression isFreeCouncillors = getFreeCouncillorsExpression();
 			isFreeCouncillors.parse(noTagMessage);
-			swingUI.refreshDynamicContent(isKingPosition.getKingPosition(), isFreeCouncillors.getFreeCouncillors());
+			CouncilsExpression areCouncils = getCouncilsExpression();
+			areCouncils.parse(noTagMessage);
+			swingUI.refreshDynamicContent(isKingPosition.getKingPosition(), isFreeCouncillors.getFreeCouncillors(), areCouncils.getCouncilsName(), areCouncils.getCouncilsColor());
 		}
 	}
 

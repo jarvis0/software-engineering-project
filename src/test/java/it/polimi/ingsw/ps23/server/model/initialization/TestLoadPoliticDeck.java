@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
-import it.polimi.ingsw.ps23.server.model.initialization.PoliticDeckFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.GameColorsBuilder;
+import it.polimi.ingsw.ps23.server.model.initialization.PoliticCardsBuilder;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
@@ -22,7 +22,7 @@ public class TestLoadPoliticDeck {
 	@Test
 	public void test() {
 		List<String[]> rawPoliticCards = new RawObject(TEST_CONFIGURATION_PATH + POLITIC_DECK_CSV).getRawObject();
-		Deck politicDeck = new PoliticDeckFactory().makeDeck(rawPoliticCards);
+		Deck politicDeck = new PoliticCardsBuilder().makeDeck(rawPoliticCards);
 		assertTrue(politicDeck.getCards().size() == 20);
 		politicDeck.pickCard();
 		assertTrue(politicDeck.getCards().size() == 19);
@@ -30,8 +30,8 @@ public class TestLoadPoliticDeck {
 		assertTrue(politicDeck.getCards().size() == 17);
 		boolean foundShuffled = false;
 		boolean foundJolly = false;
-		GameColor orange = GameColorFactory.makeColor("orange");
-		GameColor multi = GameColorFactory.makeColor("multi");
+		GameColor orange = GameColorsBuilder.makeColor("orange");
+		GameColor multi = GameColorsBuilder.makeColor("multi");
 		for(int i = 0; i < (politicDeck.getCards().size() - 1) / 2; i++) {
 			if(politicDeck.getCards().get(i) != politicDeck.getCards().get(i+1)) {
 				foundShuffled = true;

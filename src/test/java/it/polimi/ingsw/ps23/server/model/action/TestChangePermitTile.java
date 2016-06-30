@@ -26,11 +26,11 @@ public class TestChangePermitTile {
 		int initialAssistant = game.getCurrentPlayer().getAssistants();
 		TurnHandler turnHandler = new TurnHandler();
 		List<Card> deck = new ArrayList<>();
-		deck.addAll(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getPermissionDeckUp().getCards());
+		deck.addAll(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getPermitTilesUp().getCards());
 		ChangePermitsTile action = new ChangePermitsTile(game.getGameMap().getGroupRegionalCity().get(0).getName());
 		action.doAction(game, turnHandler);
 		for(Card card : deck) {
-			assertFalse(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getPermissionDeckUp().getCards().contains(card));
+			assertFalse(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getPermitTilesUp().getCards().contains(card));
 		}
 		assertTrue(initialAssistant -1 == game.getCurrentPlayer().getAssistants());
 		assertFalse(turnHandler.isAvailableQuickAction());

@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.server.model.initialization.RewardTokenFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.RewardTokensBuilder;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
+import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokensSet;
 
 class CitiesFactory {
 	
@@ -36,14 +36,14 @@ class CitiesFactory {
 	}
 
 	void makeCities(List<String[]> rawCities, List<String[]> rawRewardTokens, BonusCache bonusCache) {
-		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens, bonusCache);
+		RewardTokensSet rewardTokens = new RewardTokensBuilder().makeRewardTokenSet(rawRewardTokens, bonusCache);
 		for(String[] rawCity : rawCities) {
 			if(!rawCity[CITY_TYPE_POSITION].equals(CAPITAL)) {
-				citiesList.add(new NormalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION]), rewardTokens.removeRewardToken(rewardTokens.rewardTokenSize() - 1)));
+				citiesList.add(new NormalCity(rawCity[CITY_NAME_POSITION], GameColorsBuilder.makeColor(rawCity[CITY_COLOR_NAME_POSITION]), rewardTokens.removeRewardToken(rewardTokens.rewardTokenSize() - 1)));
 				citiesMap.put(citiesList.get(citiesList.size() - 1).getName(), citiesList.get(citiesList.size() - 1));
 			}
 			else {
-				citiesList.add(new CapitalCity(rawCity[CITY_NAME_POSITION], GameColorFactory.makeColor(rawCity[CITY_COLOR_NAME_POSITION])));
+				citiesList.add(new CapitalCity(rawCity[CITY_NAME_POSITION], GameColorsBuilder.makeColor(rawCity[CITY_COLOR_NAME_POSITION])));
 				citiesMap.put(citiesList.get(citiesList.size() - 1).getName(), citiesList.get(citiesList.size() - 1));
 			}
 		}

@@ -1,11 +1,11 @@
-package it.polimi.ingsw.ps23.server.model.player;
+package it.polimi.ingsw.ps23.server.model.map.board;
 
 import java.io.Serializable;
 import java.util.Deque;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 
-public class KingTilesSet implements Serializable {
+public class KingRewardTilesSet implements Serializable {
 	
 	/**
 	 * 
@@ -13,7 +13,7 @@ public class KingTilesSet implements Serializable {
 	private static final long serialVersionUID = 8347713800996719320L;
 	private Deque<Bonus> kingTiles;
 	
-	public KingTilesSet(Deque<Bonus> kingTiles) {
+	public KingRewardTilesSet(Deque<Bonus> kingTiles) {
 		this.kingTiles = kingTiles;
 	}
 	
@@ -21,11 +21,11 @@ public class KingTilesSet implements Serializable {
 		return kingTiles.getFirst();
 	}
 	
-	Bonus pop() {
+	public Bonus pop() {
 		return kingTiles.pop();
 	}
 	
-	boolean isEmpty() {
+	public boolean isEmpty() {
 		return kingTiles.isEmpty();
 	}
 	

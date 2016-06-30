@@ -9,9 +9,9 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
-import it.polimi.ingsw.ps23.server.model.initialization.RewardTokenFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.RewardTokensBuilder;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
-import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokenSet;
+import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokensSet;
 
 public class TestLoadRewardTokenSet {
 
@@ -21,7 +21,7 @@ public class TestLoadRewardTokenSet {
 	@Test
 	public void test() {
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
-		RewardTokenSet rewardTokens = new RewardTokenFactory().makeRewardTokenSet(rawRewardTokens, new BonusCache());
+		RewardTokensSet rewardTokens = new RewardTokensBuilder().makeRewardTokenSet(rawRewardTokens, new BonusCache());
 		int n = rewardTokens.rewardTokenSize();
 		RewardToken rewardToken1 = rewardTokens.removeRewardToken(n - 1);
 		assertTrue(n - 1 == rewardTokens.rewardTokenSize());

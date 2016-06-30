@@ -6,7 +6,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
-import it.polimi.ingsw.ps23.server.model.player.PermissionHandDeck;
+import it.polimi.ingsw.ps23.server.model.player.PermitHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class BuildEmporiumPermitTileState extends ActionState {
@@ -42,7 +42,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		availableCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
+		availableCards = ((PermitHandDeck)game.getCurrentPlayer().getPermitHandDeck()).getAvaiblePermissionCards();
 	}
 
 	@Override

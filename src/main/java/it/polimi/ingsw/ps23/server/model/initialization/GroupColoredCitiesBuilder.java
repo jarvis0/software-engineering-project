@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.GroupColoredCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 
-class GroupColoredCitiesFactory {
+class GroupColoredCitiesBuilder {
 	
 	private static final int COLOR_POSITION = 0;
 	private static final int BONUS_VALUE_POSITION = 1;
@@ -20,7 +20,7 @@ class GroupColoredCitiesFactory {
 
 	private List<Region> coloredGroupCities;
 	
-	GroupColoredCitiesFactory() {
+	GroupColoredCitiesBuilder() {
 		coloredGroupCities = new ArrayList<>();
 	}
 	

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.initialization.CitiesFactory;
-import it.polimi.ingsw.ps23.server.model.initialization.GameColorFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.GameColorsBuilder;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
@@ -59,18 +59,18 @@ public class TestLoadCities {
 	private void bonusesTest() {
 		RewardToken rewardToken = new RewardToken();
 		rewardToken.addBonus(bonusCache.getBonus("nobilityTrackStep", 1));
-		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
+		City city = new NormalCity("test", GameColorsBuilder.makeColor("test"), rewardToken);
 		assertTrue(((NormalCity) city).hasNobilityTrackBonus());
 		rewardToken = new RewardToken();
 		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
-		city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
+		city = new NormalCity("test", GameColorsBuilder.makeColor("test"), rewardToken);
 		assertTrue(!((NormalCity) city).hasNobilityTrackBonus());
 	}
 	
 	private void colorAndNameTest () {
 		RewardToken rewardToken = new RewardToken();
 		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
-		City city = new NormalCity("test", GameColorFactory.makeColor("test"), rewardToken);
+		City city = new NormalCity("test", GameColorsBuilder.makeColor("test"), rewardToken);
 		assertTrue(city.getColor() == "test");
 		assertTrue(city.getName() == "test");
 	}
@@ -88,7 +88,7 @@ public class TestLoadCities {
 	private void graphTest() {
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		List<String[]> rawCitiesConnections = new RawObject(TEST_CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
-		CitiesGraphFactory citiesGraphFactory = new CitiesGraphFactory();
+		CitiesGraphBuilder citiesGraphFactory = new CitiesGraphBuilder();
 		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, citiesMap);
 		citiesConnections = citiesGraphFactory.getCitiesConnections();
 		CitiesGraph citiesGraph = citiesGraphFactory.getCitiesGraph();

@@ -31,7 +31,7 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 
 	public void selectRegion(String chosenRegion) {
 		writeSecondOutput = true;
-		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermissionDeckUp();
+		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp();
 	}
 
 	@Override
