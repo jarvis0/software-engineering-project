@@ -7,6 +7,8 @@ import it.polimi.ingsw.ps23.client.socket.Expression;
 
 class CouncilsExpression extends GUIComponentsParser {
 
+	private static final String KINGDOM = "kingdom";
+	
 	private Expression expression;
 
 	private List<String> councilsName;
@@ -24,23 +26,34 @@ class CouncilsExpression extends GUIComponentsParser {
 		return councilsColor;
 	}
 	
+	private String addCouncil(List<List<String>> councilsColor, String message) {
+		String parsingMessage = message;
+		String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
+		int councillorsNumber = Integer.parseInt(field);
+		parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
+		List<String> council = new ArrayList<>();
+		for(int j = 0; j < councillorsNumber; j++) {
+			parsingMessage = addField(council, parsingMessage);
+		}
+		councilsColor.add(council);
+		return parsingMessage;
+	}
+	
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			String parsingMessage = expression.selectBlock(message);
 			councilsName = new ArrayList<>();
 			councilsColor = new ArrayList<>();
-			do {
+			String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
+			int regionalCouncilsNumber = Integer.parseInt(field);
+			parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
+			for(int i = 0; i < regionalCouncilsNumber; i++) {
 				parsingMessage = addField(councilsName, parsingMessage);
-				String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
-				int councillorsNumber = Integer.parseInt(field);
-				parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
-				List<String> council = new ArrayList<>();
-				for(int i = 0; i < councillorsNumber; i++) {
-					parsingMessage = addField(council, parsingMessage);
-				}
-				councilsColor.add(council);
-			} while(!parsingMessage.isEmpty());
+				parsingMessage = addCouncil(councilsColor, parsingMessage);
+			}
+			councilsName.add(KINGDOM);
+			addCouncil(councilsColor, parsingMessage);
 		}
 	}
 

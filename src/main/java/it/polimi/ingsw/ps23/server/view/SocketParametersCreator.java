@@ -43,7 +43,6 @@ class SocketParametersCreator {
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
-	private static final String KINGDOM = "kingdom";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -96,17 +95,17 @@ class SocketParametersCreator {
 
 	private String addCouncils(List<Region> regions, Council kingCouncil) {
 		StringBuilder councilsSend = new StringBuilder();
-		for(int i = 0; i < regions.size(); i++) {
+		int regionsNumber = regions.size();
+		councilsSend.append(regionsNumber);
+		for(int i = 0; i < regionsNumber; i++) {
 			GroupRegionalCity region = (GroupRegionalCity) regions.get(i);
-			councilsSend.append(region.getName());
+			councilsSend.append("," + region.getName());
 			Queue<Councillor> councillors = region.getCouncil().getCouncillors();
 			councilsSend.append("," + councillors.size());
 			for(Councillor councillor : councillors) {
 				councilsSend.append("," + councillor.getColor().toString());
 			}
-			councilsSend.append(",");
 		}
-		councilsSend.append(KINGDOM);//<----- evitabile
 		Queue<Councillor> councillors = kingCouncil.getCouncillors();
 		councilsSend.append("," + councillors.size());
 		for(Councillor councillor : councillors) {
@@ -177,7 +176,7 @@ class SocketParametersCreator {
 			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
 			playersParameterSend.append("," + player.isOnline());
 			playersParameterSend.append(",");
-		}//verificare se ha i permit tile ecc.. con il debug F5
+		}//verificare se ha i permit tile ecc.. con il debug F5 TODO
 		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
 	}
 

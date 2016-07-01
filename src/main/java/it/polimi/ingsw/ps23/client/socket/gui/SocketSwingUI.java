@@ -15,7 +15,7 @@ public class SocketSwingUI extends SwingUI {
 		addNobilityTrackBonuses(stepsName, stepsValue);
 	}
 
-	public void refreshDynamicContents(KingPositionExpression kingPosition,
+	void refreshDynamicContents(KingPositionExpression kingPosition,
 			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils,
 			BonusTilesExpression bonusTiles, PlayersParameterExpression playersParameters, PermitTilesUpExpression arePermitTilesUp) {
 		refreshKingPosition(kingPosition.getKingPosition());
