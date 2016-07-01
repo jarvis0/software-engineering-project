@@ -44,6 +44,7 @@ class RMISwingUI extends SwingUI {
 	private String chosenCard;
 	private int chosenTile;
 	private Map<String, List<JLabel>> permitTiles;
+	private List<JLabel> playerPermitTiles;
 	private List<JLabel> cardsList;
 	private boolean finish;
 	JButton finished;
@@ -51,6 +52,7 @@ class RMISwingUI extends SwingUI {
 	RMISwingUI(String mapType, String playerName) {
 		super(mapType, playerName);
 		cardsList = new ArrayList<>();
+		playerPermitTiles = new ArrayList<>();
 		permitTiles = new HashMap<>();
 		finish = false;
 	}
@@ -99,19 +101,17 @@ class RMISwingUI extends SwingUI {
 		List<Card> permitTiles = permitTilesUp.getCards();
 		int x = xCoord;
 		int y = yCoord;
-		int indexOfTile = 1;
+		int indexOfTile = 0;
 		List<JLabel> permitLabels = new ArrayList<>();
 		for (Card permissionCard : permitTiles) {
-			drawPermissionCard(permissionCard, indexOfTile, permitLabels, x, y );
+			drawPermitCard(permissionCard, indexOfTile, permitLabels, x, y );
 			this.permitTiles.put(region, permitLabels);
 			x -= 52;
 			indexOfTile++;
 		}
 	}
 	
-	private void drawPermissionCard(Card permitTile, int indexOfTile, List<JLabel> permitLabels, int x, int y) {
-		final int firstTile = 0;
-		final int secondTile = 1;
+	private void drawPermitCard(Card permitTile, int indexOfTile, List<JLabel> permitLabels, int x, int y) {
 		BufferedImage permissionTileImage = readImage(getImagesPath() + getPermitTilePath());
 		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
@@ -119,26 +119,15 @@ class RMISwingUI extends SwingUI {
 		permitLabels.add(permissionTileLabel);
 		permissionTileLabel.setBounds(0, 0, 50, 50);
 		permissionTileLabel.setLocation(x, y);
-		if(indexOfTile == 1) {
-			permissionTileLabel.addMouseListener(new MouseAdapter() {
+		permissionTileLabel.addMouseListener(new MouseAdapter() {
 				@Override
 	            public void mouseClicked(MouseEvent e) {
-					chosenTile = firstTile;
+					chosenTile = indexOfTile;
 					permissionTileLabel.setEnabled(false);
 	            	getRMIGUIView().resume();
 	            }
 			});
-		}
-		if(indexOfTile == 2) {
-			permissionTileLabel.addMouseListener(new MouseAdapter() {
-				@Override
-	            public void mouseClicked(MouseEvent e) {
-					chosenTile = secondTile;
-					permissionTileLabel.setEnabled(false);
-	            	getRMIGUIView().resume();
-	            }
-			});
-		}
+		
 		getMapPanel().add(permissionTileLabel, 0);
 		permissionTileLabel.setEnabled(false);
 		List<Bonus> bonuses = ((BusinessPermitTile) permitTile).getBonuses();
@@ -274,9 +263,7 @@ class RMISwingUI extends SwingUI {
 		List<List<String>> councilsColor = new ArrayList<>();
 		councilsToStrings(currentState.getGroupRegionalCity(), currentState.getKingCouncil().getCouncillors(), councilsName, councilsColor);
 		refreshCouncils(councilsName, councilsColor);
-		
 		refreshRegionalPermitTiles(currentState.getGroupRegionalCity());//TODO
-		
 		List<String> groupsName = new ArrayList<>();
 		List<String> bonusesName = new ArrayList<>();
 		List<String> bonusesValue = new ArrayList<>();
@@ -357,11 +344,18 @@ class RMISwingUI extends SwingUI {
 	}
 	
 	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
-		List<Card> permissionHandDeckList = permissionHandDeck.getCards();
-		for(Card permissionCard : permissionHandDeckList) {
-			//drawPermissionCard(permissionCard, indexOfTile, permitLabels, x, y);TODO
-			
+		/*for(JLabel permitTile : playerPermitTiles) {
+			getMapPanel().remove(permitTile);
+		}*/
+		List<Card> permitHandDeckList = permissionHandDeck.getCards();
+		int indexOfTile = 0; 
+		int x = 0;
+		int y = 611;
+		for(Card permitTile : permitHandDeckList) {
+			drawPermitCard(permitTile, indexOfTile, playerPermitTiles, x, y);
+			x += 52;
 		}
+		
 	}
 
 	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
@@ -387,13 +381,39 @@ class RMISwingUI extends SwingUI {
 			jLabel.setEnabled(true);
 		}
 	}
+	
+	public void enablePermitTileDeck(boolean display) {
+		for (JLabel jLabel : playerPermitTiles) {
+			jLabel.setEnabled(display);
+		}
+	}
 
 	public void enablePoliticCards(boolean display) {
 		enableCards(display);
+	}
+	
+
+	public void enableCities(boolean display) {
+		enableCitiesButtons(display);
+	}
+	
+
+	public void clearRMISwingUI() {
+		chosenCard = null;
+		finish = false;
+		clearChosenRegion();
+		Set<Entry<String, List<JLabel>>> allPermitTiles = permitTiles.entrySet();
+		for (Entry<String, List<JLabel>> entry : allPermitTiles){
+			for(JLabel permitTile : entry.getValue()) {
+				permitTile.setEnabled(false);
+			}
+		}
+				
 	}
 
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
+
 
 }

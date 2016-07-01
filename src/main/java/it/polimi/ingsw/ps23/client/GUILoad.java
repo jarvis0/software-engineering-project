@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ps23.client;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -42,7 +42,8 @@ class GUILoad {
 	private static final String PNG_EXTENSION = ".png";
 
 	private String mapPath;
-	private Map<String, Component> components;
+	private Map<String, JLabel> cityLabels;
+	private JLabel kingLabel;
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
@@ -53,7 +54,7 @@ class GUILoad {
 	
 	GUILoad(String mapPath) {
 		this.mapPath = mapPath;
-		components = new HashMap<>();
+		cityLabels = new HashMap<>();
 		councilPoints = new HashMap<>();
 		frame = new JFrame();
 		frame.setTitle("Council of Four");
@@ -81,12 +82,16 @@ class GUILoad {
 		frame.setVisible(true);
 	}
 
-	Map<String, Component> getComponents() {
-		return components;
+	Map<String, JLabel> getCityLabels() {
+		return cityLabels;
 	}
 	
 	Map<String, Point> getCouncilPoints() {
 		return councilPoints;
+	}
+	
+	JLabel getKingLabel() {
+		return kingLabel;
 	}
 	
 	JFrame getFrame() {
@@ -113,10 +118,9 @@ class GUILoad {
 	private void loadKing() {
 		BufferedImage kingImage = readImage(IMAGES_PATH + KING_PATH);
 		Image resizedKingImage = kingImage.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-		JLabel kingLabel = new JLabel(new ImageIcon(resizedKingImage));
+		kingLabel = new JLabel(new ImageIcon(resizedKingImage));
 		kingLabel.setBounds(0, 0, 35, 35);
 		mapPanel.add(kingLabel);
-		components.put("king", kingLabel);
 	}
 
 	private void loadCouncilsPositions() {
@@ -147,9 +151,12 @@ class GUILoad {
 			cityName.setFont(new Font("Algerian", Font.ROMAN_BASELINE, 14));
 			cityName.setForeground(Color.decode(rawCityPosition[6]));
 			cityName.setText(rawCityPosition[0]);
+			cityLabel.setDisabledIcon(new ImageIcon(resizedCityImage));
+			cityLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			cityLabel.setEnabled(false);
 			mapPanel.add(cityName);
 			mapPanel.add(cityLabel);
-			components.put(rawCityPosition[0], cityLabel);
+			cityLabels.put(rawCityPosition[0], cityLabel);
 		}
 	}
 
@@ -207,5 +214,4 @@ class GUILoad {
 		loadNobiltyTrack();
 		loadPlayersTable();
 	}
-
 }
