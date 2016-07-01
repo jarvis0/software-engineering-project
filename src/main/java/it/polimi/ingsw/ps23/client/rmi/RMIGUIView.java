@@ -90,18 +90,24 @@ public class RMIGUIView extends RMIView {
 	}
 
 	@Override
-	public void visit(ChangePermitsTileState currenState) {
-		// TODO Auto-generated method stub
-
+	public void visit(ChangePermitsTileState currentState) {
+		rmiSwingUI.enableButtons(true);
+		pause();
+		String chosenRegion = rmiSwingUI.getChosenAction();
+		rmiSwingUI.enableButtons(false);
+		sendAction(currentState.createAction(chosenRegion));
 	}
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		try {
-			rmiSwingUI.enableButtons();
+			rmiSwingUI.showAvailableActions(false, false, this);
+			rmiSwingUI.enableButtons(true);
 			List<String> removedCards = new ArrayList<>();
 			pause();
+			rmiSwingUI.enableButtons(false);
 			String chosenCouncil = rmiSwingUI.getChosenAction();
+			rmiSwingUI.enablePoliticCards(true);
 			int numberOfCards = 4;
 			boolean finish = false;
 			int i = 0;
@@ -113,6 +119,8 @@ public class RMIGUIView extends RMIView {
 				}
 				i++;
 			}
+			rmiSwingUI.enablePoliticCards(false);
+			rmiSwingUI.enablePermissonTilePanel(chosenCouncil);
 			pause();
 			int chosenTile = rmiSwingUI.getChosenTile();
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
@@ -201,6 +209,5 @@ public class RMIGUIView extends RMIView {
 			state.acceptView(this);
 		} while(!endGame);
 	}
-
 	
 }

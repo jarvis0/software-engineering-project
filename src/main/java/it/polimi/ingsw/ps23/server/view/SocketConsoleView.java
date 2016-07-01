@@ -31,6 +31,8 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketConsoleView extends SocketView {
 	
+	private static final String SKIP = "skip";
+	
 	public SocketConsoleView(String clientName, Connection connection) {
 		super(clientName, connection);
 	}
@@ -40,14 +42,20 @@ public class SocketConsoleView extends SocketView {
 		Player player = currentState.getCurrentPlayer();
 		getConnection().sendNoInput(currentState.getStatus());
 		if(player.getName().equals(getClientName())) {
-			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? ");
-			try {
-				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
+			getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? (insert skip to jump over)\nREMEMBER: You can't skip your turn if you haven't already used your main action!");
+			String selectedAction = receive().toLowerCase();
+			if(!selectedAction.equals(SKIP)) {
+				try {
+					wakeUp(currentState.getStateCache().getAction(selectedAction));
+				}
+				catch(NullPointerException e) {
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
+				}
 			}
-			catch(NullPointerException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
+			else {
 				wakeUp();
 			}
+			
 		}
 		else {
 			getConnection().sendNoInput("It's player " + player.getName() + " turn.");

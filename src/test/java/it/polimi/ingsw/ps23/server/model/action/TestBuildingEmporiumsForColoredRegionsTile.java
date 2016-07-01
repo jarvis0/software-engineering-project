@@ -17,6 +17,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumKing;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
+import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
@@ -55,12 +56,21 @@ public class TestBuildingEmporiumsForColoredRegionsTile {
 		
 	private List<City> getMinCities(Game game) {
 		List<City> minCities = new ArrayList<>();
+		String color = new String();
 		Set<Entry<String, City>> citiesEntry = game.getGameMap().getCities().entrySet();
 		for (Entry<String, City> cityEntry : citiesEntry) {
 			if (cityEntry.getValue().getColor().toString().equals(getColoredRegionColorLessCities(game))) {
 				minCities.add(cityEntry.getValue());
+				color = cityEntry.getValue().getColor();
 			}
 		}
+		boolean found = false;
+		for(Region region : game.getGameMap().getGroupColoredCity()) {
+			if(region.getName().equals(color)) {
+				found = true;
+			}
+		}
+		assertTrue(found);
 		return minCities;
 	}
 	

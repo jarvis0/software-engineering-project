@@ -35,8 +35,8 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMIConsoleView extends RMIView {
 
-	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
-
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server";
+	private static final String SKIP = "skip";
 	private Scanner scanner;
 	private PrintStream output;
 	private State state;
@@ -69,16 +69,17 @@ class RMIConsoleView extends RMIView {
 		Player player = currentState.getCurrentPlayer();
 		output.println(currentState.getStatus());
 		if(player.getName().equals(getClientName())) {
-			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? ");
+			output.println("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvailableAction() + "\n\nChoose an action to perform? (insert skip to jump over)\nREMEMBER: You can't skip your turn if you haven't already used your main action!");
+			String selectedAction = scanner.nextLine().toLowerCase();
 			try {
-				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(scanner.nextLine().toLowerCase()));
+				if(!selectedAction.equals(SKIP)) {
+					getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(selectedAction));
+				}
+				else {
+					getControllerInterface().wakeUpServer();
+				}
 			} catch (NullPointerException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot find the action.", e);
-				try {
-					getControllerInterface().wakeUpServer();
-				} catch (RemoteException e1) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
-				}
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
@@ -273,8 +274,7 @@ class RMIConsoleView extends RMIView {
 			try {
 				if (currentState.canBuy()) {
 					output.println("Available offers: " + currentState.getAvaiableOffers());
-					getControllerInterface()
-							.wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
+					getControllerInterface().wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
 				} else {
 					output.println("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());

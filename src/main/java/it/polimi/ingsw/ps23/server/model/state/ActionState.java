@@ -4,12 +4,11 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-abstract class ActionState extends State implements Cloneable, Serializable {
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
+import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7924914661050611016L;
+@SuppressWarnings("serial")
+public abstract class ActionState extends State implements Cloneable, Serializable {
 
 	private final String name;
 	
@@ -20,6 +19,8 @@ abstract class ActionState extends State implements Cloneable, Serializable {
 	String getName() {
 		return name;
 	}
+	
+	public abstract void canPerformThisAction(TurnHandler turnHandler) throws IllegalActionSelectedException;
 	
 	@Override
 	protected Object clone() {

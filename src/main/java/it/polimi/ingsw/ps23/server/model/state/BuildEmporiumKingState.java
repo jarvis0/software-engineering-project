@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
-public class BuildEmporiumKingState extends ActionState {
+public class BuildEmporiumKingState extends MainActionState {
 	
 	/**
 	 * 

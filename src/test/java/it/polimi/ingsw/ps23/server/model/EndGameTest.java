@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23;
+package it.polimi.ingsw.ps23.server.model;
 
 import static org.junit.Assert.*;
 
@@ -14,8 +14,8 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.server.model.map.Card;
-import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
+import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
 public class EndGameTest {
@@ -33,13 +33,13 @@ public class EndGameTest {
 		Player third = game.getGamePlayersSet().getPlayer(1);
 		game.setCurrentPlayer(winner);
 		winner.updateVictoryPoints(100);
-		EndGame endGame = new EndGame();
+		EndGame endGame = new EndGame(game, turnHandler);
 		Iterator<Entry<String,City>> iterator = game.getGameMap().getCities().entrySet().iterator();
 		while(!winner.hasFinished() && iterator.hasNext()) {
-			assertFalse(endGame.isGameEnded(game, turnHandler));
+			assertFalse(endGame.isGameEnded());
 			winner.getEmporiums().getBuiltEmporiumsSet().add(iterator.next().getValue());			
 		}
-		assertTrue(endGame.isGameEnded(game, turnHandler));
+		assertTrue(endGame.isGameEnded());
 		for(Player player : game.getGamePlayersSet().getPlayers()) {
 			if(!player.equals(winner)) {
 				assertTrue(new WinnerComparator().compare(winner, player) >= 1);
@@ -50,9 +50,14 @@ public class EndGameTest {
 		List<Card> permissionCards = new ArrayList<>();
 		permissionCards.add(new BusinessPermitTile());
 		third.buyPermitCards(permissionCards);
+		third.buyPermitCards(permissionCards);
+		second.buyPermitCards(permissionCards);
+		third.updateNobilityPoints(10);
+		second.updateNobilityPoints(2);		
 		second.updateVictoryPoints(- second.getVictoryPoints());
 		third.updateVictoryPoints(- third.getVictoryPoints());
-		endGame.isGameEnded(game, turnHandler);
+		game.setCurrentPlayer(winner);
+		endGame.isGameEnded();
 		assertTrue(new WinnerComparator().compare(second, third) >= 1);
 	}
 

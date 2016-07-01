@@ -7,7 +7,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class EndGame implements Serializable {
+class EndGame implements Serializable {
 
 	/**
 	 * 
@@ -21,12 +21,15 @@ public class EndGame implements Serializable {
 	private TurnHandler turnHandler;
 	private boolean finishedNobilityPoints;
 	
-	public boolean isGameEnded(Game game, TurnHandler turnHandler) {
+	EndGame(Game game, TurnHandler turnHandler) {
+		this.game = game;
+		this.turnHandler = turnHandler;
+		finishedNobilityPoints = false;
+	}
+	
+	boolean isGameEnded() {
 		//for(Player player : game.getGamePlayersSet().getPlayers()) {TODO
 			if(game.getCurrentPlayer().hasFinished()) {
-				this.game = game;
-				this.turnHandler = turnHandler;
-				finishedNobilityPoints = false;
 				applyFinalBonus();
 				return true;
 			}
@@ -34,7 +37,7 @@ public class EndGame implements Serializable {
 		return false;
 	}
 	
-	private void applyFinalBonus() {
+	void applyFinalBonus() {
 		getTilePoints();
 		getVictoryPointsForNobilityTrack();
 		getVictoryPointsForPermissionHandDeck();

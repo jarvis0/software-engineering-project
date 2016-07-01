@@ -64,6 +64,7 @@ public class TestLoadCities {
 		rewardToken = new RewardToken();
 		rewardToken.addBonus(bonusCache.getBonus("assistant", 1));
 		city = new NormalCity("test", GameColorsBuilder.makeColor("test"), rewardToken);
+		assertTrue(((NormalCity) city).getRewardToken().getBonuses().containsAll(rewardToken.getBonuses()));
 		assertTrue(!((NormalCity) city).hasNobilityTrackBonus());
 	}
 	

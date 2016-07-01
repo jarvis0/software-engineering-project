@@ -26,6 +26,7 @@ public class TestMarketTransation {
 		Game game = new Game(playersName);
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayer(1));
 		game.createNewMarket();
+		assertTrue(game.getMarketPlayersNumber() == 2);
 		Player player = game.getGamePlayersSet().getPlayer(0);
 		game.getCurrentPlayer().getPoliticHandDeck().getCards().clear();
 		List<Card> politicCards = new ArrayList<>();

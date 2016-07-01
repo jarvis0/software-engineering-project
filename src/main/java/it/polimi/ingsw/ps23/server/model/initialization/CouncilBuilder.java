@@ -14,7 +14,7 @@ class CouncilBuilder {
 	Council makeCouncil(FreeCouncillorsSet freeCouncillors) {
 		Queue<Councillor> councilComposition = new LinkedList<>();
 		for(int i = 0; i < COUNCILLORS_NUMBER; i++) {
-			councilComposition.add(freeCouncillors.remove(freeCouncillors.getFreeCouncillors().size() - 1));
+			councilComposition.add(freeCouncillors.remove(freeCouncillors.getFreeCouncillorsList().size() - 1));
 		}
 		return new Council(councilComposition);
 	}
