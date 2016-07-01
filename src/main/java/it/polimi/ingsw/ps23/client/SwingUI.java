@@ -87,10 +87,6 @@ public abstract class SwingUI {
 		return rmiGUIView;
 	}
 
-	protected Map<String, Component> getComponents() {
-		return components;
-	}
-
 	protected Map<String, Point> getCouncilPoints() {
 		return councilPoints;
 	}
@@ -123,10 +119,6 @@ public abstract class SwingUI {
 		return quickActionPanel;
 	}
 
-	protected static String getCouncillorPath() {
-		return COUNCILLOR_PATH;
-	}
-
 	protected static String getPermitTilePath() {
 		return PERMIT_TILE_PATH;
 	}
@@ -139,10 +131,6 @@ public abstract class SwingUI {
 		return POLITIC_CARD_PATH;
 	}
 
-	protected static String getBonusTilePath() {
-		return BONUS_TILE_PATH;
-	}
-	
 	protected static String getImagesPath() {
 		return IMAGES_PATH;
 	}
@@ -166,12 +154,6 @@ public abstract class SwingUI {
 	protected BufferedImage readImage(String path) {
 		return guiLoad.readImage(path);
 	}
-	
-	protected void enableRegionButtons(boolean display) {
-		for (JButton regionButton : regionsButtons) {
-			regionButton.setEnabled(display);
-		}
-	}
 
 	protected Component getComponent(String componentName) {
 		return components.get(componentName);
@@ -181,8 +163,14 @@ public abstract class SwingUI {
 		return councilPoints.get(region);
 	}
 
+	protected void enableRegionButtons(boolean display) {
+		for (JButton regionButton : regionsButtons) {
+			regionButton.setEnabled(display);
+		}
+	}
+
 	protected void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
-		BufferedImage bonusImage = guiLoad.readImage(getImagesPath()+ bonusName + getPngExtension());
+		BufferedImage bonusImage = guiLoad.readImage(IMAGES_PATH + bonusName + PNG_EXTENSION);
 		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
 		bonusLabel.setBounds(0, 0, width, height);
@@ -261,7 +249,7 @@ public abstract class SwingUI {
 		}
 		for (Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
 			String color = entry.getKey();
-			BufferedImage councillorImage = guiLoad.readImage(SwingUI.getImagesPath() + color + SwingUI.getCouncillorPath());
+			BufferedImage councillorImage = guiLoad.readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
 			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 			councillorLabel.setBounds(0, 0, 28, 52);
@@ -283,7 +271,7 @@ public abstract class SwingUI {
 	}
 
 	private void drawCouncillor(String color, int x, int y) {
-		BufferedImage councillorImage = guiLoad.readImage(SwingUI.getImagesPath()+ color + SwingUI.getCouncillorPath());
+		BufferedImage councillorImage = guiLoad.readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
 		Image resizedCouncillorImage = councillorImage.getScaledInstance(14, 39, Image.SCALE_SMOOTH);
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 		councillorLabel.setBounds(0, 0, 15, 39);
@@ -319,7 +307,7 @@ public abstract class SwingUI {
 			x += 7;
 			y -= 8;
 		}
-		BufferedImage tileImage = guiLoad.readImage(getImagesPath() + groupName + getBonusTilePath());
+		BufferedImage tileImage = guiLoad.readImage(IMAGES_PATH + groupName + BONUS_TILE_PATH);
 		Image resizedTileImage = tileImage.getScaledInstance(50, 35, Image.SCALE_SMOOTH);
 		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
 		tileLabel.setBounds(0, 0, 50, 35);
@@ -336,7 +324,7 @@ public abstract class SwingUI {
 			}
 		}
 		if (!NO_KING_TILE.equals(kingBonusName)) {
-			drawBonusTile(getKingdom(), kingBonusName, kingBonusValue);
+			drawBonusTile(KINGDOM, kingBonusName, kingBonusValue);
 		}
 	}
 	
