@@ -19,7 +19,7 @@ public class TestMarketTransation {
 
 	@Test
 	public void test() throws InvalidCardException {
-		MarketTransation marketTransation = new MarketTransation();
+		MarketTransaction marketTransaction = new MarketTransaction();
 		List<String> playersName = new ArrayList<>();
 		playersName.add("a");
 		playersName.add("b");
@@ -46,13 +46,13 @@ public class TestMarketTransation {
 		int cost = 10;
 		MarketObject marketObject = new MarketObject(player.getName(), permissionCards, politicCardsString, assistants, cost);
 		game.getMarket().addMarketObject(marketObject);
-		marketTransation.setRequestedObject(marketObject);
+		marketTransaction.setRequestedObject(marketObject);
 		int sellerPoliticHandSize = player.getNumberOfPoliticCard();
 		int sellerCoins = player.getCoins();
 		int sellerAssistants = player.getAssistants();
 		int buyerCoins = game.getCurrentPlayer().getCoins();
 		int buyerAssistants = game.getCurrentPlayer().getAssistants();
-		marketTransation.doTransation(game);
+		marketTransaction.doTransation(game);
 		assertTrue(player.getNumberOfPoliticCard() == sellerPoliticHandSize - politicCards.size());
 		assertTrue(player.getNumberOfPermissionCard() == 0);
 		assertTrue(player.getCoins() == sellerCoins + cost);
@@ -61,7 +61,7 @@ public class TestMarketTransation {
 		assertTrue(game.getCurrentPlayer().getPermissionHandDeck().getCardInPosition(0).equals(card));
 		assertTrue(game.getCurrentPlayer().getCoins() == buyerCoins - cost);
 		assertTrue(game.getCurrentPlayer().getAssistants() == buyerAssistants + assistants);
-		marketTransation.notPurchased();
+		marketTransaction.notPurchased();
 		sellerCoins = player.getCoins();
 		buyerCoins = game.getCurrentPlayer().getCoins();
 		assertTrue(player.getCoins() == sellerCoins);

@@ -16,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 /**
@@ -72,8 +72,8 @@ public class Controller implements ControllerObserver {
 	}
 
 	@Override
-	public void update(MarketTransation marketTransation) {
-		model.doBuyMarket(marketTransation);
+	public void update(MarketTransaction marketTransaction) {
+		model.doBuyMarket(marketTransaction);
 	}
 
 	@Override

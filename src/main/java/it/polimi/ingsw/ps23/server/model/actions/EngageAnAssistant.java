@@ -3,7 +3,12 @@ package it.polimi.ingsw.ps23.server.model.actions;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Mirco Manzoni
+ *
+ */
 public class EngageAnAssistant implements Action {
 
 	/**

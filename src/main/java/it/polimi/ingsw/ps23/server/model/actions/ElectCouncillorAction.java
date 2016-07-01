@@ -9,14 +9,23 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Mirco Manzoni
+ *
+ */
 @SuppressWarnings("serial")
 public abstract class ElectCouncillorAction implements Action {
 
 	private String councillor;
 	private String council;
 	private Map<String, Council> councilsMap;
-	
+	/**
+	 * Constructs all specified action parameters.
+	 * @param councillor - free councillor the player want to elect
+	 * @param council - the council the player wants to elect a councillor in
+	 */
 	public ElectCouncillorAction(String councillor, String council) {
 		this.councillor = councillor;
 		this.council = council;

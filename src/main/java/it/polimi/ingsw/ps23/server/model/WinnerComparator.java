@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import it.polimi.ingsw.ps23.server.model.player.Player;
 
-public class WinnerComparator implements Comparator<Player> {
+class WinnerComparator implements Comparator<Player> {
 
 	@Override
 	public int compare(Player o1, Player o2) {
