@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
-public class StaticContentExpression extends UIComponentsParser {
+public class StaticContentExpression extends GUIComponentsParser {
 
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
 	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";

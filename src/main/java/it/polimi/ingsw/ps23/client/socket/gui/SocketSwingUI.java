@@ -14,13 +14,14 @@ public class SocketSwingUI extends SwingUI {
 		addRewardTokens(citiesName, rewardTokensName, rewardTokensValue);
 		addNobilityTrackBonuses(stepsName, stepsValue);
 	}
-	
-	void refreshDynamicContents(String kingPosition, List<String> freeCouncillors, List<String> councilsName, List<List<String>> councilsColor, List<String> groupsName,
-			List<String> groupsBonusName, List<String> groupsBonusValue, String kingBonusName, String kingBonusValue) {
-		refreshKingPosition(kingPosition);
-		refreshFreeCouncillors(freeCouncillors);
-		refreshCouncils(councilsName, councilsColor);
-		refreshBonusTiles(groupsName, groupsBonusName, groupsBonusValue, kingBonusName, kingBonusValue);
+
+	public void refreshDynamicContents(KingPositionExpression kingPosition,
+			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils,
+			BonusTilesExpression bonusTiles, PlayersParameterExpression playersParameters) {
+		refreshKingPosition(kingPosition.getKingPosition());
+		refreshFreeCouncillors(freeCouncillors.getFreeCouncillors());
+		refreshCouncils(councils.getCouncilsName(), councils.getCouncilsColor());
+		refreshBonusTiles(bonusTiles.getGroupsName(), bonusTiles.getGroupsBonusName(), bonusTiles.getGroupsBonusValue(), bonusTiles.getKingBonusName(), bonusTiles.getKingBonusValue());
 	}
 
 }

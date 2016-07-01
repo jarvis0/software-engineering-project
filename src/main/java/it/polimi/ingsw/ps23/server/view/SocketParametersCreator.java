@@ -7,14 +7,18 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
+import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class SocketParametersCreator {
@@ -35,10 +39,21 @@ class SocketParametersCreator {
 	private static final String COUNCILS_TAG_CLOSE = "</councils>";
 	private static final String BONUS_TILES_TAG_OPEN = "<bonus_tiles>";
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
+	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
+	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String KINGDOM = "kingdom";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
+	}
+	
+	private void addBonuses(StringBuilder bonusesSend, List<Bonus> bonuses) {
+		int bonusesNumber = bonuses.size();
+		bonusesSend.append(bonusesNumber);
+		for(Bonus bonus : bonuses) {
+			bonusesSend.append("," + bonus.getName());
+			bonusesSend.append("," + bonus.getValue());
+		}
 	}
 	
 	private String addRewardTokens(Map<String, City> cities) {
@@ -48,15 +63,9 @@ class SocketParametersCreator {
 			City city = cityEntry.getValue();
 			if(!city.isCapital()) {
 				citiesSend.append(city.getName());
-				int rewardTokensNumber = ((NormalCity) city).getRewardToken().getBonuses().size();
-				citiesSend.append("," + rewardTokensNumber);
-				StringBuilder rewardTokens = new StringBuilder();
-				for(int i = 0; i < rewardTokensNumber; i++) {
-					Bonus bonus = ((NormalCity) city).getRewardToken().getBonuses().get(i);
-					rewardTokens.append("," + bonus.getName());
-					rewardTokens.append("," + bonus.getValue());
-				}
-				citiesSend.append(rewardTokens + ",");
+				citiesSend.append(",");
+				addBonuses(citiesSend, ((NormalCity) city).getRewardToken().getBonuses());
+				citiesSend.append(",");
 			}
 		}
 		return REWARD_TOKENS_TAG_OPEN + citiesSend + REWARD_TOKENS_TAG_CLOSE;
@@ -65,14 +74,7 @@ class SocketParametersCreator {
 	private String addNobilityTrackSteps(List<NobilityTrackStep> steps) {
 		StringBuilder nobilityTrackSend = new StringBuilder();
 		for(NobilityTrackStep step : steps) {
-			List<Bonus> bonuses = step.getBonuses();
-			int bonusesNumber = bonuses.size();
-			nobilityTrackSend.append(bonusesNumber);
-			for(int i = 0; i < bonusesNumber; i++) {
-				Bonus bonus = bonuses.get(i);
-				nobilityTrackSend.append("," + bonus.getName());
-				nobilityTrackSend.append("," + bonus.getValue());
-			}
+			addBonuses(nobilityTrackSend, step.getBonuses());
 			nobilityTrackSend.append(",");
 		}
 		return NOBILITY_TRACK_TAG_OPEN + nobilityTrackSend + NOBILITY_TRACK_TAG_CLOSE;
@@ -134,11 +136,62 @@ class SocketParametersCreator {
 		return BONUS_TILES_TAG_OPEN + bonusTilesSend + BONUS_TILES_TAG_CLOSE;
 	}
 
+	private void addPermitHandDeck(StringBuilder playersParameterSend, List<Card> cards) {
+		int cardsNumber = cards.size();
+		playersParameterSend.append("," + cardsNumber);
+		for(int i = 0; i < cardsNumber; i++) {
+			BusinessPermitTile permitTile = (BusinessPermitTile) cards.get(i);
+			int citiesNumber = permitTile.getCities().size();
+			playersParameterSend.append("," + citiesNumber);
+			for(int j = 0; j < citiesNumber; j++) {
+				playersParameterSend.append("," + permitTile.getCities().get(j).getName().charAt(0));
+			}
+			playersParameterSend.append(",");
+			addBonuses(playersParameterSend, permitTile.getBonuses());
+		}
+	}
+
+	private void addPoliticHandDeck(StringBuilder playersParameterSend, List<Card> cards) {
+		int cardsNumber = cards.size();
+		playersParameterSend.append("," + cardsNumber);
+		for(int i = 0; i < cardsNumber; i++) {
+			PoliticCard politicCard = (PoliticCard) cards.get(i);
+			playersParameterSend.append("," + politicCard.getColor().toString());
+		}
+	}
+
+	private String addPlayerParameters(List<Player> playersList) {
+		StringBuilder playersParameterSend = new StringBuilder();
+		int playersNumber = playersList.size();
+		playersParameterSend.append(playersNumber);
+		for(int i = 0; i < playersNumber; i++) {
+			Player player = playersList.get(i);
+			playersParameterSend.append("," + player.getName());
+			playersParameterSend.append("," + player.getCoins());
+			playersParameterSend.append("," + player.getAssistants());
+			playersParameterSend.append("," + player.getVictoryPoints());
+			playersParameterSend.append("," + player.getNobilityTrackPoints());
+			List<City> builtEmporiums = player.getEmporiums().getBuiltEmporiumsSet();
+			int builtEmporiumsNumber = builtEmporiums.size();
+			playersParameterSend.append("," + builtEmporiumsNumber);
+			for(int j = 0; j < builtEmporiumsNumber; j++) {
+				playersParameterSend.append("," + builtEmporiums.get(j).getName());
+			}
+			addPermitHandDeck(playersParameterSend, player.getPermitHandDeck().getCards());
+			addPermitHandDeck(playersParameterSend, player.getPermitUsedHandDeck().getCards());
+			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
+			playersParameterSend.append("," + player.isOnline());
+			playersParameterSend.append(",");
+		}//verificare se ha i permit tile ecc.. con il debug F5
+		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
+	}
+
 	String createUIDynamicContents(StartTurnState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
 		message += addCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
 		message += addBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
+		message += addPlayerParameters(currentState.getPlayersList());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 

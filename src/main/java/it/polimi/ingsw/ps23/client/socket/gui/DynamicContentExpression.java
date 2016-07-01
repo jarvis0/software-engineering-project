@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
-public class DynamicContentExpression extends UIComponentsParser {
+public class DynamicContentExpression extends GUIComponentsParser {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
@@ -13,6 +13,8 @@ public class DynamicContentExpression extends UIComponentsParser {
 	private static final String COUNCILS_TAG_CLOSE = "</councils>";
 	private static final String BONUS_TILES_TAG_OPEN = "<bonus_tiles>";
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
+	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
+	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -43,21 +45,26 @@ public class DynamicContentExpression extends UIComponentsParser {
 		return new BonusTilesExpression(bonusTilesExpression);
 	}
 	
+	private PlayersParameterExpression getPlayersParameterExpression() {
+		Expression politicCardsExpression = new TerminalExpression(PLAYERS_PARAMETERS_TAG_OPEN, PLAYERS_PARAMETERS_TAG_CLOSE);
+		return new PlayersParameterExpression(politicCardsExpression);
+	}
+	
 	@Override
 	public void parse(String message) {
 		if(expression.interpret(message)) {
 			String noTagMessage = expression.selectBlock(message);
 			KingPositionExpression isKingPosition = getKingPositionExpression();
 			isKingPosition.parse(noTagMessage);
-			FreeCouncillorsExpression isFreeCouncillors = getFreeCouncillorsExpression();
-			isFreeCouncillors.parse(noTagMessage);
+			FreeCouncillorsExpression areFreeCouncillors = getFreeCouncillorsExpression();
+			areFreeCouncillors.parse(noTagMessage);
 			CouncilsExpression areCouncils = getCouncilsExpression();
 			areCouncils.parse(noTagMessage);
 			BonusTilesExpression areBonusTiles = getBonusTilesExpression();
 			areBonusTiles.parse(noTagMessage);
-			swingUI.refreshDynamicContents(isKingPosition.getKingPosition(), isFreeCouncillors.getFreeCouncillors(), areCouncils.getCouncilsName(), areCouncils.getCouncilsColor(),
-					areBonusTiles.getGroupsName(), areBonusTiles.getGroupsBonusName(), areBonusTiles.getGroupsBonusValue(), 
-					areBonusTiles.getKingBonusName(), areBonusTiles.getKingBonusValue());
+			PlayersParameterExpression arePlayersParameter = getPlayersParameterExpression();
+			arePlayersParameter.parse(noTagMessage);	
+			swingUI.refreshDynamicContents(isKingPosition, areFreeCouncillors, areCouncils, areBonusTiles, arePlayersParameter);
 		}
 	}
 

@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class UIComponentsParser {
+abstract class GUIComponentsParser {
 
 	protected abstract void parse(String message);
 	

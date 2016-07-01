@@ -5,7 +5,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 
-class RewardTokensExpression extends UIComponentsParser {
+class RewardTokensExpression extends GUIComponentsParser {
 	
 	private Expression expression;
 

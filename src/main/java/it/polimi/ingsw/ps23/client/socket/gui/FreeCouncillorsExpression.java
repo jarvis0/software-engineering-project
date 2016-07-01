@@ -5,7 +5,7 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 
-class FreeCouncillorsExpression extends UIComponentsParser {
+class FreeCouncillorsExpression extends GUIComponentsParser {
 
 	private Expression expression;
 	

@@ -2,7 +2,7 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 
-class KingPositionExpression extends UIComponentsParser {
+class KingPositionExpression extends GUIComponentsParser {
 
 	private Expression expression;
 	

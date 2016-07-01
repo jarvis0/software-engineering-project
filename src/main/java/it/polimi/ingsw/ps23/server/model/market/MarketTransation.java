@@ -47,7 +47,7 @@ public class MarketTransation implements Serializable {
 	}
 	
 	private void createListCard(Game game) throws InvalidCardException {
-	politicCards.addAll((((PoliticHandDeck)playersMap.get(requestedObject.getPlayer()).getPoliticHandDeck()).getCardsByName(requestedObject.getPoliticCards())));
+	politicCards.addAll(((PoliticHandDeck)playersMap.get(requestedObject.getPlayer()).getPoliticHandDeck()).getCardsByName(requestedObject.getPoliticCards()));
 		for (int index : requestedObject.getPermissionCards()) {
 			permissionCards.add(playersMap.get(requestedObject.getPlayer()).getPermitHandDeck().getCardInPosition(index));
 		}
