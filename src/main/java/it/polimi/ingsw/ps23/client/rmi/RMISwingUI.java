@@ -112,7 +112,7 @@ class RMISwingUI extends SwingUI {
 	private void drawPermissionCard(Card permitTile, int indexOfTile, List<JLabel> permitLabels, int x, int y) {
 		final int firstTile = 0;
 		final int secondTile = 1;
-		BufferedImage permissionTileImage = readImage(SwingUI.getImagesPath() + getPermitTilePath());
+		BufferedImage permissionTileImage = readImage(getImagesPath() + getPermitTilePath());
 		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
 		permissionTileLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
