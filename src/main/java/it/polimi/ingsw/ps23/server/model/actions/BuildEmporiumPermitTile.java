@@ -15,7 +15,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
  * @author Alessandro Erba, Mirco Manzoni
  *
  */
-public class BuildEmporiumPermitTile implements Action {
+public class BuildEmporiumPermitTile extends Action {
 
 	/**
 	 * 
@@ -50,6 +50,7 @@ public class BuildEmporiumPermitTile implements Action {
 		player.usePermitCard(chosenCard);
 		player.checkEmporiumsGroup(game);
 		turnHandler.useMainAction();
+		setActionReport("Player " + player.getName() + " build an emporium in " + buildInThisCity + " using this permit tile: " + player.getPermitUsedHandDeck().getCardInPosition(player.getPermitUsedHandDeck().getHandSize() - 1));
 	}
 
 }

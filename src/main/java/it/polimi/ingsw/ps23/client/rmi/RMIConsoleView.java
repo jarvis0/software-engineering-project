@@ -105,12 +105,10 @@ class RMIConsoleView extends RMIView {
 			List<String> removedCards = new ArrayList<>();
 			output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
 			String chosenCouncil = scanner.nextLine().toLowerCase();
-			output.println("How many cards to you want to use (max "
-					+ currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
+			output.println("How many cards to you want to use (max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-				output.println(
-						"Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
+				output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
 				String chosenCard = scanner.nextLine().toLowerCase();
 				removedCards.add(chosenCard);
 			}

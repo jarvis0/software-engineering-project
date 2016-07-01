@@ -5,7 +5,11 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Provides methods to take the specified bonus
+ * @author Alessandro Erba
+ *
+ */
 public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 	
 	/**
@@ -13,7 +17,10 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 	 */
 	private static final long serialVersionUID = -7318128168046149733L;
 	private static final int VALUE_POSITION = 0;
-	
+	/**
+	 * Construct the bonus to be cloned by {@link BonusCache}.
+	 * @param name - the name of the bonus
+	 */
 	public RecycleRewardTokenBonus(String name) {
 		super(name);
 	}
