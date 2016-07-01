@@ -42,9 +42,9 @@ public class Initialization {
 	private static final String KING_BONUS_TILE_CSV = "kingBonusTiles.csv";
 	private static final String NOBILY_TRACK_CSV = "nobilityTrack.csv";
 	
-	private static final int STARTING_COINS = 10;
-	private static final int STARTING_ASSISTANTS = 1;
-	private static final int STARTING_POLITIC_CARDS_NUMBER = 6;
+	private static final int STARTING_COINS = 100;//TODO rimettere 10
+	private static final int STARTING_ASSISTANTS = 10;//TODO rimettere 1
+	private static final int STARTING_POLITIC_CARDS_NUMBER = 10;//TODO rimettere 6
 	
 	private String mapPath;
 	private String chosenMap;

@@ -93,7 +93,7 @@ public class RMIGUIView extends RMIView {
 	public void visit(ChangePermitsTileState currentState) {
 		rmiSwingUI.enableButtons(true);
 		pause();
-		String chosenRegion = rmiSwingUI.getChosenAction();
+		String chosenRegion = rmiSwingUI.getChosenRegion();
 		rmiSwingUI.enableButtons(false);
 		sendAction(currentState.createAction(chosenRegion));
 	}
@@ -101,12 +101,13 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		try {
+			rmiSwingUI.clearRMISwingUI();
 			rmiSwingUI.showAvailableActions(false, false, this);
 			rmiSwingUI.enableButtons(true);
 			List<String> removedCards = new ArrayList<>();
 			pause();
 			rmiSwingUI.enableButtons(false);
-			String chosenCouncil = rmiSwingUI.getChosenAction();
+			String chosenCouncil = rmiSwingUI.getChosenRegion();
 			rmiSwingUI.enablePoliticCards(true);
 			int numberOfCards = 4;
 			boolean finish = false;
@@ -151,8 +152,15 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		// TODO Auto-generated method stub
-
+		rmiSwingUI.clearRMISwingUI();
+		rmiSwingUI.showAvailableActions(false, false, this);
+		rmiSwingUI.enablePermitTileDeck(true);
+		pause();
+		int chosenCard = rmiSwingUI.getChosenTile();
+		rmiSwingUI.enableCities(true);
+		pause();
+		String chosenCity = rmiSwingUI.getChosenCity();
+		sendAction(currentState.createAction(chosenCity, chosenCard));
 	}
 
 	@Override

@@ -10,12 +10,15 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -54,11 +57,13 @@ public abstract class SwingUI {
 	private String playerName;
 	private RMIGUIView rmiGUIView;
 	private String chosenAction;
+	private String chosenRegion;
+	private String chosenCity;
 	private List<JButton> regionsButtons;
 	private GUILoad guiLoad;
 	private JPanel mainActionPanel;
 	private JPanel quickActionPanel;
-	private Map<String, Component> components;
+	private Map<String, JLabel> cityLabels;
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
@@ -69,7 +74,8 @@ public abstract class SwingUI {
 		regionsButtons = new ArrayList<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
-		components = guiLoad.getComponents();
+		cityLabels = guiLoad.getCityLabels();
+		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
@@ -109,6 +115,14 @@ public abstract class SwingUI {
 	
 	public String getChosenAction() {
 		return chosenAction;
+	}
+	
+	public String getChosenRegion() {
+		return chosenRegion;
+	}
+	
+	public String getChosenCity() {
+		return chosenCity;
 	}
 	
 	protected JPanel getMainActionPanel() {
@@ -155,8 +169,8 @@ public abstract class SwingUI {
 		return guiLoad.readImage(path);
 	}
 
-	protected Component getComponent(String componentName) {
-		return components.get(componentName);
+	private JLabel getCityLabel(String componentName) {
+		return cityLabels.get(componentName);
 	}
 
 	protected Point getCouncilPoint(String region) {
@@ -167,6 +181,10 @@ public abstract class SwingUI {
 		for (JButton regionButton : regionsButtons) {
 			regionButton.setEnabled(display);
 		}
+	}
+	
+	protected void clearChosenRegion() {
+		chosenRegion = null;
 	}
 
 	protected void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
@@ -194,7 +212,7 @@ public abstract class SwingUI {
 
 	protected void addRewardTokens(List<String> citiesName, List<List<String>> citiesBonusesName, List<List<String>> citiesBonusesValue) {
 		for (int i = 0; i < citiesName.size(); i++) {
-			Component cityComponent = getComponent(citiesName.get(i));
+			Component cityComponent = getCityLabel(citiesName.get(i));
 			Point point = cityComponent.getLocationOnScreen();
 			int x = point.x;
 			int y = point.y;
@@ -231,8 +249,8 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshKingPosition(String city) {
-		Point point = getComponent(city).getLocationOnScreen();
-		getComponent("king").setLocation(point);
+		Point point = getCityLabel(city).getLocationOnScreen();
+		guiLoad.getKingLabel().setLocation(point);
 	}
 
 	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
@@ -498,7 +516,7 @@ public abstract class SwingUI {
 			@Override 
             public void actionPerformed(ActionEvent e)
             {
-            	chosenAction = "seaside";
+            	chosenRegion = "seaside";
             	rmiGUIView.resume();
             }
         });
@@ -513,7 +531,7 @@ public abstract class SwingUI {
 			@Override 
             public void actionPerformed(ActionEvent e)
             {
-            	chosenAction = "hill";
+            	chosenRegion = "hill";
             	rmiGUIView.resume();
             }
         });
@@ -524,11 +542,11 @@ public abstract class SwingUI {
 		btnHill.setEnabled(false);
 		BufferedImage mountainImage = guiLoad.readImage(IMAGES_PATH + "mountainRegion.png");
 		JButton btnMountain = new JButton("");
-		btnSeaside.addActionListener(new ActionListener() {
+		btnMountain.addActionListener(new ActionListener() {
 			@Override 
             public void actionPerformed(ActionEvent e)
             {
-            	chosenAction = "mountain";
+            	chosenRegion = "mountain";
             	rmiGUIView.resume();
             }
         });
@@ -537,6 +555,30 @@ public abstract class SwingUI {
 		mapPanel.add(btnMountain, 0);
 		regionsButtons.add(btnMountain);
 		btnMountain.setEnabled(false);
+		
 	}
+	
+	private void loadCitiesButtons() {
+		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
+		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
+			cityLabel.getValue().addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					chosenCity = cityLabel.getKey();
+					cityLabel.getValue().setEnabled(false);
+	            	getRMIGUIView().resume();
+                }
+        });   
+		}
+		
+	}
+	
+	protected void enableCitiesButtons(boolean display) {
+		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
+		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
+			cityLabel.getValue().setEnabled(display);
+		}
+	}
+
 	
 }
