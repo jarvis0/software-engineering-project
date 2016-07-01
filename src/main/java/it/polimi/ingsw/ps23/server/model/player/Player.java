@@ -166,7 +166,7 @@ public class Player implements Serializable {
 		}
 	}
 
-	HandDeck getPermissionUsedHandDeck() {
+	public HandDeck getPermissionUsedHandDeck() {
 		return permissionUsedHandDeck;
 	}
 	

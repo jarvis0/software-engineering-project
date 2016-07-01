@@ -79,7 +79,7 @@ public class StartTurnState extends State {
 	}
 	
 	public List<Councillor> getFreeCouncillors() {
-		return freeCouncillors.getFreeCouncillors();
+		return freeCouncillors.getFreeCouncillorsList();
 	}
 
 	public StateCache getStateCache() {

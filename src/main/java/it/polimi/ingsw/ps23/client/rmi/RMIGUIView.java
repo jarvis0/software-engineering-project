@@ -63,7 +63,7 @@ public class RMIGUIView extends RMIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(rmiSwingUI.getChosenAction()));
 			} catch (RemoteException e) {
-				e.printStackTrace();
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			};
 			
 		} else {

@@ -42,7 +42,7 @@ public class TestStartTurnState implements ViewVisitor {
 		assertTrue(game.getNobilityTrack().equals(currentState.getNobilityTrack()));
 		assertTrue(game.getKing().equals(currentState.getKing()));
 		assertTrue(game.getKingTilesSet().getCurrentTile().equals(currentState.getCurrentKingTile()));
-		assertTrue(game.getFreeCouncillors().equals(currentState.getFreeCouncillors()));
+		assertTrue(game.getFreeCouncillors().getFreeCouncillorsList().equals(currentState.getFreeCouncillors()));
 		assertTrue(game.getStateCache().equals(currentState.getStateCache()));
 		if(turnHandler.isAvailableMainAction()) {
 			

@@ -19,7 +19,7 @@ public class FreeCouncillorsSet implements Serializable {
 		this.freeCouncillors = freeCouncillors;
 	}
 
-	public List<Councillor> getFreeCouncillors() {
+	public List<Councillor> getFreeCouncillorsList() {
 		return freeCouncillors;
 	}
 	 

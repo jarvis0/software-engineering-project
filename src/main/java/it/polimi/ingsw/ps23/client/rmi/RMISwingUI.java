@@ -186,7 +186,7 @@ public class RMISwingUI extends SwingUI {
 		mapPanel.add(councillorLabel, 0);
 	}
 
-	private void refreshPermitTiles(List<Region> regions) {
+	private void refreshRegionalPermitTiles(List<Region> regions) {
 		for (Region region : regions) {
 			Point point = getCouncilPoint(region.getName());
 			int x = point.x - 120;
@@ -399,15 +399,24 @@ public class RMISwingUI extends SwingUI {
 		mapPanel.add(tileLabel, 0);
 		drawBonus(bonusTile, x + 25, y + 10, 23, 25, -5);
 	}
+	
+	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
+		List<Card> permissionHandDeckList = permissionHandDeck.getCards();
+		for(Card permissionCard : permissionHandDeckList) {
+			//drawPermissionCard(permissionCard, indexOfTile, permitLabels, x, y);
+			
+		}
+	}
 
 	void refreshUI(StartTurnState currentState) {
+		int playerIndex = searchPlayer(currentState.getPlayersList());
 		refreshKingPosition(currentState.getKingPosition());
 		refreshPlayersTable(currentState.getPlayersList());
 		refreshCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
 		refreshFreeCouncillors(currentState.getFreeCouncillors());
-		refreshPermitTiles(currentState.getGroupRegionalCity());
+		refreshRegionalPermitTiles(currentState.getGroupRegionalCity());
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermissionHandDeck(), (currentState.getPlayersList().get(playerIndex)).getPermissionUsedHandDeck());
 		refreshBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
-		int playerIndex = searchPlayer(currentState.getPlayersList());
 		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());
 		frame.repaint();
 		frame.revalidate();

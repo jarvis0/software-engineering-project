@@ -28,7 +28,7 @@ public class TestAssistantToElectCouncillor {
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		int initialAssistant = game.getCurrentPlayer().getAssistants();
 		TurnHandler turnHandler = new TurnHandler();
-		String councillor = game.getFreeCouncillors().getFreeCouncillors().get(0).getColor().toString();
+		String councillor = game.getFreeCouncillors().getFreeCouncillorsList().get(0).getColor().toString();
 		Council council = ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getCouncil();
 		String councilName = game.getGameMap().getGroupRegionalCity().get(0).getName();
 		AssistantToElectCouncillor action = new AssistantToElectCouncillor(councillor, councilName);
