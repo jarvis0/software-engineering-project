@@ -17,7 +17,7 @@ public class SocketSwingUI extends SwingUI {
 
 	public void refreshDynamicContents(KingPositionExpression kingPosition,
 			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils,
-			BonusTilesExpression bonusTiles, PlayersParameterExpression playersParameters) {
+			BonusTilesExpression bonusTiles, PlayersParameterExpression playersParameters, PermitTilesUpExpression arePermitTilesUp) {
 		refreshKingPosition(kingPosition.getKingPosition());
 		refreshFreeCouncillors(freeCouncillors.getFreeCouncillors());
 		refreshCouncils(councils.getCouncilsName(), councils.getCouncilsColor());

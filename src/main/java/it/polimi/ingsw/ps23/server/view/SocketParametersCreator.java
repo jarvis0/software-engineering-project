@@ -41,6 +41,8 @@ class SocketParametersCreator {
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
 	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
+	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
+	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String KINGDOM = "kingdom";
 	
 	private String addKingPosition(String kingPosition) {
@@ -86,8 +88,8 @@ class SocketParametersCreator {
 
 	private String addFreeCouncillors(List<Councillor> freeCouncillors) {
 		StringBuilder freeCouncillorsSend = new StringBuilder();
-		for(int i = 0; i < freeCouncillors.size(); i++) {
-			freeCouncillorsSend.append(freeCouncillors.get(i).getColor() + ",");
+		for(Councillor councillor : freeCouncillors) {
+			freeCouncillorsSend.append(councillor.getColor() + ",");
 		}
 		return FREE_COUNCILLORS_TAG_OPEN + freeCouncillorsSend + FREE_COUNCILLORS_TAG_CLOSE;
 	}
@@ -104,7 +106,7 @@ class SocketParametersCreator {
 			}
 			councilsSend.append(",");
 		}
-		councilsSend.append(KINGDOM);//evitabile
+		councilsSend.append(KINGDOM);//<----- evitabile
 		Queue<Councillor> councillors = kingCouncil.getCouncillors();
 		councilsSend.append("," + councillors.size());
 		for(Councillor councillor : councillors) {
@@ -114,22 +116,21 @@ class SocketParametersCreator {
 		return COUNCILS_TAG_OPEN + councilsSend + COUNCILS_TAG_CLOSE;
 	}
 
+	private void addBonusTiles(StringBuilder bonusTilesSend, List<Region> regions) {
+		for(Region region : regions) {
+			bonusTilesSend.append("," + region.getName());
+			Bonus bonus = region.getBonusTile();
+			bonusTilesSend.append("," + bonus.getName());
+			bonusTilesSend.append("," + bonus.getValue());
+		}
+	}
+	
 	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		StringBuilder bonusTilesSend = new StringBuilder();
 		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
 		bonusTilesSend.append(groupsNumber);//TODO already aquired
-		for(int i = 0; i < groupRegionalCity.size(); i++) {
-			bonusTilesSend.append("," + groupRegionalCity.get(i).getName());
-			Bonus bonus = groupRegionalCity.get(i).getBonusTile();
-			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + bonus.getValue());
-		}
-		for(int i = 0; i < groupColoredCity.size(); i++) {
-			bonusTilesSend.append("," + groupColoredCity.get(i).getName());
-			Bonus bonus = groupColoredCity.get(i).getBonusTile();
-			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + bonus.getValue());
-		}
+		addBonusTiles(bonusTilesSend, groupRegionalCity);
+		addBonusTiles(bonusTilesSend, groupColoredCity);
 		bonusTilesSend.append("," + currentKingTile.getName());
 		bonusTilesSend.append("," + currentKingTile.getValue());
 		bonusTilesSend.append(",");
@@ -137,14 +138,12 @@ class SocketParametersCreator {
 	}
 
 	private void addPermitHandDeck(StringBuilder playersParameterSend, List<Card> cards) {
-		int cardsNumber = cards.size();
-		playersParameterSend.append("," + cardsNumber);
-		for(int i = 0; i < cardsNumber; i++) {
-			BusinessPermitTile permitTile = (BusinessPermitTile) cards.get(i);
-			int citiesNumber = permitTile.getCities().size();
-			playersParameterSend.append("," + citiesNumber);
-			for(int j = 0; j < citiesNumber; j++) {
-				playersParameterSend.append("," + permitTile.getCities().get(j).getName().charAt(0));
+		playersParameterSend.append("," + cards.size());
+		for(Card card : cards) {
+			BusinessPermitTile permitTile = (BusinessPermitTile) card;
+			playersParameterSend.append("," + permitTile.getCities().size());
+			for(City city : permitTile.getCities()) {
+				playersParameterSend.append("," + city.getName().charAt(0));
 			}
 			playersParameterSend.append(",");
 			addBonuses(playersParameterSend, permitTile.getBonuses());
@@ -152,20 +151,16 @@ class SocketParametersCreator {
 	}
 
 	private void addPoliticHandDeck(StringBuilder playersParameterSend, List<Card> cards) {
-		int cardsNumber = cards.size();
-		playersParameterSend.append("," + cardsNumber);
-		for(int i = 0; i < cardsNumber; i++) {
-			PoliticCard politicCard = (PoliticCard) cards.get(i);
-			playersParameterSend.append("," + politicCard.getColor().toString());
+		playersParameterSend.append("," + cards.size());
+		for(Card politicCard : cards) {
+			playersParameterSend.append("," + ((PoliticCard) politicCard).getColor().toString());
 		}
 	}
 
 	private String addPlayerParameters(List<Player> playersList) {
 		StringBuilder playersParameterSend = new StringBuilder();
-		int playersNumber = playersList.size();
-		playersParameterSend.append(playersNumber);
-		for(int i = 0; i < playersNumber; i++) {
-			Player player = playersList.get(i);
+		playersParameterSend.append(playersList.size());
+		for(Player player : playersList) {
 			playersParameterSend.append("," + player.getName());
 			playersParameterSend.append("," + player.getCoins());
 			playersParameterSend.append("," + player.getAssistants());
@@ -186,12 +181,24 @@ class SocketParametersCreator {
 		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
 	}
 
+	private String addPermitTilesUp(List<Region> groupRegionalCity) {
+		StringBuilder permitTilesUpSend = new StringBuilder();
+		permitTilesUpSend.append(groupRegionalCity.size());
+		for(Region region : groupRegionalCity) {
+			permitTilesUpSend.append("," + region.getName());
+			addPermitHandDeck(permitTilesUpSend, ((GroupRegionalCity) region).getPermitTilesUp().getCards());
+		}
+		permitTilesUpSend.append(",");
+		return PERMIT_TILES_UP_TAG_OPEN + permitTilesUpSend + PERMIT_TILES_UP_TAG_CLOSE;
+	}
+
 	String createUIDynamicContents(StartTurnState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
 		message += addCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
 		message += addBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
 		message += addPlayerParameters(currentState.getPlayersList());
+		message += addPermitTilesUp(currentState.getGroupRegionalCity());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 

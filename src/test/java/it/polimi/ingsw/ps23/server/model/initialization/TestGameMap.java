@@ -28,7 +28,7 @@ public class TestGameMap {
 		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
-		CitiesFactory citiesFactory = new CitiesFactory();
+		CitiesBuilder citiesFactory = new CitiesBuilder();
 		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		List<String[]> rawCitiesConnections = new RawObject(TEST_CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
 		CitiesGraphBuilder citiesGraphFactory = new CitiesGraphBuilder();
