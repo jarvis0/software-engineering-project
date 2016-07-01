@@ -20,7 +20,7 @@ public class TestMarket {
 		Player player = new Player("a", 0, 0, new PoliticHandDeck(new ArrayList<Card>()));
 		marketPlayersSet.addPlayer(player);
 		Market market = new Market(marketPlayersSet);
-		assertTrue(market.continueMarket());
+		assertTrue(market.canContinueMarket());
 		assertTrue(player.equals(market.selectPlayer()));
 		List<Integer> permissionCards = new ArrayList<>();
 		permissionCards.add(0);
@@ -33,10 +33,10 @@ public class TestMarket {
 		MarketObject marketObject = new MarketObject(playerName, permissionCards, politicCards, assistants, cost);
 		market.addMarketObject(marketObject);
 		assertTrue(market.getMarketObject().contains(marketObject));
-		assertTrue(market.sellObjects() == 1);
+		assertTrue(market.forSaleObjectsSize() == 1);
 		market.remove(marketObject);
-		assertTrue(market.sellObjects() == 0);
-		assertFalse(market.continueMarket());
+		assertTrue(market.forSaleObjectsSize() == 0);
+		assertFalse(market.canContinueMarket());
 		Player player2 = new Player("b", 0, 0, new PoliticHandDeck(new ArrayList<Card>()));
 		Player player3 = new Player("b", 0, 0, new PoliticHandDeck(new ArrayList<Card>()));
 		marketPlayersSet.addPlayer(player2);

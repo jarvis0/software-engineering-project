@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 /**
@@ -55,8 +55,8 @@ public class ServerController extends Controller implements ServerControllerInte
 	}
 
 	@Override
-	public void wakeUpServer(MarketTransation marketTransation) {
-		update(marketTransation);
+	public void wakeUpServer(MarketTransaction marketTransaction) {
+		update(marketTransaction);
 	}
 
 	@Override

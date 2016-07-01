@@ -15,7 +15,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
-
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Alessandro Erba, Mirco Manzoni
+ *
+ */
 public class BuildEmporiumKing implements Action {
 
 	/**
@@ -25,7 +30,11 @@ public class BuildEmporiumKing implements Action {
 	private static final double ROAD_COST = -2;
 	private String arriveCity;
 	private List<String> removedCards;
-	
+	/**
+	 * Constructs all specified action parameters.
+	 * @param removedCards - list of Politic card chosen
+	 * @param arriveCity - arrival city of the king's walk
+	 */
 	public BuildEmporiumKing(List<String> removedCards, String arriveCity) {
 		this.removedCards = removedCards;
 		this.arriveCity = arriveCity;

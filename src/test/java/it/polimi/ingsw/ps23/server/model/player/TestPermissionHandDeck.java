@@ -31,7 +31,7 @@ public class TestPermissionHandDeck {
 		((PermitHandDeck)handDeck).addCards(permissionHandCards);
 		player.buyPermitCards(permissionHandCards);
 		assertTrue(permissionCard.equals(player.getPermitHandDeck().getCardInPosition(0)));
-		player.sellPermissionCards(permissionHandCards);
+		player.sellPermitCards(permissionHandCards);
 		assertTrue(player.getPermitHandDeck().getHandSize() == 0);
 	}
 

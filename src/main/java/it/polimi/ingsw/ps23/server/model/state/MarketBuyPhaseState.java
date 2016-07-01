@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.server.model.state;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
@@ -39,28 +39,28 @@ public class MarketBuyPhaseState extends State {
 		return new String() + avaiableOffers;
 	}
 
-	public MarketTransation createTransation() {
-		MarketTransation marketTransation = new MarketTransation();
-		marketTransation.notPurchased();
-		return marketTransation;
+	public MarketTransaction createTransation() {
+		MarketTransaction marketTransaction = new MarketTransaction();
+		marketTransaction.notPurchased();
+		return marketTransaction;
 	}
 	
-	public MarketTransation createTransation(int selectedItem) {
-		MarketTransation marketTransation = new MarketTransation();
+	public MarketTransaction createTransation(int selectedItem) {
+		MarketTransaction marketTransaction = new MarketTransaction();
 		int i = 0;
 		for(MarketObject marketObject : market.getMarketObject()) {
 			if(!marketObject.getPlayer().equals(currentPlayer.getName()) && marketObject.getCost() <= currentPlayer.getCoins()) {
 				if(i == selectedItem) {
-					marketTransation.setRequestedObject(marketObject);
-					return marketTransation;
+					marketTransaction.setRequestedObject(marketObject);
+					return marketTransaction;
 				}
 				else {
 					i++;
 				}
 			}
 		}
-		marketTransation.notPurchased();
-		return marketTransation;
+		marketTransaction.notPurchased();
+		return marketTransaction;
 	}
 	
 	@Override

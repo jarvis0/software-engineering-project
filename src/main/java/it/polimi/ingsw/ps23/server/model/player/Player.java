@@ -148,7 +148,7 @@ public class Player implements Serializable {
 		}		
 	}
 	
-	public void sellPermissionCards(List<Card> cards) {
+	public void sellPermitCards(List<Card> cards) {
 		for(Card card : cards) {
 			permitHandDeck.removeCard(card);
 		}

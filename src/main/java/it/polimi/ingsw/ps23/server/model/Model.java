@@ -17,7 +17,7 @@ import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.Market;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.ActionState;
 import it.polimi.ingsw.ps23.server.model.state.Context;
@@ -184,14 +184,20 @@ public class Model extends ModelObservable {
 	}
 
 	private void chooseNextOfferMarketStep(Market currentMarket) {
-		if(currentMarket.sellObjects() == game.getMarketPlayersNumber()) {
+		if(currentMarket.forSaleObjectsSize() == game.getMarketPlayersNumber()) {
 			launchBuyMarket();
 		}
 		else {
 			launchOfferMarket();
 		}
 	}
-	
+	/**
+	 * Add the selected {@link MarketObject} into the {@link Market}. After this it sets the next market step.
+	 * If there are other players that haven't already done their offer in market phase, it 
+	 * sets {@link MarketOfferPhaseState} and the next current player.
+	 * Otherwise it sets {@link MarketBuyPhaseState}, shuffling the player list and setting the current player.
+	 * @param marketObject - the offered object of the current player
+	 */
 	public void doOfferMarket(MarketObject marketObject) {
 		Market currentMarket = game.getMarket();
 		currentMarket.addMarketObject(marketObject);
@@ -212,7 +218,7 @@ public class Model extends ModelObservable {
 	}
 	
 	private void chooseNextBuyMarketStep() {
-		if(game.getMarket().continueMarket()) {
+		if(game.getMarket().canContinueMarket()) {
 			launchBuyMarket();
 		}
 		else {
@@ -222,10 +228,19 @@ public class Model extends ModelObservable {
 			setStartTurnState();
 		}
 	}
-	
-	public void doBuyMarket(MarketTransation marketTransation) {
+	/**
+	 * Make the selected transaction of the market phase. It will call the method to update all 
+	 * the parameters present in {@link MarketObject} between the current player and the player set
+	 * in the MarketObject. Catch an {@link InvalidCardException} if an error occurs during transaction.
+	 * <p>
+	 * After this, the next phase of market is selected: if there are other players that haven't already done
+	 * their market phase, it sets another {@link MarketBuyPhaseState} with the next player. Otherwise it sets
+	 * {@link StartTurnState} and sets the first player of list as currentPlayer.
+	 * @param marketTransaction - the transation object
+	 */
+	public void doBuyMarket(MarketTransaction marketTransaction) {
 		try {
-			marketTransation.doTransation(game);
+			marketTransaction.doTransation(game);
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot execute the transation", e);
 		}
