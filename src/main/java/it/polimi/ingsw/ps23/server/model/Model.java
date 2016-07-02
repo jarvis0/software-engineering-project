@@ -161,7 +161,22 @@ public class Model extends ModelObservable {
 		state.changeState(context, game);
 		wakeUp(state);
 	}
-	
+	/** 
+	 * Makes the selected action and check if the current {@link Player} takes nobility track 
+	 * points during the performed action. If it is, the methods start walking on the {@link NobilityTrack}
+	 * and if a {@link SuperBonus} was encountered, start the {@link StartSuperBonusState}.
+	 * <p>
+	 * If there is no variation on nobility track points or the walk didn't encounter some {@link SuperBonus}, 
+	 * starts the {@link StartTrunState}
+	 * @param action - the action to perform
+	 * @throws InvalidCardException if an invalid card was selected
+	 * @throws InsufficientResourcesException if the current player don't have enough resource to perform the selected action
+	 * @throws AlreadyBuiltHereException if the current player have already built in the selected city
+	 * @throws InvalidCouncillorException if an invalid councillor was selected
+	 * @throws InvalidCouncilException if an invalid council was selected
+	 * @throws InvalidRegionException if an invalid region was selected
+	 * @throws InvalidCityException if an invalid city was selected
+	 */
 	public void doAction(Action action) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException {
 		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
@@ -261,10 +276,15 @@ public class Model extends ModelObservable {
 		currentPlayerIndex = -1;
 	}
 	
-	public void updateNobilityTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
+	private void updateNobilityTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
 		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
 	}
-
+	/**
+	 * Permits to the current {@link Player} to take all the {@link SuperBonus} available.
+	 * @param superBonusGiver - the container of superbonus
+	 * @throws InvalidCardException if an invalid card was selected
+	 * @throws InvalidCityException if an invalid city was selected
+	 */
 	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException, InvalidCityException {
 		superBonusGiver.giveBonus(game, turnHandler);
 		setPlayerTurn();

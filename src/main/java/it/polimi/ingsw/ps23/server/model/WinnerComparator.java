@@ -3,7 +3,11 @@ package it.polimi.ingsw.ps23.server.model;
 import java.util.Comparator;
 
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Provides method to compare two players and get how is the winner
+ * @author Mirco Manzoni
+ *
+ */
 public class WinnerComparator implements Comparator<Player> {
 
 	@Override

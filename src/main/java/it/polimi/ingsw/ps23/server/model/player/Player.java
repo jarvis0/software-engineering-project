@@ -3,12 +3,9 @@ package it.polimi.ingsw.ps23.server.model.player;
 import java.io.Serializable;
 import java.util.List;
 
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
@@ -139,10 +136,7 @@ public class Player implements Serializable {
 	public void updateAssistants(int value) {
 		assistants += value;
 	}
-	
-	public void updateSuperBonus(Bonus bonus, List<String> inputs, Game game, TurnHandler turnHandler) throws InvalidCardException, InvalidCityException {
-		((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
-	}
+
 	/**
 	 * Show the value of {@link PoliticHandDeck} of that player.
 	 * @return a string with all the {@link PoliticCard} of the player.

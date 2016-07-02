@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
-
+/**
+ * Provides methods to generate a specific {@link ActionState} starting form a string.
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class StateCache implements Serializable {
 	
 	/**
@@ -20,7 +24,9 @@ public class StateCache implements Serializable {
 	private static final String CHANGE_PERMIT_TILE= "change permit tile";
 	private static final String BUILD_EMPORIUM_KING= "build emporium king";
 	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
-
+	/**
+	 * Initialize the object creating the cache of possible {@link ActionState}.
+	 */
 	public StateCache() {
 		stateMap = new HashMap<>();
 		loadCache();
