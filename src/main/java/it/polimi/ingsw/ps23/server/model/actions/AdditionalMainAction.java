@@ -10,7 +10,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
  * @author Mirco Manzoni
  *
  */
-public class AdditionalMainAction implements Action {
+public class AdditionalMainAction extends Action {
 
 	/**
 	 * 
@@ -27,6 +27,7 @@ public class AdditionalMainAction implements Action {
 		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		turnHandler.addMainAction();
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " take an additional main action");
 	}
 
 }

@@ -21,7 +21,7 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
  * @author Alessandro Erba, Mirco Manzoni
  *
  */
-public class BuildEmporiumKing implements Action {
+public class BuildEmporiumKing extends Action {
 
 	/**
 	 * 
@@ -65,6 +65,7 @@ public class BuildEmporiumKing implements Action {
 		player.updateEmporiumSet(game, turnHandler, finalCity);
 		player.checkEmporiumsGroup(game);
 		turnHandler.useMainAction();
+		setActionReport("Player " + player.getName() + " moves the king in " + arriveCity + ", building an emporium and using these card: " + removedCards);
 	}
 
 }

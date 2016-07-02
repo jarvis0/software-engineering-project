@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
  * @author Alessandro Erba, Mirco Manzoni
  *
  */
-public class ChangePermitsTile implements Action {
+public class ChangePermitsTile extends Action {
 
 	/**
 	 * 
@@ -38,6 +38,7 @@ public class ChangePermitsTile implements Action {
 		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " change the permit tile in " + regionName);
 	}
 
 }

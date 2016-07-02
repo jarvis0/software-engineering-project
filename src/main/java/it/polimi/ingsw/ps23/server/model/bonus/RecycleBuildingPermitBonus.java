@@ -7,7 +7,11 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Provides methods to take the specified bonus
+ * @author Alessandro Erba
+ *
+ */
 public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	
 	/**
@@ -15,7 +19,10 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 	 */
 	private static final long serialVersionUID = 384058475289488324L;
 	private static final int  VALUE_POSITION = 0;
-
+	/**
+	 * Construct the bonus to be cloned by {@link BonusCache}.
+	 * @param name - the name of the bonus
+	 */
 	public RecycleBuildingPermitBonus(String name) {
 		super(name);
 	}

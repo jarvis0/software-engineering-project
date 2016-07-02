@@ -48,13 +48,33 @@ public interface ServerControllerInterface extends Remote {
 	 * @throws RemoteException if the remote server is unreachable
 	 */
 	public void wakeUpServer(Action action) throws RemoteException;
-	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(MarketObject)}
+	 * @param marketObject - set of objects that the player want to sell
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(MarketObject marketObject) throws RemoteException;
-	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(MarketTransaction)}
+	 * @param marketTransaction - the transaction that the player wants to do
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(MarketTransaction marketTransaction) throws RemoteException;
-	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(SuperBonusGiver)}
+	 * @param superBonusGiver - 
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(SuperBonusGiver superBonusGiver) throws RemoteException;
-	
+	/**
+	 * Directly invokes the Controller class update method and returns immediately.
+	 * @see {@link Controller#update(Exception)}
+	 * @param e - IOException occured during the View's methods
+	 * @throws RemoteException if the remote server is unreachable
+	 */
 	public void wakeUpServer(Exception e) throws RemoteException;
 
 }

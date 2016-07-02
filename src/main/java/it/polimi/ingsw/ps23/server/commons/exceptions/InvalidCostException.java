@@ -1,7 +1,11 @@
 package it.polimi.ingsw.ps23.server.commons.exceptions;
 
 import java.io.IOException;
-
+/**
+ * IOexception that notify the players that the current {@link Player} have selected an illegal cost for {@link MarketObject}.
+ * @author Mirco Manzoni
+ *
+ */
 public class InvalidCostException extends IOException {
 
 	/**

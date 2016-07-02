@@ -3,20 +3,19 @@ package it.polimi.ingsw.ps23.client.rmi;
 import java.io.PrintStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -105,12 +104,10 @@ class RMIConsoleView extends RMIView {
 			List<String> removedCards = new ArrayList<>();
 			output.println("Choose a council to satisfy: " + currentState.getCouncilsMap());
 			String chosenCouncil = scanner.nextLine().toLowerCase();
-			output.println("How many cards to you want to use (max "
-					+ currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
+			output.println("How many cards to you want to use (max " + currentState.getAvailablePoliticCardsNumber(chosenCouncil) + " )");
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
-				output.println(
-						"Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
+				output.println("Choose a politic card you want to use from this list: " + currentState.getPoliticHandDeck());
 				String chosenCard = scanner.nextLine().toLowerCase();
 				removedCards.add(chosenCard);
 			}
@@ -288,35 +285,33 @@ class RMIConsoleView extends RMIView {
 		}
 	}
 
+	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
+		if (currentState.isBuildingPemitTileBonus()) {
+			output.println(currentState.useBonus());
+			String chosenRegion = scanner.nextLine().toLowerCase();
+			currentState.analyzeInput(chosenRegion);
+		}
+	}
+	
 	@Override
 	public void visit(SuperBonusState currentState) {// TODO gestione turni???
-		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
-		while (currentState.hasNext()) {
-			Bonus currentBonus = currentState.getCurrentBonus();
-			String chosenRegion = new String();
-			int numberOfCurrentBonus = currentBonus.getValue();
-			for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
-				if (currentState.isBuildingPemitTileBonus(currentBonus)) {
-					output.println(currentState.useBonus(currentBonus));
-					chosenRegion = scanner.nextLine().toLowerCase();
-					currentState.analyzeInput(chosenRegion, currentBonus);
+		try {
+			while (currentState.hasNext()) {				
+				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
+				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+					additionalOutput(currentState);
+					output.println(currentState.useBonus());
+					currentState.checkKey();
+					currentState.addValue(scanner.nextLine());
+					currentState.confirmChange();
 				}
-				output.println(currentState.useBonus(currentBonus));
-				List<String> bonusesSelections = new ArrayList<>();
-				if (selectedBonuses.containsKey(currentBonus)) { // TODO verificare modifiche
-					bonusesSelections = selectedBonuses.get(currentBonus);
-				}
-				if (currentState.isBuildingPemitTileBonus(currentBonus)) {
-					bonusesSelections.add(chosenRegion);
-					bonusesSelections.add(scanner.nextLine());
-				} else {
-					bonusesSelections.add(scanner.nextLine());
-				}
-				selectedBonuses.put(currentBonus, bonusesSelections);
 			}
+		} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			state.setExceptionString(e.toString());
 		}
 		try {
-			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver(selectedBonuses));
+			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver());
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}

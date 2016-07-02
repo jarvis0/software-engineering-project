@@ -1,7 +1,11 @@
 package it.polimi.ingsw.ps23.server.commons.exceptions;
 
 import java.io.IOException;
-
+/**
+ * IOexception that notify the players that the current {@link Player} have selected an invalid card.
+ * @author Mirco Manzoni
+ *
+ */
 public class InvalidCardException extends IOException {
 
 	/**

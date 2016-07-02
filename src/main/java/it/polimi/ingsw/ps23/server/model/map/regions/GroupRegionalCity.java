@@ -7,7 +7,11 @@ import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
-
+/**
+ * Provides methods to manage a group of {@link City}, grouped by regions.
+ * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ *
+ */
 public class GroupRegionalCity extends Region {
 	
 	/**
@@ -21,7 +25,13 @@ public class GroupRegionalCity extends Region {
 	private Deck permitDeckDown;
 	private Deck permitDeckUp;
 	private Map<String, List<String>> citiesConnections;
-	
+	/**
+	 * Constructs a regional city with the name of the region, the bonus of the region and the list of connection of
+	 * cities in the region.
+	 * @param name
+	 * @param bonus
+	 * @param citiesConnections
+	 */
 	public GroupRegionalCity(String name, Bonus bonus, Map<String, List<String>> citiesConnections) {
 		super(name, bonus);
 		this.citiesConnections = citiesConnections;
@@ -43,13 +53,22 @@ public class GroupRegionalCity extends Region {
 	public Council getCouncil() {
 		return council;
 	}
-	
+	/**
+	 * Removes a {@link BusinessPermitCard} from the visible {@link PermitDeck} and add another one card from
+	 * the not visible {@link PermitDeck} to the visible.
+	 * @param index - the index of the selected card
+	 * @return removed card.
+	 */
 	public Card pickPermitTile(int index) {
 		Card card = permitDeckUp.getCards().get(index);
 		permitDeckUp.getCards().set(index, permitDeckDown.pickCard());
 		return card;
 	}
-
+	/**
+	 * Moves the visible {@link PermitDeck} to the back of the not visible {@link PermitDeck}
+	 * and show two {@link BusinessPermitCard} from the top of not visible and move these on the visible
+	 * {@link PermitDeck}.
+	 */
 	public void changePermitTiles() {
 		int i = 0;
 		for(Card card : permitDeckUp.getCards()) {

@@ -16,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ElectCouncillorAction implements Action {
+public abstract class ElectCouncillorAction extends Action {
 
 	private String councillor;
 	private String council;
@@ -49,6 +49,7 @@ public abstract class ElectCouncillorAction implements Action {
 		createCouncilMap(game);
 		checkAction();
 		game.getFreeCouncillors().electCouncillor(councillor, councilsMap.get(council));
+		setActionReport("Player " + game.getCurrentPlayer().getName() + "elect " + councillor + " councillor in " + council + " council");
 	}
 	
 }

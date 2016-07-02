@@ -6,7 +6,11 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+ * Provides methods to create a specific bonus
+ * @author Giuseppe Mascellaro
+ *
+ */
 public abstract class Bonus implements Cloneable, Serializable {
 
 	/**
@@ -19,7 +23,11 @@ public abstract class Bonus implements Cloneable, Serializable {
 	Bonus(String name) {
 		this.name = name;
 	}
-	
+	/**
+	 * The current {@link Player} take the bonus
+	 * @param game - to update player's parameters
+	 * @param turnHandler - to update availability of actions or superbonuses
+	 */
 	public abstract void updateBonus(Game game, TurnHandler turnHandler);
 
 	public String getName() {

@@ -80,7 +80,7 @@ public class Controller implements ControllerObserver {
 	public void update(SuperBonusGiver superBonusGiver) {
 		try {
 			model.doSuperBonusesAcquisition(superBonusGiver);
-		} catch (InvalidCardException e) {
+		} catch (InvalidCardException | InvalidCityException e) {
 			model.rollBack(e);
 		}
 	}

@@ -1,19 +1,18 @@
 package it.polimi.ingsw.ps23.server.view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -28,11 +27,19 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
-
+/**
+ * Provide methods to perform visit pattern and to comunicate with {@link RemoteConsoleView} via socket protocol.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class SocketConsoleView extends SocketView {
 	
 	private static final String SKIP = "skip";
-	
+	/**
+	 * Constructs the object view the name of the client and the connection to comunicate to the {@link RemoteConsoleView}
+	 * @param clientName - the client's name coonected to the {@link Server}
+	 * @param connection - the connection used
+	 */
 	public SocketConsoleView(String clientName, Connection connection) {
 		super(clientName, connection);
 	}
@@ -243,42 +250,38 @@ public class SocketConsoleView extends SocketView {
 		}
 	}
 	
+	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
+		if (currentState.isBuildingPemitTileBonus()) {
+			getConnection().sendYesInput(currentState.useBonus());
+			String chosenRegion = receive().toLowerCase();
+			currentState.analyzeInput(chosenRegion);
+		}
+	}
+	
 	@Override
 	public void visit(SuperBonusState currentState) {
-		Map<Bonus, List<String>> selectedBonuses = new HashMap<>();
-		while(currentState.hasNext()) {
-			String chosenRegion = new String();
-			Bonus currentBonus = currentState.getCurrentBonus();
-			int numberOfCurrentBonus = currentBonus.getValue();
-			for(int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
-				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
-					getConnection().sendYesInput(currentState.useBonus(currentBonus));
-					chosenRegion = receive().toLowerCase();
-					currentState.analyzeInput(chosenRegion, currentBonus);
+		try {
+			while (currentState.hasNext()) {				
+				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
+				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+					additionalOutput(currentState);
+					getConnection().sendYesInput(currentState.useBonus());
+					currentState.checkKey();
+					currentState.addValue(receive());
+					currentState.confirmChange();
 				}
-				getConnection().sendYesInput(currentState.useBonus(currentBonus));
-				List<String> bonusesSelections = new ArrayList<>();
-				if(selectedBonuses.containsKey(currentBonus)) { //TODO verificare modifiche
-					bonusesSelections = selectedBonuses.get(currentBonus);
-				}	
-				if(currentState.isBuildingPemitTileBonus(currentBonus)) {
-					bonusesSelections.add(chosenRegion);
-					bonusesSelections.add(receive());
-				}
-				else {
-					bonusesSelections.add(receive());
-				}
-				selectedBonuses.put(currentBonus, bonusesSelections);
-			}	
+			}
+		} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			getState().setExceptionString(e.toString());
 		}
-		wakeUp(currentState.createSuperBonusesGiver(selectedBonuses));
+		wakeUp(currentState.createSuperBonusesGiver());
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
 		getConnection().sendNoInput(currentState.getWinner());
 		setEndGame(true);
-		//TODO send a tutti i player di chi ha vinto e non solo al player corrente
 	}
 
 }

@@ -41,7 +41,10 @@ abstract class RMIView extends View {
 			Thread.currentThread().interrupt();
 		}
 	}
-	
+	/**
+	 * Wake up the RMI view if it's waiting in a wait method.
+	 * @see {@link #pause()}
+	 */
 	public synchronized void resume() {
 		notifyAll();
 	}

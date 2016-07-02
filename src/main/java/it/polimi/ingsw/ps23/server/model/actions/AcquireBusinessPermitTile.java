@@ -7,6 +7,7 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 
 /**
@@ -15,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
  * @author Alessandro Erba & Mirco Manzoni
  *
  */
-public class AcquireBusinessPermitTile implements Action {
+public class AcquireBusinessPermitTile extends Action {
 
 	/**
 	 * 
@@ -53,10 +54,12 @@ public class AcquireBusinessPermitTile implements Action {
 		if(chosenPermissionCard < 0 || chosenPermissionCard > 1) {
 			throw new InvalidCardException();
 		}
-		((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).removeCards(removedPoliticCards);
-		game.getCurrentPlayer().updateCoins(cost);
-		game.getCurrentPlayer().pickPermitCard(game, turnHandler, game.getGameMap().getRegionMap().get(chosenRegion), chosenPermissionCard);
+		Player player = game.getCurrentPlayer();
+		((PoliticHandDeck) player.getPoliticHandDeck()).removeCards(removedPoliticCards);
+		player.updateCoins(cost);
+		player.pickPermitCard(game, turnHandler, game.getGameMap().getRegionMap().get(chosenRegion), chosenPermissionCard);
 		turnHandler.useMainAction();
+		setActionReport("Player " + player.getName() + " acquired a business permit tile (" + player.getPermitHandDeck().getCardInPosition(player.getPermitHandDeck().getHandSize() - 1) + ") sutisfying the " + chosenRegion + "'s council with these cards: " + removedPoliticCards);
 	}
-	
+		
 }

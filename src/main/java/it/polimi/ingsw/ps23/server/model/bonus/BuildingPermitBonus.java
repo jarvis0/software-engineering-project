@@ -3,13 +3,18 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Provides methods to take the specified bonus
+ * @author Alessandro Erba
+ *
+ */
 public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	
 	/**
@@ -23,15 +28,21 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	private Map<String, Region> regionMap;
 	private Deck permitDeck;
 	
-	
+	/**
+	 * Construct the bonus to be cloned by {@link BonusCache} and initialize all local variables to default values.
+	 * @param name - the name of the bonus
+	 */
 	public BuildingPermitBonus(String name) {
 		super(name);
 		writeSecondOutput = false;
 	}
-
-	public void selectRegion(String chosenRegion) {
-		writeSecondOutput = true;
+	
+	public void selectRegion(String chosenRegion) throws InvalidRegionException {
+		if(((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp() == null) {
+			throw new InvalidRegionException();
+		}
 		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp();
+		writeSecondOutput = true;		
 	}
 
 	@Override
