@@ -34,6 +34,7 @@ public class StartTurnState extends State {
 	
 	private StateCache stateCache;
 	private boolean finalTurn;
+	private String lastActionPerformed;
 	
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
@@ -133,6 +134,7 @@ public class StartTurnState extends State {
 		if(finalTurn) {
 			print += "This is the final round.";
 		}
+		print += lastActionPerformed;
 		return print;
 	}
 	
@@ -155,6 +157,7 @@ public class StartTurnState extends State {
 				return;
 			}
 		}
+		lastActionPerformed = game.getLastActionPerformed();
 	}
 	
 	@Override

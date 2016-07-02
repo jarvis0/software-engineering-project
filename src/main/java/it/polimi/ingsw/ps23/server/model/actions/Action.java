@@ -13,14 +13,16 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
 /**
- * This interface provides do action method in order to perform
+ * This class provides do action method in order to perform
  * the object related action.
  * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
  *
  */
-@FunctionalInterface
-public interface Action extends Serializable {
+
+@SuppressWarnings("serial")
+public abstract class Action implements Serializable {
 	
+	private String actionReport;
 	/**
 	 * Performs the specified game action.
 	 * @param game
@@ -36,6 +38,14 @@ public interface Action extends Serializable {
 	 * @throws InvalidRegionException if the player chooses an invalid region
 	 * @throws InvalidCityException if the player refers to an invalid city
 	 */
-	public void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException;
+	public abstract void doAction(Game game, TurnHandler turnHandler) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException;
 	
+	void setActionReport(String report) {
+		actionReport = report;
+	}
+	
+	@Override
+	public String toString() {
+		return actionReport;
+	}
 }

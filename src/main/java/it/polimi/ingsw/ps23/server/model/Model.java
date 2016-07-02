@@ -165,9 +165,10 @@ public class Model extends ModelObservable {
 	public void doAction(Action action) throws InvalidCardException, InsufficientResourcesException, AlreadyBuiltHereException, InvalidCouncillorException, InvalidCouncilException, InvalidRegionException, InvalidCityException {
 		int initialNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		action.doAction(game, turnHandler);
+		game.setLastActionPerformed(action);
 		int finalNobilityTrackPoints = game.getCurrentPlayer().getNobilityTrackPoints();
 		if(initialNobilityTrackPoints != finalNobilityTrackPoints) {
-			updateNobliltyTrackPoints(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);	
+			updateNobilityTrackPoints(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);	
 			if(turnHandler.isStartSuperTurnState()) {
 				setSuperBonusState();
 				return;
@@ -260,11 +261,11 @@ public class Model extends ModelObservable {
 		currentPlayerIndex = -1;
 	}
 	
-	public void updateNobliltyTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
+	public void updateNobilityTrackPoints(int initialNobilityTrackPoints, int finalNobilityTrackPoints, Game game, TurnHandler turnHandler) {
 		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
 	}
 
-	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException {
+	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException, InvalidCityException {
 		superBonusGiver.giveBonus(game, turnHandler);
 		setPlayerTurn();
 	}
@@ -281,9 +282,9 @@ public class Model extends ModelObservable {
 	 * set at the game startup.
 	 */
 	public void setCurrentPlayerOffline() {
+		game.getCurrentPlayer().setOnline(false);
 		if(game.getGamePlayersSet().canContinue()) {
-			State currentState = context.getState();
-			game.getCurrentPlayer().setOnline(false);
+			State currentState = context.getState();			
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
 				setPlayerTurn();
 			}
@@ -299,6 +300,7 @@ public class Model extends ModelObservable {
 		else {
 			(new EndGame(game, turnHandler)).applyFinalBonus();
 			setEndGameState();
+			playersResumeHandler.resume();
 		}
 	}
 	
@@ -335,6 +337,7 @@ public class Model extends ModelObservable {
 	 */
 	public void rollBack(Exception e) {
 		context.addExceptionText(e);
+		game.refreshLastActionPerformed();
 		wakeUp(context.getState());		
 	}
 
@@ -348,6 +351,7 @@ public class Model extends ModelObservable {
 	 * @param e - the exception information
 	 */
 	public void restartTurn(Exception e) {
+		game.refreshLastActionPerformed();
 		context = new Context();
 		StartTurnState startTurnState = new StartTurnState(turnHandler);
 		startTurnState.changeState(context, game);

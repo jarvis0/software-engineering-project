@@ -8,7 +8,11 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Provide methods to manage a city
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class City implements Serializable {
 	
 	/**
@@ -38,7 +42,13 @@ public class City implements Serializable {
 	public boolean isCapital() {
 		return capital;
 	}
-	
+	/**
+	 * Adds a {@link Player} references to the list of players that have built in this city.
+	 * @param player - the current player
+	 * @return the assistant costs of this action.
+	 * @throws AlreadyBuiltHereException if {@link Player} have already an emporium in this	 city
+	 * @throws InsufficientResourcesException if {@link Player} haven't got enough assistant to complete this action
+	 */
 	public int buildEmporium(Player player) throws AlreadyBuiltHereException, InsufficientResourcesException { 
 		int assitantsCost = 0;
 		if(!emporiumsList.isEmpty()) {

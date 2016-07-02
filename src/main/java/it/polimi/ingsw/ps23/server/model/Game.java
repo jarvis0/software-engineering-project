@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model;
 import java.io.Serializable;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.initialization.Initialization;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
@@ -39,6 +40,7 @@ public class Game implements Serializable {
 	private Market currentMarket;
 	private StateCache stateCache;
 	private boolean lastEmporiumBuilt;
+	private String lastActionPerformed;
 
 	/**
 	 * Create a new game initialization object taking game player names
@@ -60,6 +62,7 @@ public class Game implements Serializable {
 		playersSet = init.getPlayersSet();
 		stateCache = new StateCache();
 		lastEmporiumBuilt = false;
+		lastActionPerformed = new String();
 	}
 	
 	public String getMapType() {
@@ -105,7 +108,9 @@ public class Game implements Serializable {
 	public StateCache getStateCache() {
 		return stateCache;
 	}
-	
+	/**
+	 * Create a new instance of market and save the references.
+	 */
 	public void createNewMarket() {
 		currentMarket = new Market(playersSet);
 	}
@@ -121,13 +126,32 @@ public class Game implements Serializable {
 	public Market getMarket() {
 		return currentMarket;
 	}
-	
+	/**
+	 * Set the condition to take check if a player can take the bonus of last emporium built
+	 */
 	public void lastEmporiumBuilt() {
 		lastEmporiumBuilt = true;
 	}
-	
+	/**
+	 * Calculate if the current {@link Player} can take the bonus for last emporium build
+	 * @return true if can, false if can't
+	 */
 	public boolean canTakeBonusLastEmporium() {
-		return lastEmporiumBuilt;
+		return !lastEmporiumBuilt;
+	}
+	
+	public void setLastActionPerformed(Action action) {
+		lastActionPerformed = action.toString();
+	}
+	
+	public String getLastActionPerformed() {
+		return lastActionPerformed;
+	}
+	/**
+	 * refresh the status of the last action performed to the initial state
+	 */
+	public void refreshLastActionPerformed() {
+		lastActionPerformed = new String();
 	}
 	
 }

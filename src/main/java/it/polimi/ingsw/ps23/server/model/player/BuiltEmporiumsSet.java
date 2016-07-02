@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 
@@ -44,13 +45,13 @@ public class BuiltEmporiumsSet implements Serializable {
 		return citiesWithoutNobilityTrackPoints;				
 	}
 
-	public NormalCity getChosenCity(String cityName) {
+	public NormalCity getChosenCity(String cityName) throws InvalidCityException {
 		for(City city : builtEmporiums) {
 			if(city.getName().equals(cityName)) {
 				return (NormalCity) city;
 			}	
 		}
-		return null;
+		throw new InvalidCityException();
 	}
 
 	public String getCitiesPrint() {

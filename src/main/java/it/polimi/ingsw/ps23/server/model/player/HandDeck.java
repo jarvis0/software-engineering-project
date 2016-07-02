@@ -6,7 +6,11 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.map.Card;
-
+/**
+ * Provides methods to manage cards of a {@link player}
+ * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ *
+ */
 public abstract class HandDeck implements Serializable {
 	
 	/**
@@ -40,7 +44,12 @@ public abstract class HandDeck implements Serializable {
 		removeCard(removedCard);
 		return removedCard;
 	}
-	
+	/**
+	 * Return a card in position index.
+	 * @param index - the position of the card
+	 * @return the chosen card.
+	 * @throws InvalidCardException - If there is no card in that position throw an exception.
+	 */
 	public Card getCardInPosition(int index) throws InvalidCardException {
 		if(index < 0 || index >= getHandSize()) {
 			throw new InvalidCardException();

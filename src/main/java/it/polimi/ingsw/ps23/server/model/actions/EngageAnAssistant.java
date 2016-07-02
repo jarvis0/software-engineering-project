@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
  * @author Mirco Manzoni
  *
  */
-public class EngageAnAssistant implements Action {
+public class EngageAnAssistant extends Action {
 
 	/**
 	 * 
@@ -26,6 +26,7 @@ public class EngageAnAssistant implements Action {
 		game.getCurrentPlayer().updateCoins(COINS_COST);
 		game.getCurrentPlayer().updateAssistants(EARNED_ASSITANTS);
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " engage an assistant");
 	}
 
 }
