@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
-
+/**
+ * Provides methods to manage the {@link BusinessPermitTile} of a {@link Player}.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class PermitHandDeck extends HandDeck {
 	
 	/**

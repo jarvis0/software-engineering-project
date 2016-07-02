@@ -6,7 +6,11 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+ * Provides methods to manage all the state in with the user have to perform an action.
+ * @author Mirco Manzoni
+ *
+ */
 @SuppressWarnings("serial")
 public abstract class ActionState extends State implements Cloneable, Serializable {
 
@@ -19,7 +23,11 @@ public abstract class ActionState extends State implements Cloneable, Serializab
 	String getName() {
 		return name;
 	}
-	
+	/**
+	 * Calculate if the current {@link Player} can perform a specific {@link Action}.
+	 * @param turnHandler - current turn handler to check if there are available actions.
+	 * @throws IllegalActionSelectedException if the user try yo perform an invalid action.
+	 */
 	public abstract void canPerformThisAction(TurnHandler turnHandler) throws IllegalActionSelectedException;
 	
 	@Override
