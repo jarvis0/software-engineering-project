@@ -344,9 +344,9 @@ class RMISwingUI extends SwingUI {
 	}
 	
 	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
-		/*for(JLabel permitTile : playerPermitTiles) {
+		for(JLabel permitTile : playerPermitTiles) {
 			getMapPanel().remove(permitTile);
-		}*/
+		}
 		List<Card> permitHandDeckList = permissionHandDeck.getCards();
 		int indexOfTile = 0; 
 		int x = 0;
@@ -371,10 +371,6 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 	
-	public void enableButtons(boolean display) {
-		enableRegionButtons(display);
-	}
-
 	public void enablePermissonTilePanel(String chosenCouncil) {
 		List<JLabel> permitsLabel = permitTiles.get(chosenCouncil);	
 		for (JLabel jLabel : permitsLabel) {
@@ -397,6 +393,12 @@ class RMISwingUI extends SwingUI {
 		enableCitiesButtons(display);
 	}
 	
+	public void enableFreeCouncillorsButtons(boolean display) {
+		Set<Entry<String, JLabel>> freeCouncillorsLabels = getFreeCouncillors().entrySet();
+		for(Entry<String, JLabel> freeCouncillorLabel : freeCouncillorsLabels) {
+			freeCouncillorLabel.getValue().setEnabled(display);
+		}
+	}
 
 	public void clearRMISwingUI() {
 		chosenCard = null;
@@ -414,6 +416,5 @@ class RMISwingUI extends SwingUI {
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
-
 
 }

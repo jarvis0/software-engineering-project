@@ -38,6 +38,7 @@ class GUILoad {
 	private static final String OBJECTS_POSITION_CSV = "objectsPosition.csv";
 	private static final String BACKGROUND_PATH = "mapBackground.png";
 	private static final String NOBILITY_TRACK_PATH = "nobilityTrack.png";
+	private static final String ACTIVE = "Active";
 	private static final String KING_PATH = "king.png";
 	private static final String PNG_EXTENSION = ".png";
 
@@ -136,7 +137,7 @@ class GUILoad {
 	private void loadCities() {
 		List<String[]> rawCitiesPosition = new RawObject(mapPath + CITIES_POSITION_CSV).getRawObject();
 		for (String[] rawCityPosition : rawCitiesPosition) {
-			BufferedImage cityImage = readImage(IMAGES_PATH + rawCityPosition[5] + PNG_EXTENSION);
+			BufferedImage cityImage = readImage(IMAGES_PATH + rawCityPosition[5] + ACTIVE + PNG_EXTENSION);
 			int x = Integer.parseInt(rawCityPosition[3]);
 			int y = Integer.parseInt(rawCityPosition[4]);
 			int width = Integer.parseInt(rawCityPosition[1]);
@@ -151,7 +152,9 @@ class GUILoad {
 			cityName.setFont(new Font("Algerian", Font.ROMAN_BASELINE, 14));
 			cityName.setForeground(Color.decode(rawCityPosition[6]));
 			cityName.setText(rawCityPosition[0]);
-			cityLabel.setDisabledIcon(new ImageIcon(resizedCityImage));
+			BufferedImage cityDisabledImage= readImage(IMAGES_PATH + rawCityPosition[5] + PNG_EXTENSION);
+			Image resizedCityDisabledImage = cityDisabledImage.getScaledInstance(width - 8, height - 8, Image.SCALE_SMOOTH);
+			cityLabel.setDisabledIcon(new ImageIcon(resizedCityDisabledImage));
 			cityLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			cityLabel.setEnabled(false);
 			mapPanel.add(cityName);

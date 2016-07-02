@@ -79,22 +79,32 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
-		// TODO Auto-generated method stub
+		rmiSwingUI.clearRMISwingUI();
+		rmiSwingUI.showAvailableActions(false, false, this);
+		rmiSwingUI.enableFreeCouncillorsButtons(true);
+		pause();
+		String chosenCouncillor = rmiSwingUI.getChosenCouncillor();
+		rmiSwingUI.enableFreeCouncillorsButtons(false);
+		rmiSwingUI.enableRegionButtons(true);
+		rmiSwingUI.enableKingButton(true);
+		pause();
+		String chosenBalcony = rmiSwingUI.getChosenRegion();
+		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
 
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		// TODO Auto-generated method stub
+		sendAction(currentState.createAction());
 
 	}
 
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
-		rmiSwingUI.enableButtons(true);
+		rmiSwingUI.enableRegionButtons(true);
 		pause();
 		String chosenRegion = rmiSwingUI.getChosenRegion();
-		rmiSwingUI.enableButtons(false);
+		rmiSwingUI.enableRegionButtons(false);
 		sendAction(currentState.createAction(chosenRegion));
 	}
 
@@ -103,10 +113,10 @@ public class RMIGUIView extends RMIView {
 		try {
 			rmiSwingUI.clearRMISwingUI();
 			rmiSwingUI.showAvailableActions(false, false, this);
-			rmiSwingUI.enableButtons(true);
+			rmiSwingUI.enableRegionButtons(true);
 			List<String> removedCards = new ArrayList<>();
 			pause();
-			rmiSwingUI.enableButtons(false);
+			rmiSwingUI.enableRegionButtons(false);
 			String chosenCouncil = rmiSwingUI.getChosenRegion();
 			rmiSwingUI.enablePoliticCards(true);
 			int numberOfCards = 4;
@@ -134,21 +144,52 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
-		// TODO Auto-generated method stub
-
+		rmiSwingUI.clearRMISwingUI();
+		rmiSwingUI.showAvailableActions(false, false, this);
+		rmiSwingUI.enableFreeCouncillorsButtons(true);
+		pause();
+		String chosenCouncillor = rmiSwingUI.getChosenCouncillor();
+		rmiSwingUI.enableFreeCouncillorsButtons(false);
+		rmiSwingUI.enableRegionButtons(true);
+		rmiSwingUI.enableKingButton(true);
+		pause();
+		String chosenBalcony = rmiSwingUI.getChosenRegion();
+		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		// TODO Auto-generated method stub
-
+		sendAction(currentState.createAction());
 	}
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		// TODO Auto-generated method stub
-
+		List<String> removedCards = new ArrayList<>();
+		rmiSwingUI.enablePoliticCards(true);
+		int numberOfCards = 4;
+		boolean finish = false;
+		int i = 0;
+		while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
+			pause();
+			finish = rmiSwingUI.hasFinished();
+			if(!finish) {
+				removedCards.add(rmiSwingUI.getChosenCard());
+			}
+			i++;
+		}
+		rmiSwingUI.enablePoliticCards(false);
+		rmiSwingUI.enableCities(true);
+		pause();
+		rmiSwingUI.enableCities(false);
+		String arrivalCity = rmiSwingUI.getChosenCity();
+		try {
+			sendAction(currentState.createAction(removedCards, arrivalCity));
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			state.setExceptionString(e.toString());
+		}	
 	}
+
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
@@ -159,6 +200,7 @@ public class RMIGUIView extends RMIView {
 		int chosenCard = rmiSwingUI.getChosenTile();
 		rmiSwingUI.enableCities(true);
 		pause();
+		rmiSwingUI.enableCities(false);
 		String chosenCity = rmiSwingUI.getChosenCity();
 		sendAction(currentState.createAction(chosenCity, chosenCard));
 	}

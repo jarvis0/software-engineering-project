@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.client;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -59,12 +60,15 @@ public abstract class SwingUI {
 	private String chosenAction;
 	private String chosenRegion;
 	private String chosenCity;
+	private String chosenCouncillor;
 	private List<JButton> regionsButtons;
+	JButton btnKingdom;
 	private GUILoad guiLoad;
 	private JPanel mainActionPanel;
 	private JPanel quickActionPanel;
 	private Map<String, JLabel> cityLabels;
 	private Map<String, Point> councilPoints;
+	private Map<String, JLabel> freeCouncillorsLabels;
 	private JFrame frame;
 	private JPanel mapPanel;
 	private DefaultTableModel tableModel;
@@ -75,6 +79,7 @@ public abstract class SwingUI {
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
 		cityLabels = guiLoad.getCityLabels();
+		freeCouncillorsLabels = new HashMap<>();
 		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
 		frame = guiLoad.getFrame();
@@ -95,6 +100,10 @@ public abstract class SwingUI {
 
 	protected Map<String, Point> getCouncilPoints() {
 		return councilPoints;
+	}
+	
+	protected Map<String, JLabel> getFreeCouncillors() {
+		return freeCouncillorsLabels;
 	}
 
 	protected JFrame getFrame() {
@@ -123,6 +132,10 @@ public abstract class SwingUI {
 	
 	public String getChosenCity() {
 		return chosenCity;
+	}
+	
+	public String getChosenCouncillor() {
+		return chosenCouncillor;
 	}
 	
 	protected JPanel getMainActionPanel() {
@@ -177,10 +190,14 @@ public abstract class SwingUI {
 		return councilPoints.get(region);
 	}
 
-	protected void enableRegionButtons(boolean display) {
+	public void enableRegionButtons(boolean display) {
 		for (JButton regionButton : regionsButtons) {
 			regionButton.setEnabled(display);
 		}
+	}
+	
+	public void enableKingButton(boolean display) {
+		btnKingdom.setEnabled(display);
 	}
 	
 	protected void clearChosenRegion() {
@@ -254,6 +271,9 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
+		for (Entry<String, JLabel> entry : freeCouncillorsLabels.entrySet()) {
+			getMapPanel().remove(entry.getValue());
+		}
 		Point freeCouncillorsPoint = getCouncilPoints().get("free");
 		int x = freeCouncillorsPoint.x;
 		int y = freeCouncillorsPoint.y;
@@ -270,11 +290,23 @@ public abstract class SwingUI {
 			BufferedImage councillorImage = guiLoad.readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
 			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
+			councillorLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			councillorLabel.setEnabled(false);
+			councillorLabel.setDisabledIcon(new ImageIcon(resizedCouncillorImage));
+			councillorLabel.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					chosenCouncillor = color;
+					councillorLabel.setEnabled(false);
+	            	getRMIGUIView().resume();
+                }
+			});   
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
+			freeCouncillorsLabels.put(color, councillorLabel);
 			getMapPanel().add(councillorLabel, 0);
 			JLabel councillorsValue = new JLabel();
-			councillorsValue.setBounds(0, 0, 23, 25);
+			councillorsValue.setBounds(0, 0, 10, 25);
 			councillorsValue.setLocation(x + 11, y + 16);
 			councillorsValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 12));
 			if ("black".equals(color) || "purple".equals(color) || "blue".equals(color)) {
@@ -284,7 +316,7 @@ public abstract class SwingUI {
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
 			getMapPanel().add(councillorsValue, 0);
-			y += 41;
+			y += 43;
 		}
 	}
 
@@ -351,7 +383,7 @@ public abstract class SwingUI {
 	}
 	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
-		mainActionPanel.setBounds(895, 181, 215, 272);
+		mainActionPanel.setBounds(925, 181, 215, 272);
 		mapPanel.add(mainActionPanel,0);
 		mainActionPanel.setVisible(false);
 		GridBagLayout gblMainActionPanel = new GridBagLayout();
@@ -431,7 +463,7 @@ public abstract class SwingUI {
 	
 	protected void loadQuickActionPanel() {
 		quickActionPanel = new JPanel();
-		quickActionPanel.setBounds(1120, 181, 199, 272);
+		quickActionPanel.setBounds(1150, 181, 199, 272);
 		mapPanel.add(quickActionPanel,0);
 		quickActionPanel.setVisible(false);
 		GridBagLayout gblQuickActionPanel = new GridBagLayout();
@@ -510,6 +542,22 @@ public abstract class SwingUI {
 	}
 	
 	private void loadRegionButtons() {
+		BufferedImage kingImage = guiLoad.readImage(IMAGES_PATH + "kingIcon.png");
+		btnKingdom = new JButton("");
+		btnKingdom.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenRegion = "king";
+            	rmiGUIView.resume();
+            }
+        });
+		btnKingdom.setIcon(new ImageIcon(kingImage));
+		btnKingdom.setBounds(865, 414, 50, 50);
+		mapPanel.add(btnKingdom, 0);
+		regionsButtons.add(btnKingdom);
+		btnKingdom.setEnabled(false);
+		
 		BufferedImage seasideImage = guiLoad.readImage(IMAGES_PATH + "seasideRegion.png");
 		JButton btnSeaside = new JButton("");
 		btnSeaside.addActionListener(new ActionListener() {
