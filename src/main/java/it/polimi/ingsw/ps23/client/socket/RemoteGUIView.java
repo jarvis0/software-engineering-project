@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.GUIView;
+import it.polimi.ingsw.ps23.client.socket.gui.AcquireBusinessPermitTileExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentsExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.SocketSwingUI;
@@ -16,6 +17,7 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
 	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
 	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
+	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<AcquireBusinessPermitTile>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -41,6 +43,11 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 	private DynamicContentsExpression getDynamicContentExpression() {
 		Expression expression = new TerminalExpression(DYNAMIC_CONTENT_TAG_OPEN, DYNAMIC_CONTENT_TAG_CLOSE);
 		return new DynamicContentsExpression(swingUI, this, expression);
+	}
+	
+	private AcquireBusinessPermitTileExpression getAcquireBusinessPermitTile() {
+		Expression expression = new TerminalExpression(ACQUIRE_BUSINESS_PERMIT_TILE_TAG, "");
+		return new AcquireBusinessPermitTileExpression(swingUI, this, expression);
 	}
 	
 	public void setEndCLIPrints() {
@@ -84,10 +91,12 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
 		DynamicContentsExpression isDynamicContent = getDynamicContentExpression();
+		AcquireBusinessPermitTileExpression isAction = getAcquireBusinessPermitTile();
 		String message;
 		do {
 			message = getClient().receive();//TODO ricevo info su player disconnessi
 			isDynamicContent.parse(message);
+			isAction.parse(message);
 		} while(!getConnectionTimedOut());
 		getClient().closeConnection();
 	}

@@ -48,7 +48,7 @@ public class StateCache implements Serializable {
 		EngageAnAssistantState engageAnAssistantState = new EngageAnAssistantState(ENGAGE_ASSITANT);
 		putAction(engageAnAssistantState);
 		
-		ChangePermitsTileState changePermitsTileState = new ChangePermitsTileState(CHANGE_PERMIT_TILE);
+		ChangePermitTilesState changePermitsTileState = new ChangePermitTilesState(CHANGE_PERMIT_TILE);
 		putAction(changePermitsTileState);
 		
 		BuildEmporiumKingState buildEmporiumKingState = new BuildEmporiumKingState(BUILD_EMPORIUM_KING);

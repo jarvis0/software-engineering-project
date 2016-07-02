@@ -45,6 +45,7 @@ class SocketParametersCreator {
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
 	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
+	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<AcquireBusinessPermitTile>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -211,6 +212,10 @@ class SocketParametersCreator {
 		message += addPermitTilesUp(currentState.getGroupRegionalCity());
 		message += addTurnParameters(currentState.getCurrentPlayer(), currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
+	}
+	
+	String createAcquireBusinessPermitTile() {
+		return ACQUIRE_BUSINESS_PERMIT_TILE_TAG;
 	}
 
 }

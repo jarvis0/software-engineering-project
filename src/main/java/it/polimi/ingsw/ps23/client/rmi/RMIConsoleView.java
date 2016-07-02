@@ -22,7 +22,7 @@ import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumPermitTileState;
-import it.polimi.ingsw.ps23.server.model.state.ChangePermitsTileState;
+import it.polimi.ingsw.ps23.server.model.state.ChangePermitTilesState;
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
@@ -141,7 +141,7 @@ class RMIConsoleView extends RMIView {
 	}
 
 	@Override
-	public void visit(ChangePermitsTileState currentState) {
+	public void visit(ChangePermitTilesState currentState) {
 		output.println("Choose a region:" + currentState.printRegionalPermissionDecks());
 		String chosenRegion = scanner.nextLine().toLowerCase();
 		sendAction(currentState.createAction(chosenRegion));

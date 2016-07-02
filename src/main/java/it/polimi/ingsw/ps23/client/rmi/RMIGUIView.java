@@ -16,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumPermitTileState;
-import it.polimi.ingsw.ps23.server.model.state.ChangePermitsTileState;
+import it.polimi.ingsw.ps23.server.model.state.ChangePermitTilesState;
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
@@ -70,6 +70,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		} else {
+			//per forza false false?
 			swingUI.showAvailableActions(false, false); //TODO creare metodo per stampare che è il turno di un altro player
 			waiting = true;
 			pause();
@@ -89,7 +90,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	}
 
 	@Override
-	public void visit(ChangePermitsTileState currentState) {
+	public void visit(ChangePermitTilesState currentState) {
 		swingUI.enableButtons(true);
 		pause();
 		String chosenRegion = swingUI.getChosenRegion();

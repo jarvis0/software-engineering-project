@@ -89,9 +89,13 @@ public class DynamicContentsExpression extends GUIComponentsParser {
 			areTurnParameters.parse(noTagMessage);
 			if(areTurnParameters.getCurrentPlayer().equals(guiView.getPlayerName())) {
 				swingUI.showAvailableActions(areTurnParameters.isAvailableMainAction(), areTurnParameters.isAvailableQuickAction());
+				guiView.pause();
+				guiView.getClient().send(swingUI.getChosenAction());
 			}
-			guiView.pause();
-			guiView.getClient().send(swingUI.getChosenAction());
+			else {
+				swingUI.showAvailableActions(false, false);
+				guiView.pause();
+			}
 		}
 	}
 
