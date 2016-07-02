@@ -283,7 +283,7 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permitHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " nobilityTrackPoints: " + nobilityTrackPoints + " permitHandDeck: " + permitHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
 		if(isOnline()) {
 			print += " online";
 		}

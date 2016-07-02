@@ -29,8 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
-import it.polimi.ingsw.ps23.client.rmi.RMIGUIView;
-
 public abstract class SwingUI {
 
 	private static final String CONFIGURATION_PATH = "src/main/java/it/polimi/ingsw/ps23/client/commons/configuration/";
@@ -56,7 +54,7 @@ public abstract class SwingUI {
 
 	private String mapPath;
 	private String playerName;
-	private RMIGUIView rmiGUIView;
+	private GUIView guiView;
 	private String chosenAction;
 	private String chosenRegion;
 	private String chosenCity;
@@ -76,7 +74,8 @@ public abstract class SwingUI {
 	boolean finish;
 	private String chosenCard;
 
-	protected SwingUI(String mapType, String playerName) {
+	protected SwingUI(GUIView guiView, String mapType, String playerName) {
+		this.guiView = guiView;
 		this.playerName = playerName;
 		regionsButtons = new ArrayList<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
@@ -93,14 +92,6 @@ public abstract class SwingUI {
 		loadRegionButtons();
 		loadMainActionPanel();
 		loadQuickActionPanel();
-	}
-	
-	protected void setRMIGUIView(RMIGUIView rmiGUIView) {
-		this.rmiGUIView = rmiGUIView;
-	}
-	
-	protected RMIGUIView getRMIGUIView() {
-		return rmiGUIView;
 	}
 
 	public String getChosenAction() {
@@ -299,19 +290,17 @@ public abstract class SwingUI {
 	           public void mouseClicked(MouseEvent e) {
 				chosenTile = indexOfTile;
 				permitTileLabel.setEnabled(false);
-	           	getRMIGUIView().resume();//TODO generalizzare anche a remoteSocketView
+				guiView.resume();
 			}
 		});
 		mapPanel.add(permitTileLabel, 0);
 		permitTileLabel.setEnabled(false);
-		//List<Bonus> bonuses = ((BusinessPermitTile) permitTile).getBonuses();
 		int bonusCoordX = x - 47;
 		int bonusCoordY = y + 40;
 		for (int i = 0; i < permitTileBonusesName.size(); i++) {
 			drawBonus(permitTileBonusesName.get(i), permitTileBonusesValue.get(i), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);
 			bonusCoordX = bonusCoordX + 24;
 		}
-		//List<City> cities = ((BusinessPermitTile) permitTile).getCities();
 		int cityCoordX = x + 5;
 		int cityCoordY = y;
 		int citiesNumber = permitTileCities.size();
@@ -427,7 +416,7 @@ public abstract class SwingUI {
 	                public void mouseClicked(MouseEvent e) {
 						chosenCard = card;
 						cardLabel.setEnabled(false);
-		            	getRMIGUIView().resume();//TODO resume di remoteSocket
+						guiView.resume();
 	                }
 	        });      
 			cardLabel.setBounds(0, 0, 42, 66);
@@ -442,17 +431,13 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
 				finish = true;
-				resumeRMIGUIView();
+				guiView.resume();
             }
         });
 		finished.setBounds(x, y, 70, 30);
 		mapPanel.add(finished, 0);
 	}
 
-	protected void resumeRMIGUIView() {
-		rmiGUIView.resume();
-	}
-	
 	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
 		mainActionPanel.setBounds(895, 181, 215, 272);
@@ -470,7 +455,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = ACQUIRE_BUSINESS_PERMIT_TILE;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });      
 		BufferedImage acquireBusinessPermitTileImage = guiLoad.readImage(IMAGES_PATH + "acquireBusinessPermitTile.png");
@@ -487,7 +472,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = BUILD_EMPORIUM_KING;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage buildEmporiumKingImage = guiLoad.readImage(IMAGES_PATH + "buildEmporiumKing.png");
@@ -505,7 +490,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = ELECT_COUNCILLOR;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage electCouncillorImage = guiLoad.readImage(IMAGES_PATH + "electCouncillor.png");
@@ -522,7 +507,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = BUILD_EMPORIUM_TILE;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage builEmporiumPermitTileImage = guiLoad.readImage(IMAGES_PATH + "buildEmporiumPermitTile.png");
@@ -551,7 +536,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = ENGAGE_ASSITANT;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage engageAssistantImage = guiLoad.readImage(IMAGES_PATH + "engageAssistant.png");
@@ -568,7 +553,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = CHANGE_PERMIT_TILE;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage changePermitsTileImage = guiLoad.readImage(IMAGES_PATH + "changePermitsTile.png");
@@ -585,7 +570,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = ASSISTANT_TO_ELECT_COUNCILLOR;
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage assistantToElectCouncillorImage = guiLoad.readImage(IMAGES_PATH + "assistantToElectCouncillor.png");
@@ -602,7 +587,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenAction = ADDITIONAL_MAIN_ACTION; 
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		BufferedImage additionalMainActionImage = guiLoad.readImage(IMAGES_PATH + "buyMainAction.png");
@@ -621,7 +606,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenRegion = "seaside";
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		btnSeaside.setIcon(new ImageIcon(seasideImage));
@@ -636,7 +621,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenRegion = "hill";
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		btnHill.setIcon(new ImageIcon(hillImage));
@@ -651,7 +636,7 @@ public abstract class SwingUI {
             public void actionPerformed(ActionEvent e)
             {
             	chosenRegion = "mountain";
-            	rmiGUIView.resume();
+            	guiView.resume();
             }
         });
 		btnMountain.setIcon(new ImageIcon(mountainImage));
@@ -669,12 +654,12 @@ public abstract class SwingUI {
                 public void mouseClicked(MouseEvent e) {
 					chosenCity = cityLabel.getKey();
 					cityLabel.getValue().setEnabled(false);
-	            	getRMIGUIView().resume();//TODO generalizzare a tutti i tipi di view
+					guiView.resume();
                 }
 			});   
 		}
 	}
-	
+
 	private void enableCitiesButtons(boolean display) {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
@@ -686,6 +671,12 @@ public abstract class SwingUI {
 		for (JLabel jLabel : cardsList) {
 			jLabel.setEnabled(display);
 		}
+	}
+
+	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction) {
+		getMainActionPanel().setVisible(isAvailableMainAction);
+		getQuickActionPanel().setVisible(isAvailableQuickAction);
+		enableRegionButtons(false);
 	}
 
 	public void enablePoliticCards(boolean display) {

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.ps23.client.socket.gui;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
+import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
-public class DynamicContentExpression extends GUIComponentsParser {
+public class DynamicContentsExpression extends GUIComponentsParser {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
@@ -17,13 +18,18 @@ public class DynamicContentExpression extends GUIComponentsParser {
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
+	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
+	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
 	
 	private SocketSwingUI swingUI;
 	
+	private RemoteGUIView guiView;
+	
 	private Expression expression;
 	
-	public DynamicContentExpression(SocketSwingUI swingUI, Expression expression) {
+	public DynamicContentsExpression(SocketSwingUI swingUI, RemoteGUIView guiView, Expression expression) {
 		this.swingUI = swingUI;
+		this.guiView = guiView;
 		this.expression = expression;
 	}
 	
@@ -57,6 +63,11 @@ public class DynamicContentExpression extends GUIComponentsParser {
 		return new PermitTilesUpExpression(permitTilesUpExpression);
 	}
 	
+	private TurnParametersExpression getTurnParametersExpression() {
+		Expression turnParametersExpression = new TerminalExpression(TURN_PARAMETERS_TAG_OPEN, TURN_PARAMETERS_TAG_CLOSE);
+		return new TurnParametersExpression(turnParametersExpression);
+	}
+	
 	@Override
 	public void parse(String message) {
 		if(expression.interpret(message)) {
@@ -74,6 +85,13 @@ public class DynamicContentExpression extends GUIComponentsParser {
 			PermitTilesUpExpression arePermitTilesUp = getPermitTilesUpExpression();
 			arePermitTilesUp.parse(noTagMessage);
 			swingUI.refreshDynamicContents(isKingPosition, areFreeCouncillors, areCouncils, arePermitTilesUp, areBonusTiles, arePlayersParameter);
+			TurnParametersExpression areTurnParameters = getTurnParametersExpression();
+			areTurnParameters.parse(noTagMessage);
+			if(areTurnParameters.getCurrentPlayer().equals(guiView.getPlayerName())) {
+				swingUI.showAvailableActions(areTurnParameters.isAvailableMainAction(), areTurnParameters.isAvailableQuickAction());
+			}
+			guiView.pause();
+			guiView.getClient().send(swingUI.getChosenAction());
 		}
 	}
 

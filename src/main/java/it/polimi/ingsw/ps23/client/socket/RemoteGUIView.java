@@ -1,13 +1,16 @@
 package it.polimi.ingsw.ps23.client.socket;
 
 import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentExpression;
+import it.polimi.ingsw.ps23.client.GUIView;
+import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentsExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.SocketSwingUI;
 import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
 
-public class RemoteGUIView extends RemoteView {
+public class RemoteGUIView extends RemoteView implements GUIView {
 
 	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
 	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
@@ -35,9 +38,9 @@ public class RemoteGUIView extends RemoteView {
 		return new StaticContentExpression(swingUI, expression);
 	}
 
-	private DynamicContentExpression getDynamicContentExpression() {
+	private DynamicContentsExpression getDynamicContentExpression() {
 		Expression expression = new TerminalExpression(DYNAMIC_CONTENT_TAG_OPEN, DYNAMIC_CONTENT_TAG_CLOSE);
-		return new DynamicContentExpression(swingUI, expression);
+		return new DynamicContentsExpression(swingUI, this, expression);
 	}
 	
 	public void setEndCLIPrints() {
@@ -48,6 +51,10 @@ public class RemoteGUIView extends RemoteView {
 		this.playerName = playerName;
 	}
 
+	public String getPlayerName() {
+		return playerName;
+	}
+
 	private void cliPrints() {
 		String message;
 		NoInputExpression isNoInput = getNoInputExpression();
@@ -55,14 +62,28 @@ public class RemoteGUIView extends RemoteView {
 			message = getClient().receive();
 			message = isNoInput.parse(message);
 		} while(!endCLIPrints);
-		swingUI = new SocketSwingUI(message, playerName);
+		swingUI = new SocketSwingUI(this, message, playerName);
 	}
 	
+	public synchronized void pause() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot put " + playerName + " on hold.", e);
+			Thread.currentThread().interrupt();
+		}
+	}
+	
+	@Override
+	public synchronized void resume() {
+		notifyAll();
+	}
+
 	@Override
 	protected void run() {
 		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
-		DynamicContentExpression isDynamicContent = getDynamicContentExpression();
+		DynamicContentsExpression isDynamicContent = getDynamicContentExpression();
 		String message;
 		do {
 			message = getClient().receive();//TODO ricevo info su player disconnessi

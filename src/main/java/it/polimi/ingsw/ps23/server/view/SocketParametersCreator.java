@@ -43,6 +43,8 @@ class SocketParametersCreator {
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
+	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
+	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -191,6 +193,15 @@ class SocketParametersCreator {
 		return PERMIT_TILES_UP_TAG_OPEN + permitTilesUpSend + PERMIT_TILES_UP_TAG_CLOSE;
 	}
 
+	private String addTurnParameters(Player currentPlayer, boolean availableMainAction, boolean availableQuickAction) {
+		StringBuilder turnParametersSend = new StringBuilder();
+		turnParametersSend.append(currentPlayer.getName());
+		turnParametersSend.append("," + availableMainAction);
+		turnParametersSend.append("," + availableQuickAction);
+		turnParametersSend.append(",");
+		return TURN_PARAMETERS_TAG_OPEN + turnParametersSend + TURN_PARAMETERS_TAG_CLOSE;
+	}
+
 	String createUIDynamicContents(StartTurnState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
@@ -198,6 +209,7 @@ class SocketParametersCreator {
 		message += addBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
 		message += addPlayerParameters(currentState.getPlayersList());
 		message += addPermitTilesUp(currentState.getGroupRegionalCity());
+		message += addTurnParameters(currentState.getCurrentPlayer(), currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 

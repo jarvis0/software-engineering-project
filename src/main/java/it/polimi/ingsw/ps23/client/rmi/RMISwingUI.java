@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 
+import it.polimi.ingsw.ps23.client.GUIView;
 import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
@@ -28,8 +29,8 @@ class RMISwingUI extends SwingUI {
 
 	private List<JLabel> playerPermitTiles;
 	
-	RMISwingUI(String mapType, String playerName) {
-		super(mapType, playerName);
+	RMISwingUI(GUIView guiView, String mapType, String playerName) {
+		super(guiView, mapType, playerName);
 		playerPermitTiles = new ArrayList<>();
 	}
 	
@@ -62,7 +63,34 @@ class RMISwingUI extends SwingUI {
 		bonusesName.add(bonus.getName());
 		bonusesValue.add(String.valueOf(bonus.getValue()));
 	}
-	
+
+	private void allPermitTilesToStrings(List<Region> regions, List<String> regionsName, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for(Region region : regions) {
+			regionsName.add(region.getName());
+			List<Card> permitTilesUp = ((GroupRegionalCity) region).getPermitTilesUp().getCards();
+			List<List<String>> permitTilesCities = new ArrayList<>();
+			List<List<String>> permitTilesBonusesName = new ArrayList<>();
+			List<List<String>> permitTilesBonusesValue = new ArrayList<>();
+			for(Card card : permitTilesUp) {
+				List<String> permitTileCities = new ArrayList<>();
+				List<City> cities = ((BusinessPermitTile) card).getCities();
+				for(City city : cities) {
+					permitTileCities.add(String.valueOf(city.getName().charAt(0)));
+				}
+				permitTilesCities.add(permitTileCities);
+				List<String> permitTileBonusesName = new ArrayList<>();
+				List<String> permitTileBonusesValue = new ArrayList<>();
+				bonusesToStrings(((BusinessPermitTile) card).getBonuses(), permitTileBonusesName, permitTileBonusesValue);
+				permitTilesBonusesName.add(permitTileBonusesName);
+				permitTilesBonusesValue.add(permitTileBonusesValue);
+			}
+			allPermitTilesCities.add(permitTilesCities);
+			allPermitTilesBonusesName.add(permitTilesBonusesName);
+			allPermitTilesBonusesValue.add(permitTilesBonusesValue);
+		}
+	}
+
 	private void bonusTilesToStrings(List<Region> regions, List<String> groupsName, List<String> bonusesName, List<String> bonusesValue) {
 		for(Region region : regions) {
 			if(!region.alreadyUsedBonusTile()) {
@@ -112,33 +140,7 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> allPermitTilesCities = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesName = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesValue = new ArrayList<>();
-		for(Region region : currentState.getGameMap().getGroupRegionalCity()) {
-			regions.add(region.getName());
-			List<Card> permitTilesUp = ((GroupRegionalCity) region).getPermitTilesUp().getCards();
-			List<List<String>> permitTilesCities = new ArrayList<>();
-			List<List<String>> permitTilesBonusesName = new ArrayList<>();
-			List<List<String>> permitTilesBonusesValue = new ArrayList<>();
-			for(Card card : permitTilesUp) {
-				List<String> permitTileCities = new ArrayList<>();
-				List<City> cities = ((BusinessPermitTile) card).getCities();
-				for(City city : cities) {
-					permitTileCities.add(String.valueOf(city.getName().charAt(0)));
-				}
-				permitTilesCities.add(permitTileCities);
-				List<String> permitTileBonusesName = new ArrayList<>();
-				List<String> permitTileBonusesValue = new ArrayList<>();
-				List<Bonus> bonuses = ((BusinessPermitTile) card).getBonuses();
-				for(Bonus bonus : bonuses) {
-					permitTileBonusesName.add(bonus.getName());
-					permitTileBonusesValue.add(String.valueOf(bonus.getValue()));
-				}
-				permitTilesBonusesName.add(permitTileBonusesName);
-				permitTilesBonusesValue.add(permitTileBonusesValue);
-			}
-			allPermitTilesCities.add(permitTilesCities);
-			allPermitTilesBonusesName.add(permitTilesBonusesName);
-			allPermitTilesBonusesValue.add(permitTilesBonusesValue);
-		}
+		allPermitTilesToStrings(currentState.getGameMap().getGroupRegionalCity(), regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
 		refreshPermitTilesUp(regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
 		
 		List<String> groupsName = new ArrayList<>();
@@ -175,7 +177,6 @@ class RMISwingUI extends SwingUI {
 		refreshPlayersTable(names, coins, assistants, nobilityTrackPoints, victoryPoints);
 		
 		Map<String, List<String>> playersPoliticCards = new HashMap<>();
-
 		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());
 		refreshPoliticCards(playersPoliticCards);		
 		
@@ -246,21 +247,10 @@ class RMISwingUI extends SwingUI {
 		}
 	}*/
 
-	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
-		setRMIGUIView(rmiguiView);
-		getMainActionPanel().setVisible(isAvailableMainAction);
-		getQuickActionPanel().setVisible(isAvailableQuickAction);
-		enableRegionButtons(false);
-	}
-
 	public void enablePermitTileDeck(boolean display) {
 		for (JLabel jLabel : playerPermitTiles) {
 			jLabel.setEnabled(display);
 		}
-	}
-
-	public static void main(String[] args) {
-		new RMISwingUI("hard", "ale");//TODO remove this method
 	}
 
 }
