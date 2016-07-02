@@ -3,6 +3,7 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
@@ -36,9 +37,12 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 		writeSecondOutput = false;
 	}
 	
-	public void selectRegion(String chosenRegion) {
-		writeSecondOutput = true;
+	public void selectRegion(String chosenRegion) throws InvalidRegionException {
+		if(((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp() == null) {
+			throw new InvalidRegionException();
+		}
 		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp();
+		writeSecondOutput = true;		
 	}
 
 	@Override

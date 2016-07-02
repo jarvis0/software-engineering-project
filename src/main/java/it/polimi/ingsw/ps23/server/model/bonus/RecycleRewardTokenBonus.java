@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.player.Player;
@@ -41,9 +42,9 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 	}
 	
 	@Override
-	public void acquireSuperBonus(List<String >input, Game game, TurnHandler turnHandler) {
+	public void acquireSuperBonus(List<String>input, Game game, TurnHandler turnHandler) throws InvalidCityException {
 		if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
-			game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getChosenCity(input.get(VALUE_POSITION).toUpperCase()).useRewardToken(game, turnHandler); 
+			game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getChosenCity(input.get(VALUE_POSITION)).useRewardToken(game, turnHandler); 
 		}
 	}
 	

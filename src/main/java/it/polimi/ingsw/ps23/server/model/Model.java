@@ -265,7 +265,7 @@ public class Model extends ModelObservable {
 		game.getNobilityTrack().walkOnNobilityTrack(initialNobilityTrackPoints, finalNobilityTrackPoints, game, turnHandler);
 	}
 
-	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException {
+	public void doSuperBonusesAcquisition(SuperBonusGiver superBonusGiver) throws InvalidCardException, InvalidCityException {
 		superBonusGiver.giveBonus(game, turnHandler);
 		setPlayerTurn();
 	}
@@ -282,9 +282,9 @@ public class Model extends ModelObservable {
 	 * set at the game startup.
 	 */
 	public void setCurrentPlayerOffline() {
+		game.getCurrentPlayer().setOnline(false);
 		if(game.getGamePlayersSet().canContinue()) {
-			State currentState = context.getState();
-			game.getCurrentPlayer().setOnline(false);
+			State currentState = context.getState();			
 			if(!(currentState instanceof MarketOfferPhaseState || currentState instanceof MarketBuyPhaseState)) {
 				setPlayerTurn();
 			}
@@ -300,6 +300,7 @@ public class Model extends ModelObservable {
 		else {
 			(new EndGame(game, turnHandler)).applyFinalBonus();
 			setEndGameState();
+			playersResumeHandler.resume();
 		}
 	}
 	

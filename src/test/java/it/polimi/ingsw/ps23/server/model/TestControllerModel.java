@@ -91,8 +91,10 @@ public class TestControllerModel extends ViewObservable implements ViewObserver 
 		assertTrue(((MarketOfferPhaseState)state).getPlayerName().equals(String.valueOf(1)));
 		wakeUp(marketObject);
 		assertTrue(state instanceof MarketBuyPhaseState);
-		model.setCurrentPlayerOffline();
 		wakeUp(((MarketBuyPhaseState)state).createTransation());
+		model.setOnlinePlayer(String.valueOf(2));
+		wakeUp(((MarketBuyPhaseState)state).createTransation());
+		model.setCurrentPlayerOffline();
 		assertTrue(state instanceof StartTurnState);
 		model.rollBack(new Exception());
 		assertTrue(state instanceof StartTurnState);
