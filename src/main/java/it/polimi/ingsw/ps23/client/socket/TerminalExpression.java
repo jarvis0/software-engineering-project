@@ -21,6 +21,11 @@ public class TerminalExpression implements Expression {
 	public String removeBlock(String message) {
 		return message.substring(message.indexOf(tagClose) + tagClose.length());
 	}
+	
+	@Override
+	public String removeTags(String message) {
+		return message.replace(tagOpen, "").replace(tagClose, "");
+	}
 
 	@Override
 	public boolean interpret(String message) {

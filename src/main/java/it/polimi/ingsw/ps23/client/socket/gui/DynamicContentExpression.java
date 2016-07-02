@@ -73,7 +73,7 @@ public class DynamicContentExpression extends GUIComponentsParser {
 			arePlayersParameter.parse(noTagMessage);
 			PermitTilesUpExpression arePermitTilesUp = getPermitTilesUpExpression();
 			arePermitTilesUp.parse(noTagMessage);
-			swingUI.refreshDynamicContents(isKingPosition, areFreeCouncillors, areCouncils, areBonusTiles, arePlayersParameter, arePermitTilesUp);
+			swingUI.refreshDynamicContents(isKingPosition, areFreeCouncillors, areCouncils, arePermitTilesUp, areBonusTiles, arePlayersParameter);
 		}
 	}
 

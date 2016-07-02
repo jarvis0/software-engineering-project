@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.client;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -42,7 +44,6 @@ public abstract class SwingUI {
 	private static final String KINGDOM = "kingdom";
 	private static final String ALREADY_ACQUIRED_BONUS_TILE = "alreadyAcquired";
 	private static final String NO_KING_TILE = "noKingTile";
-	private static final String SANS_SERIF_FONT = "Sans serif";
 	
 	private static final String ELECT_COUNCILLOR = "elect councillor";
 	private static final String ACQUIRE_BUSINESS_PERMIT_TILE = "acquire business permit tile";
@@ -67,7 +68,13 @@ public abstract class SwingUI {
 	private Map<String, Point> councilPoints;
 	private JFrame frame;
 	private JPanel mapPanel;
+	private Map<String, List<JLabel>> permitTiles;
+	private int chosenTile;
 	private DefaultTableModel tableModel;
+	private JButton finished;
+	private List<JLabel> cardsList;
+	boolean finish;
+	private String chosenCard;
 
 	protected SwingUI(String mapType, String playerName) {
 		this.playerName = playerName;
@@ -77,6 +84,9 @@ public abstract class SwingUI {
 		cityLabels = guiLoad.getCityLabels();
 		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
+		cardsList = new ArrayList<>();
+		permitTiles = new HashMap<>();
+		finish = false;
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
@@ -93,26 +103,6 @@ public abstract class SwingUI {
 		return rmiGUIView;
 	}
 
-	protected Map<String, Point> getCouncilPoints() {
-		return councilPoints;
-	}
-
-	protected JFrame getFrame() {
-		return frame;
-	}
-
-	protected JPanel getMapPanel() {
-		return mapPanel;
-	}
-
-	protected DefaultTableModel getTableModel() {
-		return tableModel;
-	}
-
-	protected String getPlayerName() {
-		return playerName;
-	}
-	
 	public String getChosenAction() {
 		return chosenAction;
 	}
@@ -124,7 +114,19 @@ public abstract class SwingUI {
 	public String getChosenCity() {
 		return chosenCity;
 	}
-	
+
+	public String getChosenCard() {
+		return chosenCard;
+	}
+
+	public int getChosenTile() {
+		return chosenTile;
+	}
+
+	protected JFrame getFrame() {
+		return frame;
+	}
+
 	protected JPanel getMainActionPanel() {
 		return mainActionPanel;
 	}
@@ -133,26 +135,6 @@ public abstract class SwingUI {
 		return quickActionPanel;
 	}
 
-	protected static String getPermitTilePath() {
-		return PERMIT_TILE_PATH;
-	}
-
-	protected static String getSansSerifFont() {
-		return SANS_SERIF_FONT;
-	}
-
-	protected static String getPoliticCardPath() {
-		return POLITIC_CARD_PATH;
-	}
-
-	protected static String getImagesPath() {
-		return IMAGES_PATH;
-	}
-	
-	protected static String getPngExtension() {
-		return PNG_EXTENSION;
-	}
-	
 	protected static String getKingdom() {
 		return KINGDOM;
 	}
@@ -173,40 +155,30 @@ public abstract class SwingUI {
 		return cityLabels.get(componentName);
 	}
 
-	protected Point getCouncilPoint(String region) {
+	private Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
 	}
 
-	protected void enableRegionButtons(boolean display) {
-		for (JButton regionButton : regionsButtons) {
-			regionButton.setEnabled(display);
-		}
-	}
-	
-	protected void clearChosenRegion() {
-		chosenRegion = null;
-	}
-
-	protected void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
+	private void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
 		BufferedImage bonusImage = guiLoad.readImage(IMAGES_PATH + bonusName + PNG_EXTENSION);
 		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		JLabel bonusLabel = new JLabel(new ImageIcon(resizedBonusImage));
 		bonusLabel.setBounds(0, 0, width, height);
 		bonusLabel.setLocation(x, y + yOffset);
-		getMapPanel().add(bonusLabel, 0);
+		mapPanel.add(bonusLabel, 0);
 		int bonusNumber = Integer.parseInt(bonusValue);
 		if (bonusNumber > 1 || "victoryPoint".equals(bonusName)) {
 			JLabel bonusLabelValue = new JLabel();
 			bonusLabelValue.setBounds(0, 0, width, height);
 			bonusLabelValue.setLocation(x + 8, y + yOffset);
-			bonusLabelValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 9));
+			bonusLabelValue.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 9));
 			if ("coin".equals(bonusName)) {
 				bonusLabelValue.setForeground(Color.black);
 			} else {
 				bonusLabelValue.setForeground(Color.white);
 			}
 			bonusLabelValue.setText(String.valueOf(bonusNumber));
-			getMapPanel().add(bonusLabelValue, 0);
+			mapPanel.add(bonusLabelValue, 0);
 		}
 	}
 
@@ -254,7 +226,7 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
-		Point freeCouncillorsPoint = getCouncilPoints().get("free");
+		Point freeCouncillorsPoint = councilPoints.get("free");
 		int x = freeCouncillorsPoint.x;
 		int y = freeCouncillorsPoint.y;
 		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
@@ -272,18 +244,18 @@ public abstract class SwingUI {
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
-			getMapPanel().add(councillorLabel, 0);
+			mapPanel.add(councillorLabel, 0);
 			JLabel councillorsValue = new JLabel();
 			councillorsValue.setBounds(0, 0, 23, 25);
 			councillorsValue.setLocation(x + 11, y + 16);
-			councillorsValue.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 12));
+			councillorsValue.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 			if ("black".equals(color) || "purple".equals(color) || "blue".equals(color)) {
 				councillorsValue.setForeground(Color.white);
 			} else {
 				councillorsValue.setForeground(Color.black);
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
-			getMapPanel().add(councillorsValue, 0);
+			mapPanel.add(councillorsValue, 0);
 			y += 41;
 		}
 	}
@@ -294,7 +266,7 @@ public abstract class SwingUI {
 		JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
 		councillorLabel.setBounds(0, 0, 15, 39);
 		councillorLabel.setLocation(x, y);
-		getMapPanel().add(councillorLabel, 0);
+		mapPanel.add(councillorLabel, 0);
 	}
 
 	private void drawCouncil(List<String> council, int xCoord, int yCoord) {
@@ -313,7 +285,78 @@ public abstract class SwingUI {
 		}
 	}
 
-	protected void drawBonusTile(String groupName, String bonusName, String bonusValue) {
+	private void drawPermitTile(List<String> permitTileCities, List<String> permitTileBonusesName, List<String> permitTileBonusesValue,
+			int indexOfTile, List<JLabel> permitLabels, int x, int y) {
+		BufferedImage permissionTileImage = readImage(IMAGES_PATH + PERMIT_TILE_PATH);
+		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		JLabel permitTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
+		permitTileLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		permitLabels.add(permitTileLabel);
+		permitTileLabel.setBounds(0, 0, 50, 50);
+		permitTileLabel.setLocation(x, y);
+		permitTileLabel.addMouseListener(new MouseAdapter() {
+			@Override
+	           public void mouseClicked(MouseEvent e) {
+				chosenTile = indexOfTile;
+				permitTileLabel.setEnabled(false);
+	           	getRMIGUIView().resume();//TODO generalizzare anche a remoteSocketView
+			}
+		});
+		mapPanel.add(permitTileLabel, 0);
+		permitTileLabel.setEnabled(false);
+		//List<Bonus> bonuses = ((BusinessPermitTile) permitTile).getBonuses();
+		int bonusCoordX = x - 47;
+		int bonusCoordY = y + 40;
+		for (int i = 0; i < permitTileBonusesName.size(); i++) {
+			drawBonus(permitTileBonusesName.get(i), permitTileBonusesValue.get(i), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);
+			bonusCoordX = bonusCoordX + 24;
+		}
+		//List<City> cities = ((BusinessPermitTile) permitTile).getCities();
+		int cityCoordX = x + 5;
+		int cityCoordY = y;
+		int citiesNumber = permitTileCities.size();
+		for (int i = 0; i < citiesNumber; i++) {
+			String cityName = permitTileCities.get(i);
+			JLabel cityInitial = new JLabel();
+			cityInitial.setBounds(0, 0, 23, 25);
+			cityInitial.setLocation(cityCoordX, cityCoordY);
+			cityInitial.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+			cityInitial.setForeground(Color.black);
+			String slash = new String();
+			if (i != citiesNumber - 1) {
+				slash = " / ";
+			}
+			cityInitial.setText(cityName + slash);
+			mapPanel.add(cityInitial, 0);
+			cityCoordX += 17;
+		}
+	}
+
+	private void drawPermitTiles(String region, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName,
+			List<List<String>> permitTilesBonusesValue, int xCoord, int yCoord) {
+		int x = xCoord;
+		int y = yCoord;
+		int indexOfTile = 0;
+		List<JLabel> permitLabels = new ArrayList<>();
+		for (int i = 0; i < permitTilesCities.size(); i++) {
+			drawPermitTile(permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), indexOfTile, permitLabels, x, y);
+			permitTiles.put(region, permitLabels);
+			x -= 52;
+			indexOfTile++;
+		}
+	}
+	
+	protected void refreshPermitTilesUp(List<String> regions, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for (int i = 0; i < regions.size(); i++) {
+			Point point = getCouncilPoint(regions.get(i));
+			int x = point.x;
+			int y = point.y;
+			drawPermitTiles(regions.get(i), allPermitTilesCities.get(i), allPermitTilesBonusesName.get(i), allPermitTilesBonusesValue.get(i), x - 120, y - 12);
+		}
+	}
+	
+	private void drawBonusTile(String groupName, String bonusName, String bonusValue) {
 		Point regionPoint = getCouncilPoint(groupName);
 		int x = regionPoint.x;
 		int y = regionPoint.y;
@@ -330,7 +373,7 @@ public abstract class SwingUI {
 		JLabel tileLabel = new JLabel(new ImageIcon(resizedTileImage));
 		tileLabel.setBounds(0, 0, 50, 35);
 		tileLabel.setLocation(x, y);
-		getMapPanel().add(tileLabel, 0);
+		mapPanel.add(tileLabel, 0);
 		drawBonus(bonusName, bonusValue, x + 25, y + 10, 23, 25, -5);
 	}
 
@@ -345,10 +388,71 @@ public abstract class SwingUI {
 			drawBonusTile(KINGDOM, kingBonusName, kingBonusValue);
 		}
 	}
+
+	protected void refreshPlayersTable(List<String> playersName, List<String> playersCoins, 
+			List<String> playersAssistants, List<String> playersNobilityTrackPoints, List<String> playersVictoryPoints) {
+		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
+			tableModel.removeRow(i);
+		}
+		for (int i = 0; i < playersName.size(); i++) {
+			Vector<Object> vector = new Vector<>();
+			vector.add(0, playersName.get(i));
+			vector.add(1, playersCoins.get(i));
+			vector.add(2, playersAssistants.get(i));
+			vector.add(3, playersNobilityTrackPoints.get(i));
+			vector.add(4, playersVictoryPoints.get(i));
+			tableModel.addRow(vector);
+		}
+	}
 	
+	protected void refreshPoliticCards(Map<String, List<String>> playersPoliticCards) {
+		int x = 0;
+		int y = 535;
+		for(JLabel card : cardsList) {
+			mapPanel.remove(card);
+		}
+		
+		if(finished != null){
+			mapPanel.remove(finished);
+		}
+		for (String card : playersPoliticCards.get(playerName)) {
+			BufferedImage cardImage = readImage(IMAGES_PATH + card + POLITIC_CARD_PATH);
+			Image resizedCardImage = cardImage.getScaledInstance(42, 66, Image.SCALE_SMOOTH);
+			JLabel cardLabel = new JLabel(new ImageIcon(resizedCardImage));
+			cardLabel.setDisabledIcon(new ImageIcon(resizedCardImage));
+			cardLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			cardsList.add(cardLabel);
+			cardLabel.addMouseListener(new MouseAdapter() {
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						chosenCard = card;
+						cardLabel.setEnabled(false);
+		            	getRMIGUIView().resume();//TODO resume di remoteSocket
+	                }
+	        });      
+			cardLabel.setBounds(0, 0, 42, 66);
+			cardLabel.setLocation(x, y);
+			x += 44;
+			mapPanel.add(cardLabel, 0);
+			cardLabel.setEnabled(false);
+		}
+		finished = new JButton("finished");
+		finished.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+				finish = true;
+				resumeRMIGUIView();
+            }
+        });
+		finished.setBounds(x, y, 70, 30);
+		mapPanel.add(finished, 0);
+	}
+
 	protected void resumeRMIGUIView() {
 		rmiGUIView.resume();
 	}
+	
 	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
 		mainActionPanel.setBounds(895, 181, 215, 272);
@@ -509,7 +613,7 @@ public abstract class SwingUI {
 		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
 	}
 	
-	private void loadRegionButtons() {
+	private void loadRegionButtons() {//TODO parametrizzare queste stringhe
 		BufferedImage seasideImage = guiLoad.readImage(IMAGES_PATH + "seasideRegion.png");
 		JButton btnSeaside = new JButton("");
 		btnSeaside.addActionListener(new ActionListener() {
@@ -555,7 +659,6 @@ public abstract class SwingUI {
 		mapPanel.add(btnMountain, 0);
 		regionsButtons.add(btnMountain);
 		btnMountain.setEnabled(false);
-		
 	}
 	
 	private void loadCitiesButtons() {
@@ -566,19 +669,68 @@ public abstract class SwingUI {
                 public void mouseClicked(MouseEvent e) {
 					chosenCity = cityLabel.getKey();
 					cityLabel.getValue().setEnabled(false);
-	            	getRMIGUIView().resume();
+	            	getRMIGUIView().resume();//TODO generalizzare a tutti i tipi di view
                 }
-        });   
+			});   
 		}
-		
 	}
 	
-	protected void enableCitiesButtons(boolean display) {
+	private void enableCitiesButtons(boolean display) {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
 			cityLabel.getValue().setEnabled(display);
 		}
 	}
 
+	private void enableCards(boolean display) {
+		for (JLabel jLabel : cardsList) {
+			jLabel.setEnabled(display);
+		}
+	}
+
+	public void enablePoliticCards(boolean display) {
+		enableCards(display);
+	}
+
+	public void enablePermitTilesPanel(String chosenCouncil) {
+		List<JLabel> permitsLabel = permitTiles.get(chosenCouncil);	
+		for (JLabel jLabel : permitsLabel) {
+			jLabel.setEnabled(true);
+		}
+	}
+
+	public void enableCities(boolean display) {
+		enableCitiesButtons(display);
+	}
+
+	protected void enableRegionButtons(boolean display) {
+		for (JButton regionButton : regionsButtons) {
+			regionButton.setEnabled(display);
+		}
+	}
+
+	public void enableButtons(boolean display) {
+		enableRegionButtons(display);
+	}
+
+	protected void clearChosenRegion() {
+		chosenRegion = null;//TODO null
+	}
+
+	public void clearSwingUI() {
+		chosenCard = null;
+		finish = false;
+		clearChosenRegion();
+		//Set<Entry<String, List<JLabel>>> allPermitTiles = permitTiles.entrySet();TODO
+		/*for (Entry<String, List<JLabel>> entry : allPermitTiles){
+			for(JLabel permitTile : entry.getValue()) {
+				permitTile.setEnabled(false);
+			}
+		}*/	
+	}
 	
+	public boolean hasFinished() {
+		return finish;
+	}
+
 }

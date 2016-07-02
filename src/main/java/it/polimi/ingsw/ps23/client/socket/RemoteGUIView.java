@@ -20,7 +20,7 @@ public class RemoteGUIView extends RemoteView {
 	
 	private boolean endCLIPrints;
 	
-	RemoteGUIView(SocketClient client, PrintStream output, String playerName) {
+	RemoteGUIView(SocketClient client, PrintStream output) {
 		super(client, output);
 		endCLIPrints = false;
 	}
@@ -42,6 +42,10 @@ public class RemoteGUIView extends RemoteView {
 	
 	public void setEndCLIPrints() {
 		endCLIPrints = true;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 
 	private void cliPrints() {

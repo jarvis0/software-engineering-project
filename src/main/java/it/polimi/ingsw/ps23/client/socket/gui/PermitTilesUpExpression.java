@@ -18,6 +18,22 @@ class PermitTilesUpExpression extends GUIComponentsParser {
 		this.expression = expression;
 	}
 	
+	List<String> getRegions() {
+		return regions;
+	}
+	
+	List<List<List<String>>> getPermitTilesCities() {
+		return permitTilesCities;
+	}
+	
+	List<List<List<String>>> getPermitTilesBonusesName() {
+		return permitTilesBonusesName;
+	}
+	
+	List<List<List<String>>> getPermitTilesBonusesValue() {
+		return permitTilesBonusesValue;
+	}
+	
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {

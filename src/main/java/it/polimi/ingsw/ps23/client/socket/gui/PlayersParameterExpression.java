@@ -1,7 +1,9 @@
 package it.polimi.ingsw.ps23.client.socket.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 
@@ -9,7 +11,7 @@ class PlayersParameterExpression extends GUIComponentsParser {
 
 	private Expression expression;
 	
-	private List<String> players;
+	private List<String> names;
 	private List<String> coins;
 	private List<String> assistants;
 	private List<String> victoryPoints;
@@ -22,18 +24,42 @@ class PlayersParameterExpression extends GUIComponentsParser {
 	private List<List<List<String>>> usedPermitTilesCities;
 	private List<List<List<String>>> usedPermitTilesBonusesName;
 	private List<List<List<String>>> usedPermitTilesBonusesValue;
-	private List<List<String>> politicCards;
+	private Map<String, List<String>> politicCards;
 	private List<String> isOnline;
 	
 	PlayersParameterExpression(Expression expression) {
 		this.expression = expression;
 	}
 
+	List<String> getNames() {
+		return names;
+	}
+	
+	List<String> getCoins() {
+		return coins;
+	}
+	
+	List<String> getAssistants() {
+		return assistants;
+	}
+	
+	List<String> getVictoryPoints() {
+		return victoryPoints;
+	}
+	
+	List<String> getNobilityTrackPoints() {
+		return nobilityTrackPoints;
+	}
+	
+	Map<String, List<String>> getPoliticCards() {
+		return politicCards;
+	}
+	
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			String parsingMessage = expression.selectBlock(message);
-			players = new ArrayList<>();
+			names = new ArrayList<>();
 			coins = new ArrayList<>();
 			assistants = new ArrayList<>();
 			victoryPoints = new ArrayList<>();
@@ -46,12 +72,12 @@ class PlayersParameterExpression extends GUIComponentsParser {
 			usedPermitTilesBonusesName = new ArrayList<>();
 			usedPermitTilesBonusesValue = new ArrayList<>();
 			isOnline = new ArrayList<>();
-			politicCards = new ArrayList<>();
+			politicCards = new HashMap<>();
 			String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 			int playersNumber = Integer.parseInt(field);
 			parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
 			for(int i = 0; i < playersNumber; i++) {
-				parsingMessage = addField(players, parsingMessage);
+				parsingMessage = addField(names, parsingMessage);
 				parsingMessage = addField(coins, parsingMessage);
 				parsingMessage = addField(assistants, parsingMessage);
 				parsingMessage = addField(victoryPoints, parsingMessage);
@@ -77,7 +103,7 @@ class PlayersParameterExpression extends GUIComponentsParser {
 				for(int j = 0; j < politicCardsNumber; j++) {
 					parsingMessage = addField(playerPoliticCards, parsingMessage);
 				}
-				politicCards.add(playerPoliticCards);
+				politicCards.put(names.get(i), playerPoliticCards);
 				
 				parsingMessage = addField(isOnline, parsingMessage);
 			}

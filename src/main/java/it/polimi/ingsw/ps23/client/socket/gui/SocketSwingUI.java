@@ -5,7 +5,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.client.SwingUI;
 
 public class SocketSwingUI extends SwingUI {
-
+	
 	public SocketSwingUI(String mapType, String playerName) {
 		super(mapType, playerName);
 	}
@@ -16,12 +16,16 @@ public class SocketSwingUI extends SwingUI {
 	}
 
 	void refreshDynamicContents(KingPositionExpression kingPosition,
-			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils,
-			BonusTilesExpression bonusTiles, PlayersParameterExpression playersParameters, PermitTilesUpExpression arePermitTilesUp) {
+			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils, PermitTilesUpExpression permitTilesUp,
+			BonusTilesExpression bonusTiles, PlayersParameterExpression players) {
 		refreshKingPosition(kingPosition.getKingPosition());
 		refreshFreeCouncillors(freeCouncillors.getFreeCouncillors());
 		refreshCouncils(councils.getCouncilsName(), councils.getCouncilsColor());
+		this.refreshPermitTilesUp(permitTilesUp.getRegions(), permitTilesUp.getPermitTilesCities(), permitTilesUp.getPermitTilesBonusesName(), permitTilesUp.getPermitTilesBonusesValue());
 		refreshBonusTiles(bonusTiles.getGroupsName(), bonusTiles.getGroupsBonusName(), bonusTiles.getGroupsBonusValue(), bonusTiles.getKingBonusName(), bonusTiles.getKingBonusValue());
+		refreshPlayersTable(players.getNames(), players.getCoins(), players.getAssistants(), players.getNobilityTrackPoints(), players.getVictoryPoints());
+		refreshPoliticCards(players.getPoliticCards());
+		getFrame().repaint();
+		getFrame().revalidate();
 	}
-
 }

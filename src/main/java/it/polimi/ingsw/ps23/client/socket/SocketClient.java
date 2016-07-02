@@ -67,7 +67,7 @@ public class SocketClient {
 		}
 		else {
 			if(clientInfos.contains(GUI_TAG)) {
-				remoteView = new RemoteGUIView(this, output, clientInfos.replace(GUI_TAG, ""));
+				remoteView = new RemoteGUIView(this, output);
 				remoteView.run();
 			}
 		}

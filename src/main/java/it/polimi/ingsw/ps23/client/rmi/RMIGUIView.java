@@ -101,7 +101,7 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		try {
-			rmiSwingUI.clearRMISwingUI();
+			rmiSwingUI.clearSwingUI();
 			rmiSwingUI.showAvailableActions(false, false, this);
 			rmiSwingUI.enableButtons(true);
 			List<String> removedCards = new ArrayList<>();
@@ -121,7 +121,7 @@ public class RMIGUIView extends RMIView {
 				i++;
 			}
 			rmiSwingUI.enablePoliticCards(false);
-			rmiSwingUI.enablePermissonTilePanel(chosenCouncil);
+			rmiSwingUI.enablePermitTilesPanel(chosenCouncil);
 			pause();
 			int chosenTile = rmiSwingUI.getChosenTile();
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
@@ -152,7 +152,7 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		rmiSwingUI.clearRMISwingUI();
+		rmiSwingUI.clearSwingUI();
 		rmiSwingUI.showAvailableActions(false, false, this);
 		rmiSwingUI.enablePermitTileDeck(true);
 		pause();
