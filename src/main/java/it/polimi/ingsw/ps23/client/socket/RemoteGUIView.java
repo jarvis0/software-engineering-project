@@ -5,11 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.GUIView;
-import it.polimi.ingsw.ps23.client.socket.gui.AcquireBusinessPermitTileExpression;
-import it.polimi.ingsw.ps23.client.socket.gui.DynamicContentsExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
-import it.polimi.ingsw.ps23.client.socket.gui.SocketSwingUI;
-import it.polimi.ingsw.ps23.client.socket.gui.StaticContentExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.actions.ActionsExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.DynamicContentsExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.StaticContentExpression;
 
 public class RemoteGUIView extends RemoteView implements GUIView {
 
@@ -17,7 +17,8 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 	private static final String STATIC_CONTENT_TAG_CLOSE = "</static_content>";
 	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
 	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
-	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<AcquireBusinessPermitTile>";
+	private static final String ACTION_TAG_OPEN = "<action>";
+	private static final String ACTION_TAG_CLOSE = "</action>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -45,11 +46,11 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		return new DynamicContentsExpression(swingUI, this, expression);
 	}
 	
-	private AcquireBusinessPermitTileExpression getAcquireBusinessPermitTile() {
-		Expression expression = new TerminalExpression(ACQUIRE_BUSINESS_PERMIT_TILE_TAG, "");
-		return new AcquireBusinessPermitTileExpression(swingUI, this, expression);
+	private ActionsExpression getActionsExpression() {
+		Expression expression = new TerminalExpression(ACTION_TAG_OPEN, ACTION_TAG_CLOSE);
+		return new ActionsExpression(swingUI, this, expression);
 	}
-	
+
 	public void setEndCLIPrints() {
 		endCLIPrints = true;
 	}
@@ -91,7 +92,7 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
 		DynamicContentsExpression isDynamicContent = getDynamicContentExpression();
-		AcquireBusinessPermitTileExpression isAction = getAcquireBusinessPermitTile();
+		ActionsExpression isAction = getActionsExpression();
 		String message;
 		do {
 			message = getClient().receive();//TODO ricevo info su player disconnessi

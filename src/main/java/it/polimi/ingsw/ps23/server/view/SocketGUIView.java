@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -37,24 +38,23 @@ public class SocketGUIView extends SocketView {
 		if(firstUIrefresh) {
 			getConnection().send(gameParameters.createUIStaticContents(currentState.getGameMap().getCities(), currentState.getNobilityTrack()));
 			firstUIrefresh = false;
-		}		
+		}
 		getConnection().send(gameParameters.createUIDynamicContents(currentState));
-		//Player player = currentState.getCurrentPlayer();
-		//if(player.getName().equals(getClientName())) {
+		Player player = currentState.getCurrentPlayer();
+		if(player.getName().equals(getClientName())) {
 			//getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
 			try {
-				wakeUp(currentState.getStateCache().getAction(receive().toLowerCase()));
+				wakeUp(currentState.getStateCache().getAction(receive()));
 			}
 			catch(NullPointerException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
 				wakeUp();
 			}
-		//}
-		//else {
+		}
+		else {
 			//getConnection().sendNoInput("It's player " + player.getName() + " turn.");
-			//pause();
-		//}
-		//pause();		
+			pause();
+		}
 	}
 
 	@Override
@@ -70,9 +70,9 @@ public class SocketGUIView extends SocketView {
 	}
 
 	@Override
-	public void visit(ChangePermitTilesState currenState) {
-		// TODO Auto-generated method stub
-		
+	public void visit(ChangePermitTilesState currentState) {
+		getConnection().send(gameParameters.createChangePermitTilesAction());
+		wakeUp(currentState.createAction(receive()));
 	}
 
 	@Override

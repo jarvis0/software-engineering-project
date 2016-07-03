@@ -1,9 +1,10 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 
-public class StaticContentExpression extends GUIComponentsParser {
+public class StaticContentExpression extends GUIParser {
 
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
 	private static final String REWARD_TOKENS_TAG_CLOSE = "</reward_tokens>";

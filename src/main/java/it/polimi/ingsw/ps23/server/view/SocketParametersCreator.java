@@ -45,7 +45,10 @@ class SocketParametersCreator {
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
 	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
+	private static final String ACTION_TAG_OPEN = "<action>";
+	private static final String ACTION_TAG_CLOSE = "</action>";
 	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<AcquireBusinessPermitTile>";
+	private static final String CHANGE_PERMIT_TILES = "<change_permit_tiles>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -178,8 +181,8 @@ class SocketParametersCreator {
 			addPermitHandDeck(playersParameterSend, player.getPermitUsedHandDeck().getCards());
 			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
 			playersParameterSend.append("," + player.isOnline());
-			playersParameterSend.append(",");
 		}//verificare se ha i permit tile ecc.. con il debug F5 TODO
+		playersParameterSend.append(",");
 		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
 	}
 
@@ -215,7 +218,11 @@ class SocketParametersCreator {
 	}
 	
 	String createAcquireBusinessPermitTile() {
-		return ACQUIRE_BUSINESS_PERMIT_TILE_TAG;
+		return ACTION_TAG_OPEN + ACQUIRE_BUSINESS_PERMIT_TILE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createChangePermitTilesAction() {
+		return ACTION_TAG_OPEN + CHANGE_PERMIT_TILES + ACTION_TAG_CLOSE;
 	}
 
 }

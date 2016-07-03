@@ -1,11 +1,12 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 
-class CouncilsExpression extends GUIComponentsParser {
+class CouncilsExpression extends GUIParser {
 
 	private static final String KINGDOM = "kingdom";
 	

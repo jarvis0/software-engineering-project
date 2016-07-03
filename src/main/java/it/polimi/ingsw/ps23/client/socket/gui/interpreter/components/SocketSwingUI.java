@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import java.util.List;
 

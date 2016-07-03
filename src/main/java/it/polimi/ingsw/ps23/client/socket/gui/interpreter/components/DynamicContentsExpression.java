@@ -1,10 +1,11 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 
-public class DynamicContentsExpression extends GUIComponentsParser {
+public class DynamicContentsExpression extends GUIParser {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
 	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
@@ -88,13 +89,14 @@ public class DynamicContentsExpression extends GUIComponentsParser {
 			TurnParametersExpression areTurnParameters = getTurnParametersExpression();
 			areTurnParameters.parse(noTagMessage);
 			if(areTurnParameters.getCurrentPlayer().equals(guiView.getPlayerName())) {
+				//guiView.resume();//TODO
 				swingUI.showAvailableActions(areTurnParameters.isAvailableMainAction(), areTurnParameters.isAvailableQuickAction());
 				guiView.pause();
 				guiView.getClient().send(swingUI.getChosenAction());
 			}
 			else {
 				swingUI.showAvailableActions(false, false);
-				guiView.pause();
+				//guiView.pause();
 			}
 		}
 	}

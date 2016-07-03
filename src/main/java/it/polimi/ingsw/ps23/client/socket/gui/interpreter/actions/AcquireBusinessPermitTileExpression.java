@@ -1,12 +1,14 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.actions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
-public class AcquireBusinessPermitTileExpression extends GUIComponentsParser {
+class AcquireBusinessPermitTileExpression extends GUIParser {
 		
 	private SocketSwingUI swingUI;
 	
@@ -14,14 +16,14 @@ public class AcquireBusinessPermitTileExpression extends GUIComponentsParser {
 	
 	private Expression expression;
 	
-	public AcquireBusinessPermitTileExpression(SocketSwingUI swingUI, RemoteGUIView guiView, Expression expression) {
+	AcquireBusinessPermitTileExpression(SocketSwingUI swingUI, RemoteGUIView guiView, Expression expression) {
 		this.swingUI = swingUI;
 		this.guiView = guiView;
 		this.expression = expression;
 	}
 
-	@Override//change to protected
-	public void parse(String message) {
+	@Override
+	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			swingUI.clearSwingUI();
 			swingUI.showAvailableActions(false, false);

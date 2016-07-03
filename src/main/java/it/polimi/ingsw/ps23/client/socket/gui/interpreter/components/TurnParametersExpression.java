@@ -1,8 +1,9 @@
-package it.polimi.ingsw.ps23.client.socket.gui;
+package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 
-class TurnParametersExpression extends GUIComponentsParser {
+class TurnParametersExpression extends GUIParser {
 
 	private Expression expression;
 	
