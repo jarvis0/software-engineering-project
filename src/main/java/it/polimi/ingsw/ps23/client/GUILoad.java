@@ -18,15 +18,18 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultCaret;
 
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
+import javax.swing.JTextArea;
 
 class GUILoad {
 	
@@ -50,8 +53,11 @@ class GUILoad {
 	private JPanel mapPanel;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
+	private JScrollPane scrollTextPane;
 	private JTable playersTable;
-	private JTextField textField;
+	private JTextArea textArea;
+	private JSpinner marketSpinner;
+	private JButton sendButton;
 	
 	GUILoad(String mapPath) {
 		this.mapPath = mapPath;
@@ -74,10 +80,6 @@ class GUILoad {
 		frame.getContentPane().add(mapPanel);
 		mapPanel.add(scrollPane);
 		mapPanel.add(backgroundLabel);
-		textField = new JTextField();
-		textField.setBounds(897, 503, 447, 191);
-		mapPanel.add(textField,0);
-		textField.setColumns(10);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -101,6 +103,13 @@ class GUILoad {
 	
 	JPanel getMapPanel() {
 		return mapPanel;
+	}
+	
+	JButton getMarketSendButton() {
+		return sendButton;
+	}
+	JSpinner getMarketSpinner() {
+		return marketSpinner;
 	}
 
 	DefaultTableModel getTableModel() {
@@ -199,9 +208,24 @@ class GUILoad {
 	private void loadPlayersTable() {
 		int numRows = 0;
 		String[] columnNames = new String[] { "Name", "Victory Points", "Coins", "Assistants", "Nobility Points" };
-		tableModel = new DefaultTableModel(numRows, columnNames.length);
+		tableModel = new DefaultTableModel(numRows, columnNames.length) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1233748051669817201L;
+			boolean[] columnEditables = new boolean[] {
+					false, false , false, false , false
+				};
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			};
 		tableModel.setColumnIdentifiers(columnNames);
 		playersTable = new JTable(tableModel);
+		for(int i = 0; i < playersTable.getColumnCount(); i++){
+			playersTable.getColumnModel().getColumn(i).setResizable(false);
+		}
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(playersTable);
 		scrollPane.setBounds(0, 0, 567, 110);
@@ -216,5 +240,38 @@ class GUILoad {
 		loadMapBackground();
 		loadNobiltyTrack();
 		loadPlayersTable();
+		loadTextArea();
+	}
+
+	private void loadTextArea() {
+		/*scrollTextPane.setBounds(0, 0, 567, 110);
+		scrollTextPane.setLocation(800, 0);*/		
+		textArea = new JTextArea();
+		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		textArea.setBounds(897, 503, 440, 70);
+		textArea.setEditable(false);
+		scrollTextPane = new JScrollPane();
+		scrollTextPane.setBounds(0, 0, 440, 70);
+		scrollTextPane.setLocation(897, 503);
+		scrollTextPane.setViewportView(textArea);
+		mapPanel.add(scrollTextPane,0);	
+		sendButton = new JButton("send");
+		sendButton.setBounds(935, 613, 89, 23);
+		mapPanel.add(sendButton,0);
+		sendButton.setVisible(false);
+		marketSpinner = new JSpinner();
+		marketSpinner.setBounds(897, 613, 35, 20);
+		mapPanel.add(marketSpinner,0);
+		marketSpinner.setVisible(false);
+		
+	}
+
+	public void setText(String string) {
+		textArea.setText(string);
+	}
+	
+	public void appendText(String string) {
+		textArea.append(string);
 	}
 }

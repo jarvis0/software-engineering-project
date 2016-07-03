@@ -190,6 +190,7 @@ class RMISwingUI extends SwingUI {
 			cardLabel.setEnabled(false);
 		}
 		finished = new JButton("finished");
+		finished.setEnabled(false);
 		finished.addActionListener(new ActionListener() {
 			@Override 
             public void actionPerformed(ActionEvent e)
@@ -252,13 +253,10 @@ class RMISwingUI extends SwingUI {
 	
 	void refreshDynamicContents(StartTurnState currentState) {
 		int playerIndex = searchPlayer(currentState.getPlayersList());
-		
 		refreshKingPosition(currentState.getKingPosition());
-		
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);
 		refreshFreeCouncillors(freeCouncillorsColor);
-
 		List<String> councilsName = new ArrayList<>();
 		List<List<String>> councilsColor = new ArrayList<>();
 		councilsToStrings(currentState.getGroupRegionalCity(), currentState.getKingCouncil().getCouncillors(), councilsName, councilsColor);
@@ -415,6 +413,10 @@ class RMISwingUI extends SwingUI {
 
 	public static void main(String[] args) {
 		new RMISwingUI("hard", "ale");//TODO remove this method
+	}
+
+	public void enableFinish(boolean display) {
+		finished.setEnabled(display);
 	}
 
 }

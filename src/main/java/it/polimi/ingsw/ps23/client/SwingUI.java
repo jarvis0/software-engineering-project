@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
@@ -72,6 +73,9 @@ public abstract class SwingUI {
 	private JFrame frame;
 	private JPanel mapPanel;
 	private DefaultTableModel tableModel;
+	private JSpinner marketSpinner;
+	private JButton marketSendButton;
+	private int spinnerValue;
 
 	protected SwingUI(String mapType, String playerName) {
 		this.playerName = playerName;
@@ -79,17 +83,23 @@ public abstract class SwingUI {
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
 		cityLabels = guiLoad.getCityLabels();
+		marketSpinner = guiLoad.getMarketSpinner();
+		marketSendButton = guiLoad.getMarketSendButton();
 		freeCouncillorsLabels = new HashMap<>();
 		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
+		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
 		loadQuickActionPanel();
 	}
-	
+
+	public int getChosenValue() {
+		return spinnerValue;
+	}
 	protected void setRMIGUIView(RMIGUIView rmiGUIView) {
 		this.rmiGUIView = rmiGUIView;
 	}
@@ -625,8 +635,32 @@ public abstract class SwingUI {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
 			cityLabel.getValue().setEnabled(display);
+			//cityLabel.getValue().setToolTipText(""); TODO aggiungere i tooltip  in mdo univoco anche per scoket
 		}
 	}
-
+	
+	public void loadMarketInputArea() {
+	marketSendButton.addActionListener(new ActionListener(){
+		     public void actionPerformed(ActionEvent e){
+		         spinnerValue = (int)marketSpinner.getValue();
+		         rmiGUIView.resume();
+		     }
+		});
+	}
+		     
+	public void setConsoleText(String string) {
+		guiLoad.setText(string);
+	}
+	
+	public void appendConsoleText(String string) {
+		guiLoad.appendText(string);
+	}
+	
+	public void enableMarketInputArea(boolean display) {
+		marketSpinner.setVisible(display);
+		marketSpinner.setEnabled(display);
+		marketSendButton.setVisible(display);
+		marketSendButton.setEnabled(display);
+	}
 	
 }
