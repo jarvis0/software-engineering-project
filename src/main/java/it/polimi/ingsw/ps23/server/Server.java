@@ -32,7 +32,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 10;
+	private static final int CONNECTION_TIMEOUT = 1000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
