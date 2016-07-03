@@ -63,7 +63,7 @@ public class RMIGUIView extends RMIView {
 		rmiSwingUI.refreshDynamicContents(currentState);
 		Player player = currentState.getCurrentPlayer();
 		if(player.getName().equals(getClientName())) {
-			rmiSwingUI.appendConsoleText("\nIt's you turn, please select an action from the pool displayed above.");
+			rmiSwingUI.appendConsoleText("\nIt's your turn, please select an action from the pool displayed above.");
 			rmiSwingUI.showAvailableActions(currentState.isAvailableMainAction(), currentState.isAvailableQuickAction(), this);
 			pause();
 			try {
@@ -85,7 +85,7 @@ public class RMIGUIView extends RMIView {
 		rmiSwingUI.clearRMISwingUI();
 		rmiSwingUI.showAvailableActions(false, false, this);
 		rmiSwingUI.enableFreeCouncillorsButtons(true);
-		rmiSwingUI.appendConsoleText("\n\nYou are performig a Elect councillor main action,\npress on a free councillor to select it.");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing a Elect councillor main action,\npress on a free councillor to select it.");
 		pause();
 		String chosenCouncillor = rmiSwingUI.getChosenCouncillor();
 		rmiSwingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " Councillor,\nPress on the region where you want to put it ");
@@ -101,7 +101,7 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		rmiSwingUI.appendConsoleText("\n\nYou are performig a Engage An Assistant quick action");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action");
 		sendAction(currentState.createAction());
 
 	}
@@ -109,7 +109,7 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(ChangePermitsTileState currentState) {
 		rmiSwingUI.enableRegionButtons(true);
-		rmiSwingUI.appendConsoleText("\n\nYou are performig a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
 		pause();
 		String chosenRegion = rmiSwingUI.getChosenRegion();
 		rmiSwingUI.enableRegionButtons(false);
@@ -124,7 +124,7 @@ public class RMIGUIView extends RMIView {
 			rmiSwingUI.showAvailableActions(false, false, this);
 			rmiSwingUI.enableRegionButtons(true);
 			rmiSwingUI.enableFinish(false);
-			rmiSwingUI.appendConsoleText("\n\nYou are performig a Acquire Business Permit Tile main action,\npress on the region whose council you whant to satisfy");
+			rmiSwingUI.appendConsoleText("\n\nYou are performing a Acquire Business Permit Tile main action,\npress on the region whose council you whant to satisfy");
 			List<String> removedCards = new ArrayList<>();
 			pause();
 			rmiSwingUI.enableRegionButtons(false);
@@ -159,7 +159,7 @@ public class RMIGUIView extends RMIView {
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		rmiSwingUI.clearRMISwingUI();
-		rmiSwingUI.appendConsoleText("\n\nYou are performig an Assistant To Elect Councillor quick action,\npress on a free councillor to select it.");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing an Assistant To Elect Councillor quick action,\npress on a free councillor to select it.");
 		rmiSwingUI.showAvailableActions(false, false, this);
 		rmiSwingUI.enableFreeCouncillorsButtons(true);
 		pause();
@@ -176,7 +176,7 @@ public class RMIGUIView extends RMIView {
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		rmiSwingUI.appendConsoleText("\n\nYou are performig an Additional Main Action quick action");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action");
 		sendAction(currentState.createAction());
 	}
 
@@ -186,7 +186,7 @@ public class RMIGUIView extends RMIView {
 		rmiSwingUI.showAvailableActions(false, false, this);
 		rmiSwingUI.enablePoliticCards(true);
 		rmiSwingUI.enableFinish(false);
-		rmiSwingUI.appendConsoleText("\n\nYou are performig a Build Emporium King Main Action,\npress on the politic cards thet you want to use for satisfy the King's council.");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing a Build Emporium King Main Action,\npress on the politic cards thet you want to use for satisfy the King's council.");
 		int numberOfCards = 4;
 		boolean finish = false;
 		int i = 0;
@@ -219,7 +219,7 @@ public class RMIGUIView extends RMIView {
 		rmiSwingUI.clearRMISwingUI();
 		rmiSwingUI.showAvailableActions(false, false, this);
 		rmiSwingUI.enablePermitTileDeck(true);
-		rmiSwingUI.appendConsoleText("\n\nYou are performig a Build Emporium Permit Tile Main Action,\npress on the permit tile that you want use.");
+		rmiSwingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile Main Action,\npress on the permit tile that you want use.");
 		pause();
 		int chosenCard = rmiSwingUI.getChosenTile();
 		rmiSwingUI.appendConsoleText("\nYou have chose tile number: " + chosenCard + "\npress on the city want to build.");
