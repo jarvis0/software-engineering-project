@@ -55,7 +55,8 @@ class SocketParametersCreator {
 	private static final String ASSISTANT_TO_ELECT_COUNCILLOR_TAG = "<assistant_to_elect_councillor>";
 	private static final String ADDITIONAL_MAIN_ACTION_TAG = "<additional_main_action>";
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
-	private static final String BUILD_EMPORIUM_PERMIT_TILE = "<build_emporium_permit_tile>";
+	private static final String BUILD_EMPORIUM_PERMIT_TILE_TAG = "<build_emporium_permit_tile>";
+	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -253,7 +254,11 @@ class SocketParametersCreator {
 	}
 	
 	String createBuildPermitTile() {
-		return ACTION_TAG_OPEN + BUILD_EMPORIUM_PERMIT_TILE + ACTION_TAG_CLOSE;
+		return ACTION_TAG_OPEN + BUILD_EMPORIUM_PERMIT_TILE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createMarketOfferPhase() {
+		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + ACTION_TAG_CLOSE;
 	}
 
 }

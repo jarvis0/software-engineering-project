@@ -169,7 +169,7 @@ public class SocketConsoleView extends SocketView {
 		}
 	}
 	
-	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException{
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if(currentState.canSellPoliticCards()) {
 			getConnection().sendYesInput("How many politic cards do you want to use? ");

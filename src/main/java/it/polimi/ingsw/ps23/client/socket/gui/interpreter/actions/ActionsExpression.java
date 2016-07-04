@@ -16,6 +16,7 @@ public class ActionsExpression extends GUIParser {
 	private static final String ADDITIONAL_MAIN_ACTION_TAG = "<additional_main_action>";
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
 	private static final String BUILD_EMPORIUM_PERMIT_TILE = "<build_emporium_permit_tile>";
+	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -69,6 +70,11 @@ public class ActionsExpression extends GUIParser {
 		return new BuildEmporiumPermitTileExpression(swingUI, guiView, buildEmporiumPermitTileExpression);
 	}
 	
+	private MarketOfferPhaseExpression getMarketOfferPhaseExpression() {
+		Expression marketOfferPhaseExpression = new TerminalExpression(MARKET_OFFER_PHASE_TAG, "");
+		return new MarketOfferPhaseExpression(swingUI, guiView, marketOfferPhaseExpression);
+	}
+	
 	@Override
 	public void parse(String message) {
 		if(expression.interpret(message)) {
@@ -88,6 +94,8 @@ public class ActionsExpression extends GUIParser {
 			isBuildEmporiumAction.parse(message);
 			BuildEmporiumPermitTileExpression isBuildEmporiumPermitTileAction = getBuildEmporiumPermitTileExpression();
 			isBuildEmporiumPermitTileAction.parse(message);
+			MarketOfferPhaseExpression isMarketOfferPhaseAction = getMarketOfferPhaseExpression();
+			isMarketOfferPhaseAction.parse(message);
 		}
 	}
 
