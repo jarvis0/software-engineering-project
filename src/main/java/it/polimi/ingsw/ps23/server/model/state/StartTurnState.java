@@ -15,7 +15,11 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to show the state of the game to users and to create the actions selected.
+ * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ *
+ */
 public class StartTurnState extends State {
 
 	/**
@@ -35,7 +39,10 @@ public class StartTurnState extends State {
 	private StateCache stateCache;
 	private boolean finalTurn;
 	private String lastActionPerformed;
-	
+	/**
+	 * Constructs the objects setting the turn handler of the current game.
+	 * @param turnHandler - the current turn handler
+	 */
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
@@ -59,10 +66,6 @@ public class StartTurnState extends State {
 		return gameMap;
 	}
 	
-	public PlayersSet getPlayersSet() {
-		return gamePlayersSet;
-	}
-	
 	public List<Player> getPlayersList() {
 		return gamePlayersSet.getPlayers();
 	}
@@ -70,10 +73,6 @@ public class StartTurnState extends State {
 	public NobilityTrack getNobilityTrack() {
 		return nobilityTrack;
 	}
-	
-	public King getKing() {
-		return king;
-	}	
 	
 	public Bonus getCurrentKingTile() {
 		return currentKingTile;		
