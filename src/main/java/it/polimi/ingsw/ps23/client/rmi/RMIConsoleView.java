@@ -163,7 +163,6 @@ class RMIConsoleView extends RMIView {
 		}
 		try {
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
-			output.println("Player hand deck:" + currentState.getDeck());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 				String chosenCard = scanner.nextLine().toLowerCase();

@@ -9,19 +9,30 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.AcquireBusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.actions.AdditionalMainAction;
 import it.polimi.ingsw.ps23.server.model.actions.AssistantToElectCouncillor;
+import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumKing;
+import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.server.model.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.server.model.actions.ElectCouncillor;
 import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssistant;
+import it.polimi.ingsw.ps23.server.model.bonus.BuildingPermitBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
+import it.polimi.ingsw.ps23.server.model.market.MarketObject;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
 
 public class TestVisitState implements ViewVisitor {
@@ -37,6 +48,7 @@ public class TestVisitState implements ViewVisitor {
 		playerNames.add("a");
 		playerNames.add("b");
 		game = new Game(playerNames);
+		game.createNewMarket();
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayer(0));
 		setContext(state);
 	}
@@ -49,6 +61,8 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(StartTurnState currentState) {
+		currentState.getAvailableAction();
+		currentState.getStatus();
 		assertTrue(game.getCurrentPlayer().equals(currentState.getCurrentPlayer()));
 		assertTrue(game.getGameMap().equals(currentState.getGameMap()));
 		assertTrue(game.getNobilityTrack().equals(currentState.getNobilityTrack()));
@@ -67,6 +81,9 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		assertTrue(game.getFreeCouncillors().toString().equals(currentState.getFreeCouncillors()));
 		assertTrue(currentState.createAction("white", "king") instanceof ElectCouncillor);
 		setContext(new EngageAnAssistantState("engage an assistant"));
@@ -127,43 +144,110 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		assertTrue(currentState.createAction() instanceof AdditionalMainAction);
 		setContext(new BuildEmporiumKingState("building emporium king"));
 	}
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-				
+		List<String> removedPoliticCards = new ArrayList<>();
+		assertTrue(game.getKing().getPosition().toString().equals(currentState.getKingPosition()));
+		for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
+			if(!((PoliticCard)card).getColor().equals("multi")) {
+				game.getKing().getCouncil().pushCouncillor(new Councillor((((PoliticCard)card).getColor())));
+			}
+			else {
+				game.getKing().getCouncil().pushCouncillor(game.getFreeCouncillors().getFreeCouncillorsList().get(0));
+			}
+			removedPoliticCards.add(((PoliticCard)card).getColor().toString());
+		}
+		currentState.changeState(new Context(), game);
+		try {
+			currentState.getAvailableCardsNumber();
+			assertTrue(game.getCurrentPlayer().getNumberOfPoliticCards() == currentState.getPoliticHandSize());
+		} catch (IllegalActionSelectedException e) {}
+		try {
+			assertTrue(currentState.createAction(removedPoliticCards, "a") instanceof BuildEmporiumKing);
+		} catch (InvalidCardException e) {}
+		setContext(new BuildEmporiumPermitTileState("build emporium permit tile"));		
 	}
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		// TODO Auto-generated method stub
-		
+		game.getCurrentPlayer().getPermitHandDeck().getCards().add(new BusinessPermitTile());
+		try {
+			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().toString().equals(currentState.getAvaibleCards()));
+		} catch (IllegalActionSelectedException e) {}
+		try {
+			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().get(0).toString().equals(currentState.getChosenCard(0)));
+		} catch (InvalidCardException e) {}
+		assertTrue(currentState.createAction("a", 0) instanceof BuildEmporiumPermitTile);
+		setContext(new MarketOfferPhaseState());
 	}
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
-		// TODO Auto-generated method stub
-		
+		assertTrue(game.getCurrentPlayer().getName().equals(currentState.getPlayerName()));
+		assertTrue(currentState.getPoliticHandDeck().contains(game.getCurrentPlayer().getPoliticHandDeck().toString()));
+		assertTrue(currentState.getPermissionHandDeck().contains(game.getCurrentPlayer().getPermitHandDeck().toString()));
+		assertTrue(currentState.getAssistants().contains(String.valueOf(game.getCurrentPlayer().getAssistants())));
+		assertTrue(currentState.canSellPoliticCards());
+		assertTrue(currentState.canSellPermissionCards());
+		assertTrue(currentState.canSellAssistants());
+		assertTrue(currentState.getPoliticHandSize() == game.getCurrentPlayer().getNumberOfPoliticCards());
+		assertTrue(currentState.getPermissionHandSize() == game.getCurrentPlayer().getNumberOfPermitCards());
+		List<Integer> chosenPermissionCards = new ArrayList<>();
+		chosenPermissionCards.add(0);
+		try {
+			assertTrue(currentState.createMarketObject(new ArrayList<>(), chosenPermissionCards, 1, 1) instanceof MarketObject);
+		} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException e) {}
+		game.getMarket().addMarketObject(new MarketObject("a", new ArrayList<>(), new ArrayList<>(), 0, game.getCurrentPlayer().getCoins() + 1));
+		setContext(new MarketBuyPhaseState());
 	}
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
-		// TODO Auto-generated method stub
-		
+		assertFalse(currentState.canBuy());
+		game.getMarket().addMarketObject(new MarketObject("c", new ArrayList<>(), new ArrayList<>(), 0, game.getCurrentPlayer().getCoins() - 1));
+		currentState.changeState(new Context(), game);
+		currentState.getAvaiableOffers();
+		assertTrue(currentState.canBuy());
+		assertTrue(currentState.createTransation() instanceof MarketTransaction);
+		assertTrue(currentState.createTransation(0) instanceof MarketTransaction);
+		setContext(new SuperBonusState(turnHandler));
 	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		// TODO Auto-generated method stub
-		
+		assertFalse(currentState.hasNext());
+		BuildingPermitBonus bonus = new BuildingPermitBonus("Building Permit Bonus");
+		bonus.updateBonus(game, turnHandler);
+		turnHandler.addSuperBonus(bonus);
+		currentState.changeState(new Context(), game);
+		assertTrue(currentState.hasNext());
+		currentState.getCurrentBonusValue();
+		assertTrue(currentState.isBuildingPemitTileBonus());
+		currentState.checkKey();
+		try {
+			currentState.analyzeInput(game.getGameMap().getGroupRegionalCity().get(0).getName());
+		} catch (InvalidRegionException e) {}
+		currentState.checkKey();
+		currentState.confirmChange();
+		currentState.checkKey();
+		currentState.confirmChange();
+		try {
+			currentState.addValue(String.valueOf(1));
+		} catch (InvalidCityException | InvalidCardException e) {}
+		assertTrue(currentState.createSuperBonusesGiver() instanceof SuperBonusGiver);
+		setContext(new EndGameState());
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
-		// TODO Auto-generated method stub
-		
+		assertTrue(currentState.getWinner().contains("a") && currentState.getWinner().contains("b"));
 	}
 
 }

@@ -10,7 +10,11 @@ import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to show all the info to create a {@link MarketObject}.
+ * @author Mirco Manzoni
+ *
+ */
 public class MarketOfferPhaseState extends State {
 
 	/**
@@ -34,7 +38,10 @@ public class MarketOfferPhaseState extends State {
 	public String getAssistants() {
 		  return "Assistants: " + currentPlayer.getAssistants();
 	}
-	
+	/**
+	 * Calculate if the current {@link Player} can sell {@link PoliticCard} in the current market phase.
+	 * @return true if can, false if can't
+	 */
 	public boolean canSellPoliticCards() {
 		return currentPlayer.getPoliticHandDeck().getHandSize() > 0;
 	}
@@ -42,7 +49,10 @@ public class MarketOfferPhaseState extends State {
 	public int getPoliticHandSize() {
 		return currentPlayer.getPoliticHandDeck().getHandSize();
 	}
-	
+	/**
+	 * Calculate if the current {@link Player} can sell {@link BusinessPermitTile} in the current market phase.
+	 * @return true if can, false if can't
+	 */
 	public boolean canSellPermissionCards() {
 		return currentPlayer.getPermitHandDeck().getHandSize() > 0;
 	}
@@ -50,7 +60,10 @@ public class MarketOfferPhaseState extends State {
 	public int getPermissionHandSize() {
 		return currentPlayer.getPermitHandDeck().getHandSize();
 	}
-	
+	/**
+	 * Calculate if the current {@link Player} can sell assistants in the current market phase.
+	 * @return true if can, false if can't
+	 */
 	public boolean canSellAssistants() {
 		return currentPlayer.getAssistants() > 0;
 	}
@@ -67,7 +80,17 @@ public class MarketOfferPhaseState extends State {
 			throw new InvalidCostException();
 		}
 	}
-
+	/**
+	 * Constructs the objects with all the parameters selected by the {@link Player}
+	 * @param chosenPoliticCards - politic cards that the player want to sell
+	 * @param chosenPermissionCards - permit tile that the player want to sell
+	 * @param chosenAssistants - assistants that the player want to sell
+	 * @param cost - cost that the player has chosen to his offer.
+	 * @return the market object created
+	 * @throws InvalidCardException if an invalid card has been selected
+	 * @throws InvalidNumberOfAssistantException if an invalid number of assistant has been selected
+	 * @throws InvalidCostException if an invalid cost has been selected
+	 */
 	public MarketObject createMarketObject(List<String> chosenPoliticCards, List<Integer> chosenPermissionCards, int chosenAssistants, int cost) throws InvalidCardException, InvalidNumberOfAssistantException, InvalidCostException {
 		checkMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost);
 		return new MarketObject(currentPlayer.getName(), chosenPermissionCards, chosenPoliticCards, chosenAssistants, cost);

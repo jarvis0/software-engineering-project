@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.BuiltEmporiumsSet;
@@ -69,14 +70,15 @@ public class GameMap implements Serializable {
 	 * Tries to find the region specified in the parameter.
 	 * @param regionName - name of the region to be found
 	 * @return region related to the specified regionName.
+	 * @throws InvalidRegionException 
 	 */
-	public Region getRegion(String regionName) {
+	public Region getRegion(String regionName) throws InvalidRegionException {
 		for(Region region : groupRegionalCities) {
 			if(region.getName().equals(regionName)) {
 				return region;
 			}
 		}
-		return null;
+		throw new InvalidRegionException();
 	}
 
 	/**

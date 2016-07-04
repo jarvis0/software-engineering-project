@@ -31,9 +31,11 @@ public class TestRecycleBuildingPermitTile {
 		Bonus additionalBonus = new CoinBonus("Coin Bonus");
 		additionalBonus.setValue(1);
 		card.addBonus(additionalBonus);
+		String check = bonus.checkBonus(game.getCurrentPlayer());
 		List<Card> cards = new ArrayList<>();
 		cards.add(card);
 		game.getCurrentPlayer().buyPermitCards(cards);
+		assertFalse(check.equals(bonus.checkBonus(game.getCurrentPlayer())));
 		int initialCoins = game.getCurrentPlayer().getCoins();
 		bonus.acquireSuperBonus(input, game, turnHandler);
 		assertTrue(game.getCurrentPlayer().getCoins() == initialCoins);

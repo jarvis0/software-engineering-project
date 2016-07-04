@@ -7,7 +7,11 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to show the result of the current game 
+ * @author Mirco Manzoni
+ *
+ */
 public class EndGameState extends State {
 
 	/**

@@ -14,6 +14,7 @@ abstract class QuickActionState extends ActionState {
 		super(name);
 	}
 
+	@Override
 	public void canPerformThisAction(TurnHandler turnHandler) throws IllegalActionSelectedException {
 		if (!turnHandler.isAvailableQuickAction()) {
 			throw new IllegalActionSelectedException();

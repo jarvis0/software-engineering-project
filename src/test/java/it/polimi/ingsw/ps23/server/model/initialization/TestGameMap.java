@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
@@ -24,7 +25,7 @@ public class TestGameMap {
 	private static final String GROUP_COLORED_CSV = "groupColoredCitiesBonusTiles.csv";
 	
 	@Test
-	public void test() {
+	public void test() throws InvalidRegionException {
 		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
