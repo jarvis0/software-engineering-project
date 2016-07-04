@@ -67,6 +67,14 @@ public class SuperBonusState extends State {
 	public boolean isBuildingPemitTileBonus() {
 		return currentBonus instanceof BuildingPermitBonus;
 	}
+	
+	public boolean isRecycleBuildingPermitBonus() {
+		return currentBonus instanceof RecycleBuildingPermitBonus;
+	}
+	
+	public boolean isRecycleRewardTokenBonus() {
+		return currentBonus instanceof RecycleRewardTokenBonus;
+	}
 
 	public void analyzeInput(String chosenRegion) throws InvalidRegionException {
 		((BuildingPermitBonus) currentBonus).selectRegion(chosenRegion);

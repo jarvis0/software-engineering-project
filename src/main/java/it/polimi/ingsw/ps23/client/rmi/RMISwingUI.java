@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.client.rmi;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -21,6 +22,7 @@ import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import it.polimi.ingsw.ps23.client.SwingUI;
@@ -38,6 +40,7 @@ import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMISwingUI extends SwingUI {
 
@@ -47,7 +50,7 @@ class RMISwingUI extends SwingUI {
 	private List<JLabel> playerPermitTiles;
 	private List<JLabel> cardsList;
 	private boolean finish;
-	JButton finished;
+	private JButton finished;
 	
 	RMISwingUI(String mapType, String playerName) {
 		super(mapType, playerName);
@@ -127,7 +130,6 @@ class RMISwingUI extends SwingUI {
 	            	getRMIGUIView().resume();
 	            }
 			});
-		
 		getMapPanel().add(permissionTileLabel, 0);
 		permissionTileLabel.setEnabled(false);
 		List<Bonus> bonuses = ((BusinessPermitTile) permitTile).getBonuses();
@@ -288,7 +290,7 @@ class RMISwingUI extends SwingUI {
 		
 		//TODO
 		refreshPlayersTable(currentState.getPlayersList());
-		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck(), (currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck());
 		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());
 		getFrame().repaint();
 		getFrame().revalidate();
@@ -341,7 +343,7 @@ class RMISwingUI extends SwingUI {
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
 	
-	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
+	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck) {
 		for(JLabel permitTile : playerPermitTiles) {
 			getMapPanel().remove(permitTile);
 		}
@@ -397,7 +399,19 @@ class RMISwingUI extends SwingUI {
 			freeCouncillorLabel.getValue().setEnabled(display);
 		}
 	}
+	
 
+	public void enableFinish(boolean display) {
+		finished.setEnabled(display);
+	}
+	
+	public void enableTotalHandDeck(boolean display) {
+		JDialog totalPermitsCardDialog = new JDialog(getFrame(), "Your Permission Total HandDeck");
+		totalPermitsCardDialog.setVisible(display);
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck());
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());
+	}
+	
 	public void clearRMISwingUI() {
 		chosenCard = null;
 		finish = false;
@@ -412,11 +426,7 @@ class RMISwingUI extends SwingUI {
 	}
 
 	public static void main(String[] args) {
-		new RMISwingUI("hard", "ale");//TODO remove this method
-	}
-
-	public void enableFinish(boolean display) {
-		finished.setEnabled(display);
+		new RMISwingUI("hard", "ale"); //TODO remove this method
 	}
 
 }

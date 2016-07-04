@@ -324,8 +324,7 @@ class RMIConsoleView extends RMIView {
 	}
 
 	private boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState
-				|| state instanceof MarketOfferPhaseState;
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}
 
 	@Override

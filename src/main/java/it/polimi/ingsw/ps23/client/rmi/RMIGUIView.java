@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -332,7 +333,8 @@ public class RMIGUIView extends RMIView {
 
 	}
 	
-	/*private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
+	
+	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
 			rmiSwingUI.setConsoleText("\n\n" + currentState.useBonus());
 			rmiSwingUI.enableRegionButtons(true);
@@ -340,18 +342,33 @@ public class RMIGUIView extends RMIView {
 			String chosenRegion = rmiSwingUI.getChosenRegion();
 			currentState.analyzeInput(chosenRegion);
 		}
-	}*/
+	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		/*try {
-			while (currentState.hasNext()) {				
+		try {
+			while (currentState.hasNext()) {		
+				String selectedItem;
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 					additionalOutput(currentState);
 					rmiSwingUI.setConsoleText("\n\n" + currentState.useBonus());
+					if(currentState.isRecycleBuildingPermitBonus()) {
+						rmiSwingUI.enableTotalHandDeck(true);
+						pause();
+						selectedItem = String.valueOf(rmiSwingUI.getChosenTile());
+					} 
+					if(currentState.isRecycleRewardTokenBonus()) {
+						rmiSwingUI.enableCities(true);
+						pause();
+						selectedItem = rmiSwingUI.getChosenCity();
+					} else {
+						rmiSwingUI.enablePermissonTilePanel(rmiSwingUI.getChosenRegion());
+						pause();
+						selectedItem = String.valueOf(rmiSwingUI.getChosenTile());
+					}
 					currentState.checkKey();
-					currentState.addValue(scanner.nextLine());
+					currentState.addValue(selectedItem);
 					currentState.confirmChange();
 				}
 			}
@@ -364,7 +381,7 @@ public class RMIGUIView extends RMIView {
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
-	*/
+		
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 /**
- * Provides methods to take a specific superbonus
+ * Provides methods to take a specific superbonus of nobility track
  * @author Alessandro Erba
  *
  */

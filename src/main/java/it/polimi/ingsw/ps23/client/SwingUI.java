@@ -565,7 +565,6 @@ public abstract class SwingUI {
 		btnKingdom.setIcon(new ImageIcon(kingImage));
 		btnKingdom.setBounds(865, 414, 50, 50);
 		mapPanel.add(btnKingdom, 0);
-		regionsButtons.add(btnKingdom);
 		btnKingdom.setEnabled(false);
 		
 		BufferedImage seasideImage = guiLoad.readImage(IMAGES_PATH + "seasideRegion.png");

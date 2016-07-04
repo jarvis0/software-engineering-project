@@ -243,9 +243,7 @@ class GUILoad {
 		loadTextArea();
 	}
 
-	private void loadTextArea() {
-		/*scrollTextPane.setBounds(0, 0, 567, 110);
-		scrollTextPane.setLocation(800, 0);*/		
+	private void loadTextArea() {	
 		textArea = new JTextArea();
 		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
