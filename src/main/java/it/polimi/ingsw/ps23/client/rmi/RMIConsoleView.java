@@ -240,6 +240,7 @@ class RMIConsoleView extends RMIView {
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		String player = currentState.getPlayerName();
+		output.print(currentState.getStatus());
 		output.println("It's " + player + " market phase turn.");
 		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);

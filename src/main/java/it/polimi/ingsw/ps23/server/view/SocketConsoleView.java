@@ -207,6 +207,7 @@ public class SocketConsoleView extends SocketView {
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		String player = currentState.getPlayerName();
+		
 		getConnection().sendNoInput("It's " + player + " market phase turn.");
 		if(player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);
