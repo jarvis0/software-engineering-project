@@ -23,11 +23,14 @@ public class TestLoadPoliticDeck {
 	public void test() {
 		List<String[]> rawPoliticCards = new RawObject(TEST_CONFIGURATION_PATH + POLITIC_DECK_CSV).getRawObject();
 		Deck politicDeck = new PoliticCardsBuilder().makeDeck(rawPoliticCards);
-		assertTrue(politicDeck.getCards().size() == 20);
+		int startingValue = 20;
+		assertTrue(politicDeck.getCards().size() == startingValue);
 		politicDeck.pickCard();
-		assertTrue(politicDeck.getCards().size() == 19);
+		startingValue--;
+		assertTrue(politicDeck.getCards().size() == startingValue);
 		politicDeck.pickCards(2);
-		assertTrue(politicDeck.getCards().size() == 17);
+		startingValue -= 2;
+		assertTrue(politicDeck.getCards().size() == startingValue);
 		boolean foundShuffled = false;
 		boolean foundJolly = false;
 		GameColor orange = GameColorsBuilder.makeColor("orange");
@@ -45,5 +48,13 @@ public class TestLoadPoliticDeck {
 		Card card = (PoliticCard) politicDeck.getCards().get(0);
 		assertTrue(multi.equals(((PoliticCard)card).getColor()) || orange.equals(((PoliticCard)card).getColor()));
 		assertTrue(multi.isSameColor(((PoliticCard)card).getColor().toString()) || orange.isSameColor(((PoliticCard)card).getColor().toString()));
+		for(; startingValue >= 0; startingValue--) {
+			assertTrue(politicDeck.getCards().size() == startingValue);
+			politicDeck.pickCard();
+		}
+		startingValue = 19;
+		assertTrue(politicDeck.getCards().size() == startingValue);
+		politicDeck.pickCards(20);
+		assertTrue(politicDeck.getCards().size() == startingValue);		
 	}
 }
