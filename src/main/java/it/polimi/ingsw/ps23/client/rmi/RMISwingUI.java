@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+
+
 import java.util.Map.Entry;
 
 import it.polimi.ingsw.ps23.client.GUIView;
@@ -123,6 +125,21 @@ class RMISwingUI extends SwingUI {
 			playersPoliticCards.put(player.getName(), playerPoliticCards);
 		}
 	}
+	
+	private void totalPermitTilesToStrings(List<Player> playersList, List<String> playersName, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for(Player player : playersList) {
+			List<Card> totalPermitTiles = player.getAllPermitHandDeck().getCards();
+			List<List<String>> permitTileCities = new ArrayList<>();
+			List<List<String>> permitTileBonusesName = new ArrayList<>();
+			List<List<String>> permitTileBonusesValue = new ArrayList<>();
+			permitTilesToString(totalPermitTiles, permitTileCities, permitTileBonusesName, permitTileBonusesValue);
+			playersName.add(player.getName());
+			allPermitTilesCities.add(permitTileCities);
+			allPermitTilesBonusesName.add(permitTileBonusesName);
+			allPermitTilesBonusesValue.add(permitTileBonusesValue);
+		}
+	}
 
 	private void permitTilesToStrings(List<Player> playersList, List<String> playersName, List<List<List<String>>> allPermitTilesCities,
 			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
@@ -153,7 +170,7 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> allPermitTilesCities = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesName = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesValue = new ArrayList<>();
-		allPermitTilesToStrings(currentState.getGameMap().getGroupRegionalCity(), regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
+		allPermitTilesToStrings(currentState.getGroupRegionalCity(), regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
 		refreshPermitTilesUp(regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
 		
 		List<String> groupsName = new ArrayList<>();
@@ -199,7 +216,8 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
-		
+		totalPermitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		//refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -251,9 +269,6 @@ class RMISwingUI extends SwingUI {
 	}
 
 	public void enableTotalHandDeck(boolean display) {
-		/*JDialog totalPermitsCardDialog = new JDialog(getFrame(), "Your Permission Total HandDeck");
-		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck());
-		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());*/
 		
 	}	
 	
