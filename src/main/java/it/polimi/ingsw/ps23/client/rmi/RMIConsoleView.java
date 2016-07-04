@@ -323,6 +323,12 @@ class RMIConsoleView extends RMIView {
 		endGame = true;
 	}
 
+	@Override
+	void infoMessage(String message) {
+		output.println(message);
+		
+	}
+
 	private boolean waitResumeCondition() {
 		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}

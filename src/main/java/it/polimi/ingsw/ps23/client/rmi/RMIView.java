@@ -15,6 +15,8 @@ abstract class RMIView extends View {
 		this.clientName = clientName;
 	}
 
+	abstract void infoMessage(String message);
+	
 	abstract void setMapType(String mapType);
 	
 	protected String getClientName() {
@@ -48,5 +50,5 @@ abstract class RMIView extends View {
 	public synchronized void resume() {
 		notifyAll();
 	}
-	
+
 }
