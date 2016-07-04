@@ -8,8 +8,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.swing.JLabel;
-
 import it.polimi.ingsw.ps23.client.GUIView;
 import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -26,14 +24,11 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class RMISwingUI extends SwingUI {
-
-	private List<JLabel> playerPermitTiles;
 	
 	RMISwingUI(GUIView guiView, String mapType, String playerName) {
 		super(guiView, mapType, playerName);
-		playerPermitTiles = new ArrayList<>();
 	}
-	
+
 	private void freeCouncillorsToStrings(List<Councillor> freeCouncillors, List<String> freeCouncillorsColor) {
 		for(int i = 0; i < freeCouncillors.size(); i++) {
 			freeCouncillorsColor.add(freeCouncillors.get(i).getColor().toString());
@@ -126,11 +121,9 @@ class RMISwingUI extends SwingUI {
 
 	void refreshDynamicContents(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
-		
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);
 		refreshFreeCouncillors(freeCouncillorsColor);
-
 		List<String> councilsName = new ArrayList<>();
 		List<List<String>> councilsColor = new ArrayList<>();
 		councilsToStrings(currentState.getGroupRegionalCity(), currentState.getKingCouncil().getCouncillors(), councilsName, councilsColor);
@@ -233,8 +226,8 @@ class RMISwingUI extends SwingUI {
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
 	
-	/*private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
-		/*for(JLabel permitTile : playerPermitTiles) {
+	/*private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck) {
+		for(JLabel permitTile : playerPermitTiles) {
 			getMapPanel().remove(permitTile);
 		}
 		List<Card> permitHandDeckList = permissionHandDeck.getCards();
@@ -246,11 +239,5 @@ class RMISwingUI extends SwingUI {
 			x += 52;
 		}
 	}*/
-
-	public void enablePermitTileDeck(boolean display) {
-		for (JLabel jLabel : playerPermitTiles) {
-			jLabel.setEnabled(display);
-		}
-	}
 
 }

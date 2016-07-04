@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 
@@ -58,12 +59,15 @@ public abstract class SwingUI {
 	private String chosenAction;
 	private String chosenRegion;
 	private String chosenCity;
+	private String chosenCouncillor;
 	private List<JButton> regionsButtons;
+	private JButton btnKingdom;
 	private GUILoad guiLoad;
 	private JPanel mainActionPanel;
 	private JPanel quickActionPanel;
 	private Map<String, JLabel> cityLabels;
 	private Map<String, Point> councilPoints;
+	private Map<String, JLabel> freeCouncillorsLabels;
 	private JFrame frame;
 	private JPanel mapPanel;
 	private Map<String, List<JLabel>> permitTiles;
@@ -71,16 +75,24 @@ public abstract class SwingUI {
 	private DefaultTableModel tableModel;
 	private JButton finished;
 	private List<JLabel> cardsList;
+	private List<JLabel> playerPermitTiles;
 	boolean finish;
 	private String chosenCard;
+	private JSpinner marketSpinner;
+	private JButton marketSendButton;
+	private int spinnerValue;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
 		this.guiView = guiView;
 		this.playerName = playerName;
 		regionsButtons = new ArrayList<>();
+		playerPermitTiles = new ArrayList<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
 		cityLabels = guiLoad.getCityLabels();
+		marketSpinner = guiLoad.getMarketSpinner();
+		marketSendButton = guiLoad.getMarketSendButton();
+		freeCouncillorsLabels = new HashMap<>();
 		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
 		cardsList = new ArrayList<>();
@@ -89,9 +101,18 @@ public abstract class SwingUI {
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
+		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
 		loadQuickActionPanel();
+	}
+
+	protected JFrame getFrame() {
+		return frame;
+	}
+	
+	public int getChosenValue() {
+		return spinnerValue;
 	}
 
 	public String getChosenAction() {
@@ -105,6 +126,10 @@ public abstract class SwingUI {
 	public String getChosenCity() {
 		return chosenCity;
 	}
+	
+	public String getChosenCouncillor() {
+		return chosenCouncillor;
+	}
 
 	public String getChosenCard() {
 		return chosenCard;
@@ -112,18 +137,6 @@ public abstract class SwingUI {
 
 	public int getChosenTile() {
 		return chosenTile;
-	}
-
-	protected JFrame getFrame() {
-		return frame;
-	}
-
-	protected JPanel getMainActionPanel() {
-		return mainActionPanel;
-	}
-	
-	protected JPanel getQuickActionPanel() {
-		return quickActionPanel;
 	}
 
 	protected static String getKingdom() {
@@ -148,6 +161,10 @@ public abstract class SwingUI {
 
 	private Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
+	}
+
+	public void enableKingButton(boolean display) {
+		btnKingdom.setEnabled(display);
 	}
 
 	private void drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
@@ -217,6 +234,9 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
+		for (Entry<String, JLabel> entry : freeCouncillorsLabels.entrySet()) {
+			mapPanel.remove(entry.getValue());
+		}
 		Point freeCouncillorsPoint = councilPoints.get("free");
 		int x = freeCouncillorsPoint.x;
 		int y = freeCouncillorsPoint.y;
@@ -233,11 +253,23 @@ public abstract class SwingUI {
 			BufferedImage councillorImage = guiLoad.readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
 			Image resizedCouncillorImage = councillorImage.getScaledInstance(18, 39, Image.SCALE_SMOOTH);
 			JLabel councillorLabel = new JLabel(new ImageIcon(resizedCouncillorImage));
+			councillorLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			councillorLabel.setEnabled(false);
+			councillorLabel.setDisabledIcon(new ImageIcon(resizedCouncillorImage));
+			councillorLabel.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					chosenCouncillor = color;
+					councillorLabel.setEnabled(false);
+	            	guiView.resume();
+                }
+			});   
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
+			freeCouncillorsLabels.put(color, councillorLabel);
 			mapPanel.add(councillorLabel, 0);
 			JLabel councillorsValue = new JLabel();
-			councillorsValue.setBounds(0, 0, 23, 25);
+			councillorsValue.setBounds(0, 0, 10, 25);
 			councillorsValue.setLocation(x + 11, y + 16);
 			councillorsValue.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 			if ("black".equals(color) || "purple".equals(color) || "blue".equals(color)) {
@@ -247,7 +279,7 @@ public abstract class SwingUI {
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
 			mapPanel.add(councillorsValue, 0);
-			y += 41;
+			y += 43;
 		}
 	}
 
@@ -440,7 +472,7 @@ public abstract class SwingUI {
 
 	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
-		mainActionPanel.setBounds(895, 181, 215, 272);
+		mainActionPanel.setBounds(925, 181, 215, 272);
 		mapPanel.add(mainActionPanel,0);
 		mainActionPanel.setVisible(false);
 		GridBagLayout gblMainActionPanel = new GridBagLayout();
@@ -520,7 +552,7 @@ public abstract class SwingUI {
 	
 	protected void loadQuickActionPanel() {
 		quickActionPanel = new JPanel();
-		quickActionPanel.setBounds(1120, 181, 199, 272);
+		quickActionPanel.setBounds(1150, 181, 199, 272);
 		mapPanel.add(quickActionPanel,0);
 		quickActionPanel.setVisible(false);
 		GridBagLayout gblQuickActionPanel = new GridBagLayout();
@@ -597,8 +629,22 @@ public abstract class SwingUI {
 		gbcbtnAdditionalMainAction.gridy = 3;
 		quickActionPanel.add(btnAdditionalMainAction, gbcbtnAdditionalMainAction);
 	}
-	
-	private void loadRegionButtons() {//TODO parametrizzare queste stringhe
+
+	private void loadRegionButtons() {
+		BufferedImage kingImage = guiLoad.readImage(IMAGES_PATH + "kingIcon.png");//TODO parametrizzare queste stringhe
+		btnKingdom = new JButton("");
+		btnKingdom.addActionListener(new ActionListener() {
+			@Override 
+            public void actionPerformed(ActionEvent e)
+            {
+            	chosenRegion = "king";
+            	guiView.resume();
+            }
+        });
+		btnKingdom.setIcon(new ImageIcon(kingImage));
+		btnKingdom.setBounds(865, 414, 50, 50);
+		mapPanel.add(btnKingdom, 0);
+		btnKingdom.setEnabled(false);
 		BufferedImage seasideImage = guiLoad.readImage(IMAGES_PATH + "seasideRegion.png");
 		JButton btnSeaside = new JButton("");
 		btnSeaside.addActionListener(new ActionListener() {
@@ -664,6 +710,7 @@ public abstract class SwingUI {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
 			cityLabel.getValue().setEnabled(display);
+			//cityLabel.getValue().setToolTipText(""); TODO aggiungere i tooltip  in mdo univoco anche per scoket
 		}
 	}
 
@@ -674,9 +721,16 @@ public abstract class SwingUI {
 	}
 
 	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction) {
-		getMainActionPanel().setVisible(isAvailableMainAction);
-		getQuickActionPanel().setVisible(isAvailableQuickAction);
+		mainActionPanel.setVisible(isAvailableMainAction);
+		quickActionPanel.setVisible(isAvailableQuickAction);
 		enableRegionButtons(false);
+	}
+
+	public void enableFreeCouncillorsButtons(boolean display) {
+		Set<Entry<String, JLabel>> freeCouncillors = freeCouncillorsLabels.entrySet();
+		for(Entry<String, JLabel> freeCouncillorLabel : freeCouncillors) {
+			freeCouncillorLabel.getValue().setEnabled(display);
+		}
 	}
 
 	public void enablePoliticCards(boolean display) {
@@ -694,9 +748,15 @@ public abstract class SwingUI {
 		enableCitiesButtons(display);
 	}
 
-	protected void enableRegionButtons(boolean display) {
+	public void enableRegionButtons(boolean display) {
 		for (JButton regionButton : regionsButtons) {
 			regionButton.setEnabled(display);
+		}
+	}
+
+	public void enablePermitTileDeck(boolean display) {
+		for (JLabel jLabel : playerPermitTiles) {
+			jLabel.setEnabled(display);
 		}
 	}
 
@@ -705,23 +765,51 @@ public abstract class SwingUI {
 	}
 
 	protected void clearChosenRegion() {
-		chosenRegion = null;//TODO null
+		chosenRegion = null;
 	}
 
 	public void clearSwingUI() {
 		chosenCard = null;
 		finish = false;
 		clearChosenRegion();
-		//Set<Entry<String, List<JLabel>>> allPermitTiles = permitTiles.entrySet();TODO
-		/*for (Entry<String, List<JLabel>> entry : allPermitTiles){
+		Set<Entry<String, List<JLabel>>> allPermitTiles = permitTiles.entrySet();
+		for (Entry<String, List<JLabel>> entry : allPermitTiles){
 			for(JLabel permitTile : entry.getValue()) {
 				permitTile.setEnabled(false);
 			}
-		}*/	
+		}
 	}
 	
 	public boolean hasFinished() {
 		return finish;
+	}
+
+	public void loadMarketInputArea() {
+		marketSendButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+		         spinnerValue = (int)marketSpinner.getValue();
+		         guiView.resume();
+		     }
+		});
+	}
+		     
+	public void setConsoleText(String string) {
+		guiLoad.setText(string);
+	}
+	
+	public void appendConsoleText(String string) {
+		guiLoad.appendText(string);
+	}
+	
+	public void enableMarketInputArea(boolean display) {
+		marketSpinner.setVisible(display);
+		marketSpinner.setEnabled(display);
+		marketSendButton.setVisible(display);
+		marketSendButton.setEnabled(display);
+	}
+
+	public void enableFinish(boolean display) {
+		finished.setEnabled(display);
 	}
 
 }

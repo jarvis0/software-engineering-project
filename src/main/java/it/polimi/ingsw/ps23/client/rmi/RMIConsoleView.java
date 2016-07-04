@@ -206,7 +206,7 @@ class RMIConsoleView extends RMIView {
 	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if (currentState.canSellPoliticCards()) {
-			output.println("How many politic cards do you want to use? ");
+			output.println("How many politic cards do you want to sell? ");
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				output.println("Select a card from this list: " + currentState.getPoliticHandDeck());
