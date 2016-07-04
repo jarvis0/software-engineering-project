@@ -43,7 +43,7 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	 * @throws InvalidRegionException if the selected region doesn't exist
 	 */
 	public void selectRegion(String chosenRegion) throws InvalidRegionException {
-		if(((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp() == null) {
+		if(regionMap.get(chosenRegion) == null) {
 			throw new InvalidRegionException();
 		}
 		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp();
@@ -68,7 +68,7 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) {
-		game.getCurrentPlayer().pickPermitCard(game, turnHandler, game.getGameMap().getRegion(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
+		game.getCurrentPlayer().pickPermitCard(game, turnHandler, regionMap.get(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
 	}
 
 }

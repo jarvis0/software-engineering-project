@@ -132,7 +132,6 @@ public class SocketConsoleView extends SocketView {
 			List<String> removedCards = new ArrayList<>();
 			getConnection().sendYesInput("Choose the number of cards you want for satisfy the King Council: " + currentState.getAvailableCardsNumber());
 			int numberOfCards = Integer.parseInt(receive());
-			getConnection().sendNoInput("Player hand deck:" + currentState.getDeck());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				getConnection().sendYesInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 				String chosenCard = receive().toLowerCase();
@@ -207,6 +206,7 @@ public class SocketConsoleView extends SocketView {
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		String player = currentState.getPlayerName();
+		
 		getConnection().sendNoInput("It's " + player + " market phase turn.");
 		if(player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);

@@ -163,7 +163,6 @@ class RMIConsoleView extends RMIView {
 		}
 		try {
 			int numberOfCards = Integer.parseInt(scanner.nextLine());
-			output.println("Player hand deck:" + currentState.getDeck());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				output.println("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
 				String chosenCard = scanner.nextLine().toLowerCase();
@@ -241,6 +240,7 @@ class RMIConsoleView extends RMIView {
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
 		String player = currentState.getPlayerName();
+		output.print(currentState.getStatus());
 		output.println("It's " + player + " market phase turn.");
 		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);

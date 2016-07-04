@@ -6,7 +6,11 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.ElectCouncillor;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to show all the necessary info to perform {@link ElectCouncillor} action.
+ * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ *
+ */
 public class ElectCouncillorState extends ElectCouncillorActionState {
 	
 	/**

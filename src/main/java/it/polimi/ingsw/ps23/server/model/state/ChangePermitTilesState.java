@@ -8,7 +8,11 @@ import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to show all the info to create {@link ChangePermitTile} action.
+ * @author Alessandro Erba
+ *
+ */
 public class ChangePermitTilesState extends QuickActionState {
 	
 	/**
@@ -21,11 +25,18 @@ public class ChangePermitTilesState extends QuickActionState {
 		super(name);
 		regionalPermissionDecks = new HashMap<>();
 	}
-
+	/**
+	 * Create the action with all parameters selected
+	 * @param chosenRegionTile - the chosen region
+	 * @return the action created
+	 */
 	public Action createAction(String chosenRegionTile) {
 		return new ChangePermitsTile(chosenRegionTile);
 	}
-	
+	/**
+	 * Generate the string to show the {@link PermitDeck} of a {@link Region}.
+	 * @return the string generated
+	 */
 	public String printRegionalPermissionDecks() {
 		return regionalPermissionDecks.toString();
 	}
