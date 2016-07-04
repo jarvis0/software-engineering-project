@@ -6,7 +6,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 /**
- * Provides methods to perform the specified game action if
+ * Provides methods to perform the specified game action if 
  * the action is in a valid format.
  * @author Alessandro Erba, Mirco Manzoni
  *
@@ -32,11 +32,8 @@ public class ChangePermitsTile extends Action {
 		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
 			throw new InsufficientResourcesException();
 		}
-		if(((GroupRegionalCity) game.getGameMap().getRegion(regionName)) == null) {
-			throw new InvalidRegionException();
-		}
-		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();
+		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);		
 		turnHandler.useQuickAction();
 		setActionReport("Player " + game.getCurrentPlayer().getName() + " change the permit tile in " + regionName);
 	}

@@ -6,7 +6,11 @@ import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to create a {@link MarketTransaction}.
+ * @author Mirco Manzoni
+ *
+ */
 public class MarketBuyPhaseState extends State {
 	
 	/**
@@ -19,7 +23,10 @@ public class MarketBuyPhaseState extends State {
 	public String getPlayerName() {
 		return currentPlayer.getName();
 	}
-	
+	/**
+	 * Calculates if the current {@link Player} can buy in the current market phase.
+	 * @return true if can, false if can't
+	 */
 	public boolean canBuy() {
 		for(MarketObject marketObject : market.getMarketObject()) {
 			if(!marketObject.getPlayer().equals(currentPlayer.getName()) && marketObject.getCost() <= currentPlayer.getCoins()) {
@@ -38,13 +45,20 @@ public class MarketBuyPhaseState extends State {
 		}
 		return new String() + avaiableOffers;
 	}
-
+	/**
+	 * Creates the {@link MarketTransaction} when the current {@link Player} can't buy. 
+	 * @return the market transaction created
+	 */
 	public MarketTransaction createTransation() {
 		MarketTransaction marketTransaction = new MarketTransaction();
 		marketTransaction.notPurchased();
 		return marketTransaction;
 	}
-	
+	/**
+	 * Creates the {@link MarketTransaction} when the current {@link Player} can buy.
+	 * @param selectedItem - the number of the offer selected
+	 * @return the market transaction created
+	 */
 	public MarketTransaction createTransation(int selectedItem) {
 		MarketTransaction marketTransaction = new MarketTransaction();
 		int i = 0;

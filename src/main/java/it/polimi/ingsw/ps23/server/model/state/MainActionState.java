@@ -14,6 +14,7 @@ abstract class MainActionState extends ActionState {
 		super(name);
 	}
 	
+	@Override
 	public void canPerformThisAction(TurnHandler turnHandler) throws IllegalActionSelectedException {
 		if (!turnHandler.isAvailableMainAction()) {
 			throw new IllegalActionSelectedException();

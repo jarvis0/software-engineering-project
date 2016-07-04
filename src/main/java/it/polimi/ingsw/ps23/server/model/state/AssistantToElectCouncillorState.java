@@ -1,16 +1,23 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.AssistantToElectCouncillor;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-@SuppressWarnings("serial")
+/**
+ * Provides methods to show all the necessary info to perform {@link AssistantToElectCouncillor} action.
+ * @author Mirco Manzoni
+ *
+ */
 public class AssistantToElectCouncillorState extends ElectCouncillorActionState {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9186599892649102862L;
+
 	AssistantToElectCouncillorState(String name) {
 		super(name);
 	}

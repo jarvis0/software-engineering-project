@@ -15,7 +15,6 @@ public abstract class State implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3883706184904910069L;
-	
 	private String exceptionString = new String();
 	/**
 	 * Change the current state in this state. The state will take all the information to work.

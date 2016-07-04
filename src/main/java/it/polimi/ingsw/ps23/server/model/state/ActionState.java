@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,9 +10,12 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
  * @author Mirco Manzoni
  *
  */
-@SuppressWarnings("serial")
-public abstract class ActionState extends State implements Cloneable, Serializable {
+public abstract class ActionState extends State implements Cloneable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7791957934222521528L;
 	private final String name;
 	
 	ActionState(String name) {

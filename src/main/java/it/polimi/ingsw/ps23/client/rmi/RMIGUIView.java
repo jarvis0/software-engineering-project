@@ -51,6 +51,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public State getCurrentState() {
 		return state;
 	}
+	
+	private void sendAction(Action action) {
+		try {
+			getControllerInterface().wakeUpServer(action);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+		}
+	}
 
 	@Override
 	void setMapType(String mapType) {
@@ -245,13 +253,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if (currentState.canSellPoliticCards()) {
-			swingUI.setConsoleText("\nHow many politic cards do you whant to sell? ");
+			swingUI.setConsoleText("\nHow many politic cards do you want to sell? ");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			swingUI.enablePoliticCards(true);
-			swingUI.setConsoleText("\nplease press on the cards that you whant to sell");
+			swingUI.setConsoleText("\nplease press on the cards that you want to sell");
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				pause();
 				chosenPoliticCards.add(swingUI.getChosenCard());
@@ -263,7 +271,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		if (currentState.canSellPermissionCards()) {
-			swingUI.setConsoleText("\nHow many permission cards do you want to use? (numerical input >0)");
+			swingUI.setConsoleText("\nHow many permission cards do you want to use? (numerical input > 0)");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
@@ -399,14 +407,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(EndGameState currentState) {
 		swingUI.setConsoleText(currentState.getWinner());
 		endGame = true;
-	}
-	
-	private void sendAction(Action action) {
-		try {
-			getControllerInterface().wakeUpServer(action);
-		} catch (RemoteException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-		}
 	}
 
 	protected boolean waitResumeCondition() {

@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -136,10 +138,65 @@ public class SocketGUIView extends SocketView {
 		wakeUp(currentState.createAction(chosenCity, chosenCard));
 	}
 
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) {
+		List<String> chosenPoliticCards = new ArrayList<>();
+		boolean canSellPoliticCards = currentState.canSellPoliticCards();
+		getConnection().send(String.valueOf(canSellPoliticCards));
+		if(canSellPoliticCards) {
+			getConnection().send(String.valueOf(currentState.getPoliticHandSize()));
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
+				chosenPoliticCards.add(receive());
+			}
+		}
+		return chosenPoliticCards;
+	}
+	
+	private List<Integer> sellPermitCards(MarketOfferPhaseState currentState) {
+		List<Integer> chosenPermissionCards = new ArrayList<>();
+		boolean canSellPermitTiles = currentState.canSellPermissionCards();
+		getConnection().send(String.valueOf(canSellPermitTiles));
+		if(canSellPermitTiles) {
+			getConnection().send(String.valueOf(currentState.getPermissionHandSize()));
+			int numberOfCards = Integer.parseInt(receive());
+			for(int i = 0; i < numberOfCards && i < currentState.getPermissionHandSize(); i++) {
+				chosenPermissionCards.add(Integer.parseInt(receive()) - 1);
+			}
+		}
+		return chosenPermissionCards;
+	}
+	
+	private int sellAssistant(MarketOfferPhaseState currentState) {
+		int chosenAssistants = 0;
+		boolean canSellAssistants = currentState.canSellAssistants();
+		getConnection().send(String.valueOf(canSellAssistants));
+		if(canSellAssistants) {
+			getConnection().send(String.valueOf(currentState.getAssistants()));
+			chosenAssistants = Integer.parseInt(receive());
+		}
+		return chosenAssistants;
+	}
+
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createMarketOfferPhase());
+		String playerName = currentState.getPlayerName();
+		getConnection().send(playerName);
+		if(playerName.equals(getClientName())) {
+			List<String> chosenPoliticCards = sellPoliticCard(currentState);
+			List<Integer> chosenPermissionCards = sellPermitCards(currentState);
+			int chosenAssistants = sellAssistant(currentState);
+			int cost = Integer.parseInt(receive());
+			try {
+				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+				getState().setExceptionString(e.toString());
+			}
+		}
+		else {
+			pause();
+		}
 	}
 
 	@Override

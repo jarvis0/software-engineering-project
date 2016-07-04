@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ import it.polimi.ingsw.ps23.server.commons.modelview.ViewObserver;
 import it.polimi.ingsw.ps23.server.commons.viewcontroller.ViewObservable;
 import it.polimi.ingsw.ps23.server.controller.Controller;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
@@ -65,7 +67,8 @@ public class TestControllerModel extends ViewObservable implements ViewObserver 
 			}
 		}
 		if(found) {
-			//TODOwakeUp();//superbonus giver + update con startturnstate
+			wakeUp(new SuperBonusGiver(new HashMap<>()));
+			assertTrue(state instanceof StartTurnState);
 		}
 		newState = ((StartTurnState)state).getStateCache().getAction("engage assistant");
 		wakeUp(newState);

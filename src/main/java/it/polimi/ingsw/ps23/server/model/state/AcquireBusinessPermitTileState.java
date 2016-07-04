@@ -14,7 +14,11 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Provides methods to take all parameters to create {@link AcquireBusinessPermitTile} action.
+ * @author Alessandro Erba, Mirco Manzoni
+ *
+ */
 public class AcquireBusinessPermitTileState extends MainActionState {
 
 	/**
@@ -58,7 +62,12 @@ public class AcquireBusinessPermitTileState extends MainActionState {
 			}
 		}
 	}
-	
+	/**
+	 * Counts the available {@link PoliticCard} of the current {@link Player} to satisfy the selected council.
+	 * @param chosenCouncil - the selected council
+	 * @return new amount of cards that satisfy the council
+	 * @throws InvalidCouncilException if an invalid council has been selected
+	 */
 	public int getAvailablePoliticCardsNumber(String chosenCouncil) throws InvalidCouncilException {
 		if(regionsMap.get(chosenCouncil) == null) {
 			throw new InvalidCouncilException();
@@ -69,11 +78,22 @@ public class AcquireBusinessPermitTileState extends MainActionState {
 		}
 		return politicHandDeck.getHandSize();
 	}
-		
+	/**
+	 * Gets the available {@link PermitTile} to satisfy the selected council.
+	 * @param chosenCouncil - the selected council
+	 * @return the list of cards in string format
+	 */
 	public String getAvailablePermitTile(String chosenCouncil) {
 		return ((GroupRegionalCity)regionsMap.get(chosenCouncil)).getPermitTilesUp().toString();
 	}
-
+	/**
+	 * Creates the selected action with the selected parameters.
+	 * @param chosenCouncil - the selected council
+	 * @param removedPoliticCards - the selected politic cards to satisfy the council
+	 * @param chosenPermissionCard - the selected permit tile to pick
+	 * @return the created action
+	 * @throws InvalidCardException if an invalid card is selected
+	 */
 	public Action createAction(String chosenCouncil, List<String> removedPoliticCards, int chosenPermissionCard) throws InvalidCardException {
 		checkCards(chosenCouncil, removedPoliticCards);
 		return new AcquireBusinessPermitTile(removedPoliticCards, chosenCouncil, chosenPermissionCard);
