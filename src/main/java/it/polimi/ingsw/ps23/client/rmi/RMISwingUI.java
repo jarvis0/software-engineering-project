@@ -58,7 +58,24 @@ class RMISwingUI extends SwingUI {
 		bonusesName.add(bonus.getName());
 		bonusesValue.add(String.valueOf(bonus.getValue()));
 	}
-
+	
+	
+	private void permitTilesToString(List<Card> permitTilesUp, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue) {
+		for(Card card : permitTilesUp) {
+			List<String> permitTileCities = new ArrayList<>();
+			List<City> cities = ((BusinessPermitTile) card).getCities();
+			for(City city : cities) {
+				permitTileCities.add(String.valueOf(city.getName().charAt(0)));
+			}
+			permitTilesCities.add(permitTileCities);
+			List<String> permitTileBonusesName = new ArrayList<>();
+			List<String> permitTileBonusesValue = new ArrayList<>();
+			bonusesToStrings(((BusinessPermitTile) card).getBonuses(), permitTileBonusesName, permitTileBonusesValue);
+			permitTilesBonusesName.add(permitTileBonusesName);
+			permitTilesBonusesValue.add(permitTileBonusesValue);
+		}
+	}
+	
 	private void allPermitTilesToStrings(List<Region> regions, List<String> regionsName, List<List<List<String>>> allPermitTilesCities,
 			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
 		for(Region region : regions) {
@@ -67,19 +84,7 @@ class RMISwingUI extends SwingUI {
 			List<List<String>> permitTilesCities = new ArrayList<>();
 			List<List<String>> permitTilesBonusesName = new ArrayList<>();
 			List<List<String>> permitTilesBonusesValue = new ArrayList<>();
-			for(Card card : permitTilesUp) {
-				List<String> permitTileCities = new ArrayList<>();
-				List<City> cities = ((BusinessPermitTile) card).getCities();
-				for(City city : cities) {
-					permitTileCities.add(String.valueOf(city.getName().charAt(0)));
-				}
-				permitTilesCities.add(permitTileCities);
-				List<String> permitTileBonusesName = new ArrayList<>();
-				List<String> permitTileBonusesValue = new ArrayList<>();
-				bonusesToStrings(((BusinessPermitTile) card).getBonuses(), permitTileBonusesName, permitTileBonusesValue);
-				permitTilesBonusesName.add(permitTileBonusesName);
-				permitTilesBonusesValue.add(permitTileBonusesValue);
-			}
+			permitTilesToString(permitTilesUp, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 			allPermitTilesCities.add(permitTilesCities);
 			allPermitTilesBonusesName.add(permitTilesBonusesName);
 			allPermitTilesBonusesValue.add(permitTilesBonusesValue);
@@ -173,8 +178,8 @@ class RMISwingUI extends SwingUI {
 		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());
 		refreshPoliticCards(playersPoliticCards);		
 		
-		//TODO
-		//refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck(), (currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());
+		
+		//refreshAcquiredPermitTiles(.getPermitHandDeck());
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -223,21 +228,16 @@ class RMISwingUI extends SwingUI {
 		List<List<String>> stepsBonusesValue = new ArrayList<>();
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
+	}
+
+	public void enableTotalHandDeck(boolean display) {
+		/*JDialog totalPermitsCardDialog = new JDialog(getFrame(), "Your Permission Total HandDeck");
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck());
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());*/
+		
 	}	
 	
-	/*private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck) {
-		for(JLabel permitTile : playerPermitTiles) {
-			getMapPanel().remove(permitTile);
-		}
-		List<Card> permitHandDeckList = permissionHandDeck.getCards();
-		int indexOfTile = 0;
-		int x = 0;
-		int y = 611;
-		for(Card permitTile : permitHandDeckList) {
-			//drawPermitTile(permitTile, indexOfTile, playerPermitTiles, x, y);
-			x += 52;
-		}
-	}*/
+	
 
 
 }

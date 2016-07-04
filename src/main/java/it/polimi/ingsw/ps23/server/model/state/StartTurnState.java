@@ -39,7 +39,7 @@ public class StartTurnState extends State {
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
-	
+		
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}

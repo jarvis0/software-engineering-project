@@ -33,6 +33,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 public class RMIGUIView extends RMIView implements GUIView {
 	
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
+	private static final String SKIP = "skip";
 	
 	private RMISwingUI swingUI;
 	private PrintStream output;
@@ -70,7 +71,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 			swingUI.showAvailableActions(currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 			pause();
 			try {
-				getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(swingUI.getChosenAction()));
+				if(!(swingUI.getChosenAction()).equals(SKIP)) {
+					getControllerInterface().wakeUpServer(currentState.getStateCache().getAction(swingUI.getChosenAction()));
+				}
+				else {
+					getControllerInterface().wakeUpServer();
+				}
+				
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
@@ -96,6 +103,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.enableKingButton(true);
 		pause();
 		String chosenBalcony = swingUI.getChosenRegion();
+		swingUI.enableRegionButtons(false);
+		swingUI.enableKingButton(false);
 		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + chosenBalcony + "'s balcony");
 		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
 
@@ -171,6 +180,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.enableKingButton(true);
 		pause();
 		String chosenBalcony = swingUI.getChosenRegion();
+		swingUI.enableRegionButtons(false);
+		swingUI.enableKingButton(false);
 		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + "councillor in " + chosenBalcony + "'s balcony");
 		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
 	}
@@ -352,7 +363,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 					additionalOutput(currentState);
 					swingUI.setConsoleText("\n\n" + currentState.useBonus());
 					if(currentState.isRecycleBuildingPermitBonus()) {
-						//swingUI.enableTotalHandDeck(true);
+						swingUI.enableTotalHandDeck(true);
 						pause();
 						selectedItem = String.valueOf(swingUI.getChosenTile());
 					} 
@@ -361,7 +372,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 						pause();
 					selectedItem = swingUI.getChosenCity();
 					} else {
-						//swingUI.enablePermissonTilePanel(swingUI.getChosenRegion());
+						swingUI.enablePermitTilesPanel(swingUI.getChosenRegion());
 						pause();
 						selectedItem = String.valueOf(swingUI.getChosenTile());
 					}
@@ -418,6 +429,16 @@ public class RMIGUIView extends RMIView implements GUIView {
 		do {
 			state.acceptView(this);
 		} while(!endGame);
+	}
+
+	@Override
+	void infoMessage(String message) {
+		if(!firstUIRefresh){
+			swingUI.appendConsoleText("\n" + message);
+		} 
+		else {
+			output.println(message);
+		}
 	}
 	
 }
