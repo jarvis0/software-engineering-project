@@ -38,7 +38,7 @@ public class SocketClient {
  		textOut.print(message + END_OF_MESSAGE_TAG);
  	}
 	
-	String receive() {
+	public String receive() {
 		String message = new String();
 		try {
 			message = textIn.next();

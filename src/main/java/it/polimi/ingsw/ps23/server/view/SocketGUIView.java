@@ -59,37 +59,34 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createElectCouncillor());
+		String chosenCouncillor = receive();
+		String chosenBalcony = receive();
+		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createEngageAnAssistant());
+		wakeUp(currentState.createAction());
 	}
 
 	@Override
 	public void visit(ChangePermitTilesState currentState) {
-		getConnection().send(gameParameters.createChangePermitTilesAction());
+		getConnection().send(gameParameters.createChangePermitTiles());
 		wakeUp(currentState.createAction(receive()));
 	}
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		getConnection().send(gameParameters.createAcquireBusinessPermitTile());
+		getConnection().send(String.valueOf(currentState.getPoliticHandSize()));
 		String chosenCouncil = receive();
 		List<String> removedCards = new ArrayList<>();
-		String chosenPoliticCard;
-		boolean endLoop = false;
-		do {
-			chosenPoliticCard = receive();
-			if(chosenPoliticCard.contains("<end_loop>")) {
-				chosenPoliticCard = chosenPoliticCard.replace("<end_loop>", "");
-				endLoop = true;
-			}
-			removedCards.add(chosenPoliticCard);
-		} while(!endLoop);
+		int removedCardsNumber = Integer.parseInt(receive());
+		for(int i = 0; i < removedCardsNumber; i++) {
+			removedCards.add(receive());
+		}
 		int chosenTile = Integer.parseInt(receive());
 		try {
 			wakeUp(currentState.createAction(chosenCouncil, removedCards, chosenTile));
@@ -101,26 +98,42 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createAssistantToElectCouncillor());
+		String chosenCouncillor = receive();
+		String chosenBalcony = receive();
+		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createAdditionalMainAction());
+		wakeUp(currentState.createAction());
 	}
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createBuildKingEmpoium());
+		getConnection().send(String.valueOf(currentState.getPoliticHandSize()));
+		int removedCardsNumber = Integer.parseInt(getConnection().receive());
+		List<String> removedCards = new ArrayList<>();
+		for(int i = 0; i < removedCardsNumber; i++) {
+			removedCards.add(getConnection().receive());
+		}
+		String arrivalCity = getConnection().receive();
+		try {
+			wakeUp(currentState.createAction(removedCards, arrivalCity));
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			getState().setExceptionString(e.toString());
+		}
 	}
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createBuildPermitTile());
+		String chosenCity = receive();
+		int chosenCard = Integer.parseInt(receive());
+		wakeUp(currentState.createAction(chosenCity, chosenCard));
 	}
 
 	@Override

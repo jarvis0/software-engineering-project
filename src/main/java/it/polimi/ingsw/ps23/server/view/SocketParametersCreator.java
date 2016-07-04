@@ -45,10 +45,17 @@ class SocketParametersCreator {
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
 	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
+	
 	private static final String ACTION_TAG_OPEN = "<action>";
 	private static final String ACTION_TAG_CLOSE = "</action>";
-	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<AcquireBusinessPermitTile>";
-	private static final String CHANGE_PERMIT_TILES = "<change_permit_tiles>";
+	private static final String ELECT_COUNCILLOR_TAG = "<elect_councillor>";
+	private static final String ENGAGE_AN_ASSISTANT_TAG = "<engage_an_assistant>";
+	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<acquire_business_permit_tile>";
+	private static final String CHANGE_PERMIT_TILES_TAG = "<change_permit_tiles>";
+	private static final String ASSISTANT_TO_ELECT_COUNCILLOR_TAG = "<assistant_to_elect_councillor>";
+	private static final String ADDITIONAL_MAIN_ACTION_TAG = "<additional_main_action>";
+	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
+	private static final String BUILD_EMPORIUM_PERMIT_TILE = "<build_emporium_permit_tile>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -217,12 +224,36 @@ class SocketParametersCreator {
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 	
+	String createElectCouncillor() {
+		return ACTION_TAG_OPEN + ELECT_COUNCILLOR_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createEngageAnAssistant() {
+		return ACTION_TAG_OPEN + ENGAGE_AN_ASSISTANT_TAG + ACTION_TAG_CLOSE;
+	}
+	
 	String createAcquireBusinessPermitTile() {
 		return ACTION_TAG_OPEN + ACQUIRE_BUSINESS_PERMIT_TILE_TAG + ACTION_TAG_CLOSE;
 	}
 	
-	String createChangePermitTilesAction() {
-		return ACTION_TAG_OPEN + CHANGE_PERMIT_TILES + ACTION_TAG_CLOSE;
+	String createChangePermitTiles() {
+		return ACTION_TAG_OPEN + CHANGE_PERMIT_TILES_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createAssistantToElectCouncillor() {
+		return ACTION_TAG_OPEN + ASSISTANT_TO_ELECT_COUNCILLOR_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createAdditionalMainAction() {
+		return ACTION_TAG_OPEN + ADDITIONAL_MAIN_ACTION_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createBuildKingEmpoium() {
+		return ACTION_TAG_OPEN + BUILD_EMPORIUM_KING_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createBuildPermitTile() {
+		return ACTION_TAG_OPEN + BUILD_EMPORIUM_PERMIT_TILE + ACTION_TAG_CLOSE;
 	}
 
 }

@@ -88,15 +88,16 @@ public class DynamicContentsExpression extends GUIParser {
 			swingUI.refreshDynamicContents(isKingPosition, areFreeCouncillors, areCouncils, arePermitTilesUp, areBonusTiles, arePlayersParameter);
 			TurnParametersExpression areTurnParameters = getTurnParametersExpression();
 			areTurnParameters.parse(noTagMessage);
-			if(areTurnParameters.getCurrentPlayer().equals(guiView.getPlayerName())) {
-				//guiView.resume();//TODO
+			String currentPlayer = areTurnParameters.getCurrentPlayer();
+			if(currentPlayer.equals(guiView.getPlayerName())) {
+				swingUI.appendConsoleText("\nIt's your turn, please select an action from the pool displayed above.");
 				swingUI.showAvailableActions(areTurnParameters.isAvailableMainAction(), areTurnParameters.isAvailableQuickAction());
 				guiView.pause();
 				guiView.getClient().send(swingUI.getChosenAction());
 			}
 			else {
+				swingUI.setConsoleText("\nIt's " + currentPlayer + "'s turn.");
 				swingUI.showAvailableActions(false, false);
-				//guiView.pause();
 			}
 		}
 	}

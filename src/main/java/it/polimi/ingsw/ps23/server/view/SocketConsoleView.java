@@ -79,6 +79,11 @@ public class SocketConsoleView extends SocketView {
 	}
 
 	@Override
+	public void visit(EngageAnAssistantState currentState) {
+		wakeUp(currentState.createAction());
+	}
+
+	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		try {
 			List<String> removedCards = new ArrayList<>();
@@ -101,6 +106,13 @@ public class SocketConsoleView extends SocketView {
 	}
 
 	@Override
+	public void visit(ChangePermitTilesState currentState) {
+		getConnection().sendYesInput("Choose a region:" + currentState.printRegionalPermissionDecks());
+		String chosenRegion = receive().toLowerCase();
+		wakeUp(currentState.createAction(chosenRegion));
+	}
+
+	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		getConnection().sendYesInput("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
 		String chosenCouncillor = receive().toLowerCase();
@@ -115,22 +127,10 @@ public class SocketConsoleView extends SocketView {
 	}
 
 	@Override
-	public void visit(EngageAnAssistantState currentState) {
-		wakeUp(currentState.createAction());
-	}
-
-	@Override
-	public void visit(ChangePermitTilesState currentState) {
-		getConnection().sendYesInput("Choose a region:" + currentState.printRegionalPermissionDecks());
-		String chosenRegion = receive().toLowerCase();
-		wakeUp(currentState.createAction(chosenRegion));
-	}
-
-	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
 			List<String> removedCards = new ArrayList<>();
-			getConnection().sendYesInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
+			getConnection().sendYesInput("Choose the number of cards you want for satisfy the King Council: " + currentState.getAvailableCardsNumber());
 			int numberOfCards = Integer.parseInt(receive());
 			getConnection().sendNoInput("Player hand deck:" + currentState.getDeck());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {

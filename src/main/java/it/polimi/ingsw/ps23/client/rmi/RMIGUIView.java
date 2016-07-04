@@ -105,7 +105,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(EngageAnAssistantState currentState) {
 		swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action");
 		sendAction(currentState.createAction());
-
 	}
 
 	@Override
@@ -215,7 +214,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 		}	
 	}
 
-
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		swingUI.clearSwingUI();
@@ -289,7 +287,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			int chosenAssistants = sellAssistant(currentState);
 			swingUI.setConsoleText("\nChoose the price for your offer: ");
 			swingUI.enableMarketInputArea(true);
-			pause(); 
+			pause();
 			int cost = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			try {
@@ -334,7 +332,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	}
 	
-	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
 			swingUI.setConsoleText("\n\n" + currentState.useBonus());
@@ -372,13 +369,12 @@ public class RMIGUIView extends RMIView implements GUIView {
 					currentState.checkKey();
 					currentState.addValue(selectedItem);
 				}
-			}catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {
+			} catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {
 					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 					state.setExceptionString(e.toString());
-				}
 			}
+		}
 		currentState.confirmChange();
-		
 		try {
 			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver());
 		} catch (RemoteException e) {
@@ -391,7 +387,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(EndGameState currentState) {
 		swingUI.setConsoleText(currentState.getWinner());
 		endGame = true;
-
 	}
 	
 	private void sendAction(Action action) {
