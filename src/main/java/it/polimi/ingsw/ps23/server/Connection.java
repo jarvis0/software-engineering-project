@@ -68,7 +68,7 @@ public class Connection implements Runnable {
 	}
 	/**
 	 * Send a socket message to the active socket connection.
-	 * The string aurgument must not contain the communication protocol string:
+	 * The string argument must not contain the communication protocol string:
 	 * "EOM" (End of Message) or the sent message will be corrupted. 
 	 * <p>
 	 * This method always return immediately, whether or not the 

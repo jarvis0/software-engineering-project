@@ -19,7 +19,7 @@ import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumPermitTileState;
-import it.polimi.ingsw.ps23.server.model.state.ChangePermitsTileState;
+import it.polimi.ingsw.ps23.server.model.state.ChangePermitTilesState;
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
@@ -62,7 +62,6 @@ public class SocketConsoleView extends SocketView {
 			else {
 				wakeUp();
 			}
-			
 		}
 		else {
 			getConnection().sendNoInput("It's player " + player.getName() + " turn.");
@@ -77,6 +76,11 @@ public class SocketConsoleView extends SocketView {
 		getConnection().sendYesInput("Choose a balcony where to put the councillor: " + currentState.getCouncilsMap());
 		String chosenBalcony = receive().toLowerCase();
 		wakeUp(currentState.createAction(chosenCouncillor, chosenBalcony));
+	}
+
+	@Override
+	public void visit(EngageAnAssistantState currentState) {
+		wakeUp(currentState.createAction());
 	}
 
 	@Override
@@ -102,6 +106,13 @@ public class SocketConsoleView extends SocketView {
 	}
 
 	@Override
+	public void visit(ChangePermitTilesState currentState) {
+		getConnection().sendYesInput("Choose a region:" + currentState.printRegionalPermissionDecks());
+		String chosenRegion = receive().toLowerCase();
+		wakeUp(currentState.createAction(chosenRegion));
+	}
+
+	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
 		getConnection().sendYesInput("Choose a free councillor from this list: " + currentState.getFreeCouncillors());
 		String chosenCouncillor = receive().toLowerCase();
@@ -116,22 +127,10 @@ public class SocketConsoleView extends SocketView {
 	}
 
 	@Override
-	public void visit(EngageAnAssistantState currentState) {
-		wakeUp(currentState.createAction());
-	}
-
-	@Override
-	public void visit(ChangePermitsTileState currentState) {
-		getConnection().sendYesInput("Choose a region:" + currentState.printRegionalPermissionDecks());
-		String chosenRegion = receive().toLowerCase();
-		wakeUp(currentState.createAction(chosenRegion));
-	}
-
-	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
 			List<String> removedCards = new ArrayList<>();
-			getConnection().sendYesInput("Choose the number of cards you want for satisfy the King Council: "+ currentState.getAvailableCardsNumber());
+			getConnection().sendYesInput("Choose the number of cards you want for satisfy the King Council: " + currentState.getAvailableCardsNumber());
 			int numberOfCards = Integer.parseInt(receive());
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				getConnection().sendYesInput("Choose a politic card you want to use from this list: " + currentState.getAvailableCards());
@@ -169,7 +168,7 @@ public class SocketConsoleView extends SocketView {
 		}
 	}
 	
-	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException{
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if(currentState.canSellPoliticCards()) {
 			getConnection().sendYesInput("How many politic cards do you want to use? ");

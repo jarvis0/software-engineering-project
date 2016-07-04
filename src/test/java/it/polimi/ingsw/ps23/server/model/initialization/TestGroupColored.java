@@ -20,7 +20,7 @@ public class TestGroupColored {
 	public void test() {
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
-		CitiesFactory citiesFactory = new CitiesFactory();
+		CitiesBuilder citiesFactory = new CitiesBuilder();
 		citiesFactory.makeCities(rawCities, rawRewardTokens, new BonusCache());
 		List<String[]> rawColoredCities = new RawObject(TEST_CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
 		List<Region> groupColored = new GroupColoredCitiesBuilder().makeGroup(rawColoredCities, citiesFactory.getCities());

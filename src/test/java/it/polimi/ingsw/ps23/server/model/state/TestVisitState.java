@@ -92,11 +92,11 @@ public class TestVisitState implements ViewVisitor {
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
 		assertTrue(currentState.createAction() instanceof EngageAnAssistant);
-		setContext(new ChangePermitsTileState("change permit tile"));
+		setContext(new ChangePermitTilesState("change permit tile"));
 	}
 
 	@Override
-	public void visit(ChangePermitsTileState currentState) {
+	public void visit(ChangePermitTilesState currentState) {
 		assertTrue(currentState.createAction(game.getGameMap().getGroupColoredCity().get(0).getName()) instanceof ChangePermitsTile);
 		setContext(new AcquireBusinessPermitTileState("acquire business permit tile"));
 	}

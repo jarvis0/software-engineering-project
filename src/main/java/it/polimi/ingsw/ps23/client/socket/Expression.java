@@ -7,5 +7,7 @@ public interface Expression {
 	public String selectBlock(String message);
 
 	public String removeBlock(String message);
+
+	public String removeTags(String message);
 	
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumKingState;
 import it.polimi.ingsw.ps23.server.model.state.BuildEmporiumPermitTileState;
-import it.polimi.ingsw.ps23.server.model.state.ChangePermitsTileState;
+import it.polimi.ingsw.ps23.server.model.state.ChangePermitTilesState;
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
 import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
@@ -38,7 +38,7 @@ public interface ViewVisitor {
 	 * Start the visit of the selected state.
 	 * @param currentState - the current state of the game
 	 */
-	public void visit(ChangePermitsTileState currenState);
+	public void visit(ChangePermitTilesState currentState);
 	/**
 	 * Start the visit of the selected state.
 	 * @param currentState - the current state of the game

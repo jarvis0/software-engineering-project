@@ -30,7 +30,7 @@ abstract class RemoteView {
 		connectionTimedOut = true;
 	}
 	
-	protected SocketClient getClient() {
+	public SocketClient getClient() {
 		return client;
 	}
 	

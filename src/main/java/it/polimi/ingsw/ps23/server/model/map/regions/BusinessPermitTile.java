@@ -29,6 +29,14 @@ public class BusinessPermitTile implements Card, BonusSlot {
 		cities = new ArrayList<>();
 	}
 	
+	public List<Bonus> getBonuses() {
+		return bonuses;
+	}
+	
+	public List<City> getCities() {
+		return cities;
+	}
+	
 	@Override
 	public void addBonus(Bonus bonus) {
 		this.bonuses.add(bonus);
@@ -58,15 +66,7 @@ public class BusinessPermitTile implements Card, BonusSlot {
 			bonus.updateBonus(game, turnHandler);
 		}
 	}
-	
-	public List<Bonus> getBonuses() {
-		return bonuses;
-	}
-	
-	public List<City> getCities() {
-		return cities;
-	}
-	
+
 	@Override
 	public String toString() {
 		String print = bonuses.toString() + " ~ ";

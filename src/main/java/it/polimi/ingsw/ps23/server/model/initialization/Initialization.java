@@ -123,10 +123,10 @@ public class Initialization {
 		freeCouncillors = new CouncillorsBuilder().makeCouncillors(rawCouncillors);
 	}
 	
-	private CitiesFactory loadCities() {
+	private CitiesBuilder loadCities() {
 		List<String[]> rawCities = new RawObject(mapPath + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(mapPath + REWARD_TOKENS_CSV).getRawObject();
-		CitiesFactory citiesFactory = new CitiesFactory();
+		CitiesBuilder citiesFactory = new CitiesBuilder();
 		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		return citiesFactory;
 	}
@@ -167,7 +167,7 @@ public class Initialization {
 	}
 
 	private void loadMap() {
-		CitiesFactory citiesFactory = loadCities();
+		CitiesBuilder citiesFactory = loadCities();
 		List<City> citiesList = citiesFactory.getCities();
 		Map<String, City> citiesMap = citiesFactory.getHashMap();
 		CitiesGraphBuilder citiesGraphFactory = loadCitiesConnections(citiesMap);

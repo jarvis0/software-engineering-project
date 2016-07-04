@@ -1,215 +1,32 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-
+import it.polimi.ingsw.ps23.client.GUIView;
 import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
-import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
+import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
+import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
-import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class RMISwingUI extends SwingUI {
-
-	private String chosenCard;
-	private int chosenTile;
-	private Map<String, List<JLabel>> permitTiles;
-	private List<JLabel> playerPermitTiles;
-	private List<JLabel> cardsList;
-	private boolean finish;
-	JButton finished;
 	
-	RMISwingUI(String mapType, String playerName) {
-		super(mapType, playerName);
-		cardsList = new ArrayList<>();
-		playerPermitTiles = new ArrayList<>();
-		permitTiles = new HashMap<>();
-		finish = false;
-	}
-
-	public boolean hasFinished() {
-		return finish;
-	}
-
-	String getChosenCard() {
-		return chosenCard;
-	}
-	
-	int getChosenTile() {
-		return chosenTile;
-	}
-	
-	String getChosenActionUI() {
-		return getChosenAction();
-	}
-
-	private void refreshPlayersTable(List<Player> playersList) {
-		for (int i = getTableModel().getRowCount() - 1; i >= 0; i--) {
-			getTableModel().removeRow(i);
-		}
-		for (Player player : playersList) {
-			Vector<Object> vector = new Vector<>();
-			vector.add(0, player.getName());
-			vector.add(1, player.getVictoryPoints());
-			vector.add(2, player.getCoins());
-			vector.add(3, player.getAssistants());
-			vector.add(4, player.getNobilityTrackPoints());
-			getTableModel().addRow(vector);
-		}
-	}
-
-	private void refreshRegionalPermitTiles(List<Region> regions) {
-		for (Region region : regions) {
-			Point point = getCouncilPoint(region.getName());
-			int x = point.x - 120;
-			int y = point.y - 12;
-			drawPermitTiles(((GroupRegionalCity) region).getPermitTilesUp(), x, y, region.getName());
-		}
-	}
-	
-	private void drawPermitTiles(Deck permitTilesUp, int xCoord, int yCoord, String region) {
-		List<Card> permitTiles = permitTilesUp.getCards();
-		int x = xCoord;
-		int y = yCoord;
-		int indexOfTile = 0;
-		List<JLabel> permitLabels = new ArrayList<>();
-		for (Card permissionCard : permitTiles) {
-			drawPermitCard(permissionCard, indexOfTile, permitLabels, x, y );
-			this.permitTiles.put(region, permitLabels);
-			x -= 52;
-			indexOfTile++;
-		}
-	}
-	
-	private void drawPermitCard(Card permitTile, int indexOfTile, List<JLabel> permitLabels, int x, int y) {
-		BufferedImage permissionTileImage = readImage(getImagesPath() + getPermitTilePath());
-		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-		JLabel permissionTileLabel = new JLabel(new ImageIcon(resizedPermissionTile));
-		permissionTileLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		permitLabels.add(permissionTileLabel);
-		permissionTileLabel.setBounds(0, 0, 50, 50);
-		permissionTileLabel.setLocation(x, y);
-		permissionTileLabel.addMouseListener(new MouseAdapter() {
-				@Override
-	            public void mouseClicked(MouseEvent e) {
-					chosenTile = indexOfTile;
-					permissionTileLabel.setEnabled(false);
-	            	getRMIGUIView().resume();
-	            }
-			});
-		
-		getMapPanel().add(permissionTileLabel, 0);
-		permissionTileLabel.setEnabled(false);
-		List<Bonus> bonuses = ((BusinessPermitTile) permitTile).getBonuses();
-		int bonusCoordX = x - 47;
-		int bonusCoordY = y + 40;
-		for (Bonus bonus : bonuses) {
-			drawBonus(bonus.getName(), String.valueOf(bonus.getValue()), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0);
-			bonusCoordX = bonusCoordX + 24;
-		}
-		List<City> cities = ((BusinessPermitTile) permitTile).getCities();
-		int cityCoordX = x + 5;
-		int cityCoordY = y;
-		for (int i = 0; i < cities.size(); i++) {
-			City city = cities.get(i);
-			JLabel cityInitial = new JLabel();
-			cityInitial.setBounds(0, 0, 23, 25);
-			cityInitial.setLocation(cityCoordX, cityCoordY);
-			cityInitial.setFont(new Font(SwingUI.getSansSerifFont(), Font.BOLD, 12));
-			cityInitial.setForeground(Color.black);
-			String slash = new String();
-			if (i != cities.size() - 1) {
-				slash = " / ";
-			}
-			cityInitial.setText(Character.toString(city.getName().charAt(0)) + slash);
-			getMapPanel().add(cityInitial, 0);
-			cityCoordX += 17;
-		}
-	}
-
-	private void refreshPoliticCards(HandDeck politicHandDeck) {
-		int x = 0;
-		int y = 535;
-		for(JLabel card : cardsList) {
-			getMapPanel().remove(card);
-		}
-		
-		if(finished != null){
-			getMapPanel().remove(finished);
-		}
-		
-		for (Card card : ((PoliticHandDeck) politicHandDeck).getCards()) {
-			BufferedImage cardImage = readImage(SwingUI.getImagesPath() + card.toString() + SwingUI.getPoliticCardPath());
-			Image resizedCardImage = cardImage.getScaledInstance(42, 66, Image.SCALE_SMOOTH);
-			JLabel cardLabel = new JLabel(new ImageIcon(resizedCardImage));
-			cardLabel.setDisabledIcon(new ImageIcon(resizedCardImage));
-			cardLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			cardsList.add(cardLabel);
-			cardLabel.addMouseListener(new MouseAdapter() {
-					@Override
-	                public void mouseClicked(MouseEvent e) {
-						chosenCard = card.toString();
-						cardLabel.setEnabled(false);
-		            	getRMIGUIView().resume();
-	                }
-	        });      
-			cardLabel.setBounds(0, 0, 42, 66);
-			cardLabel.setLocation(x, y);
-			x += 44;
-			getMapPanel().add(cardLabel, 0);
-			cardLabel.setEnabled(false);
-		}
-		finished = new JButton("finished");
-		finished.setEnabled(false);
-		finished.addActionListener(new ActionListener() {
-			@Override 
-            public void actionPerformed(ActionEvent e)
-            {
-				finish = true;
-				resumeRMIGUIView();
-            }
-        });
-		finished.setBounds(x, y, 70, 30);
-		getMapPanel().add(finished, 0);
-	}
-
-	private int searchPlayer(List<Player> playersList) {
-		for (Player player : playersList) {
-			if (getPlayerName().equals(player.getName())) {
-				return playersList.indexOf(player);
-			}
-		}
-		return -1;
+	RMISwingUI(GUIView guiView, String mapType, String playerName) {
+		super(guiView, mapType, playerName);
 	}
 
 	private void freeCouncillorsToStrings(List<Councillor> freeCouncillors, List<String> freeCouncillorsColor) {
@@ -237,6 +54,43 @@ class RMISwingUI extends SwingUI {
 		councilsColor.add(council);
 	}
 
+	private void bonusToStrings(Bonus bonus, List<String> bonusesName, List<String> bonusesValue) {
+		bonusesName.add(bonus.getName());
+		bonusesValue.add(String.valueOf(bonus.getValue()));
+	}
+	
+	
+	private void permitTilesToString(List<Card> permitTilesUp, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue) {
+		for(Card card : permitTilesUp) {
+			List<String> permitTileCities = new ArrayList<>();
+			List<City> cities = ((BusinessPermitTile) card).getCities();
+			for(City city : cities) {
+				permitTileCities.add(String.valueOf(city.getName().charAt(0)));
+			}
+			permitTilesCities.add(permitTileCities);
+			List<String> permitTileBonusesName = new ArrayList<>();
+			List<String> permitTileBonusesValue = new ArrayList<>();
+			bonusesToStrings(((BusinessPermitTile) card).getBonuses(), permitTileBonusesName, permitTileBonusesValue);
+			permitTilesBonusesName.add(permitTileBonusesName);
+			permitTilesBonusesValue.add(permitTileBonusesValue);
+		}
+	}
+	
+	private void allPermitTilesToStrings(List<Region> regions, List<String> regionsName, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for(Region region : regions) {
+			regionsName.add(region.getName());
+			List<Card> permitTilesUp = ((GroupRegionalCity) region).getPermitTilesUp().getCards();
+			List<List<String>> permitTilesCities = new ArrayList<>();
+			List<List<String>> permitTilesBonusesName = new ArrayList<>();
+			List<List<String>> permitTilesBonusesValue = new ArrayList<>();
+			permitTilesToString(permitTilesUp, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+			allPermitTilesCities.add(permitTilesCities);
+			allPermitTilesBonusesName.add(permitTilesBonusesName);
+			allPermitTilesBonusesValue.add(permitTilesBonusesValue);
+		}
+	}
+
 	private void bonusTilesToStrings(List<Region> regions, List<String> groupsName, List<String> bonusesName, List<String> bonusesValue) {
 		for(Region region : regions) {
 			if(!region.alreadyUsedBonusTile()) {
@@ -245,14 +99,47 @@ class RMISwingUI extends SwingUI {
 			else {
 				groupsName.add(getAlreadyAcquiredBonusTile());
 			}
-			Bonus bonus = region.getBonusTile();
-			bonusesName.add(bonus.getName());
-			bonusesValue.add(String.valueOf(bonus.getValue()));
+			bonusToStrings(region.getBonusTile(), bonusesName, bonusesValue);
 		}
 	}
-	
+
+	private void playersToStrings(List<Player> players, List<String> names, List<String> coins, List<String> assistants,
+			List<String> nobilityTrackPoints, List<String> victoryPoints) {
+		for(Player player : players) {
+			names.add(player.getName());
+			coins.add(String.valueOf(player.getCoins()));
+			assistants.add(String.valueOf(player.getAssistants()));
+			nobilityTrackPoints.add(String.valueOf(player.getNobilityTrackPoints()));
+			victoryPoints.add(String.valueOf(player.getVictoryPoints()));
+		}
+	}
+
+	private void politicCardsToStrings(Map<String, List<String>> playersPoliticCards, List<Player> playersList) {
+		for(Player player : playersList) {
+			List<String> playerPoliticCards = new ArrayList<>();
+			for(Card card : player.getPoliticHandDeck().getCards()) {
+				playerPoliticCards.add(((PoliticCard) card).getColor().toString());
+			}
+			playersPoliticCards.put(player.getName(), playerPoliticCards);
+		}
+	}
+
+	private void permitTilesToStrings(List<Player> playersList, List<String> playersName, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for(Player player : playersList) {
+			List<Card> permitTiles = player.getPermitHandDeck().getCards();
+			List<List<String>> permitTileCities = new ArrayList<>();
+			List<List<String>> permitTileBonusesName = new ArrayList<>();
+			List<List<String>> permitTileBonusesValue = new ArrayList<>();
+			permitTilesToString(permitTiles, permitTileCities, permitTileBonusesName, permitTileBonusesValue);
+			playersName.add(player.getName());
+			allPermitTilesCities.add(permitTileCities);
+			allPermitTilesBonusesName.add(permitTileBonusesName);
+			allPermitTilesBonusesValue.add(permitTileBonusesValue);
+		}
+	}
+
 	void refreshDynamicContents(StartTurnState currentState) {
-		int playerIndex = searchPlayer(currentState.getPlayersList());
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);
@@ -261,7 +148,14 @@ class RMISwingUI extends SwingUI {
 		List<List<String>> councilsColor = new ArrayList<>();
 		councilsToStrings(currentState.getGroupRegionalCity(), currentState.getKingCouncil().getCouncillors(), councilsName, councilsColor);
 		refreshCouncils(councilsName, councilsColor);
-		refreshRegionalPermitTiles(currentState.getGroupRegionalCity());//TODO
+		
+		List<String> regions = new ArrayList<>();
+		List<List<List<String>>> allPermitTilesCities = new ArrayList<>();
+		List<List<List<String>>> allPermitTilesBonusesName = new ArrayList<>();
+		List<List<List<String>>> allPermitTilesBonusesValue = new ArrayList<>();
+		allPermitTilesToStrings(currentState.getGameMap().getGroupRegionalCity(), regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
+		refreshPermitTilesUp(regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
+		
 		List<String> groupsName = new ArrayList<>();
 		List<String> bonusesName = new ArrayList<>();
 		List<String> bonusesValue = new ArrayList<>();
@@ -285,19 +179,34 @@ class RMISwingUI extends SwingUI {
 		bonusesName.addAll(coloredBonusesName);
 		bonusesValue.addAll(coloredBonusesValue);
 		refreshBonusTiles(groupsName, bonusesName, bonusesValue, kingBonusName, kingBonusValue);
+
+		List<Player> players = currentState.getPlayersList();
+		List<String> names = new ArrayList<>();
+		List<String> coins = new ArrayList<>();
+		List<String> assistants = new ArrayList<>();
+		List<String> nobilityTrackPoints = new ArrayList<>();
+		List<String> victoryPoints = new ArrayList<>();
+		playersToStrings(players, names, coins, assistants, nobilityTrackPoints, victoryPoints);
+		refreshPlayersTable(names, coins, assistants, nobilityTrackPoints, victoryPoints);
 		
-		//TODO
-		refreshPlayersTable(currentState.getPlayersList());
-		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck(), (currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());
-		refreshPoliticCards((currentState.getPlayersList().get(playerIndex)).getPoliticHandDeck());
+		Map<String, List<String>> playersPoliticCards = new HashMap<>();
+		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());
+		refreshPoliticCards(playersPoliticCards);		
+		
+		List<String> playersName = new ArrayList<>();
+		List<List<List<String>>> permitTilesCities = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesName = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
+		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
 
 	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
 		for(int i = 0; i < bonuses.size(); i++)  {
-			bonusesName.add(bonuses.get(i).getName());
-			bonusesValue.add(String.valueOf(bonuses.get(i).getValue()));
+			bonusToStrings(bonuses.get(i), bonusesName, bonusesValue);
 		}
 	}
 	
@@ -340,83 +249,15 @@ class RMISwingUI extends SwingUI {
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
-	
-	private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck, HandDeck permissionUsedHandDeck) {
-		for(JLabel permitTile : playerPermitTiles) {
-			getMapPanel().remove(permitTile);
-		}
-		List<Card> permitHandDeckList = permissionHandDeck.getCards();
-		int indexOfTile = 0; 
-		int x = 0;
-		int y = 611;
-		for(Card permitTile : permitHandDeckList) {
-			drawPermitCard(permitTile, indexOfTile, playerPermitTiles, x, y);
-			x += 52;
-		}
+
+	public void enableTotalHandDeck(boolean display) {
+		/*JDialog totalPermitsCardDialog = new JDialog(getFrame(), "Your Permission Total HandDeck");
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck());
+		refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());*/
 		
-	}
-
-	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction, RMIGUIView rmiguiView) {
-		setRMIGUIView(rmiguiView);
-		getMainActionPanel().setVisible(isAvailableMainAction);
-		getQuickActionPanel().setVisible(isAvailableQuickAction);
-		enableRegionButtons(false);
-	}
-
-	private void enableCards(boolean display) {
-		for (JLabel jLabel : cardsList) {
-			jLabel.setEnabled(display);
-		}
-	}
+	}	
 	
-	public void enablePermissonTilePanel(String chosenCouncil) {
-		List<JLabel> permitsLabel = permitTiles.get(chosenCouncil);	
-		for (JLabel jLabel : permitsLabel) {
-			jLabel.setEnabled(true);
-		}
-	}
-	
-	public void enablePermitTileDeck(boolean display) {
-		for (JLabel jLabel : playerPermitTiles) {
-			jLabel.setEnabled(display);
-		}
-	}
-
-	public void enablePoliticCards(boolean display) {
-		enableCards(display);
-	}
 	
 
-	public void enableCities(boolean display) {
-		enableCitiesButtons(display);
-	}
-	
-	public void enableFreeCouncillorsButtons(boolean display) {
-		Set<Entry<String, JLabel>> freeCouncillorsLabels = getFreeCouncillors().entrySet();
-		for(Entry<String, JLabel> freeCouncillorLabel : freeCouncillorsLabels) {
-			freeCouncillorLabel.getValue().setEnabled(display);
-		}
-	}
-
-	public void clearRMISwingUI() {
-		chosenCard = null;
-		finish = false;
-		clearChosenRegion();
-		Set<Entry<String, List<JLabel>>> allPermitTiles = permitTiles.entrySet();
-		for (Entry<String, List<JLabel>> entry : allPermitTiles){
-			for(JLabel permitTile : entry.getValue()) {
-				permitTile.setEnabled(false);
-			}
-		}
-				
-	}
-
-	public static void main(String[] args) {
-		new RMISwingUI("hard", "ale");//TODO remove this method
-	}
-
-	public void enableFinish(boolean display) {
-		finished.setEnabled(display);
-	}
 
 }

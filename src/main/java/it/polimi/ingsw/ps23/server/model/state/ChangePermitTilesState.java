@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
  * @author Alessandro Erba
  *
  */
-public class ChangePermitsTileState extends QuickActionState {
+public class ChangePermitTilesState extends QuickActionState {
 	
 	/**
 	 * 
@@ -21,7 +21,7 @@ public class ChangePermitsTileState extends QuickActionState {
 	private static final long serialVersionUID = -6241571475175211290L;
 	private Map<String, Deck> regionalPermissionDecks;
 
-	ChangePermitsTileState(String name) {
+	ChangePermitTilesState(String name) {
 		super(name);
 		regionalPermissionDecks = new HashMap<>();
 	}

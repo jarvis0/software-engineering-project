@@ -41,11 +41,11 @@ public class StartTurnState extends MapUpdateState {
 		return stateCache;
 	}
 
-	public Boolean isAvailableMainAction() {
+	public boolean isAvailableMainAction() {
 		return turnHandler.isAvailableMainAction();
 	}
 	
-	public Boolean isAvailableQuickAction() {
+	public boolean isAvailableQuickAction() {
 		return turnHandler.isAvailableQuickAction();
 	}
 	

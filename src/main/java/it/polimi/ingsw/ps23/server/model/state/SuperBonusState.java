@@ -83,6 +83,15 @@ public class SuperBonusState extends State {
 	public boolean isBuildingPemitTileBonus() {
 		return currentBonus instanceof BuildingPermitBonus;
 	}
+
+	public boolean isRecycleBuildingPermitBonus() {
+		return currentBonus instanceof RecycleBuildingPermitBonus;
+	}
+	
+	public boolean isRecycleRewardTokenBonus() {
+		return currentBonus instanceof RecycleRewardTokenBonus;
+	}
+
 	/**
 	 * Analyzes the input region and adds to the list of inputs the object needs.
 	 * @param chosenRegion - selected region

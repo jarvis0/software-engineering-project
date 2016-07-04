@@ -11,7 +11,7 @@ import org.jgrapht.traverse.GraphIterator;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
-import it.polimi.ingsw.ps23.server.model.initialization.CitiesFactory;
+import it.polimi.ingsw.ps23.server.model.initialization.CitiesBuilder;
 import it.polimi.ingsw.ps23.server.model.initialization.GameColorsBuilder;
 import it.polimi.ingsw.ps23.server.model.initialization.RawObject;
 import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
@@ -27,7 +27,7 @@ public class TestLoadCities {
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	
 	private BonusCache bonusCache;
-	private CitiesFactory citiesFactory;
+	private CitiesBuilder citiesFactory;
 	private List<City> cities;
 	private int initialCitiesSize;
 	private City firstRemovedCity;
@@ -38,7 +38,7 @@ public class TestLoadCities {
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		bonusCache = new BonusCache();
-		citiesFactory = new CitiesFactory();
+		citiesFactory = new CitiesBuilder();
 		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
 		cities = citiesFactory.getCities();
 		initialCitiesSize = cities.size();		

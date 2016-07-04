@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardTokensSet;
 
-class CitiesFactory {
+class CitiesBuilder {
 	
 	private static final int CITY_NAME_POSITION = 0;
 	private static final int CITY_COLOR_NAME_POSITION = 1;
@@ -22,7 +22,7 @@ class CitiesFactory {
 	private List<City> citiesList;
 	private Map<String, City> citiesMap;
 	
-	CitiesFactory() {
+	CitiesBuilder() {
 		citiesList = new ArrayList<>();
 		citiesMap = new HashMap<>();
 	}

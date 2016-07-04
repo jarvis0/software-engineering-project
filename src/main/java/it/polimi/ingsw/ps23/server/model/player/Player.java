@@ -23,17 +23,18 @@ public class Player implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 663214081725066833L;
-	private static final int POINTS_MAX_EMPORIUMS_REACHED = 3;
+	private static final int MAX_EMPORIUMS_POINTS_REACHED = 3;//TODO rimettere a 10
+	
 	private String name;
 	private int coins;
 	private int assistants;
-	private BuiltEmporiumsSet builtEmporiumsSet;
 	private int victoryPoints;
 	private int nobilityTrackPoints;
+	private BuiltEmporiumsSet builtEmporiumsSet;
 	private HandDeck permitHandDeck;
-	private HandDeck politicHandDeck;
 	private HandDeck permitUsedHandDeck;
 	private BonusTilesSet bonusTiles;
+	private HandDeck politicHandDeck;
 	private boolean online;
 	/**
 	 * Construct the player for the current game and initialize all variables.
@@ -170,7 +171,7 @@ public class Player implements Serializable {
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		builtEmporiumsSet.addBuiltEmporium(city);
 		if(game.canTakeBonusLastEmporium() && builtEmporiumsSet.containsMaxEmporium()) {
-			updateVictoryPoints(POINTS_MAX_EMPORIUMS_REACHED);
+			updateVictoryPoints(MAX_EMPORIUMS_POINTS_REACHED);
 			game.lastEmporiumBuilt();
 		}
 		game.getGameMap().getCitiesGraph().rewardTokenGiver(game, turnHandler, city);	
@@ -276,7 +277,7 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " permissionHandDeck: " + permitHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
+		String print = 	name + " coins: " + coins + " assistants: " + assistants + " victoryPoints: " + victoryPoints + " nobilityTrackPoints: " + nobilityTrackPoints + " permitHandDeck: " + permitHandDeck.toString() + " built emporiums: " + builtEmporiumsSet.getCitiesPrint() + " status:";	
 		if(isOnline()) {
 			print += " online";
 		}

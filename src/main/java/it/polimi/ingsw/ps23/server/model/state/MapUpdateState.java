@@ -7,7 +7,6 @@ import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
-import it.polimi.ingsw.ps23.server.model.map.board.King;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
@@ -15,21 +14,21 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
 @SuppressWarnings("serial")
-abstract class MapUpdateState extends State{
+abstract class MapUpdateState extends State {
 
 	private Player currentPlayer;
 	private PlayersSet gamePlayersSet;
 	private GameMap gameMap;
 	private Council kingCouncil;
 	private NobilityTrack nobilityTrack;
-	private King king;
+	private String kingPosition;
 	private Bonus currentKingTile;
 	private FreeCouncillorsSet freeCouncillors;
 	private boolean finalTurn;
 	private String lastActionPerformed;
 	
 	public String getKingPosition() {
-		return king.getPosition().getName();
+		return kingPosition;
 	}
 	
 	public List<Councillor> getFreeCouncillors() {
@@ -74,7 +73,7 @@ abstract class MapUpdateState extends State{
 		gamePlayersSet = game.getGamePlayersSet();
 		kingCouncil = game.getKing().getCouncil();
 		nobilityTrack = game.getNobilityTrack();
-		king = game.getKing();
+		kingPosition = game.getKing().getPosition().getName();
 		currentKingTile = game.getKingTilesSet().getCurrentTile();
 		freeCouncillors = game.getFreeCouncillors();
 		finalTurn = false;
@@ -96,7 +95,7 @@ abstract class MapUpdateState extends State{
 		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
 		print += gameMap;
 		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING'S POSITION: " + king.getPosition().getName();
+		print += "> KING'S POSITION: " + kingPosition;
 		print += "\n> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILES:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
 		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
 		StringBuilder loopPrint = new StringBuilder();
