@@ -207,7 +207,7 @@ class GUILoad {
 
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String[] columnNames = new String[] { "Name", "Victory Points", "Coins", "Assistants", "Nobility Points" };
+		String[] columnNames = new String[] { "Name", "Coins", "Assistants", "Nobility Points", "Victory Points" };
 		tableModel = new DefaultTableModel(numRows, columnNames.length) {
 			/**
 			 * 
@@ -245,7 +245,7 @@ class GUILoad {
 
 	private void loadTextArea() {	
 		textArea = new JTextArea();
-		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		textArea.setBounds(897, 503, 440, 70);
 		textArea.setEditable(false);

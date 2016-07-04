@@ -63,7 +63,7 @@ public class TestStartTurnState implements ViewVisitor {
 	}
 
 	@Override
-	public void visit(ChangePermitsTileState currenState) {
+	public void visit(ChangePermitTilesState currenState) {
 		// TODO Auto-generated method stub
 		
 	}

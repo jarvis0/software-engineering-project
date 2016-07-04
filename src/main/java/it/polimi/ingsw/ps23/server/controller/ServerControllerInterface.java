@@ -65,7 +65,7 @@ public interface ServerControllerInterface extends Remote {
 	/**
 	 * Directly invokes the Controller class update method and returns immediately.
 	 * @see {@link Controller#update(SuperBonusGiver)}
-	 * @param superBonusGiver - 
+	 * @param superBonusGiver - the object the give all the {@link SuperBonus} selected
 	 * @throws RemoteException if the remote server is unreachable
 	 */
 	public void wakeUpServer(SuperBonusGiver superBonusGiver) throws RemoteException;

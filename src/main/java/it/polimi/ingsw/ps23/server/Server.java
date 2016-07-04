@@ -25,17 +25,19 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.ViewNotFoundException;
 class Server implements ServerInterface {
 	
 	private static final int SOCKET_PORT_NUMBER = 12345;
-	private static final String CONSOLE_TAG = "<console>";
-	private static final String GUI_TAG = "<gui>";
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 1000;
+	private static final int CONNECTION_TIMEOUT = 1000000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
+	private static final String CONSOLE_TAG = "<console>";
+	private static final String GUI_TAG = "<gui>";
+	private static final String PLAYER_NAME_TAG_OPEN = "<player_name>";
+	private static final String PLAYER_NAME_TAG_CLOSE = "</player_name>";
 	
 	private ExecutorService executor;
 	
@@ -267,7 +269,7 @@ class Server implements ServerInterface {
 				if(isDouble(playerName)) {
 					playerName = solveDoubles(playerName, 1);
 				}
-				connection.sendNoInput("Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
+				connection.sendNoInput("Here you are your unique in game name: \"" + PLAYER_NAME_TAG_OPEN + playerName + PLAYER_NAME_TAG_CLOSE + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
 				socketWaitingConnections.put(playerName, connection);
 				String message = new String();

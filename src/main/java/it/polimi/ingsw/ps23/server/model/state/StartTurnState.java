@@ -103,11 +103,11 @@ public class StartTurnState extends State {
 		return gameMap.getGroupColoredCity();
 	}
 
-	public Boolean isAvailableMainAction() {
+	public boolean isAvailableMainAction() {
 		return turnHandler.isAvailableMainAction();
 	}
 	
-	public Boolean isAvailableQuickAction() {
+	public boolean isAvailableQuickAction() {
 		return turnHandler.isAvailableQuickAction();
 	}
 

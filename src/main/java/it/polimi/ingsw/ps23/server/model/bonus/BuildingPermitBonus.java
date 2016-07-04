@@ -36,7 +36,12 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 		super(name);
 		writeSecondOutput = false;
 	}
-	
+	/**
+	 * Checks the if chosen region exists and takes from it the {@link PermitDeck}. After this set the
+	 * availability of the second output to true.
+	 * @param chosenRegion - the selected region
+	 * @throws InvalidRegionException if the selected region doesn't exist
+	 */
 	public void selectRegion(String chosenRegion) throws InvalidRegionException {
 		if(((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp() == null) {
 			throw new InvalidRegionException();

@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 /**
  * Provides methods to manage cards of a {@link player}
- * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
  *
  */
 public abstract class HandDeck implements Serializable {
