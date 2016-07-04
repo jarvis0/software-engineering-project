@@ -81,16 +81,16 @@ public class MarketOfferPhaseExpression extends GUIParser {
 			String player = guiView.getClient().receive();
 			swingUI.setConsoleText("\nIt's " + player + " market phase turn.");
 			if (player.equals(guiView.getPlayerName())) {
-				sellPoliticCard(Boolean.getBoolean(guiView.getClient().receive()));
-				sellPermissionCard(Boolean.getBoolean(guiView.getClient().receive()));
-				sellAssistant(Boolean.getBoolean(guiView.getClient().receive()));
+				sellPoliticCard(Boolean.valueOf(guiView.getClient().receive()));
+				sellPermissionCard(Boolean.valueOf(guiView.getClient().receive()));
+				sellAssistant(Boolean.valueOf(guiView.getClient().receive()));
 				swingUI.setConsoleText("\nChoose the price for your offer: ");
 				swingUI.enableMarketInputArea(true);
 				guiView.pause();
 				guiView.getClient().send(String.valueOf(swingUI.getChosenValue()));
 				swingUI.enableMarketInputArea(false);
 			} else {
-				guiView.pause();
+				swingUI.showAvailableActions(false, false);
 			}
 		}
 	}

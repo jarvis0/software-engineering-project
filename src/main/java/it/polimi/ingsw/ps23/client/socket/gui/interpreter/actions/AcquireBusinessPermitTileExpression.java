@@ -41,6 +41,7 @@ class AcquireBusinessPermitTileExpression extends GUIParser {
 			while (i < MAX_CARDS_NUMBER && i < politicHandSize && !finish) {
 				guiView.pause();
 				finish = swingUI.hasFinished();
+				swingUI.enableFinish(true);
 				if(!finish) {
 					chosenCards.add(swingUI.getChosenCard());
 				}
