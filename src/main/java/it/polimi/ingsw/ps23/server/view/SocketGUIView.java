@@ -185,12 +185,12 @@ public class SocketGUIView extends SocketView {
 		String playerName = currentState.getPlayerName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
-			List<String> chosenPoliticCards = sellPoliticCard(currentState);
+			List<String> politicCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermitCards(currentState);
 			int chosenAssistants = sellAssistant(currentState);
 			int cost = Integer.parseInt(receive());
 			try {
-				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+				wakeUp(currentState.createMarketObject(politicCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				getState().setExceptionString(e.toString());

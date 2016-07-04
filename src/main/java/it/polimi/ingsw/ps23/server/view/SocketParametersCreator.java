@@ -31,8 +31,8 @@ class SocketParametersCreator {
 	private static final String NOBILITY_TRACK_TAG_CLOSE = "</nobility_track>";
 	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
 	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
-	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
-	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
+	private static final String KING_TAG_OPEN = "<king_position>";
+	private static final String KING_TAG_CLOSE = "</king_position>";
 	private static final String FREE_COUNCILLORS_TAG_OPEN = "<free_councillors>";
 	private static final String FREE_COUNCILLORS_TAG_CLOSE = "</free_councillors>";
 	private static final String COUNCILS_TAG_OPEN = "<councils>";
@@ -62,7 +62,7 @@ class SocketParametersCreator {
 	private static final String END_GAME_TAG = "<end_game>";
 	
 	private String addKingPosition(String kingPosition) {
-		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
+		return KING_TAG_OPEN + kingPosition + KING_TAG_CLOSE;
 	}
 	
 	private void addBonuses(StringBuilder bonusesSend, List<Bonus> bonuses) {

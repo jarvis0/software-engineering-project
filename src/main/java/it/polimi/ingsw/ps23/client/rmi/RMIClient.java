@@ -30,8 +30,8 @@ class RMIClient implements ClientInterface {
 	
 	private RMIClient(String playerName) {
 		output = new PrintStream(System.out);
-		//rmiView = new RMIConsoleView(playerName, output);
-		rmiView = new RMIGUIView(playerName, output);
+		rmiView = new RMIConsoleView(playerName, output);
+		//rmiView = new RMIGUIView(playerName, output);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
 	}
@@ -52,9 +52,9 @@ class RMIClient implements ClientInterface {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to RMI registry.", e);
 		}
 	}
-	
+
 	@Override
-	public void setController(ServerControllerInterface controller) {
+	public void setController(ServerControllerInterface controller) throws RemoteException {
 		rmiView.setController(controller);
 	}
 

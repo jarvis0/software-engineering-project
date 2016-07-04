@@ -192,4 +192,8 @@ public class GameInstance {
 		model.setOnlinePlayer(name);
 	}
 
+	boolean checkIfEndGame() {
+		return model.getEndGame();
+	}
+
 }

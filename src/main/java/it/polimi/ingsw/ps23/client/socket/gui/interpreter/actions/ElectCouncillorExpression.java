@@ -33,10 +33,10 @@ class ElectCouncillorExpression extends GUIParser {
 			swingUI.enableRegionButtons(true);
 			swingUI.enableKingButton(true);
 			guiView.pause();
-			String chosenBalcony = swingUI.getChosenRegion();
-			swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + chosenBalcony + "'s balcony");
+			String balcony = swingUI.getChosenRegion();
+			swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + balcony + "'s balcony");
 			guiView.getClient().send(chosenCouncillor);
-			guiView.getClient().send(chosenBalcony);
+			guiView.getClient().send(balcony);
 		}
 	}
 

@@ -316,6 +316,11 @@ class Server implements ServerInterface {
 		}
 	}
 
+	@Override
+	public void endGame() {
+		gameInstances.checkIfEndGame();
+	}
+
 	/**
 	 * This static method is the entry point for the Server application.
 	 * It starts RMI and Socket server side connections.

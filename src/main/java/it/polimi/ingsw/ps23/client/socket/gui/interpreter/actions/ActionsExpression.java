@@ -16,8 +16,8 @@ public class ActionsExpression extends GUIParser {
 	private static final String ADDITIONAL_MAIN_ACTION_TAG = "<additional_main_action>";
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
 	private static final String BUILD_EMPORIUM_PERMIT_TILE = "<build_emporium_permit_tile>";
-	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
-	private static final String MARKET_BUY_PHASE_TAG = "<market_buy_phase>";
+	private static final String MARKET_OFFER_TAG = "<market_offer_phase>";
+	private static final String MARKET_BUY_TAG = "<market_buy_phase>";
 	private static final String SUPER_BONUS_TAG = "<super_bonus>";
 	private static final String END_GAME_TAG = "<end_game>";
 	
@@ -74,12 +74,12 @@ public class ActionsExpression extends GUIParser {
 	}
 	
 	private MarketOfferPhaseExpression getMarketOfferPhaseExpression() {
-		Expression marketOfferPhaseExpression = new TerminalExpression(MARKET_OFFER_PHASE_TAG, "");
+		Expression marketOfferPhaseExpression = new TerminalExpression(MARKET_OFFER_TAG, "");
 		return new MarketOfferPhaseExpression(swingUI, guiView, marketOfferPhaseExpression);
 	}
 	
 	private MarketBuyPhaseExpression getMarketBuyPhaseExpression() {
-		Expression marketBuyPhaseExpression = new TerminalExpression(MARKET_BUY_PHASE_TAG, "");
+		Expression marketBuyPhaseExpression = new TerminalExpression(MARKET_BUY_TAG, "");
 		return new MarketBuyPhaseExpression(swingUI, guiView, marketBuyPhaseExpression);
 	}
 	

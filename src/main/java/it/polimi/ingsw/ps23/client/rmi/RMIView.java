@@ -4,20 +4,35 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
+import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
+import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
+import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.view.View;
 
 abstract class RMIView extends View {
 	
 	private ServerControllerInterface controllerInterface;
 	private String clientName;
+	private State state;
+	private boolean waiting;
 	
 	protected RMIView(String clientName) {
 		this.clientName = clientName;
+		waiting = false;
 	}
 
 	abstract void infoMessage(String message);
 	
 	abstract void setMapType(String mapType);
+	
+	protected State getState() {
+		return state;
+	}
+	
+	protected void setWaiting(boolean waiting) {
+		this.waiting = waiting;
+	}
 	
 	protected String getClientName() {
 		return clientName;
@@ -30,7 +45,7 @@ abstract class RMIView extends View {
 	protected void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
-	
+
 	protected ServerControllerInterface getControllerInterface() {
 		return controllerInterface;
 	}
@@ -49,6 +64,20 @@ abstract class RMIView extends View {
 	 */
 	public synchronized void resume() {
 		notifyAll();
+	}
+	
+
+	private boolean waitResumeCondition() {
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
+	}
+
+	@Override
+	public void update(State state) {
+		this.state = state;
+		if(waitResumeCondition() && waiting) {
+			resume();
+			waiting = false;
+		}
 	}
 
 }
