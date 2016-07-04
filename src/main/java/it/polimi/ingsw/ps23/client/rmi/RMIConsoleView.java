@@ -294,7 +294,7 @@ class RMIConsoleView extends RMIView {
 	}
 	
 	@Override
-	public void visit(SuperBonusState currentState) {// TODO gestione turni???
+	public void visit(SuperBonusState currentState) {
 		try {
 			while (currentState.hasNext()) {				
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
@@ -324,8 +324,7 @@ class RMIConsoleView extends RMIView {
 	}
 
 	private boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState
-				|| state instanceof MarketOfferPhaseState;
+		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
 	}
 
 	@Override

@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.GUIView;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
@@ -332,7 +334,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	}
 	
-	/*private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
+	
+	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
 			swingUI.setConsoleText("\n\n" + currentState.useBonus());
 			swingUI.enableRegionButtons(true);
@@ -340,31 +343,48 @@ public class RMIGUIView extends RMIView implements GUIView {
 			String chosenRegion = swingUI.getChosenRegion();
 			currentState.analyzeInput(chosenRegion);
 		}
-	}*/
+	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		/*try {
-			while (currentState.hasNext()) {				
-				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
-				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+		while (currentState.hasNext()) {		
+			String selectedItem;
+			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
+			try {
+				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {					
 					additionalOutput(currentState);
 					swingUI.setConsoleText("\n\n" + currentState.useBonus());
+					if(currentState.isRecycleBuildingPermitBonus()) {
+						//swingUI.enableTotalHandDeck(true);
+						pause();
+						selectedItem = String.valueOf(swingUI.getChosenTile());
+					} 
+					if(currentState.isRecycleRewardTokenBonus()) {
+						swingUI.enableCities(true);
+						pause();
+					selectedItem = swingUI.getChosenCity();
+					} else {
+						//swingUI.enablePermissonTilePanel(swingUI.getChosenRegion());
+						pause();
+						selectedItem = String.valueOf(swingUI.getChosenTile());
+					}
+					swingUI.setConsoleText("\n\n" + currentState.useBonus());
 					currentState.checkKey();
-					currentState.addValue(scanner.nextLine());
-					currentState.confirmChange();
+					currentState.addValue(selectedItem);
+				}
+			}catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+					state.setExceptionString(e.toString());
 				}
 			}
-		} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
-		}
+		currentState.confirmChange();
+		
 		try {
 			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver());
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
-	*/
+		
 	}
 
 	@Override

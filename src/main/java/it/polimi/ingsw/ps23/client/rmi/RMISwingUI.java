@@ -175,7 +175,6 @@ class RMISwingUI extends SwingUI {
 		
 		//TODO
 		//refreshAcquiredPermitTiles((currentState.getPlayersList().get(playerIndex)).getPermitHandDeck(), (currentState.getPlayersList().get(playerIndex)).getPermitUsedHandDeck());
-		
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -224,7 +223,7 @@ class RMISwingUI extends SwingUI {
 		List<List<String>> stepsBonusesValue = new ArrayList<>();
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
-	}
+	}	
 	
 	/*private void refreshAcquiredPermitTiles(HandDeck permissionHandDeck) {
 		for(JLabel permitTile : playerPermitTiles) {
@@ -239,5 +238,6 @@ class RMISwingUI extends SwingUI {
 			x += 52;
 		}
 	}*/
+
 
 }
