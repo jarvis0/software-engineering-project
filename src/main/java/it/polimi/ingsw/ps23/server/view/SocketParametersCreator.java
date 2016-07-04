@@ -57,6 +57,9 @@ class SocketParametersCreator {
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
 	private static final String BUILD_EMPORIUM_PERMIT_TILE_TAG = "<build_emporium_permit_tile>";
 	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
+	private static final String MARKET_BUY_PHASE_TAG = "<market_buy_phase>";
+	private static final String SUPER_BONUS_TAG = "<super_bonus>";
+	private static final String END_GAME_TAG = "<end_game>";
 	
 	private String addKingPosition(String kingPosition) {
 		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
@@ -259,6 +262,18 @@ class SocketParametersCreator {
 	
 	String createMarketOfferPhase() {
 		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createMarketBuyPhase() {
+		return ACTION_TAG_OPEN + MARKET_BUY_PHASE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createSuperBonus() {
+		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + ACTION_TAG_CLOSE;
+	}
+
+	public String createEndGame() {
+		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
 	}
 
 }

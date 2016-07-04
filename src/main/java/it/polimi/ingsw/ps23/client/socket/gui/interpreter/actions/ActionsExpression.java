@@ -17,6 +17,9 @@ public class ActionsExpression extends GUIParser {
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
 	private static final String BUILD_EMPORIUM_PERMIT_TILE = "<build_emporium_permit_tile>";
 	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
+	private static final String MARKET_BUY_PHASE_TAG = "<market_buy_phase>";
+	private static final String SUPER_BONUS_TAG = "<super_bonus>";
+	private static final String END_GAME_TAG = "<end_game>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -75,6 +78,21 @@ public class ActionsExpression extends GUIParser {
 		return new MarketOfferPhaseExpression(swingUI, guiView, marketOfferPhaseExpression);
 	}
 	
+	private MarketBuyPhaseExpression getMarketBuyPhaseExpression() {
+		Expression marketBuyPhaseExpression = new TerminalExpression(MARKET_BUY_PHASE_TAG, "");
+		return new MarketBuyPhaseExpression(swingUI, guiView, marketBuyPhaseExpression);
+	}
+	
+	private SuperBonusExpression getSuperBonusExpression() {
+		Expression superBonusExpression = new TerminalExpression(SUPER_BONUS_TAG, "");
+		return new SuperBonusExpression(swingUI, guiView, superBonusExpression);
+	}
+
+	private EndGameExpression getEndGameExpression() {
+		Expression endGameExpression = new TerminalExpression(END_GAME_TAG, "");
+		return new EndGameExpression(swingUI, guiView, endGameExpression);
+	}
+
 	@Override
 	public void parse(String message) {
 		if(expression.interpret(message)) {
@@ -96,6 +114,12 @@ public class ActionsExpression extends GUIParser {
 			isBuildEmporiumPermitTileAction.parse(message);
 			MarketOfferPhaseExpression isMarketOfferPhaseAction = getMarketOfferPhaseExpression();
 			isMarketOfferPhaseAction.parse(message);
+			MarketBuyPhaseExpression isMarketBuyPhaseAction = getMarketBuyPhaseExpression();
+			isMarketBuyPhaseAction.parse(message);
+			SuperBonusExpression isSuperBonusAction = getSuperBonusExpression();
+			isSuperBonusAction.parse(message);
+			EndGameExpression isEndGameAction = getEndGameExpression();
+			isEndGameAction.parse(message);
 		}
 	}
 

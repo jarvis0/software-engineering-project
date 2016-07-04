@@ -797,10 +797,6 @@ public abstract class SwingUI {
 		}
 	}
 
-	public void enableButtons(boolean display) {
-		enableRegionButtons(display);
-	}
-
 	protected void clearChosenRegion() {
 		chosenRegion = null;
 	}

@@ -8,7 +8,7 @@ import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
-public class MarketOfferPhaseExpression extends GUIParser {
+class MarketOfferPhaseExpression extends GUIParser {
 
 	private SocketSwingUI swingUI;
 	

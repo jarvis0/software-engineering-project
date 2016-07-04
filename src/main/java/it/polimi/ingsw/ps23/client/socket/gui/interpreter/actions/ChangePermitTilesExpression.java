@@ -22,11 +22,13 @@ class ChangePermitTilesExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
-			swingUI.enableButtons(true);
+			swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
 			swingUI.showAvailableActions(false, false);
+			swingUI.enableRegionButtons(true);
 			guiView.pause();
 			String chosenRegion = swingUI.getChosenRegion();
-			swingUI.enableButtons(false);
+			swingUI.enableRegionButtons(false);
+			swingUI.appendConsoleText("\nYou have just changed the " + chosenRegion + "'s Permit Tiles");
 			guiView.getClient().send(chosenRegion);
 		}
 	}

@@ -29,9 +29,9 @@ class AcquireBusinessPermitTileExpression extends GUIParser {
 		if(expression.interpret(message)) {
 			swingUI.clearSwingUI();
 			swingUI.showAvailableActions(false, false);
-			swingUI.enableButtons(true);
+			swingUI.enableRegionButtons(true);
 			guiView.pause();
-			swingUI.enableButtons(false);
+			swingUI.enableRegionButtons(false);
 			String chosenCouncil = swingUI.getChosenRegion();
 			swingUI.enablePoliticCards(true);
 			boolean finish = false;

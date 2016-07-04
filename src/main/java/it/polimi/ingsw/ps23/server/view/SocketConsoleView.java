@@ -35,6 +35,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 public class SocketConsoleView extends SocketView {
 	
 	private static final String SKIP = "skip";
+	private static final String END_GAME_TAG = "<end_game>";
 	/**
 	 * Constructs the object view the name of the client and the connection to comunicate to the {@link RemoteConsoleView}
 	 * @param clientName - the client's name coonected to the {@link Server}
@@ -279,7 +280,7 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(EndGameState currentState) {
-		getConnection().sendNoInput(currentState.getWinner());
+		getConnection().sendNoInput(END_GAME_TAG + currentState.getWinner());
 		setEndGame(true);
 	}
 

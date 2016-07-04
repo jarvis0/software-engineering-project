@@ -12,10 +12,14 @@ abstract class RemoteView {
 	private PrintStream output;
 	
 	private boolean connectionTimedOut;
+	
+	private boolean endGame;
 
 	protected RemoteView(SocketClient client, PrintStream output) {
 		this.client = client;
 		this.output = output;
+		connectionTimedOut = false;
+		endGame = false;
 	}
 	
 	protected String getNoInputTagOpen() {
@@ -32,6 +36,17 @@ abstract class RemoteView {
 	
 	public SocketClient getClient() {
 		return client;
+	}
+	
+	/**
+	 * Sets the end of the game on the remote client.
+	 */
+	public void setEndGame() {
+		endGame = true;
+	}
+	
+	protected boolean getEndGame() {
+		return endGame;
 	}
 	
 	protected boolean getConnectionTimedOut() {

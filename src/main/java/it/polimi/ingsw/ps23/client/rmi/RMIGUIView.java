@@ -48,10 +48,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 		this.output = output;
 	}
 
-	public State getCurrentState() {
-		return state;
-	}
-	
 	private void sendAction(Action action) {
 		try {
 			getControllerInterface().wakeUpServer(action);
@@ -334,11 +330,10 @@ public class RMIGUIView extends RMIView implements GUIView {
 					swingUI.setConsoleText("\nChoose the offert that you want to buy: \n" + currentState.getAvaiableOffers());
 					swingUI.enableMarketInputArea(true);
 					pause();
-					int chosenOffert = swingUI.getChosenValue();
 					swingUI.enableMarketInputArea(false);
-					getControllerInterface().wakeUpServer(currentState.createTransation(chosenOffert - 1));
+					getControllerInterface().wakeUpServer(currentState.createTransation(swingUI.getChosenValue() - 1));
 				} else {
-					output.println("You can buy nothing.");
+					swingUI.appendConsoleText("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
 			} catch (RemoteException | NumberFormatException e) {
@@ -348,7 +343,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 			waiting = true;
 			pause();
 		}
-
 	}
 	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
@@ -374,11 +368,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 						swingUI.enableTotalHandDeck(true);
 						pause();
 						selectedItem = String.valueOf(swingUI.getChosenTile());
-					} 
+					}
 					if(currentState.isRecycleRewardTokenBonus()) {
 						swingUI.enableCities(true);
 						pause();
-					selectedItem = swingUI.getChosenCity();
+						selectedItem = swingUI.getChosenCity();
 					} else {
 						swingUI.enablePermitTilesPanel(swingUI.getChosenRegion());
 						pause();
