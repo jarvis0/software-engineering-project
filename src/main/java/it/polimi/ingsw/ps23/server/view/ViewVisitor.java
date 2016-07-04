@@ -38,7 +38,7 @@ public interface ViewVisitor {
 	 * Start the visit of the selected state.
 	 * @param currentState - the current state of the game
 	 */
-	public void visit(ChangePermitTilesState currenState);
+	public void visit(ChangePermitTilesState currentState);
 	/**
 	 * Start the visit of the selected state.
 	 * @param currentState - the current state of the game

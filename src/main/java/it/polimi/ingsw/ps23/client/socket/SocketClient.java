@@ -24,7 +24,7 @@ public class SocketClient {
 	private PrintStream textOut;
 	
 	private RemoteView remoteView;
-	
+
 	private SocketClient(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);

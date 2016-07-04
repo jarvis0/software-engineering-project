@@ -785,7 +785,8 @@ public abstract class SwingUI {
 	}
 
 	public void loadMarketInputArea() {
-		marketSendButton.addActionListener(new ActionListener(){
+		marketSendButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
 		         spinnerValue = (int)marketSpinner.getValue();
 		         guiView.resume();

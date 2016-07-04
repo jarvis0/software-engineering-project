@@ -62,7 +62,6 @@ public class SocketConsoleView extends SocketView {
 			else {
 				wakeUp();
 			}
-			
 		}
 		else {
 			getConnection().sendNoInput("It's player " + player.getName() + " turn.");
