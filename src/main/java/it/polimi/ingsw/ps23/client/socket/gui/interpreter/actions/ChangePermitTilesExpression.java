@@ -23,6 +23,7 @@ class ChangePermitTilesExpression extends GUIParser {
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			swingUI.enableButtons(true);
+			swingUI.showAvailableActions(false, false);
 			guiView.pause();
 			String chosenRegion = swingUI.getChosenRegion();
 			swingUI.enableButtons(false);
