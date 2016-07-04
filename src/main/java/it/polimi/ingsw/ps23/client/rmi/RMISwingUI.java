@@ -124,6 +124,21 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
+	private void permitTilesToStrings(List<Player> playersList, List<String> playersName, List<List<List<String>>> allPermitTilesCities,
+			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
+		for(Player player : playersList) {
+			List<Card> permitTiles = player.getPermitHandDeck().getCards();
+			List<List<String>> permitTileCities = new ArrayList<>();
+			List<List<String>> permitTileBonusesName = new ArrayList<>();
+			List<List<String>> permitTileBonusesValue = new ArrayList<>();
+			permitTilesToString(permitTiles, permitTileCities, permitTileBonusesName, permitTileBonusesValue);
+			playersName.add(player.getName());
+			allPermitTilesCities.add(permitTileCities);
+			allPermitTilesBonusesName.add(permitTileBonusesName);
+			allPermitTilesBonusesValue.add(permitTileBonusesValue);
+		}
+	}
+
 	void refreshDynamicContents(StartTurnState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
@@ -178,8 +193,13 @@ class RMISwingUI extends SwingUI {
 		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());
 		refreshPoliticCards(playersPoliticCards);		
 		
+		List<String> playersName = new ArrayList<>();
+		List<List<List<String>>> permitTilesCities = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesName = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
+		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		
-		//refreshAcquiredPermitTiles(.getPermitHandDeck());
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
