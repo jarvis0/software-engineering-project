@@ -75,7 +75,7 @@ public class MarketOfferPhaseState extends MapUpdateState {
 		if(chosenAssistants < 0 || chosenAssistants > getCurrentPlayer().getAssistants()) {
 			throw new InvalidNumberOfAssistantException();
 		}
-		if(cost <= 0) {
+		if(cost < 0) {
 			throw new InvalidCostException();
 		}
 	}

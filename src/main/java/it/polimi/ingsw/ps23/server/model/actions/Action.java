@@ -18,10 +18,12 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
  * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
  *
  */
-
-@SuppressWarnings("serial")
 public abstract class Action implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7864642674984087880L;
 	private String actionReport;
 	/**
 	 * Performs the specified game action.

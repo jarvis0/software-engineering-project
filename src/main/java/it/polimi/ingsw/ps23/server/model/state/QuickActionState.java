@@ -1,9 +1,11 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
+import java.io.Serializable;
+
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-abstract class QuickActionState extends ActionState {
+abstract class QuickActionState extends ActionState implements Serializable {
 
 	/**
 	 * 

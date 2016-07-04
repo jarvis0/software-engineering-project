@@ -13,9 +13,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
-@SuppressWarnings("serial")
 abstract class MapUpdateState extends State {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6491577176320941015L;
 	private Player currentPlayer;
 	private PlayersSet gamePlayersSet;
 	private GameMap gameMap;
