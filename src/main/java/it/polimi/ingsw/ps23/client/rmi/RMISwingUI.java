@@ -217,7 +217,7 @@ class RMISwingUI extends SwingUI {
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		totalPermitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
-		//refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -267,12 +267,6 @@ class RMISwingUI extends SwingUI {
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
-
-	public void enableTotalHandDeck(boolean display) {
-		
-	}	
-	
-	
 
 
 }

@@ -107,6 +107,7 @@ public abstract class SwingUI {
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
+		playerAllPermitTiles = new HashMap<>();
 		totalPermitsCardDialog = new JDialog(frame, "Your Permission Total HandDeck");
 		loadMarketInputArea();
 		loadRegionButtons();
@@ -878,7 +879,7 @@ public abstract class SwingUI {
 				totalPermitsCardDialog.remove(jLabel);
 			}
 		}
-		playerPermitTiles.clear();
+		playerAllPermitTiles.clear();
 		
 		int x = 0;
 		int y = 611;
@@ -888,5 +889,11 @@ public abstract class SwingUI {
 			x += 52;
 		}
 	}
+	
+
+	public void enableTotalHandDeck(boolean display) {
+		totalPermitsCardDialog.setVisible(true);
+	}	
+	
 
 }

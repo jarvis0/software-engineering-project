@@ -119,6 +119,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	@Override
 	public void visit(ChangePermitTilesState currentState) {
 		swingUI.enableRegionButtons(true);
+		swingUI.showAvailableActions(false, false);
 		swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
 		pause();
 		String chosenRegion = swingUI.getChosenRegion();
