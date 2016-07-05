@@ -25,5 +25,10 @@ public class AdditionalMainActionBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) {
 		turnHandler.addMainAction();		
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 	
 }

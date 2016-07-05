@@ -26,4 +26,9 @@ public class CoinBonus extends Bonus {
 		game.getCurrentPlayer().updateCoins(getValue());
 	}
 
+	@Override
+	public boolean isNull() {
+		return false;
+	}
+
 }

@@ -47,4 +47,9 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 			((BusinessPermitTile) game.getCurrentPlayer().getAllPermitHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
 	}
 
+	@Override
+	public boolean isNull() {
+		return false;
+	}
+
 }
