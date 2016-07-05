@@ -215,6 +215,7 @@ class SocketParametersCreator {
 		Set<Entry<String, City>> citiesEntries = cities.entrySet();
 		emporiumsSend.append(String.valueOf(citiesEntries.size()));
 		for(Entry<String, City> cityEntry : citiesEntries) {
+			emporiumsSend.append("," + cityEntry.getValue().getName());//TODO
 			List<String> playerEmporiums = cityEntry.getValue().getEmporiumsPlayersList();
 			emporiumsSend.append(",");
 			emporiumsSend.append(String.valueOf(playerEmporiums.size()));
