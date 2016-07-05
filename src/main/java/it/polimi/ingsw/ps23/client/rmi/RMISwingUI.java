@@ -107,13 +107,14 @@ class RMISwingUI extends SwingUI {
 	}
 
 	private void playersToStrings(List<Player> players, List<String> names, List<String> coins, List<String> assistants,
-			List<String> nobilityTrackPoints, List<String> victoryPoints) {
+			List<String> nobilityTrackPoints, List<String> victoryPoints, List<String> online) {
 		for(Player player : players) {
 			names.add(player.getName());
 			coins.add(String.valueOf(player.getCoins()));
 			assistants.add(String.valueOf(player.getAssistants()));
 			nobilityTrackPoints.add(String.valueOf(player.getNobilityTrackPoints()));
 			victoryPoints.add(String.valueOf(player.getVictoryPoints()));
+			online.add(String.valueOf(player.isOnline()));
 		}
 	}
 
@@ -213,8 +214,9 @@ class RMISwingUI extends SwingUI {
 		List<String> assistants = new ArrayList<>();
 		List<String> nobilityTrackPoints = new ArrayList<>();
 		List<String> victoryPoints = new ArrayList<>();
-		playersToStrings(players, names, coins, assistants, nobilityTrackPoints, victoryPoints);
-		refreshPlayersTable(names, coins, assistants, nobilityTrackPoints, victoryPoints);
+		List<String> online = new ArrayList<>();
+		playersToStrings(players, names, coins, assistants, nobilityTrackPoints, victoryPoints, online);
+		refreshPlayersTable(names, coins, assistants, nobilityTrackPoints, victoryPoints, online);
 		
 		Map<String, List<String>> playersPoliticCards = new HashMap<>();
 		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());

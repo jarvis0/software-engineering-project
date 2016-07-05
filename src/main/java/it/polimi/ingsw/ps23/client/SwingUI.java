@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -448,17 +447,18 @@ public abstract class SwingUI {
 
 	protected void refreshPlayersTable(List<String> playersName, List<String> playersCoins,
 			List<String> playersAssistants, List<String> playersNobilityTrackPoints,
-			List<String> playersVictoryPoints) {
+			List<String> playersVictoryPoints, List<String> playersAreOnline) {
 		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 			tableModel.removeRow(i);
 		}
 		for (int i = 0; i < playersName.size(); i++) {
-			Vector<Object> vector = new Vector<>();
-			vector.add(0, playersName.get(i));
-			vector.add(1, playersCoins.get(i));
-			vector.add(2, playersAssistants.get(i));
-			vector.add(3, playersNobilityTrackPoints.get(i));
-			vector.add(4, playersVictoryPoints.get(i));
+			String nameField =  playersName.get(i);
+			String playerCoinsField = playersCoins.get(i);
+			String playerAssistantsField = playersAssistants.get(i);
+			String playersNobilityTrackPointsField = playersNobilityTrackPoints.get(i);
+			String playerVictoryPointsField = playersVictoryPoints.get(i);
+			String playerIsOnline = playersAreOnline.get(i); 
+			Object[] vector = {nameField, playerCoinsField, playerAssistantsField, playersNobilityTrackPointsField, playerVictoryPointsField, playerIsOnline};
 			tableModel.addRow(vector);
 		}
 	}
@@ -743,7 +743,7 @@ public abstract class SwingUI {
 		for (Entry<String, Map<JLabel, JLabel>> entry : freeCouncillorsLabels.entrySet()) {
 			Map<JLabel, JLabel> freeCouncillor = entry.getValue();
 			for (Entry<JLabel, JLabel> jlabel : freeCouncillor.entrySet()) {
-				jlabel.getKey().setEnabled(true);
+				jlabel.getKey().setEnabled(display);
 			}
 		}
 
@@ -786,8 +786,8 @@ public abstract class SwingUI {
 		clearChosenRegion();
 		Set<Entry<String, Map<JLabel, List<JLabel>>>> allPermitTilesEntries = permitTiles.entrySet();
 		for (Entry<String, Map<JLabel, List<JLabel>>> permitTilesEntry : allPermitTilesEntries) {
-			Map<JLabel, List<JLabel>> permitTiles = permitTilesEntry.getValue();
-			for (JLabel label : permitTiles.keySet()) {
+			Map<JLabel, List<JLabel>> permitTilesLabel = permitTilesEntry.getValue();
+			for (JLabel label : permitTilesLabel.keySet()) {
 				label.setEnabled(false);
 			}
 		}
