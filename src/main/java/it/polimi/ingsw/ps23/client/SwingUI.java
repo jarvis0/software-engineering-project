@@ -738,7 +738,6 @@ public abstract class SwingUI {
 	private void loadCitiesButtons() {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
-			cityLabel.getValue().setToolTipText("ciao");
 			cityLabel.getValue().addMouseListener(new MouseAdapter() {
 				@Override
                 public void mouseClicked(MouseEvent e) {
