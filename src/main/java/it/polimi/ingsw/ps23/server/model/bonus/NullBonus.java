@@ -1,7 +1,4 @@
 package it.polimi.ingsw.ps23.server.model.bonus;
-
-import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.TurnHandler;
 /**
  * Provides methods to take the specified bonus
  * @author Giuseppe Mascellaro
@@ -22,13 +19,13 @@ public class NullBonus extends Bonus {
 	}
 
 	@Override
-	public void updateBonus(Game game, TurnHandler turnHandler) {
-		return;
-	}
-
-	@Override
 	public boolean isNull() {
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return " - ";
 	}
 	
 }

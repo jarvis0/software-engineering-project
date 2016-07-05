@@ -14,6 +14,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
@@ -35,7 +36,7 @@ public class TestRewardTokensExpression {
 				assertTrue(rewardTokensExpression.getCitiesName().toString().contains(city.getName()));
 				for(Bonus bonus : ((NormalCity)city).getRewardToken().getBonuses()) {
 					assertTrue(rewardTokensExpression.getRewardTokensName().toString().contains(bonus.getName()));
-					assertTrue(rewardTokensExpression.getRewardTokensValue().toString().contains(String.valueOf(bonus.getValue())));
+					assertTrue(rewardTokensExpression.getRewardTokensValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
 				}
 			}
 		}
@@ -61,7 +62,7 @@ public class TestRewardTokensExpression {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + bonus.getValue());
+			bonusesSend.append("," + ((RealBonus)bonus).getValue());
 		}
 	}
 

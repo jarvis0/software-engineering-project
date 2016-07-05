@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.GroupColoredCity;
@@ -34,7 +35,7 @@ class GroupColoredCitiesBuilder {
 		for(String[] rawColoredCity : rawColoredCities) {
 			String colorName = rawColoredCity[COLOR_POSITION];
 			Bonus bonus = new VictoryPointBonus(fields[BONUS_NAME_POSITION]);
-			bonus.setValue(Integer.parseInt(rawColoredCity[BONUS_VALUE_POSITION]));
+			((RealBonus)bonus).setValue(Integer.parseInt(rawColoredCity[BONUS_VALUE_POSITION]));
 			Region coloredGroup = new GroupColoredCity(colorName, bonus);
 			addCities(cities, colorName, coloredGroup);
 			coloredGroupCities.add(coloredGroup);

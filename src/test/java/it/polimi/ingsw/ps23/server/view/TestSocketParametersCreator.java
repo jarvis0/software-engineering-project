@@ -11,6 +11,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
@@ -64,13 +65,15 @@ public class TestSocketParametersCreator {
 			City city = iterator.next();
 			if(!(city instanceof CapitalCity)) {
 				for(Bonus bonus : ((NormalCity)city).getRewardToken().getBonuses()) {
-					assertTrue(content.substring(content.indexOf("<reward_tokens>"), content.indexOf("</reward_tokens>")).contains(bonus.getName() + "," + bonus.getValue()));
+					assertTrue(content.substring(content.indexOf("<reward_tokens>"), content.indexOf("</reward_tokens>")).contains(bonus.getName() + "," + ((RealBonus)bonus).getValue()));
 				}
 			}
 		}
 		for(NobilityTrackStep step : game.getNobilityTrack().getSteps()) {
 			for(Bonus bonus : step.getBonuses()) {
-				assertTrue(content.substring(content.indexOf("<nobility_track>"), content.indexOf("</nobility_track>")).contains(bonus.getName() + "," + bonus.getValue()));
+				if(!bonus.isNull()) {
+					assertTrue(content.substring(content.indexOf("<nobility_track>"), content.indexOf("</nobility_track>")).contains(bonus.getName() + "," + ((RealBonus)bonus).getValue()));
+				}
 			}
 		}
 		MarketOfferPhaseState newState = new MarketOfferPhaseState();

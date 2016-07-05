@@ -11,7 +11,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
  * @author Alessandro Erba
  *
  */
-public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
+public class RecycleRewardTokenBonus extends RealBonus implements SuperBonus {
 	
 	/**
 	 * 

@@ -10,6 +10,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
 
 public class TestNobilityTrackExpression {
@@ -25,7 +26,8 @@ public class TestNobilityTrackExpression {
 		for(NobilityTrackStep step : game.getNobilityTrack().getSteps()) {
 			for(Bonus bonus : step.getBonuses()) {
 				assertTrue(nobilityTrackExpression.getStepsName().toString().contains(bonus.getName()));
-				assertTrue(nobilityTrackExpression.getStepsValue().toString().contains(String.valueOf(bonus.getValue())));
+				if(!bonus.isNull())
+				assertTrue(nobilityTrackExpression.getStepsValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
 			}
 		}
 	}
@@ -44,7 +46,11 @@ public class TestNobilityTrackExpression {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + bonus.getValue());
+			if(!bonus.isNull()) {
+				bonusesSend.append("," + ((RealBonus)bonus).getValue());
+			} else {
+				bonusesSend.append("," + 0);
+			}
 		}
 	}
 }

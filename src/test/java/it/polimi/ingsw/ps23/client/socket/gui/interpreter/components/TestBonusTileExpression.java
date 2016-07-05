@@ -11,6 +11,7 @@ import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 
 public class TestBonusTileExpression {
@@ -27,10 +28,10 @@ public class TestBonusTileExpression {
 		for(Region region : game.getGameMap().getGroupRegionalCity()) {
 			assertTrue(bonusTilesExpression.getGroupsName().contains(region.getName()));
 			assertTrue(bonusTilesExpression.getGroupsBonusName().contains(region.getBonusTile().getName()));
-			assertTrue(bonusTilesExpression.getGroupsBonusValue().contains(String.valueOf(region.getBonusTile().getValue())));
+			assertTrue(bonusTilesExpression.getGroupsBonusValue().contains(String.valueOf(((RealBonus)region.getBonusTile()).getValue())));
 		}
 		assertTrue(bonusTilesExpression.getKingBonusName().equals(game.getKingTilesSet().getCurrentTile().getName()));
-		assertTrue(bonusTilesExpression.getKingBonusValue().equals(String.valueOf(game.getKingTilesSet().getCurrentTile().getValue())));
+		assertTrue(bonusTilesExpression.getKingBonusValue().equals(String.valueOf(((RealBonus)game.getKingTilesSet().getCurrentTile()).getValue())));
 		
 	}
 	
@@ -39,18 +40,18 @@ public class TestBonusTileExpression {
 			bonusTilesSend.append("," + region.getName());
 			Bonus bonus = region.getBonusTile();
 			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + bonus.getValue());
+			bonusTilesSend.append("," + ((RealBonus)bonus).getValue());
 		}
 	}
 	
 	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		StringBuilder bonusTilesSend = new StringBuilder();
 		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
-		bonusTilesSend.append(groupsNumber);//TODO already aquired
+		bonusTilesSend.append(groupsNumber);
 		addBonusTiles(bonusTilesSend, groupRegionalCity);
 		addBonusTiles(bonusTilesSend, groupColoredCity);
 		bonusTilesSend.append("," + currentKingTile.getName());
-		bonusTilesSend.append("," + currentKingTile.getValue());
+		bonusTilesSend.append("," + ((RealBonus)currentKingTile).getValue());
 		bonusTilesSend.append(",");
 		return "<bonus_tiles>" + bonusTilesSend + "</bonus_tiles>";
 	}

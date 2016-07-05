@@ -12,6 +12,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BuildingPermitBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleBuildingPermitBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleRewardTokenBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonus;
@@ -70,7 +71,7 @@ public class SuperBonusState extends MapUpdateState {
 			exceptionOccured = false;
 		}
 		currentBonus = superBonus.remove(superBonus.size() - 1);
-		return currentBonus.getValue();
+		return ((RealBonus)currentBonus).getValue();
 	}
 	/**
 	 * Creates the object to manipulate all the {@link SuperBonus}.

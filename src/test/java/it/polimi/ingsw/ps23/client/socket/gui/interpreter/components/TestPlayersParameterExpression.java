@@ -10,6 +10,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
@@ -85,7 +86,7 @@ public class TestPlayersParameterExpression {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + bonus.getValue());
+			bonusesSend.append("," + ((RealBonus)bonus).getValue());
 		}
 	}
 }

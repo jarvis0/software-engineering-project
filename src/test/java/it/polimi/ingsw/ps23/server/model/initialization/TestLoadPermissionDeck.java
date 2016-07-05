@@ -11,6 +11,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
@@ -41,7 +42,7 @@ public class TestLoadPermissionDeck {
 		((BusinessPermitTile)permissionCard).addCity(city);
 		assertTrue(((BusinessPermitTile)permissionCard).containCity(city));
 		Bonus bonus = new NobilityTrackStepBonus(NOBILITY_TRACK_STEP);
-		bonus.setValue(1);
+		((RealBonus)bonus).setValue(1);
 		((BusinessPermitTile)permissionCard).addBonus(bonus);
 		boolean found = false;
 		for(Card card : deck.get("seaside").getCards()) {

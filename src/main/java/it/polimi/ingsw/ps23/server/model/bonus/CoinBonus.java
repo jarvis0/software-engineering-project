@@ -7,7 +7,7 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
  * @author Giuseppe Mascellaro, Mirco Manzoni
  *
  */
-public class CoinBonus extends Bonus {
+public class CoinBonus extends RealBonus {
 
 	/**
 	 * 
