@@ -70,5 +70,9 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().pickPermitCard(game, turnHandler, regionMap.get(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
 	}
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 
 }

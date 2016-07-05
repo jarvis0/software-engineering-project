@@ -23,6 +23,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class RMISwingUI extends SwingUI {
@@ -156,7 +157,16 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
-	void refreshDynamicContents(StartTurnState currentState) {
+	private void citiesToolTipToStrings(Map<String, City> citiesMap, List<String> citiesNames, List<List<String>> citiesBuiltEmporium) {
+		Set<Entry<String, City>> citiesSet = citiesMap.entrySet();
+		for (Entry<String, City> city : citiesSet) {	
+			citiesNames.add(city.getValue().getName());
+			citiesBuiltEmporium.add(city.getValue().getEmporiumsPlayersList());
+		}
+		
+	}
+
+	void refreshDynamicContents(MapUpdateState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);
@@ -217,7 +227,13 @@ class RMISwingUI extends SwingUI {
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		totalPermitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
-		//refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		Map<String, City> cities = currentState.getGameMap().getCities();
+		List<String> citiesNames = new ArrayList<>();
+		List<List<String>> citiesBuiltEmporium = new ArrayList<>();
+		citiesToolTipToStrings(cities, citiesNames, citiesBuiltEmporium);
+		refreshCitiesToolTip(citiesNames, citiesBuiltEmporium);
+		
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -267,12 +283,6 @@ class RMISwingUI extends SwingUI {
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
-
-	public void enableTotalHandDeck(boolean display) {
-		
-	}	
-	
-	
 
 
 }

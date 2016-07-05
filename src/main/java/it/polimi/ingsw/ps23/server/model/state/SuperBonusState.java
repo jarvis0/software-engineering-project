@@ -25,7 +25,7 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
  * @author Alessandro Erba & Mirco Manzoni
  *
  */
-public class SuperBonusState extends State {
+public class SuperBonusState extends MapUpdateState {
 	
 	/**
 	 * 
@@ -95,12 +95,12 @@ public class SuperBonusState extends State {
 	/**
 	 * Analyzes the input region and adds to the list of inputs the object needs.
 	 * @param chosenRegion - selected region
-	 * @throws InvalidRegionException if an invalidregion has been selected
+	 * @throws InvalidRegionException if an invalid region has been selected
 	 */
 	public void analyzeInput(String chosenRegion) throws InvalidRegionException {
 		((BuildingPermitBonus) currentBonus).selectRegion(chosenRegion);
 		selectedRegion = chosenRegion;
-		bonusesSelections.add(chosenRegion);
+		bonusesSelections.add(selectedRegion);
 	}
 	/**
 	 * Checks if a type of {@link SuperBonus} has already saved in this objects. If there are inputs saved
@@ -142,6 +142,7 @@ public class SuperBonusState extends State {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
+		setParameters(game);
 		superBonus.addAll(turnHandler.getSuperBonuses());
 		currentPlayer = game.getCurrentPlayer();
 		regionsMap = game.getGameMap().getRegionMap();

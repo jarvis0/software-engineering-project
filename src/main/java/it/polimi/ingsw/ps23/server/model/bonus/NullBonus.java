@@ -25,5 +25,10 @@ public class NullBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) {
 		return;
 	}
+
+	@Override
+	public boolean isNull() {
+		return true;
+	}
 	
 }

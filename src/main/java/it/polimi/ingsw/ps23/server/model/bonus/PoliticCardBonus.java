@@ -25,5 +25,10 @@ public class PoliticCardBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().pickCard(game.getPoliticDeck(), getValue()); 
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 	
 }

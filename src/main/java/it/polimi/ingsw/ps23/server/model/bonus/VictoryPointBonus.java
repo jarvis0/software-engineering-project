@@ -25,5 +25,10 @@ public class VictoryPointBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().updateVictoryPoints(getValue());
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 	
 }

@@ -248,6 +248,7 @@ public class SocketGUIView extends SocketView {
 			getConnection().send(String.valueOf(numberOfCurrentBonus));
 			for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 				try {
+					currentState.checkKey();
 					additionalOutput(currentState);
 					getConnection().send(currentState.useBonus());
 					boolean isRecycleBuildingPermitBonus = currentState.isRecycleBuildingPermitBonus();
@@ -259,7 +260,6 @@ public class SocketGUIView extends SocketView {
 					getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
 					selectedItem = getConnection().receive();
 					getConnection().send(currentState.useBonus());
-					currentState.checkKey();
 					currentState.addValue(selectedItem);
 				} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
 					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
