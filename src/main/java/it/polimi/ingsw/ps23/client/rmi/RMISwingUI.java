@@ -166,23 +166,29 @@ class RMISwingUI extends SwingUI {
 		
 	}
 
-	void refreshDynamicContents(MapUpdateState currentState) {
-		refreshKingPosition(currentState.getKingPosition());
+	private void addFreeCouncillors(MapUpdateState currentState) {
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);
 		refreshFreeCouncillors(freeCouncillorsColor);
+	}
+	
+	private void addCouncils(MapUpdateState currentState) {
 		List<String> councilsName = new ArrayList<>();
 		List<List<String>> councilsColor = new ArrayList<>();
 		councilsToStrings(currentState.getGroupRegionalCity(), currentState.getKingCouncil().getCouncillors(), councilsName, councilsColor);
 		refreshCouncils(councilsName, councilsColor);
-		
+	}
+
+	private void addRegionalPermitTiles(MapUpdateState currentState) {
 		List<String> regions = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesCities = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesName = new ArrayList<>();
 		List<List<List<String>>> allPermitTilesBonusesValue = new ArrayList<>();
 		allPermitTilesToStrings(currentState.getGroupRegionalCity(), regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
 		refreshPermitTilesUp(regions, allPermitTilesCities, allPermitTilesBonusesName, allPermitTilesBonusesValue);
-		
+	}
+
+	private void addBonusTiles(MapUpdateState currentState) {
 		List<String> groupsName = new ArrayList<>();
 		List<String> bonusesName = new ArrayList<>();
 		List<String> bonusesValue = new ArrayList<>();
@@ -206,7 +212,9 @@ class RMISwingUI extends SwingUI {
 		bonusesName.addAll(coloredBonusesName);
 		bonusesValue.addAll(coloredBonusesValue);
 		refreshBonusTiles(groupsName, bonusesName, bonusesValue, kingBonusName, kingBonusValue);
+	}
 
+	private void addPlayers(MapUpdateState currentState) {
 		List<Player> players = currentState.getPlayersList();
 		List<String> names = new ArrayList<>();
 		List<String> coins = new ArrayList<>();
@@ -215,25 +223,51 @@ class RMISwingUI extends SwingUI {
 		List<String> victoryPoints = new ArrayList<>();
 		playersToStrings(players, names, coins, assistants, nobilityTrackPoints, victoryPoints);
 		refreshPlayersTable(names, coins, assistants, nobilityTrackPoints, victoryPoints);
-		
+	}
+
+	private void addPlayersPoliticCards(MapUpdateState currentState) {
 		Map<String, List<String>> playersPoliticCards = new HashMap<>();
 		politicCardsToStrings(playersPoliticCards, currentState.getPlayersList());
 		refreshPoliticCards(playersPoliticCards);		
-		
+	}
+
+	private void addPlayerAquiredPermitTiles(MapUpdateState currentState) {
 		List<String> playersName = new ArrayList<>();
 		List<List<List<String>>> permitTilesCities = new ArrayList<>();
 		List<List<List<String>>> permitTilesBonusesName = new ArrayList<>();
 		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+	}
+
+	private void addTotalPermitTiles(MapUpdateState currentState) {
+		List<String> playersName = new ArrayList<>();
+		List<List<List<String>>> permitTilesCities = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesName = new ArrayList<>();
+		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		totalPermitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+	}
+
+	private void addEmporiumsCities(MapUpdateState currentState) {
 		Map<String, City> cities = currentState.getGameMap().getCities();
 		List<String> citiesNames = new ArrayList<>();
 		List<List<String>> citiesBuiltEmporium = new ArrayList<>();
 		citiesToolTipToStrings(cities, citiesNames, citiesBuiltEmporium);
 		refreshCitiesToolTip(citiesNames, citiesBuiltEmporium);
-		
+	}
+
+	void refreshDynamicContents(MapUpdateState currentState) {
+		refreshKingPosition(currentState.getKingPosition());
+		addFreeCouncillors(currentState);
+		addCouncils(currentState);
+		addRegionalPermitTiles(currentState);
+		addBonusTiles(currentState);
+		addPlayers(currentState);
+		addPlayersPoliticCards(currentState);
+		addPlayerAquiredPermitTiles(currentState);
+		addTotalPermitTiles(currentState);
+		addEmporiumsCities(currentState);
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
@@ -283,6 +317,5 @@ class RMISwingUI extends SwingUI {
 		nobilityTrackToStrings(currentState.getNobilityTrack().getSteps(), stepsBonusesName, stepsBonusesValue);
 		addNobilityTrackBonuses(stepsBonusesName, stepsBonusesValue);
 	}
-
 
 }

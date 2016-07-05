@@ -11,7 +11,6 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
-import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
 import it.polimi.ingsw.ps23.server.model.state.AssistantToElectCouncillorState;
@@ -44,10 +43,12 @@ public class SocketGUIView extends SocketView {
 			firstUIrefresh = false;
 		}
 		getConnection().send(gameParameters.createUIDynamicContents(currentState));
-		Player player = currentState.getCurrentPlayer();
-		if(player.getName().equals(getClientName())) {
-			//getConnection().sendYesInput("Current player: " + player.toString() + " " + player.showSecretStatus() + "\n" + currentState.getAvaiableAction() + "\n\nChoose an action to perform? ");
+		String playerName = currentState.getCurrentPlayer().getName();
+		getConnection().send(playerName);
+		if(playerName.equals(getClientName())) {
 			try {
+				getConnection().send(String.valueOf(currentState.isAvailableMainAction()));
+				getConnection().send(String.valueOf(currentState.isAvailableQuickAction()));
 				wakeUp(currentState.getStateCache().getAction(receive()));
 			}
 			catch(NullPointerException e) {
@@ -56,7 +57,6 @@ public class SocketGUIView extends SocketView {
 			}
 		}
 		else {
-			//getConnection().sendNoInput("It's player " + player.getName() + " turn.");
 			pause();
 		}
 	}
@@ -239,6 +239,7 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(SuperBonusState currentState) {
+		
 		getConnection().send(gameParameters.createSuperBonus());
 		boolean otherBonus = currentState.hasNext();
 		getConnection().send(String.valueOf(otherBonus));

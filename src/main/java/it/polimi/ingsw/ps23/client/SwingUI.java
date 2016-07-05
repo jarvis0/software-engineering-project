@@ -706,7 +706,7 @@ public abstract class SwingUI {
 		int i = 0;
 		for(String cityName : citiesName) {
 			StringBuilder toolTipString = new StringBuilder();
-			toolTipString.append("List of Player's Emporiums:\n");
+			toolTipString.append("List of Player's Emporiums: \n");
 			JLabel cityLabel = cityLabels.get(cityName);
 			for(String playerNameString : citiesBuiltEmporium.get(i)) {
 				toolTipString.append(playerNameString);

@@ -23,7 +23,7 @@ class PlayersParameterExpression extends GUIParser {
 	private List<List<List<String>>> permitTilesBonusesName;
 	private List<List<List<String>>> permitTilesBonusesValue;
 	private List<List<List<String>>> usedPermitTilesCities;
-	private List<List<List<String>>> usedPermitTilesBonusesName;
+	private List<List<List<String>>> usedPermitTilesBonusesName;//TODO inviare TOTAL
 	private List<List<List<String>>> usedPermitTilesBonusesValue;
 	private Map<String, List<String>> politicCards;
 	private List<String> isOnline;
@@ -54,6 +54,18 @@ class PlayersParameterExpression extends GUIParser {
 	
 	Map<String, List<String>> getPoliticCards() {
 		return politicCards;
+	}
+	
+	List<List<List<String>>> getPermitTilesCities() {
+		return permitTilesCities;
+	}
+	
+	List<List<List<String>>> getPermitTilesBonusesName() {
+		return permitTilesBonusesName;
+	}
+	
+	List<List<List<String>>> getPermitTilesBonusesValue() {
+		return permitTilesBonusesValue;
 	}
 	
 	@Override

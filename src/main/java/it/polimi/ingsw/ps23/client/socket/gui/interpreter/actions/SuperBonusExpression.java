@@ -2,10 +2,10 @@ package it.polimi.ingsw.ps23.client.socket.gui.interpreter.actions;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
-import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.RefreshContent;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
-class SuperBonusExpression extends GUIParser {
+class SuperBonusExpression extends RefreshContent {
 
 	private SocketSwingUI swingUI;
 	
@@ -19,7 +19,6 @@ class SuperBonusExpression extends GUIParser {
 		this.expression = expression;
 	}
 	
-	
 	private void additionalOutput(boolean isBuildingPermitTileBonus) {
 		if (isBuildingPermitTileBonus) {
 			swingUI.setConsoleText("\n\n" + guiView.getClient().receive());
@@ -32,6 +31,8 @@ class SuperBonusExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
+			String noTagMessage = expression.selectBlock(message);
+			getDynamicContent(swingUI, noTagMessage);
 			String selectedItem;
 			boolean otherBonus = Boolean.valueOf(guiView.getClient().receive());
 			while(otherBonus) {

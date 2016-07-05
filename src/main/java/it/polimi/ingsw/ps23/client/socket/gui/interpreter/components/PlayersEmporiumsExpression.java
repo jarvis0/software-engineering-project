@@ -10,11 +10,15 @@ class PlayersEmporiumsExpression extends GUIParser {
 
 	private Expression expression;
 	
+	private List<String> citiesName;
 	private List<List<String>> playersEmporiums;
 	
 	PlayersEmporiumsExpression(Expression expression) {
 		this.expression = expression;
-		playersEmporiums = new ArrayList<>();
+	}
+	
+	List<String> getCitiesName() {
+		return citiesName;
 	}
 	
 	List<List<String>> getPlayersEmporiums() {
@@ -24,11 +28,14 @@ class PlayersEmporiumsExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
+			citiesName = new ArrayList<>();
+			playersEmporiums = new ArrayList<>();
 			String parsingMessage = expression.selectBlock(message);
 			String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 			int citiesNumber = Integer.parseInt(field);
 			parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
 			for(int i = 0; i < citiesNumber; i++) {
+				parsingMessage = addField(citiesName, parsingMessage);
 				List<String> playerEmporium = new ArrayList<>();
 				field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 				int emporiumsNumber = Integer.parseInt(field);

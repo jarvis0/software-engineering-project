@@ -19,7 +19,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 
 class SocketParametersCreator {
 
@@ -45,8 +45,6 @@ class SocketParametersCreator {
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String EMPORIUMS_TAG_OPEN = "<emporiums>";
 	private static final String EMRPOIUMS_TAG_CLOSE = "</emporiums>";
-	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
-	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
 	
 	private static final String ACTION_TAG_OPEN = "<action>";
 	private static final String ACTION_TAG_CLOSE = "</action>";
@@ -215,7 +213,7 @@ class SocketParametersCreator {
 		Set<Entry<String, City>> citiesEntries = cities.entrySet();
 		emporiumsSend.append(String.valueOf(citiesEntries.size()));
 		for(Entry<String, City> cityEntry : citiesEntries) {
-			emporiumsSend.append("," + cityEntry.getValue().getName());//TODO
+			emporiumsSend.append("," + cityEntry.getValue().getName());
 			List<String> playerEmporiums = cityEntry.getValue().getEmporiumsPlayersList();
 			emporiumsSend.append(",");
 			emporiumsSend.append(String.valueOf(playerEmporiums.size()));
@@ -227,16 +225,7 @@ class SocketParametersCreator {
 		return EMPORIUMS_TAG_OPEN + emporiumsSend + EMRPOIUMS_TAG_CLOSE;
 	}
 
-	private String addTurnParameters(Player currentPlayer, boolean availableMainAction, boolean availableQuickAction) {
-		StringBuilder turnParametersSend = new StringBuilder();
-		turnParametersSend.append(currentPlayer.getName());
-		turnParametersSend.append("," + availableMainAction);
-		turnParametersSend.append("," + availableQuickAction);
-		turnParametersSend.append(",");
-		return TURN_PARAMETERS_TAG_OPEN + turnParametersSend + TURN_PARAMETERS_TAG_CLOSE;
-	}
-
-	String createUIDynamicContents(StartTurnState currentState) {
+	String createUIDynamicContents(MapUpdateState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
 		message += addCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
@@ -244,7 +233,6 @@ class SocketParametersCreator {
 		message += addPlayerParameters(currentState.getPlayersList());
 		message += addPermitTilesUp(currentState.getGroupRegionalCity());
 		message += addEmporiums(currentState.getGameMap().getCities());
-		message += addTurnParameters(currentState.getCurrentPlayer(), currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 

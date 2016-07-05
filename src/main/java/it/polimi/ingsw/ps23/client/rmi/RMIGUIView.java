@@ -382,7 +382,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	@Override
 	public void visit(SuperBonusState currentState) {
 		swingUI.refreshDynamicContents(currentState);
-		while (currentState.hasNext()) {		
+		while (currentState.hasNext()) {
 			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 			try {
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {		

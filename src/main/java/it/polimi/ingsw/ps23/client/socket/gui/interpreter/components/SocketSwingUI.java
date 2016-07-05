@@ -18,15 +18,18 @@ public class SocketSwingUI extends SwingUI {
 
 	void refreshDynamicContents(KingPositionExpression kingPosition,
 			FreeCouncillorsExpression freeCouncillors, CouncilsExpression councils, PermitTilesUpExpression permitTilesUp,
-			BonusTilesExpression bonusTiles, PlayersParameterExpression players) {
+			BonusTilesExpression bonusTiles, PlayersEmporiumsExpression arePlayersEmporiums, PlayersParameterExpression players) {
 		refreshKingPosition(kingPosition.getKingPosition());
 		refreshFreeCouncillors(freeCouncillors.getFreeCouncillors());
 		refreshCouncils(councils.getCouncilsName(), councils.getCouncilsColor());
-		refreshPermitTilesUp(permitTilesUp.getRegions(), permitTilesUp.getPermitTilesCities(), permitTilesUp.getPermitTilesBonusesName(), permitTilesUp.getPermitTilesBonusesValue());
 		refreshBonusTiles(bonusTiles.getGroupsName(), bonusTiles.getGroupsBonusName(), bonusTiles.getGroupsBonusValue(), bonusTiles.getKingBonusName(), bonusTiles.getKingBonusValue());
 		refreshPlayersTable(players.getNames(), players.getCoins(), players.getAssistants(), players.getNobilityTrackPoints(), players.getVictoryPoints());
+		refreshPermitTilesUp(permitTilesUp.getRegions(), permitTilesUp.getPermitTilesCities(), permitTilesUp.getPermitTilesBonusesName(), permitTilesUp.getPermitTilesBonusesValue());
+		refreshCitiesToolTip(arePlayersEmporiums.getCitiesName(), arePlayersEmporiums.getPlayersEmporiums());
+		refreshAcquiredPermitTiles(players.getNames(), players.getPermitTilesCities(), players.getPermitTilesBonusesName(), players.getPermitTilesBonusesValue());
 		refreshPoliticCards(players.getPoliticCards());
 		getFrame().repaint();
 		getFrame().revalidate();
 	}
+	
 }
