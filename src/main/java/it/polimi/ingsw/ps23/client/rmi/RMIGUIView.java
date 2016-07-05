@@ -67,6 +67,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		if(firstUIRefresh) {
 			swingUI.loadStaticContents(currentState);
 			firstUIRefresh = false;
@@ -90,6 +91,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			}
 		} else {
 			swingUI.appendConsoleText(ITS_PRINT + currentState.getCurrentPlayer().getName() + "'s turn.");
+			swingUI.appendConsoleText(currentState.getLastActionPerformed());
 			swingUI.showAvailableActions(false, false);
 			setWaiting(true);
 			pause();
@@ -98,6 +100,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enableFreeCouncillorsButtons(true);
@@ -119,12 +122,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action.");
 		sendAction(currentState.createAction());
 	}
 
 	@Override
 	public void visit(ChangePermitTilesState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.showAvailableActions(false, false);
 		swingUI.enableRegionButtons(true);
 		swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tilew quick action,\nplease select the region where you want to change tiles.");
@@ -137,6 +142,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		try {
 			swingUI.clearSwingUI();
 			swingUI.showAvailableActions(false, false);
@@ -177,6 +183,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(AssistantToElectCouncillorState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		swingUI.appendConsoleText("\n\nYou are performing an Assistant To Elect Councillor quick action,\npress on a free councillor to select it.");
 		swingUI.showAvailableActions(false, false);
@@ -197,12 +204,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action.");
 		sendAction(currentState.createAction());
 	}
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		List<String> removedCards = new ArrayList<>();
 		swingUI.showAvailableActions(false, false);
@@ -237,6 +246,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enablePermitTileDeck(true);
@@ -301,6 +311,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.refreshDynamicContents(currentState);
 		String player = currentState.getPlayerName();
 		swingUI.appendConsoleText("\n\nIt's" + player + " market phase turn.");
@@ -331,6 +342,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		String player = currentState.getPlayerName();
 		swingUI.appendConsoleText("\n\nIt's " + player + " market phase turn.");
 		if(player.equals(getClientName())) {
@@ -356,7 +368,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
-			swingUI.appendConsoleText("\n\n You have encountred a Building Permit Bonus on Nobility Track.\n Press the Region where to pick a permission card.");
+			swingUI.appendConsoleText("\n\nYou have encountred a Building Permit Bonus on Nobility Track.\nPress the region where to pick a pemit tile.");
 			swingUI.enableRegionButtons(true);
 			pause();
 			swingUI.enableRegionButtons(false);
@@ -373,24 +385,24 @@ public class RMIGUIView extends RMIView implements GUIView {
 			pause();
 			swingUI.enableTotalHandDeck(false);
 			selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
-		}
-		if(currentState.isRecycleRewardTokenBonus()) {
-			swingUI.enableCities(true);
-			pause();
-			swingUI.enableCities(false);
-			selectedItem = swingUI.getChosenCity();
-		}
-		if(currentState.isBuildingPemitTileBonus()) { 
-			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
-			pause();
-			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
-			selectedItem = String.valueOf(swingUI.getChosenTile());
-		}
+		} else if(currentState.isRecycleRewardTokenBonus()) {
+				swingUI.enableCities(true);
+				pause();
+				swingUI.enableCities(false);
+				selectedItem = swingUI.getChosenCity();
+			} else if(currentState.isBuildingPemitTileBonus()) { 
+					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
+					pause();
+					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
+					selectedItem = String.valueOf(swingUI.getChosenTile());
+				}
+			
 		return selectedItem;
 	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.refreshDynamicContents(currentState);
 		while (currentState.hasNext()) {
 			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
@@ -412,11 +424,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 		}
-		
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
+		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.appendConsoleText(currentState.getWinner());
 		endGame = true;
 	}

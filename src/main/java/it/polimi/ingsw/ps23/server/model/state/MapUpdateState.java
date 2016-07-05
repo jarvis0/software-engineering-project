@@ -74,6 +74,10 @@ public abstract class MapUpdateState extends State {
 		return kingCouncil;
 	}
 	
+	public String getLastActionPerformed() {
+		return lastActionPerformed;
+	}
+	
 	void setParameters(Game game) {
 		currentPlayer = game.getCurrentPlayer();
 		gameMap = game.getGameMap();
