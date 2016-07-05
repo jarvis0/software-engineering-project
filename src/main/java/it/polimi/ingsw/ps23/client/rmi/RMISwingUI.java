@@ -60,7 +60,9 @@ class RMISwingUI extends SwingUI {
 
 	private void bonusToStrings(Bonus bonus, List<String> bonusesName, List<String> bonusesValue) {
 		bonusesName.add(bonus.getName());
-		bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
+		if(!bonus.isNull()) {
+			bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
+		}
 	}
 	
 	
@@ -241,6 +243,7 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refeshOtherPlayersStatusDialog(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 	}
 
 	private void addTotalPermitTiles(MapUpdateState currentState) {
@@ -299,7 +302,7 @@ class RMISwingUI extends SwingUI {
 
 	private void nobilityTrackToStrings(List<NobilityTrackStep> steps, List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue) {
 		for(NobilityTrackStep step : steps) {
-			List<Bonus> bonuses = step.getBonuses();		
+			List<Bonus> bonuses = step.getBonuses();	
 			List<String> bonusesName = new ArrayList<>();
 			List<String> bonusesValue = new ArrayList<>();
 			bonusesToStrings(bonuses, bonusesName, bonusesValue);
