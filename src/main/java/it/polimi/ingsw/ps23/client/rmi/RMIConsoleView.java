@@ -178,7 +178,7 @@ class RMIConsoleView extends RMIView {
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		try {
 			output.println("Choose the permit tile that you want to use for build an Emporium: (numerical input) "
-					+ currentState.getAvaibleCards());
+					+ currentState.getAvailableCards());
 			int chosenCard = Integer.parseInt(scanner.nextLine()) - 1;
 			output.println(
 					"Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));

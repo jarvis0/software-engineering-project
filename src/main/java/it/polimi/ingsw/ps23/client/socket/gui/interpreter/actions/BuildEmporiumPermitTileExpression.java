@@ -25,10 +25,11 @@ class BuildEmporiumPermitTileExpression extends GUIParser {
 			swingUI.clearSwingUI();
 			swingUI.showAvailableActions(false, false);
 			swingUI.enablePermitTileDeck(true);
-			swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile Main Action,\npress on the permit tile that you want use.");
+			swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile main action,\npress on the permit tile that you want to use.");
 			guiView.pause();
 			int chosenCard = swingUI.getChosenTile();
-			swingUI.appendConsoleText("\nYou have chose tile number: " + chosenCard + "\npress on the city want to build.");
+			swingUI.appendConsoleText("\nYou have chosen this tile number: " + chosenCard + "\npress on the city where you want to build in.");
+			swingUI.enablePermitTileDeck(false);
 			swingUI.enableCities(true);
 			guiView.pause();
 			swingUI.enableCities(false);

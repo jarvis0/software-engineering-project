@@ -18,7 +18,7 @@ class AdditionalMainActionExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
-			swingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action");
+			swingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action.");
 		}
 	}
 

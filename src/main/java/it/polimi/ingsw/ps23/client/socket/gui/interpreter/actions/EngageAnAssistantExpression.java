@@ -19,7 +19,7 @@ class EngageAnAssistantExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
-			swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action");
+			swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action.");
 		}
 	}
 

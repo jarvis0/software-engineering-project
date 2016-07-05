@@ -25,7 +25,7 @@ public class BuildEmporiumPermitTileState extends MainActionState {
 		super(name);
 	}
 
-	public String getAvaibleCards() throws IllegalActionSelectedException {
+	public String getAvailableCards() throws IllegalActionSelectedException {
 		if (availableCards.getHandSize() == 0) {
 			throw new IllegalActionSelectedException();
 		}

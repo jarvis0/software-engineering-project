@@ -254,7 +254,7 @@ class GUILoad {
 		scrollTextPane.setLocation(897, 503);
 		scrollTextPane.setViewportView(textArea);
 		mapPanel.add(scrollTextPane,0);	
-		sendButton = new JButton("send");
+		sendButton = new JButton("OK");
 		sendButton.setBounds(935, 613, 89, 23);
 		mapPanel.add(sendButton,0);
 		sendButton.setVisible(false);
@@ -262,7 +262,6 @@ class GUILoad {
 		marketSpinner.setBounds(897, 613, 35, 20);
 		mapPanel.add(marketSpinner,0);
 		marketSpinner.setVisible(false);
-		
 	}
 
 	public void setText(String string) {

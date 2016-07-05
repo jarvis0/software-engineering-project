@@ -6,8 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
-import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
@@ -27,6 +27,8 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
 
+	private static final String SKIP = "skip";
+	
 	private SocketParametersCreator gameParameters;
 	private boolean firstUIrefresh;
 	
@@ -46,13 +48,13 @@ public class SocketGUIView extends SocketView {
 		String playerName = currentState.getCurrentPlayer().getName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
-			try {
-				getConnection().send(String.valueOf(currentState.isAvailableMainAction()));
-				getConnection().send(String.valueOf(currentState.isAvailableQuickAction()));
-				wakeUp(currentState.getStateCache().getAction(receive()));
+			getConnection().send(String.valueOf(currentState.isAvailableMainAction()));
+			getConnection().send(String.valueOf(currentState.isAvailableQuickAction()));
+			String selectedAction = receive();
+			if(!selectedAction.equals(SKIP)) {
+				wakeUp(currentState.getStateCache().getAction(selectedAction));
 			}
-			catch(NullPointerException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create the action.", e);
+			else {
 				wakeUp();
 			}
 		}
@@ -116,28 +118,40 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		getConnection().send(gameParameters.createBuildKingEmpoium());
-		getConnection().send(String.valueOf(currentState.getPoliticHandSize()));
-		int removedCardsNumber = Integer.parseInt(getConnection().receive());
-		List<String> removedCards = new ArrayList<>();
-		for(int i = 0; i < removedCardsNumber; i++) {
-			removedCards.add(getConnection().receive());
-		}
-		String arrivalCity = getConnection().receive();
 		try {
-			wakeUp(currentState.createAction(removedCards, arrivalCity));
-		} catch (InvalidCardException e) {
+			currentState.getAvailableCardsNumber();
+			getConnection().send(gameParameters.createBuildKingEmpoium());
+			getConnection().send(String.valueOf(currentState.getPoliticHandSize()));
+			int removedCardsNumber = Integer.parseInt(getConnection().receive());
+			List<String> removedCards = new ArrayList<>();
+			for(int i = 0; i < removedCardsNumber; i++) {
+				removedCards.add(getConnection().receive());
+			}
+			String arrivalCity = getConnection().receive();
+			try {
+				wakeUp(currentState.createAction(removedCards, arrivalCity));
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+				getState().setExceptionString(e.toString());
+			}
+		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			getState().setExceptionString(e.toString());
+			wakeUp(e);
 		}
 	}
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		getConnection().send(gameParameters.createBuildPermitTile());
-		String chosenCity = receive();
-		int chosenCard = Integer.parseInt(receive());
-		wakeUp(currentState.createAction(chosenCity, chosenCard));
+		try {
+			currentState.getAvailableCards();
+			getConnection().send(gameParameters.createBuildPermitTile());
+			String chosenCity = receive();
+			int chosenCard = Integer.parseInt(receive());
+			wakeUp(currentState.createAction(chosenCity, chosenCard));
+		} catch (IllegalActionSelectedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			wakeUp(e);
+		}
 	}
 
 	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) {
@@ -191,7 +205,7 @@ public class SocketGUIView extends SocketView {
 			int cost = Integer.parseInt(receive());
 			try {
 				wakeUp(currentState.createMarketObject(politicCards, chosenPermissionCards, chosenAssistants, cost));
-			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
+			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				getState().setExceptionString(e.toString());
 			}
@@ -207,19 +221,15 @@ public class SocketGUIView extends SocketView {
 		String playerName = currentState.getPlayerName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
-			try {
-				boolean canBuy = currentState.canBuy();
-				getConnection().send(String.valueOf(canBuy));
-				if(canBuy) {
-					getConnection().send("Available offers: " + currentState.getAvaiableOffers());
-					wakeUp(currentState.createTransation(Integer.parseInt(receive())));
-				}
-				else {
-					getConnection().sendNoInput("You can buy nothing.");
-					wakeUp(currentState.createTransation());
-				}
-			} catch(NumberFormatException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			boolean canBuy = currentState.canBuy();
+			getConnection().send(String.valueOf(canBuy));
+			if(canBuy) {
+				getConnection().send("Available offers: " + currentState.getAvaiableOffers());
+				wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+			}
+			else {
+				getConnection().send("You can buy nothing.");
+				wakeUp(currentState.createTransation());
 			}
 		}
 		else {
@@ -239,34 +249,15 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		//TODO
-		getConnection().send(gameParameters.createSuperBonus());
+		getConnection().send(gameParameters.createSuperBonus(currentState));
 		boolean otherBonus = currentState.hasNext();
 		getConnection().send(String.valueOf(otherBonus));
 		while(otherBonus) {
 			String selectedItem;
 			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 			getConnection().send(String.valueOf(numberOfCurrentBonus));
-			for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
-				try {
-					currentState.checkKey();
-					additionalOutput(currentState);
-					getConnection().send(currentState.useBonus());
-					boolean isRecycleBuildingPermitBonus = currentState.isRecycleBuildingPermitBonus();
-					getConnection().send(String.valueOf(isRecycleBuildingPermitBonus));
-					if(isRecycleBuildingPermitBonus) {
-						selectedItem = getConnection().receive();
-					}
-					boolean isRecycleRewardTokenBonus = currentState.isRecycleRewardTokenBonus();
-					getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
-					selectedItem = getConnection().receive();
-					getConnection().send(currentState.useBonus());
-					currentState.addValue(selectedItem);
-				} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
-					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-					currentState.setExceptionString(e.toString());//TODO state?
-				}
-			}
+			
+			
 			otherBonus = currentState.hasNext();
 			getConnection().send(String.valueOf(otherBonus));
 		}

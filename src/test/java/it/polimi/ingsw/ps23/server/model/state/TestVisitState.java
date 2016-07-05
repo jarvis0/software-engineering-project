@@ -179,7 +179,7 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		game.getCurrentPlayer().getPermitHandDeck().getCards().add(new BusinessPermitTile());
 		try {
-			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().toString().equals(currentState.getAvaibleCards()));
+			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().toString().equals(currentState.getAvailableCards()));
 		} catch (IllegalActionSelectedException e) {}
 		try {
 			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().get(0).toString().equals(currentState.getChosenCard(0)));

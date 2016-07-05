@@ -30,14 +30,17 @@ class AcquireBusinessPermitTileExpression extends GUIParser {
 			swingUI.clearSwingUI();
 			swingUI.showAvailableActions(false, false);
 			swingUI.enableRegionButtons(true);
+			swingUI.enableFinish(false);
+			swingUI.appendConsoleText("\n\nYou are performing a Acquire Business Permit Tile main action,\npress on the region whose council you want to satisfy.");
 			guiView.pause();
 			swingUI.enableRegionButtons(false);
 			String chosenCouncil = swingUI.getChosenRegion();
+			swingUI.appendConsoleText("\nYou have selected the " + chosenCouncil + " council,\npress on the politic cards you want to use to satisfy this council.");
 			swingUI.enablePoliticCards(true);
 			boolean finish = false;
 			int politicHandSize = Integer.parseInt(guiView.getClient().receive());
-			int i = 0;
 			List<String> chosenCards = new ArrayList<>();
+			int i = 0;
 			while (i < MAX_CARDS_NUMBER && i < politicHandSize && !finish) {
 				guiView.pause();
 				finish = swingUI.hasFinished();
@@ -47,6 +50,7 @@ class AcquireBusinessPermitTileExpression extends GUIParser {
 				}
 				i++;
 			}
+			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + chosenCards + ".\nNow, you can press on the permit tile you want to acquire.");
 			swingUI.enablePoliticCards(false);
 			swingUI.enablePermitTilesPanel(chosenCouncil);
 			guiView.pause();

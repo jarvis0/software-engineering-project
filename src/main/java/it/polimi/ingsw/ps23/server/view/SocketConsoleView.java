@@ -155,7 +155,7 @@ public class SocketConsoleView extends SocketView {
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		try {
-			getConnection().sendYesInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvaibleCards());
+			getConnection().sendYesInput("Choose the permit tile that you want to use for build an Emporium: (numerical input) " + currentState.getAvailableCards());
 			int chosenCard = Integer.parseInt(receive()) - 1;
 			getConnection().sendYesInput("Choose the city where you what to build an emporium: " + currentState.getChosenCard(chosenCard));
 			String chosenCity = receive();

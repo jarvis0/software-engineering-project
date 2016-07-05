@@ -84,7 +84,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		} else {
-			swingUI.setConsoleText(ITS_PRINT + currentState.getCurrentPlayer().getName() + "'s turn.");
+			swingUI.appendConsoleText(ITS_PRINT + currentState.getCurrentPlayer().getName() + "'s turn.");
 			swingUI.showAvailableActions(false, false);
 			setWaiting(true);
 			pause();
@@ -248,13 +248,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if (currentState.canSellPoliticCards()) {
-			swingUI.setConsoleText("\nHow many politic cards do you want to sell? ");
+			swingUI.appendConsoleText("\nHow many politic cards do you want to sell? ");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			swingUI.enablePoliticCards(true);
-			swingUI.setConsoleText("\nplease press on the cards that you want to sell");
+			swingUI.appendConsoleText("\nplease press on the cards that you want to sell");
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				pause();
 				chosenPoliticCards.add(swingUI.getChosenCard());
@@ -266,13 +266,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) throws NumberFormatException {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		if (currentState.canSellPermissionCards()) {
-			swingUI.setConsoleText("\nHow many permission cards do you want to use? (numerical input > 0)");
+			swingUI.appendConsoleText("\nHow many permission cards do you want to use? (numerical input > 0)");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			swingUI.enablePermitTileDeck(true);
-			swingUI.setConsoleText("\nplease press on the cards that you whant to sell");
+			swingUI.appendConsoleText("\nplease press on the cards that you whant to sell");
 			for (int i = 0; i < numberOfCards && i < currentState.getPermissionHandSize(); i++) {
 				pause();
 				chosenPermissionCards.add(swingUI.getChosenTile());
@@ -284,7 +284,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	private int sellAssistant(MarketOfferPhaseState currentState) throws NumberFormatException {
 		int chosenAssistants = 0;
 		if (currentState.canSellAssistants()) {
-			swingUI.setConsoleText("\nSelect the number of assistants " + currentState.getAssistants());
+			swingUI.appendConsoleText("\nSelect the number of assistants " + currentState.getAssistants());
 			swingUI.enableMarketInputArea(true);
 			pause(); 
 			chosenAssistants = swingUI.getChosenValue();
@@ -296,12 +296,12 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(MarketOfferPhaseState currentState) {
 		swingUI.refreshDynamicContents(currentState);
 		String player = currentState.getPlayerName();
-		swingUI.setConsoleText(ITS_PRINT + player + " market phase turn.");
+		swingUI.appendConsoleText(ITS_PRINT + player + " market phase turn.");
 		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermissionCard(currentState);
 			int chosenAssistants = sellAssistant(currentState);
-			swingUI.setConsoleText("\nChoose the price for your offer: ");
+			swingUI.appendConsoleText("\nChoose the price for your offer: ");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int cost = swingUI.getChosenValue();
@@ -324,11 +324,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
-		swingUI.setConsoleText(ITS_PRINT + player + " market phase turn.");
+		swingUI.appendConsoleText(ITS_PRINT + player + " market phase turn.");
 		if(player.equals(getClientName())) {
 			try {
 				if (currentState.canBuy()) {
-					swingUI.setConsoleText("\nChoose the offert that you want to buy: \n" + currentState.getAvaiableOffers());
+					swingUI.appendConsoleText("\nChoose the offert that you want to buy: \n" + currentState.getAvaiableOffers());
 					swingUI.enableMarketInputArea(true);
 					pause();
 					swingUI.enableMarketInputArea(false);
@@ -348,7 +348,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
-			swingUI.setConsoleText("\n\n You have encountred a Building Permit Bonus on Nobility Track.\n Press the Region where to pick a permission card.");
+			swingUI.appendConsoleText("\n\n You have encountred a Building Permit Bonus on Nobility Track.\n Press the Region where to pick a permission card.");
 			swingUI.enableRegionButtons(true);
 			pause();
 			swingUI.enableRegionButtons(false);
@@ -359,7 +359,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private String performSuperBonus(SuperBonusState currentState){
 		String selectedItem = new String();
-		swingUI.setConsoleText("\n\n" + currentState.useBonus());
+		swingUI.appendConsoleText("\n\n" + currentState.useBonus());
 		if(currentState.isRecycleBuildingPermitBonus()) {
 			swingUI.enableTotalHandDeck(true);
 			pause();
@@ -408,7 +408,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(EndGameState currentState) {
-		swingUI.setConsoleText(currentState.getWinner());
+		swingUI.appendConsoleText(currentState.getWinner());
 		endGame = true;
 	}
 

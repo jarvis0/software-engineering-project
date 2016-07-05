@@ -44,7 +44,7 @@ public class DynamicContentsExpression extends RefreshContent {
 				guiView.getClient().send(swingUI.getChosenAction());
 			}
 			else {
-				swingUI.setConsoleText("\nIt's " + currentPlayer + "'s turn.");
+				swingUI.appendConsoleText("\nIt's " + currentPlayer + "'s turn.");
 				swingUI.showAvailableActions(false, false);
 			}
 		}

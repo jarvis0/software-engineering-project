@@ -21,6 +21,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
+import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class SocketParametersCreator {
 
@@ -49,6 +50,8 @@ class SocketParametersCreator {
 	
 	private static final String ACTION_TAG_OPEN = "<action>";
 	private static final String ACTION_TAG_CLOSE = "</action>";
+	private static final String REFRESH_CONTENT_TAG_OPEN = "<refresh_content>";
+	private static final String REFRESH_CONTENT_TAG_CLOSE = "</refresh_content>";
 	private static final String ELECT_COUNCILLOR_TAG = "<elect_councillor>";
 	private static final String ENGAGE_AN_ASSISTANT_TAG = "<engage_an_assistant>";
 	private static final String ACQUIRE_BUSINESS_PERMIT_TILE_TAG = "<acquire_business_permit_tile>";
@@ -225,8 +228,8 @@ class SocketParametersCreator {
 		emporiumsSend.append(",");
 		return EMPORIUMS_TAG_OPEN + emporiumsSend + EMRPOIUMS_TAG_CLOSE;
 	}
-
-	String createUIDynamicContents(MapUpdateState currentState) {
+	
+	private String refreshUIStrings(MapUpdateState currentState) {
 		String message = addKingPosition(currentState.getKingPosition());
 		message += addFreeCouncillors(currentState.getFreeCouncillors());
 		message += addCouncils(currentState.getGroupRegionalCity(), currentState.getKingCouncil());
@@ -234,7 +237,11 @@ class SocketParametersCreator {
 		message += addPlayerParameters(currentState.getPlayersList());
 		message += addPermitTilesUp(currentState.getGroupRegionalCity());
 		message += addEmporiums(currentState.getGameMap().getCities());
-		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
+		return message;
+	}
+	
+	String createUIDynamicContents(MapUpdateState currentState) {
+		return DYNAMIC_CONTENT_TAG_OPEN + refreshUIStrings(currentState) + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
 
 	String createElectCouncillor() {
@@ -270,18 +277,20 @@ class SocketParametersCreator {
 	}
 	
 	String createMarketOfferPhase(MarketOfferPhaseState currentState) {
-		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + createUIDynamicContents(currentState) + ACTION_TAG_CLOSE;
+		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + REFRESH_CONTENT_TAG_OPEN + refreshUIStrings(currentState) +
+				REFRESH_CONTENT_TAG_CLOSE + ACTION_TAG_CLOSE;
 	}
 	
 	String createMarketBuyPhase() {
 		return ACTION_TAG_OPEN + MARKET_BUY_PHASE_TAG + ACTION_TAG_CLOSE;
 	}
 	
-	String createSuperBonus() {
-		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + ACTION_TAG_CLOSE;
+	String createSuperBonus(SuperBonusState currentState) {
+		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + REFRESH_CONTENT_TAG_OPEN + refreshUIStrings(currentState) +
+				REFRESH_CONTENT_TAG_CLOSE + ACTION_TAG_CLOSE;
 	}
 
-	String createEndGame() {
+	String createEndGame() {//TODO refresh end game
 		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
 	}
 

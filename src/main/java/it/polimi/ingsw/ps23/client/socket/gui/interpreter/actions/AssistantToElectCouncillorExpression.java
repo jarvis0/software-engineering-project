@@ -28,13 +28,15 @@ class AssistantToElectCouncillorExpression extends GUIParser {
 			swingUI.enableFreeCouncillorsButtons(true);
 			guiView.pause();
 			String chosenCouncillor = swingUI.getChosenCouncillor();
-			swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " Councillor,\npress on the region where you want to put it.");
+			swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " councillor,\npress on the region where you want to put it.");
 			swingUI.enableFreeCouncillorsButtons(false);
 			swingUI.enableRegionButtons(true);
 			swingUI.enableKingButton(true);
 			guiView.pause();
+			swingUI.enableRegionButtons(false);
+			swingUI.enableKingButton(false);
 			String chosenBalcony = swingUI.getChosenRegion();
-			swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + "councillor in " + chosenBalcony + "'s balcony");
+			swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + "councillor in " + chosenBalcony + "'s balcony.");
 			guiView.getClient().send(chosenCouncillor);
 			guiView.getClient().send(chosenBalcony);
 		}

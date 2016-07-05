@@ -804,10 +804,6 @@ public abstract class SwingUI {
 		});
 	}
 
-	public void setConsoleText(String string) {
-		guiLoad.setText(string);
-	}
-
 	public void appendConsoleText(String string) {
 		guiLoad.appendText(string);
 	}

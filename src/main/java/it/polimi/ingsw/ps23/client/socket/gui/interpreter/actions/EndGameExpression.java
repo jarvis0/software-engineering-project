@@ -22,7 +22,7 @@ class EndGameExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
-			swingUI.setConsoleText(guiView.getClient().receive());
+			swingUI.appendConsoleText(guiView.getClient().receive());
 			guiView.setEndGame();
 		}
 	}
