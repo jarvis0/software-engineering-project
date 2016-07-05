@@ -52,7 +52,7 @@ public abstract class SwingUI {
 	private static final String CHANGE_PERMIT_TILE = "change permit tile";
 	private static final String BUILD_EMPORIUM_KING = "build emporium king";
 	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
-	private static final String SKIP = "skip";
+	private static final String SKIP = "Skip";
 
 	private String mapPath;
 	private String playerName;
@@ -91,6 +91,7 @@ public abstract class SwingUI {
 	private boolean permitTileListener;
 	private boolean politicCardListener;
 	private JDialog otherPlayersDialog;
+	private JButton otherPlayersStatusButton;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
 		this.guiView = guiView;
@@ -124,6 +125,7 @@ public abstract class SwingUI {
 		loadRegionButtons();
 		loadMainActionPanel();
 		loadQuickActionPanel();
+		loadOthersPlayersStatusButton();
 	}
 
 	protected JFrame getFrame() {
@@ -653,7 +655,7 @@ public abstract class SwingUI {
 			guiView.resume();
 		});
 		skipButton.setEnabled(false);
-		skipButton.setBounds(1300, 453, 66, 40);
+		skipButton.setBounds(1243, 453, 66, 40);
 		mapPanel.add(skipButton, 0);
 
 	}
@@ -882,8 +884,18 @@ public abstract class SwingUI {
 		}
 	}
 	
+	private void loadOthersPlayersStatusButton() {
+		otherPlayersStatusButton = new JButton("Players Status");
+		otherPlayersStatusButton.addActionListener(e -> 
+			otherPlayersDialog.setVisible(true)
+		);
+		otherPlayersStatusButton.setBounds(1300, 150, 66, 40);
+		mapPanel.add(otherPlayersStatusButton, 0);
+	}
+	
 	protected void refeshOtherPlayersStatusDialog(List<String> playersName, List<List<List<String>>> permitTilesCities,
 			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		
 		for (Entry<JLabel, Map<JLabel, List<JLabel>>> playerPermitTile : otherPlayersPermitTiles.entrySet()) {
 			otherPlayersDialog.remove(playerPermitTile.getKey());
 			for(Entry<JLabel, List<JLabel>> permitLabel  : playerPermitTile.getValue().entrySet()) {
