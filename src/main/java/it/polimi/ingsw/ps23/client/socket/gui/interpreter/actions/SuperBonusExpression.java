@@ -33,7 +33,7 @@ class SuperBonusExpression extends RefreshContent {
 		}
 	}
 
-	private void performSuperBonus(){
+	private void performSuperBonus() {
 		String selectedItem = new String();
 		swingUI.appendConsoleText("\n\n" + guiView.getClient().receive());
 		if(Boolean.valueOf(guiView.getClient().receive())) {
@@ -44,11 +44,11 @@ class SuperBonusExpression extends RefreshContent {
 		}
 		if(Boolean.valueOf(guiView.getClient().receive())) {
 			swingUI.enableCities(true);
-			guiView.pause();
+			guiView.pause();//TODO
 			swingUI.enableCities(false);
 			selectedItem = swingUI.getChosenCity();
 		}
-		if(Boolean.valueOf(guiView.getClient().receive())) { 
+		if(Boolean.valueOf(guiView.getClient().receive())) {
 			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
 			guiView.pause();
 			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
@@ -68,8 +68,8 @@ class SuperBonusExpression extends RefreshContent {
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 					additionalOutput(Boolean.valueOf(guiView.getClient().receive()));
 					performSuperBonus();
-					otherBonus = Boolean.valueOf(guiView.getClient().receive());
 				}
+				otherBonus = Boolean.valueOf(guiView.getClient().receive());
 			}
 		}
 	}

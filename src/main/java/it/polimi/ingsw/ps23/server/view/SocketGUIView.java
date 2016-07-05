@@ -249,17 +249,14 @@ public class SocketGUIView extends SocketView {
 	private String performSuperBonus(SuperBonusState currentState){
 		getConnection().send(currentState.useBonus());
 		boolean isRecycleBuildingPermitBonus = currentState.isRecycleBuildingPermitBonus();
-		if(isRecycleBuildingPermitBonus) {
-			getConnection().send(String.valueOf(isRecycleBuildingPermitBonus));
-		}
+		getConnection().send(String.valueOf(isRecycleBuildingPermitBonus));
+		
 		boolean isRecycleRewardTokenBonus = currentState.isRecycleRewardTokenBonus();
-		if(isRecycleRewardTokenBonus) {
-			getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
-		}
+		getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
+
 		boolean isBuildingPemitTileBonus = currentState.isBuildingPemitTileBonus();
-		if(isBuildingPemitTileBonus) { 
-			getConnection().send(String.valueOf(isBuildingPemitTileBonus));
-		}
+		getConnection().send(String.valueOf(isBuildingPemitTileBonus));
+
 		return receive();
 	}
 

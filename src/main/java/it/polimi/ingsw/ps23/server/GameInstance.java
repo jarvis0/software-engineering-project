@@ -62,17 +62,21 @@ public class GameInstance {
 		socketView.attach(controller);
 	}
 	
+	private void createSocketView(Connection connection, String socketPlayerName) {
+		if(connection.isConsole()) {
+			createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
+		}
+		else {
+			createSocketGame(new SocketGUIView(socketPlayerName, connection), connection);
+		}
+	}
+	
 	private List<String> newSocketGame(Map<String, Connection> socketWaitingConnections) {
 		List<String> socketPlayersName = new ArrayList<>(socketWaitingConnections.keySet());
 		for(int i = 0; i < socketPlayersName.size(); i++) {
 			String socketPlayerName = socketPlayersName.get(i);
 			Connection connection = socketWaitingConnections.get(socketPlayerName);
-			if(connection.isConsole()) {
-				createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
-			}
-			else {
-				createSocketGame(new SocketGUIView(socketPlayerName, connection), connection);
-			}
+			createSocketView(connection, socketPlayerName);
 		}
 		return socketPlayersName;
 	}
@@ -181,7 +185,9 @@ public class GameInstance {
 			gameSocketView.getConnection().sendNoInput(message);
 		}
 		model.sendRMIInfoMessage(message);
-		createSocketGame(new SocketConsoleView(name, connection), connection);
+		createSocketView(connection, name);
+		String mapType = MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE;//TODO anche per RMI
+		connection.sendNoInput(mapType);
 		model.setOnlinePlayer(name);
 		connection.setReconnected();
 	}

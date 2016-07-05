@@ -27,10 +27,10 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
-	private static final int MINIMUM_PLAYERS_NUMBER = 2;
+	private static final int MINIMUM_PLAYERS_NUMBER = 1;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 100000;
+	private static final int CONNECTION_TIMEOUT = 20;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
@@ -242,7 +242,7 @@ class Server implements ServerInterface {
 	private String checkIfConsole(String clientInfos, Connection connection) {
 		String name = new String();
 		if(clientInfos.contains(CONSOLE_TAG)) {
-			name = clientInfos.replace(CONSOLE_TAG,  "");
+			name = clientInfos.replace(CONSOLE_TAG, "");
 			connection.setConsole(true);
 		}
 		else {
@@ -281,8 +281,8 @@ class Server implements ServerInterface {
 			}
 			else {
 				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
+				connection.sendNoInput("You have been prompted to your previous game as " + PLAYER_NAME_TAG_OPEN + name + PLAYER_NAME_TAG_CLOSE + ", please wait your turn.");
 				gameInstances.reconnectPlayer(name, connection);
-				connection.sendNoInput("You have been prompted to your previous game, please wait your turn.");
 			}
 		}
 	}
