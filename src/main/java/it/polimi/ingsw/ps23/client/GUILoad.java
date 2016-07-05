@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -58,6 +59,7 @@ class GUILoad {
 	private JTextArea textArea;
 	private JSpinner marketSpinner;
 	private JButton sendButton;
+	private JDialog otherPlayersDialog;
 	
 	GUILoad(String mapPath) {
 		this.mapPath = mapPath;
@@ -114,6 +116,10 @@ class GUILoad {
 
 	DefaultTableModel getTableModel() {
 		return tableModel;
+	}
+	
+	JDialog getOthersPlayersDialog() {
+		return otherPlayersDialog;
 	}
 
 	BufferedImage readImage(String path) {
@@ -231,18 +237,6 @@ class GUILoad {
 		scrollPane.setBounds(0, 0, 567, 110);
 		scrollPane.setLocation(800, 0);
 	}
-	
-	void loadComponents() {
-		loadCouncilsPositions();
-		loadKing();
-		loadCities();
-		loadStreets();
-		loadMapBackground();
-		loadNobiltyTrack();
-		loadPlayersTable();
-		loadTextArea();
-	}
-
 	private void loadTextArea() {	
 		textArea = new JTextArea();
 		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
@@ -263,11 +257,25 @@ class GUILoad {
 		mapPanel.add(marketSpinner,0);
 		marketSpinner.setVisible(false);
 	}
-
-	public void setText(String string) {
-		textArea.setText(string);
+	
+	void loadComponents() {
+		loadCouncilsPositions();
+		loadKing();
+		loadCities();
+		loadStreets();
+		loadMapBackground();
+		loadNobiltyTrack();
+		loadPlayersTable();
+		loadTextArea();
+		loadOthersPlayersDialog();
 	}
 	
+	private void loadOthersPlayersDialog() {
+		otherPlayersDialog = new JDialog(frame, "Other Players Permit Tiles Status");
+		otherPlayersDialog.setBounds(300, 200, 600, 50);
+		otherPlayersDialog.setVisible(false);
+	}
+
 	public void appendText(String string) {
 		textArea.append(string);
 	}

@@ -78,6 +78,7 @@ public abstract class SwingUI {
 	private JButton finished;
 	private List<JLabel> cardsList;
 	private Map<JLabel, List<JLabel>> playerPermitTiles;
+	private Map<JLabel, Map <JLabel, List<JLabel>>> otherPlayersPermitTiles;
 	private Map<JLabel, List<JLabel>> playerAllPermitTiles;
 	boolean finish;
 	private String chosenCard;
@@ -89,12 +90,14 @@ public abstract class SwingUI {
 	private boolean freeCuncillorListener;
 	private boolean permitTileListener;
 	private boolean politicCardListener;
+	private JDialog otherPlayersDialog;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
 		this.guiView = guiView;
 		this.playerName = playerName;
 		regionsButtons = new ArrayList<>();
 		playerPermitTiles = new HashMap<>();
+		otherPlayersPermitTiles = new HashMap<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
 		cityLabels = guiLoad.getCityLabels();
@@ -115,7 +118,8 @@ public abstract class SwingUI {
 		tableModel = guiLoad.getTableModel();
 		playerAllPermitTiles = new HashMap<>();
 		totalPermitsCardDialog = new JDialog(frame, "Your Permission Total HandDeck");
-		totalPermitsCardDialog.setBounds(300, 200, 600, 50);
+		totalPermitsCardDialog.setBounds(300, 200, 600, 90);
+		otherPlayersDialog = guiLoad.getOthersPlayersDialog();
 		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
@@ -398,14 +402,14 @@ public abstract class SwingUI {
 
 	private void drawPermitTiles(Container container, Map<JLabel, List<JLabel>> permitLabels,
 			List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName,
-			List<List<String>> permitTilesBonusesValue, int xCoord, int yCoord) {
-		int x = xCoord;
-		int y = yCoord;
+			List<List<String>> permitTilesBonusesValue, Point point, int increment) {
+		int x = (int) point.getX();
+		int y = (int) point.getY();
 		int indexOfTile = 0;
 		for (int i = 0; i < permitTilesCities.size(); i++) {
 			drawPermitTile(container, permitLabels, permitTilesCities.get(i), permitTilesBonusesName.get(i),
 					permitTilesBonusesValue.get(i), indexOfTile, new Point(x, y));
-			x -= 52;
+			x += increment;
 			indexOfTile++;
 		}
 	}
@@ -418,7 +422,7 @@ public abstract class SwingUI {
 			int y = point.y;
 			Map<JLabel, List<JLabel>> permitTilesLabels = new HashMap<>();
 			drawPermitTiles(mapPanel, permitTilesLabels, allPermitTilesCities.get(i), allPermitTilesBonusesName.get(i),
-					allPermitTilesBonusesValue.get(i), x - 120, y - 12);
+					allPermitTilesBonusesValue.get(i), new Point(x - 120, y - 12), -52);
 			permitTiles.put(regions.get(i), permitTilesLabels);
 		}
 	}
@@ -854,10 +858,10 @@ public abstract class SwingUI {
 		int x = 0;
 		int y = 611;
 		int playerIndex = playersName.indexOf(playerName);
+		int increment = 52;
 		for (int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
 			drawPermitTiles(mapPanel, playerPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i),
-					permitTilesBonusesValue.get(i), x, y);
-			x += 52;
+					permitTilesBonusesValue.get(i), new Point(x, y), increment);
 		}
 	}
 
@@ -874,8 +878,45 @@ public abstract class SwingUI {
 		int y = 0;
 		int playerIndex = playersName.indexOf(playerName);
 		for(int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
-			drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
-			x += 52;
+			drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), new Point(x, y), 52);
+		}
+	}
+	
+	protected void refeshOtherPlayersStatusDialog(List<String> playersName, List<List<List<String>>> permitTilesCities,
+			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		for (Entry<JLabel, Map<JLabel, List<JLabel>>> playerPermitTile : otherPlayersPermitTiles.entrySet()) {
+			otherPlayersDialog.remove(playerPermitTile.getKey());
+			for(Entry<JLabel, List<JLabel>> permitLabel  : playerPermitTile.getValue().entrySet()) {
+				otherPlayersDialog.remove(permitLabel.getKey());
+				for(JLabel jLabel : permitLabel.getValue()) {
+					otherPlayersDialog.remove(jLabel);
+				}
+			}
+		}
+		otherPlayersPermitTiles.clear();
+
+		int x = 0;
+		int y = 30;
+		int playerIndex = playersName.indexOf(playerName);
+		int increment = 52;
+		int i = 0;
+		for (String playerNameString : playersName) {
+			if(i != playerIndex) {
+				JLabel playerNameLabel = new JLabel();
+				playerNameLabel.setText(playerNameString);
+				/*playerNameLabel.setBounds(0, 0, 23, 25);
+				playerNameLabel.setLocation(cityCoordX, cityCoordY);*/
+				playerNameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+				playerNameLabel.setForeground(Color.black);
+				otherPlayersDialog.add(playerNameLabel,0);
+				Map<JLabel, List<JLabel>> otherPlayerPermitTilesMap = new HashMap<>();
+				for (int indexOfTile = 0; indexOfTile < permitTilesCities.get(indexOfTile).size(); indexOfTile++) {
+					drawPermitTiles(otherPlayersDialog, otherPlayerPermitTilesMap, permitTilesCities.get(indexOfTile), permitTilesBonusesName.get(indexOfTile),
+							permitTilesBonusesValue.get(indexOfTile), new Point(x, y), increment);
+				}
+				otherPlayersPermitTiles.put(playerNameLabel, otherPlayerPermitTilesMap);
+			}
+			y += 70;
 		}
 	}
 

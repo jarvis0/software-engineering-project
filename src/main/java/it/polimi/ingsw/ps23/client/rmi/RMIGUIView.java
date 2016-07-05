@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.client.GUIView;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
@@ -67,7 +68,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(StartTurnState currentState) {
-		swingUI.appendConsoleText(currentState.getExceptionString());
 		if(firstUIRefresh) {
 			swingUI.loadStaticContents(currentState);
 			firstUIRefresh = false;
@@ -100,7 +100,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(ElectCouncillorState currentState) {
-		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enableFreeCouncillorsButtons(true);
@@ -117,12 +116,10 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.enableKingButton(false);
 		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + balcony + "'s balcony.");
 		sendAction(currentState.createAction(chosenCouncillor, balcony));
-
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action.");
 		sendAction(currentState.createAction());
 	}
@@ -211,42 +208,51 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
-		swingUI.appendConsoleText(currentState.getExceptionString());
-		swingUI.clearSwingUI();
-		List<String> removedCards = new ArrayList<>();
-		swingUI.showAvailableActions(false, false);
-		swingUI.enablePoliticCards(true);
-		swingUI.enableFinish(false);
-		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium King main action,\npress on the politic cards you want to use to satisfy the King's council.");
-		int numberOfCards = MAX_CARDS_NUMBER;
-		boolean finish = false;
-		int i = 0;
-		while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
-			pause();
-			finish = swingUI.hasFinished();
-			swingUI.enableFinish(true);
-			if(!finish) {
-				removedCards.add(swingUI.getChosenCard());
-			}
-			i++;
-		}
-		swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + "\nplease press on the city where you want to move the King.");
-		swingUI.enablePoliticCards(false);
-		swingUI.enableCities(true);
-		pause();
-		swingUI.enableCities(false);
-		String arrivalCity = swingUI.getChosenCity();
 		try {
-			sendAction(currentState.createAction(removedCards, arrivalCity));
-		} catch (InvalidCardException e) {
+			currentState.getAvailableCardsNumber();
+			swingUI.appendConsoleText(currentState.getExceptionString());
+			swingUI.clearSwingUI();
+			List<String> removedCards = new ArrayList<>();
+			swingUI.showAvailableActions(false, false);
+			swingUI.enablePoliticCards(true);
+			swingUI.enableFinish(false);
+			swingUI.appendConsoleText("\n\nYou are performing a Build Emporium King main action,\npress on the politic cards you want to use to satisfy the King's council.");
+			int numberOfCards = MAX_CARDS_NUMBER;
+			boolean finish = false;
+			int i = 0;
+			while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
+				pause();
+				finish = swingUI.hasFinished();
+				swingUI.enableFinish(true);
+				if(!finish) {
+					removedCards.add(swingUI.getChosenCard());
+				}
+				i++;
+			}
+			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + "\nplease press on the city where you want to move the King.");
+			swingUI.enablePoliticCards(false);
+			swingUI.enableCities(true);
+			pause();
+			swingUI.enableCities(false);
+			String arrivalCity = swingUI.getChosenCity();
+			try {
+				sendAction(currentState.createAction(removedCards, arrivalCity));
+			} catch (InvalidCardException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+				getState().setExceptionString(e.toString());
+			}
+		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			getState().setExceptionString(e.toString());
-		}	
+			try {
+				getControllerInterface().wakeUpServer(e);
+			} catch (RemoteException e1) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
+			}
+		}
 	}
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enablePermitTileDeck(true);
@@ -440,6 +446,9 @@ public class RMIGUIView extends RMIView implements GUIView {
 		setWaiting(false);
 		do {
 			getState().acceptView(this);
+			if(getState().arePresentException()) {
+				swingUI.appendConsoleText(getState().getExceptionString());
+			}
 		} while(!endGame);
 	}
 
