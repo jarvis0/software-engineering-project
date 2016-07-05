@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 
 public class TestGroupColored {
@@ -28,7 +29,7 @@ public class TestGroupColored {
 		assertTrue(groupColored.get(1).getName().equals("bronze"));
 		assertTrue(groupColored.get(2).getName().equals("silver"));
 		assertTrue(groupColored.get(3).getName().equals("gold"));
-		assertTrue(groupColored.get(3).acquireBonusTile().getValue() == 20);
+		assertTrue(((RealBonus)groupColored.get(3).acquireBonusTile()).getValue() == 20);
 		assertTrue(groupColored.get(3).acquireBonusTile().getName().equals("victoryPoint"));
 	}
 

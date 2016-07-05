@@ -29,7 +29,7 @@ public class TestRecycleBuildingPermitTile {
 		input.add("1");
 		BusinessPermitTile card = new BusinessPermitTile();
 		Bonus additionalBonus = new CoinBonus("Coin Bonus");
-		additionalBonus.setValue(1);
+		((RealBonus)additionalBonus).setValue(1);
 		card.addBonus(additionalBonus);
 		String check = bonus.checkBonus(game.getCurrentPlayer());
 		List<Card> cards = new ArrayList<>();
