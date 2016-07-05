@@ -25,11 +25,36 @@ class SuperBonusExpression extends RefreshContent {
 	
 	private void additionalOutput(boolean isBuildingPermitTileBonus) {
 		if (isBuildingPermitTileBonus) {
-			swingUI.appendConsoleText("\n\n" + guiView.getClient().receive());
+			swingUI.appendConsoleText("\n\nYou have encountred a Building Permit Bonus on Nobility Track.\nPress the region where to pick a permit tile.");
 			swingUI.enableRegionButtons(true);
 			guiView.pause();
+			swingUI.enableRegionButtons(false);
 			guiView.getClient().send(swingUI.getChosenRegion());
 		}
+	}
+
+	private void performSuperBonus() {
+		String selectedItem = new String();
+		swingUI.appendConsoleText("\n\n" + guiView.getClient().receive());
+		if(Boolean.valueOf(guiView.getClient().receive())) {
+			swingUI.enableTotalHandDeck(true);
+			guiView.pause();
+			swingUI.enableTotalHandDeck(false);
+			selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
+		}
+		if(Boolean.valueOf(guiView.getClient().receive())) {
+			swingUI.enableCities(true);
+			guiView.pause();//TODO
+			swingUI.enableCities(false);
+			selectedItem = swingUI.getChosenCity();
+		}
+		if(Boolean.valueOf(guiView.getClient().receive())) {
+			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
+			guiView.pause();
+			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
+			selectedItem = String.valueOf(swingUI.getChosenTile());
+		}
+		guiView.getClient().send(selectedItem);
 	}
 
 	@Override
@@ -37,16 +62,14 @@ class SuperBonusExpression extends RefreshContent {
 		if(expression.interpret(message)) {
 			Expression dynamicContent = new TerminalExpression(REFRESH_CONTENT_TAG_OPEN, REFRESH_CONTENT_TAG_CLOSE);
 			updateDynamicContent(swingUI, dynamicContent.selectBlock(message));
-			String selectedItem;
-			boolean otherBonus = Boolean.valueOf(guiView.getClient().receive());
+			Boolean otherBonus = Boolean.valueOf(guiView.getClient().receive());
 			while(otherBonus) {
 				int numberOfCurrentBonus = Integer.parseInt(guiView.getClient().receive());
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
 					additionalOutput(Boolean.valueOf(guiView.getClient().receive()));
-					swingUI.appendConsoleText("\n\n" + guiView.getClient().receive());
-					
-					otherBonus = Boolean.valueOf(guiView.getClient().receive());
+					performSuperBonus();
 				}
+				otherBonus = Boolean.valueOf(guiView.getClient().receive());
 			}
 		}
 	}

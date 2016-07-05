@@ -62,17 +62,21 @@ public class GameInstance {
 		socketView.attach(controller);
 	}
 	
+	private void createSocketView(Connection connection, String socketPlayerName) {
+		if(connection.isConsole()) {
+			createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
+		}
+		else {
+			createSocketGame(new SocketGUIView(socketPlayerName, connection), connection);
+		}
+	}
+	
 	private List<String> newSocketGame(Map<String, Connection> socketWaitingConnections) {
 		List<String> socketPlayersName = new ArrayList<>(socketWaitingConnections.keySet());
 		for(int i = 0; i < socketPlayersName.size(); i++) {
 			String socketPlayerName = socketPlayersName.get(i);
 			Connection connection = socketWaitingConnections.get(socketPlayerName);
-			if(connection.isConsole()) {
-				createSocketGame(new SocketConsoleView(socketPlayerName, connection), connection);
-			}
-			else {
-				createSocketGame(new SocketGUIView(socketPlayerName, connection), connection);
-			}
+			createSocketView(connection, socketPlayerName);
 		}
 		return socketPlayersName;
 	}
@@ -177,17 +181,19 @@ public class GameInstance {
 
 	void reconnectPlayer(String name, Connection connection) {
 		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
-		for(SocketView gameSocketView : socketViews) {
-			gameSocketView.getConnection().sendNoInput(message);
-		}
+		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
-		createSocketGame(new SocketConsoleView(name, connection), connection);
+		createSocketView(connection, name);
+		connection.sendNoInput(MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE);
 		model.setOnlinePlayer(name);
 		connection.setReconnected();
 	}
 	
 	void reconnectPlayer(String name, ClientInterface client) {
-		model.sendRMIInfoMessage(PLAYER_PRINT + name + " has been reconnected to the game.");
+		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
+		sendSocketInfoMessage(message);
+		model.sendRMIInfoMessage(message);
+		model.rmiInfoMessage(client, MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE);
 		createRMIGame(name, client, controller);
 		model.setOnlinePlayer(name);
 	}

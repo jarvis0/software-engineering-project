@@ -383,7 +383,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		}
 	}
 	
-	private String performSuperBonus(SuperBonusState currentState){
+	private String performSuperBonus(SuperBonusState currentState) {
 		String selectedItem = new String();
 		swingUI.appendConsoleText("\n\n" + currentState.useBonus());
 		if(currentState.isRecycleBuildingPermitBonus()) {

@@ -198,10 +198,10 @@ class SocketParametersCreator {
 				playersParameterSend.append("," + builtEmporiums.get(j).getName());
 			}
 			addPermitHandDeck(playersParameterSend, player.getPermitHandDeck().getCards());
-			addPermitHandDeck(playersParameterSend, player.getPermitUsedHandDeck().getCards());
+			addPermitHandDeck(playersParameterSend, player.getAllPermitHandDeck().getCards());
 			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
 			playersParameterSend.append("," + player.isOnline());
-		}//verificare se ha i permit tile ecc.. con il debug F5 TODO
+		}
 		playersParameterSend.append(",");
 		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
 	}

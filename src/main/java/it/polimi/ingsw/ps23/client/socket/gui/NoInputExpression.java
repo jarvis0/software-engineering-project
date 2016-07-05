@@ -2,7 +2,6 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 
 import java.io.PrintStream;
 
-import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.Parser;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
@@ -25,12 +24,14 @@ public class NoInputExpression implements Parser {
 	
 	private Expression expression;
 	
-	private SwingUI swingUI;
+	private RemoteGUIView remoteView;
+	
+	private SocketSwingUI swingUI;
 	
 	private PlayerNameExpression isPlayerName;
 	private MapTypeExpression isMapType;
 	/**
-	 * Constructs the object initializing all the variablese at the deafult values.
+	 * Constructs the object initializing all the variables at the default values.
 	 * @param remoteView - the current remote view of the user
 	 * @param output - the references to the print stream
 	 * @param expression - set of tags in witch the message is.
@@ -38,20 +39,21 @@ public class NoInputExpression implements Parser {
 	public NoInputExpression(RemoteGUIView remoteView, PrintStream output, Expression expression) {
 		this.output = output;
 		this.expression = expression;
-		isMapType = getMapTypeExpression(remoteView);
-		isPlayerName = getPlayerNameExpression(remoteView);
+		this.remoteView = remoteView;
+		isMapType = getMapTypeExpression();
+		isPlayerName = getPlayerNameExpression();
 	}
 	
-	private PlayerNameExpression getPlayerNameExpression(RemoteGUIView remoteView) {
+	private PlayerNameExpression getPlayerNameExpression() {
 		Expression playerNameExpression = new TerminalExpression(PLAYER_NAME_TAG_OPEN, PLAYER_NAME_TAG_CLOSE);
 		return new PlayerNameExpression(remoteView, playerNameExpression);
 	}
 	
-	private MapTypeExpression getMapTypeExpression(RemoteGUIView remoteView) {
+	private MapTypeExpression getMapTypeExpression() {
 		Expression mapTypeExpression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
 		return new MapTypeExpression(remoteView, output, mapTypeExpression);
 	}
-
+	
 	public void setSwingUI(SocketSwingUI swingUI) {
 		this.swingUI = swingUI;
 	}
@@ -62,7 +64,7 @@ public class NoInputExpression implements Parser {
 	 */
 	public void infoMessage(String message) {
 		if(expression.interpret(message)) {
-			swingUI.appendConsoleText(expression.selectBlock(message));
+			swingUI.appendConsoleText("\n" + expression.selectBlock(message));
 		}
 	}
 	
@@ -71,6 +73,9 @@ public class NoInputExpression implements Parser {
 		if(expression.interpret(message)) {
 			String parsingMessage = expression.selectBlock(message);
 			parsingMessage = isPlayerName.parse(parsingMessage);
+			if(parsingMessage.contains("Invalid name format.")) {
+				remoteView.setInvalidName();
+			}
 			String mapType = isMapType.parse(parsingMessage);
 			if(mapType.equals(parsingMessage)) {
 				output.println(parsingMessage);
