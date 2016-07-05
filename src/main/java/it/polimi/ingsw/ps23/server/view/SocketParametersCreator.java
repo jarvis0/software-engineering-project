@@ -43,6 +43,8 @@ class SocketParametersCreator {
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
 	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
+	private static final String EMPORIUMS_TAG_OPEN = "<emporiums>";
+	private static final String EMRPOIUMS_TAG_CLOSE = "</emporiums>";
 	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
 	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
 	
@@ -207,6 +209,22 @@ class SocketParametersCreator {
 		permitTilesUpSend.append(",");
 		return PERMIT_TILES_UP_TAG_OPEN + permitTilesUpSend + PERMIT_TILES_UP_TAG_CLOSE;
 	}
+	
+	private String addEmporiums(Map<String, City> cities) {
+		StringBuilder emporiumsSend = new StringBuilder();
+		Set<Entry<String, City>> citiesEntries = cities.entrySet();
+		emporiumsSend.append(String.valueOf(citiesEntries.size()));
+		for(Entry<String, City> cityEntry : citiesEntries) {
+			List<String> playerEmporiums = cityEntry.getValue().getEmporiumsPlayersList();
+			emporiumsSend.append(",");
+			emporiumsSend.append(String.valueOf(playerEmporiums.size()));
+			for(String playerEmporium : playerEmporiums) {
+				emporiumsSend.append("," + playerEmporium);
+			}
+		}
+		emporiumsSend.append(",");
+		return EMPORIUMS_TAG_OPEN + emporiumsSend + EMRPOIUMS_TAG_CLOSE;
+	}
 
 	private String addTurnParameters(Player currentPlayer, boolean availableMainAction, boolean availableQuickAction) {
 		StringBuilder turnParametersSend = new StringBuilder();
@@ -224,10 +242,11 @@ class SocketParametersCreator {
 		message += addBonusTiles(currentState.getGroupRegionalCity(), currentState.getGroupColoredCity(), currentState.getCurrentKingTile());
 		message += addPlayerParameters(currentState.getPlayersList());
 		message += addPermitTilesUp(currentState.getGroupRegionalCity());
+		message += addEmporiums(currentState.getGameMap().getCities());
 		message += addTurnParameters(currentState.getCurrentPlayer(), currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 		return DYNAMIC_CONTENT_TAG_OPEN + message + DYNAMIC_CONTENT_TAG_CLOSE;
 	}
-	
+
 	String createElectCouncillor() {
 		return ACTION_TAG_OPEN + ELECT_COUNCILLOR_TAG + ACTION_TAG_CLOSE;
 	}
@@ -272,7 +291,7 @@ class SocketParametersCreator {
 		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + ACTION_TAG_CLOSE;
 	}
 
-	public String createEndGame() {
+	String createEndGame() {
 		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
 	}
 
