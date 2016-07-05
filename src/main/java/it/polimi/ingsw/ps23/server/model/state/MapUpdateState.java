@@ -12,7 +12,11 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
-
+/**
+ * Provides methods to show the status of the map in the current game.
+ * @author Mirco Manzoni
+ *
+ */
 public abstract class MapUpdateState extends State {
 
 	/**

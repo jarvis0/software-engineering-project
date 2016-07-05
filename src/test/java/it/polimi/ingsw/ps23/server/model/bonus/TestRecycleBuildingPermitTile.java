@@ -24,9 +24,9 @@ public class TestRecycleBuildingPermitTile {
 		TurnHandler turnHandler = new TurnHandler();
 		RecycleBuildingPermitBonus bonus = new RecycleBuildingPermitBonus("Recycle Building Permit Bonus");
 		bonus.updateBonus(game, turnHandler);
-		assertTrue(turnHandler.getSuperBonuses().contains(bonus));
+		assertTrue(!turnHandler.getSuperBonuses().contains(bonus));
 		List<String> input = new ArrayList<>();
-		input.add("0");
+		input.add("1");
 		BusinessPermitTile card = new BusinessPermitTile();
 		Bonus additionalBonus = new CoinBonus("Coin Bonus");
 		additionalBonus.setValue(1);
@@ -35,10 +35,12 @@ public class TestRecycleBuildingPermitTile {
 		List<Card> cards = new ArrayList<>();
 		cards.add(card);
 		game.getCurrentPlayer().buyPermitCards(cards);
+		bonus.updateBonus(game, turnHandler);
+		assertTrue(turnHandler.getSuperBonuses().contains(bonus));
 		assertFalse(check.equals(bonus.checkBonus(game.getCurrentPlayer())));
 		int initialCoins = game.getCurrentPlayer().getCoins();
 		bonus.acquireSuperBonus(input, game, turnHandler);
-		assertTrue(game.getCurrentPlayer().getCoins() == initialCoins);
+		assertTrue(game.getCurrentPlayer().getCoins() == initialCoins + 1);
 	}
 
 }
