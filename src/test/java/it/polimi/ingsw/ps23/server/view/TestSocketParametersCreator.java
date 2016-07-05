@@ -21,7 +21,9 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.state.Context;
+import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class TestSocketParametersCreator {
 
@@ -71,6 +73,8 @@ public class TestSocketParametersCreator {
 				assertTrue(content.substring(content.indexOf("<nobility_track>"), content.indexOf("</nobility_track>")).contains(bonus.getName() + "," + bonus.getValue()));
 			}
 		}
+		MarketOfferPhaseState newState = new MarketOfferPhaseState();
+		newState.changeState(new Context(), game);
 		assertTrue(creator.createElectCouncillor().contains("elect_councillor"));
 		assertTrue(creator.createEngageAnAssistant().contains("engage_an_assistant"));
 		assertTrue(creator.createAcquireBusinessPermitTile().contains("acquire_business_permit_tile"));
@@ -79,9 +83,11 @@ public class TestSocketParametersCreator {
 		assertTrue(creator.createAdditionalMainAction().contains("additional_main_action"));
 		assertTrue(creator.createBuildKingEmpoium().contains("build_emporium_king"));
 		assertTrue(creator.createBuildPermitTile().contains("build_emporium_permit_tile"));
-		//assertTrue(creator.createMarketOfferPhase(new MarketOfferPhaseState()).contains("market_offer_phase"));
+		assertTrue(creator.createMarketOfferPhase(newState).contains("market_offer_phase"));
 		assertTrue(creator.createMarketBuyPhase().contains("market_buy_phase"));
-		//assertTrue(creator.createSuperBonus().contains("super_bonus"));
+		SuperBonusState superState = new SuperBonusState(turnHandler);
+		superState.changeState(new Context(), game);
+		assertTrue(creator.createSuperBonus(superState).contains("super_bonus"));
 		assertTrue(creator.createEndGame().contains("end_game"));
 		
 }

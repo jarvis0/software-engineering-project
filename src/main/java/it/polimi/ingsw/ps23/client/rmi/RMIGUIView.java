@@ -28,10 +28,15 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
-
+/**
+ * Provides methods to perform visit pattern in GUI version with RMI protocol.
+ * @author Alessandro Erba
+ *
+ */
 public class RMIGUIView extends RMIView implements GUIView {
 	
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
+	private static final int MAX_CARDS_NUMBER = 4;
 	private static final String SKIP = "skip";
 	private static final String ITS_PRINT = "\nIt's ";
 	
@@ -96,10 +101,10 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enableFreeCouncillorsButtons(true);
-		swingUI.appendConsoleText("\n\nYou are performing a Elect councillor main action,\npress on a free councillor to select it.");
+		swingUI.appendConsoleText("\n\nYou are performing a Elect Councillor main action,\npress on a free councillor to select it.");
 		pause();
 		String chosenCouncillor = swingUI.getChosenCouncillor();
-		swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " Councillor,\nPress on the region where you want to put it ");
+		swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " councillor,\npress on the region where you want to put it.");
 		swingUI.enableFreeCouncillorsButtons(false);
 		swingUI.enableRegionButtons(true);
 		swingUI.enableKingButton(true);
@@ -107,14 +112,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 		String balcony = swingUI.getChosenRegion();
 		swingUI.enableRegionButtons(false);
 		swingUI.enableKingButton(false);
-		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + balcony + "'s balcony");
+		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + balcony + "'s balcony.");
 		sendAction(currentState.createAction(chosenCouncillor, balcony));
 
 	}
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
-		swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action");
+		swingUI.appendConsoleText("\n\nYou are performing a Engage An Assistant quick action.");
 		sendAction(currentState.createAction());
 	}
 
@@ -122,11 +127,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(ChangePermitTilesState currentState) {
 		swingUI.showAvailableActions(false, false);
 		swingUI.enableRegionButtons(true);
-		swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
+		swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tilew quick action,\nplease select the region where you want to change tiles.");
 		pause();
 		String chosenRegion = swingUI.getChosenRegion();
 		swingUI.enableRegionButtons(false);
-		swingUI.appendConsoleText("\nYou have just changed the " + chosenRegion + "'s Permit Tiles");
+		swingUI.appendConsoleText("\nYou have just changed the " + chosenRegion + "'s Permit Tiles.");
 		sendAction(currentState.createAction(chosenRegion));
 	}
 
@@ -137,14 +142,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 			swingUI.showAvailableActions(false, false);
 			swingUI.enableRegionButtons(true);
 			swingUI.enableFinish(false);
-			swingUI.appendConsoleText("\n\nYou are performing a Acquire Business Permit Tile main action,\npress on the region whose council you whant to satisfy");
+			swingUI.appendConsoleText("\n\nYou are performing a Acquire Business Permit Tile main action,\npress on the region whose council you want to satisfy.");
 			List<String> removedCards = new ArrayList<>();
 			pause();
 			swingUI.enableRegionButtons(false);
 			String chosenCouncil = swingUI.getChosenRegion();
-			swingUI.appendConsoleText("\nYou have selected the " + chosenCouncil + " council,\npress on the politic cards that you what to use for satisfy this council");
+			swingUI.appendConsoleText("\nYou have selected the " + chosenCouncil + " council,\npress on the politic cards you want to use to satisfy this council.");
 			swingUI.enablePoliticCards(true);
-			int numberOfCards = 4;
+			int numberOfCards = MAX_CARDS_NUMBER;
 			boolean finish = false;
 			int i = 0;
 			while (!finish && i < numberOfCards && i < currentState.getPoliticHandSize()) {
@@ -156,7 +161,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				}
 				i++;
 			}
-			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards.toString() + "\nyou can now press on the permit tile that you want acquire.");
+			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + ".\nNow you can press on the permit tile you want to acquire.");
 			swingUI.enablePoliticCards(false);
 			swingUI.enablePermitTilesPanel(chosenCouncil, true);
 			pause();
@@ -178,7 +183,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.enableFreeCouncillorsButtons(true);
 		pause();
 		String chosenCouncillor = swingUI.getChosenCouncillor();
-		swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " Councillor,\npress on the region where you want to put it.");
+		swingUI.appendConsoleText("\nYou have chosen a " + chosenCouncillor + " councillor,\npress on the region where you want to put it.");
 		swingUI.enableFreeCouncillorsButtons(false);
 		swingUI.enableRegionButtons(true);
 		swingUI.enableKingButton(true);
@@ -186,13 +191,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 		String chosenBalcony = swingUI.getChosenRegion();
 		swingUI.enableRegionButtons(false);
 		swingUI.enableKingButton(false);
-		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + "councillor in " + chosenBalcony + "'s balcony");
+		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + "councillor in " + chosenBalcony + "'s balcony.");
 		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
 	}
 
 	@Override
 	public void visit(AdditionalMainActionState currentState) {
-		swingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action");
+		swingUI.appendConsoleText("\n\nYou are performing an Additional Main Action quick action.");
 		sendAction(currentState.createAction());
 	}
 
@@ -203,8 +208,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.showAvailableActions(false, false);
 		swingUI.enablePoliticCards(true);
 		swingUI.enableFinish(false);
-		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium King Main Action,\npress on the politic cards thet you want to use for satisfy the King's council.");
-		int numberOfCards = 4;
+		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium King main action,\npress on the politic cards you want to use to satisfy the King's council.");
+		int numberOfCards = MAX_CARDS_NUMBER;
 		boolean finish = false;
 		int i = 0;
 		while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
@@ -216,7 +221,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			}
 			i++;
 		}
-		swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards.toString() + "\nplease press on the city where you want to move the King.");
+		swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + "\nplease press on the city where you want to move the King.");
 		swingUI.enablePoliticCards(false);
 		swingUI.enableCities(true);
 		pause();
@@ -235,11 +240,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.clearSwingUI();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enablePermitTileDeck(true);
-		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile Main Action,\npress on the permit tile that you want use.");
+		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile main action,\npress on the permit tile you want to use.");
 		pause();
 		int chosenCard = swingUI.getChosenTile();
 		swingUI.enablePermitTileDeck(false);
-		swingUI.appendConsoleText("\nYou have chose tile number: " + chosenCard + "\npress on the city want to build.");
+		swingUI.appendConsoleText("\nYou have chosen this tile number: " + chosenCard + "\npress on the city where you want to build in.");
 		swingUI.enableCities(true);
 		pause();
 		swingUI.enableCities(false);
@@ -247,16 +252,16 @@ public class RMIGUIView extends RMIView implements GUIView {
 		sendAction(currentState.createAction(chosenCity, chosenCard));
 	}
 	
-	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) throws NumberFormatException {
+	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) {
 		List<String> chosenPoliticCards = new ArrayList<>();
 		if (currentState.canSellPoliticCards()) {
-			swingUI.appendConsoleText("\nHow many politic cards do you want to sell? ");
+			swingUI.appendConsoleText("\nHow many politic cards do you want to sell?");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			swingUI.enablePoliticCards(true);
-			swingUI.appendConsoleText("\nplease press on the cards that you want to sell");
+			swingUI.appendConsoleText("\nplease press on the cards you want to sell.");
 			for (int i = 0; i < numberOfCards && i < currentState.getPoliticHandSize(); i++) {
 				pause();
 				chosenPoliticCards.add(swingUI.getChosenCard());
@@ -265,16 +270,16 @@ public class RMIGUIView extends RMIView implements GUIView {
 		return chosenPoliticCards;
 	}
 	
-	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) throws NumberFormatException {
+	private List<Integer> sellPermissionCard(MarketOfferPhaseState currentState) {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		if (currentState.canSellPermissionCards()) {
-			swingUI.appendConsoleText("\nHow many permission cards do you want to use? (numerical input > 0)");
+			swingUI.appendConsoleText("\nHow many permit tiles do you want to use? (numerical input > 0)");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
 			swingUI.enablePermitTileDeck(true);
-			swingUI.appendConsoleText("\nplease press on the cards that you whant to sell");
+			swingUI.appendConsoleText("\nplease press on the cards that you want to sell.");
 			for (int i = 0; i < numberOfCards && i < currentState.getPermissionHandSize(); i++) {
 				pause();
 				chosenPermissionCards.add(swingUI.getChosenTile());
@@ -283,10 +288,10 @@ public class RMIGUIView extends RMIView implements GUIView {
 		return chosenPermissionCards;
 	}
 	
-	private int sellAssistant(MarketOfferPhaseState currentState) throws NumberFormatException {
+	private int sellAssistant(MarketOfferPhaseState currentState) {
 		int chosenAssistants = 0;
 		if (currentState.canSellAssistants()) {
-			swingUI.appendConsoleText("\nSelect the number of assistants " + currentState.getAssistants());
+			swingUI.appendConsoleText("\nSelect the number of assistants (max: " + currentState.getAssistants() + " ).");
 			swingUI.enableMarketInputArea(true);
 			pause(); 
 			chosenAssistants = swingUI.getChosenValue();
@@ -298,12 +303,12 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(MarketOfferPhaseState currentState) {
 		swingUI.refreshDynamicContents(currentState);
 		String player = currentState.getPlayerName();
-		swingUI.appendConsoleText(ITS_PRINT + player + " market phase turn.");
+		swingUI.appendConsoleText("\n\nIt's" + player + " market phase turn.");
 		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermissionCard(currentState);
 			int chosenAssistants = sellAssistant(currentState);
-			swingUI.appendConsoleText("\nChoose the price for your offer: ");
+			swingUI.appendConsoleText("\nChoose the price for your offer.");
 			swingUI.enableMarketInputArea(true);
 			pause();
 			int cost = swingUI.getChosenValue();
@@ -311,7 +316,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards,
 							chosenPermissionCards, chosenAssistants, cost));
-			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
+			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				getState().setExceptionString(e.toString());
 			} catch (RemoteException e) {
@@ -319,6 +324,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			}
 		} else {
 			setWaiting(true);
+			swingUI.showAvailableActions(false, false);
 			pause();
 		}
 	}
@@ -326,11 +332,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
-		swingUI.appendConsoleText(ITS_PRINT + player + " market phase turn.");
+		swingUI.appendConsoleText("\n\nIt's " + player + " market phase turn.");
 		if(player.equals(getClientName())) {
 			try {
 				if (currentState.canBuy()) {
-					swingUI.appendConsoleText("\nChoose the offert that you want to buy: \n" + currentState.getAvaiableOffers());
+					swingUI.appendConsoleText("\nChoose the offert you want to buy:\n" + currentState.getAvaiableOffers());
 					swingUI.enableMarketInputArea(true);
 					pause();
 					swingUI.enableMarketInputArea(false);

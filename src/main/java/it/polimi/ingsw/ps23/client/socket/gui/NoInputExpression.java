@@ -8,7 +8,12 @@ import it.polimi.ingsw.ps23.client.socket.Parser;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
-
+/**
+ * Provides methods to print game asynchronous messages such as players disconnection or
+ * reconnection into GUI text area.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class NoInputExpression implements Parser {
 
 	private static final String PLAYER_NAME_TAG_OPEN = "<player_name>";
@@ -24,7 +29,12 @@ public class NoInputExpression implements Parser {
 	
 	private PlayerNameExpression isPlayerName;
 	private MapTypeExpression isMapType;
-	
+	/**
+	 * Constructs the object initializing all the variablese at the deafult values.
+	 * @param remoteView - the current remote view of the user
+	 * @param output - the references to the print stream
+	 * @param expression - set of tags in witch the message is.
+	 */
 	public NoInputExpression(RemoteGUIView remoteView, PrintStream output, Expression expression) {
 		this.output = output;
 		this.expression = expression;
