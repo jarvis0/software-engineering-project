@@ -26,6 +26,7 @@ public abstract class RefreshContent extends GUIParser {
 	private static final String EMPORIUMS_TAG_OPEN = "<emporiums>";
 	private static final String EMPORIUMS_TAG_CLOSE = "</emporiums>";
 	
+	@Override
 	protected abstract void parse(String message);
 	
 	private KingPositionExpression getKingPositionExpression() {

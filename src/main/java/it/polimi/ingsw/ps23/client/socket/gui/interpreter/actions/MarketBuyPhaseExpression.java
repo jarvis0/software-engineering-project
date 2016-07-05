@@ -25,7 +25,7 @@ class MarketBuyPhaseExpression extends GUIParser {
 			String player = guiView.getClient().receive();
 			swingUI.appendConsoleText("\n\nIt's " + player + " market phase turn.");
 			if(player.equals(guiView.getPlayerName())) {
-				boolean canBuy = Boolean.valueOf(guiView.getClient().receive());
+				Boolean canBuy = Boolean.valueOf(guiView.getClient().receive());
 				if (canBuy) {
 					swingUI.appendConsoleText("\nChoose the offert you want to buy:\n" + guiView.getClient().receive());
 					swingUI.enableMarketInputArea(true);

@@ -36,8 +36,8 @@ public class DynamicContentsExpression extends RefreshContent {
 			updateDynamicContent(swingUI, noTagMessage);
 			String currentPlayer = guiView.getClient().receive();
 			if(currentPlayer.equals(guiView.getPlayerName())) {
-				boolean isAvailableMainAction = Boolean.valueOf(guiView.getClient().receive());
-				boolean isAvailableQuickAction = Boolean.valueOf(guiView.getClient().receive());
+				Boolean isAvailableMainAction = Boolean.valueOf(guiView.getClient().receive());
+				Boolean isAvailableQuickAction = Boolean.valueOf(guiView.getClient().receive());
 				swingUI.appendConsoleText("\nIt's your turn, please select an action from the pool displayed above.");
 				swingUI.showAvailableActions(isAvailableMainAction, isAvailableQuickAction);
 				guiView.pause();

@@ -27,6 +27,7 @@ public class SocketSwingUI extends SwingUI {
 		refreshPermitTilesUp(permitTilesUp.getRegions(), permitTilesUp.getPermitTilesCities(), permitTilesUp.getPermitTilesBonusesName(), permitTilesUp.getPermitTilesBonusesValue());
 		refreshCitiesToolTip(arePlayersEmporiums.getCitiesName(), arePlayersEmporiums.getPlayersEmporiums());
 		refreshAcquiredPermitTiles(players.getNames(), players.getPermitTilesCities(), players.getPermitTilesBonusesName(), players.getPermitTilesBonusesValue());
+		refreshAllPermitTiles(players.getNames(), players.getTotalPermitTilesCities(), players.getTotalPermitTilesBonusesName(), players.getTotalPermitTilesBonusesValue());
 		refreshPoliticCards(players.getPoliticCards());
 		getFrame().repaint();
 		getFrame().revalidate();
