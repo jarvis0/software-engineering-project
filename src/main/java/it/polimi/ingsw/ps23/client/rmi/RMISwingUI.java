@@ -23,6 +23,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 
 class RMISwingUI extends SwingUI {
@@ -156,7 +157,7 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
-	void refreshDynamicContents(StartTurnState currentState) {
+	void refreshDynamicContents(MapUpdateState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
 		freeCouncillorsToStrings(currentState.getFreeCouncillors(), freeCouncillorsColor);

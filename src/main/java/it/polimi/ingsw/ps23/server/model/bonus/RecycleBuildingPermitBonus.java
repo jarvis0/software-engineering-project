@@ -29,7 +29,9 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public void updateBonus(Game game, TurnHandler turnHandler) {
-		turnHandler.addSuperBonus(this);		
+		if(!(game.getCurrentPlayer().getAllPermitHandDeck().getCards().isEmpty())) {
+			turnHandler.addSuperBonus(this);		
+		}
 	}
 
 	@Override
@@ -37,14 +39,12 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 		if(!currentPlayer.getAllPermitHandDeck().getCards().isEmpty()){
 			return  "You have encountred a Recycle Building Permit Bonus on Nobility Track \nchoose the used permit tile for take bonuses: " +currentPlayer.getAllPermitHandDeck().toString();
 		}
-		return "Impossible using Recycle Building Permit Bonus because your Permission Hand Deck is empty (0 to skip)";
+		return "Impossible using Recycle Building Permit Bonus because your Permission Hand Deck is empty";
 	}	
 
 	@Override
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) throws InvalidCardException {
-		if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
 			((BusinessPermitTile) game.getCurrentPlayer().getAllPermitHandDeck().getCardInPosition(Integer.parseInt(input.get(VALUE_POSITION)) - 1)).useBonus(game, turnHandler);
-		}
 	}
 
 }

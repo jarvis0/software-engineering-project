@@ -109,6 +109,7 @@ public abstract class SwingUI {
 		tableModel = guiLoad.getTableModel();
 		playerAllPermitTiles = new HashMap<>();
 		totalPermitsCardDialog = new JDialog(frame, "Your Permission Total HandDeck");
+		totalPermitsCardDialog.setBounds(300, 200, 600, 50);
 		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
@@ -175,7 +176,7 @@ public abstract class SwingUI {
 		btnKingdom.setEnabled(display);
 	}
 
-	private List<JLabel> drawBonus(String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
+	private List<JLabel> drawBonus(Container container, String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
 		List<JLabel> bonusList = new ArrayList<>();
 		BufferedImage bonusImage = guiLoad.readImage(IMAGES_PATH + bonusName + PNG_EXTENSION);
 		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -183,7 +184,7 @@ public abstract class SwingUI {
 		bonusLabel.setBounds(0, 0, width, height);
 		bonusLabel.setLocation(x, y + yOffset);
 		bonusList.add(bonusLabel);
-		mapPanel.add(bonusLabel, 0);
+		container.add(bonusLabel, 0);
 		int bonusNumber = Integer.parseInt(bonusValue);
 		if (bonusNumber > 1 || "victoryPoint".equals(bonusName)) {
 			JLabel bonusLabelValue = new JLabel();
@@ -197,7 +198,7 @@ public abstract class SwingUI {
 			}
 			bonusLabelValue.setText(String.valueOf(bonusNumber));
 			bonusList.add(bonusLabelValue);
-			mapPanel.add(bonusLabelValue, 0);
+			container.add(bonusLabelValue, 0);
 		}
 		return bonusList;
 	}
@@ -209,7 +210,7 @@ public abstract class SwingUI {
 			int x = point.x;
 			int y = point.y;
 			for (int j = 0; j < citiesBonusesName.get(i).size(); j++) {
-				drawBonus(citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), x + 50, y - 20, 23, 25, 0);
+				drawBonus(mapPanel, citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), x + 50, y - 20, 23, 25, 0);
 				x += 22;
 			}
 		}
@@ -232,7 +233,7 @@ public abstract class SwingUI {
 						y = 476;
 						height = 40;
 					}
-					drawBonus(stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), x, y, width, height, yOffset);
+					drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), x, y, width, height, yOffset);
 					yOffset -= 25;
 				}
 			}
@@ -347,7 +348,7 @@ public abstract class SwingUI {
 		int bonusCoordX = x - 47;
 		int bonusCoordY = y + 40;
 		for (int i = 0; i < permitTileBonusesName.size(); i++) {
-			listJlabel.addAll(drawBonus(permitTileBonusesName.get(i), permitTileBonusesValue.get(i), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0));
+			listJlabel.addAll(drawBonus(container, permitTileBonusesName.get(i), permitTileBonusesValue.get(i), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0));
 			bonusCoordX = bonusCoordX + 24;
 		}
 		int cityCoordX = x + 5;
@@ -413,7 +414,7 @@ public abstract class SwingUI {
 		tileLabel.setBounds(0, 0, 50, 35);
 		tileLabel.setLocation(x, y);
 		mapPanel.add(tileLabel, 0);
-		drawBonus(bonusName, bonusValue, x + 25, y + 10, 23, 25, -5);
+		drawBonus(mapPanel, bonusName, bonusValue, x + 25, y + 10, 23, 25, -5);
 	}
 
 	protected void refreshBonusTiles(List<String> groupsName, List<String> groupsBonusName, List<String> groupsBonusValue, String kingBonusName, String kingBonusValue) {
@@ -879,20 +880,23 @@ public abstract class SwingUI {
 				totalPermitsCardDialog.remove(jLabel);
 			}
 		}
-		playerAllPermitTiles.clear();
 		
 		int x = 0;
-		int y = 611;
+		int y = 0;
 		int playerIndex = playersName.indexOf(playerName);
 		for(int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
-			drawPermitTiles(totalPermitsCardDialog, playerPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
+			drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
 			x += 52;
 		}
 	}
 	
 
 	public void enableTotalHandDeck(boolean display) {
-		totalPermitsCardDialog.setVisible(true);
+		for (JLabel jLabel : playerAllPermitTiles.keySet()) {
+			jLabel.setEnabled(display);
+		}
+		totalPermitsCardDialog.setVisible(display);
+		
 	}	
 	
 

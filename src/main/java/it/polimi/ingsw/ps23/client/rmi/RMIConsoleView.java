@@ -299,9 +299,9 @@ class RMIConsoleView extends RMIView {
 			while (currentState.hasNext()) {				
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+					currentState.checkKey();
 					additionalOutput(currentState);
 					output.println(currentState.useBonus());
-					currentState.checkKey();
 					currentState.addValue(scanner.nextLine());
 					currentState.confirmChange();
 				}

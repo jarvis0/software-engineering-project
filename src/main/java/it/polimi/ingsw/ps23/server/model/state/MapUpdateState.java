@@ -13,7 +13,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 
-abstract class MapUpdateState extends State {
+public abstract class MapUpdateState extends State {
 
 	/**
 	 * 

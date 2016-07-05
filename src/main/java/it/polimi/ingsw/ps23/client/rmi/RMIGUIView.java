@@ -203,6 +203,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
+		swingUI.clearSwingUI();
 		List<String> removedCards = new ArrayList<>();
 		swingUI.showAvailableActions(false, false);
 		swingUI.enablePoliticCards(true);
@@ -299,6 +300,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
+		swingUI.refreshDynamicContents(currentState);
 		String player = currentState.getPlayerName();
 		swingUI.setConsoleText("\nIt's " + player + " market phase turn.");
 		if (player.equals(getClientName())) {
@@ -354,39 +356,48 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
 		if (currentState.isBuildingPemitTileBonus()) {
-			swingUI.setConsoleText("\n\n" + currentState.useBonus());
+			swingUI.setConsoleText("\n\n You have encountred a Building Permit Bonus on Nobility Track.\n Press the Region where to pick a permission card.");
 			swingUI.enableRegionButtons(true);
 			pause();
+			swingUI.enableRegionButtons(false);
 			String chosenRegion = swingUI.getChosenRegion();
 			currentState.analyzeInput(chosenRegion);
 		}
 	}
+	
+	private String performSuperBonus(SuperBonusState currentState){
+		String selectedItem = new String();
+		swingUI.setConsoleText("\n\n" + currentState.useBonus());
+		if(currentState.isRecycleBuildingPermitBonus()) {
+			swingUI.enableTotalHandDeck(true);
+			pause();
+			swingUI.enableTotalHandDeck(false);
+			selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
+		}
+		if(currentState.isRecycleRewardTokenBonus()) {
+			swingUI.enableCities(true);
+			pause();
+			swingUI.enableCities(false);
+			selectedItem = swingUI.getChosenCity();
+		}
+		if(currentState.isBuildingPemitTileBonus()) { 
+			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion());
+			pause();
+			selectedItem = String.valueOf(swingUI.getChosenTile());
+		}
+		return selectedItem;
+	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
+		swingUI.refreshDynamicContents(currentState);
 		while (currentState.hasNext()) {		
-			String selectedItem;
 			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 			try {
-				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {					
-					additionalOutput(currentState);
-					swingUI.setConsoleText("\n\n" + currentState.useBonus());
-					if(currentState.isRecycleBuildingPermitBonus()) {
-						swingUI.enableTotalHandDeck(true);
-						pause();
-						selectedItem = String.valueOf(swingUI.getChosenTile());
-					} 
-					if(currentState.isRecycleRewardTokenBonus()) {
-						swingUI.enableCities(true);
-						pause();
-					selectedItem = swingUI.getChosenCity();
-					} else {
-						swingUI.enablePermitTilesPanel(swingUI.getChosenRegion());
-						pause();
-						selectedItem = String.valueOf(swingUI.getChosenTile());
-					}
-					swingUI.setConsoleText("\n\n" + currentState.useBonus());
+				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {		
 					currentState.checkKey();
+					additionalOutput(currentState);
+					String selectedItem = performSuperBonus(currentState);
 					currentState.addValue(selectedItem);
 				}
 			} catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {

@@ -263,9 +263,9 @@ public class SocketConsoleView extends SocketView {
 			while (currentState.hasNext()) {				
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+					currentState.checkKey();
 					additionalOutput(currentState);
 					getConnection().sendYesInput(currentState.useBonus());
-					currentState.checkKey();
 					currentState.addValue(receive());
 					currentState.confirmChange();
 				}
