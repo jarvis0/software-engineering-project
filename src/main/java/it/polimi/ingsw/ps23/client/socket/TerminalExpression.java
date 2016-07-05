@@ -1,10 +1,18 @@
 package it.polimi.ingsw.ps23.client.socket;
-
+/**
+ * Provides methods to manage strings within selected tags.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class TerminalExpression implements Expression {
 
 	private String tagOpen;
 	private String tagClose;
-	
+	/**
+	 * Creates an expression within 2 tags.
+	 * @param tagOpen - the opener tag
+	 * @param tagClose - the closer tag
+	 */
 	public TerminalExpression(String tagOpen, String tagClose) {
 		this.tagOpen = tagOpen;
 		this.tagClose = tagClose;

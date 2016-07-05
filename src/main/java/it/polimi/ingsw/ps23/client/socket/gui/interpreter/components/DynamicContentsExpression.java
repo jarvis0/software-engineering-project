@@ -4,7 +4,14 @@ import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
-
+/**
+ * Provides methods to parse and get available all the dynamics info of the game like 
+ * {@link King}, {@link FreeCouncillors}, {@link Council}, {@link Player}, {@link GroupRegionalCities}
+ * {@link TurnHandler} status.
+ * 
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class DynamicContentsExpression extends GUIParser {
 
 	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
@@ -27,7 +34,12 @@ public class DynamicContentsExpression extends GUIParser {
 	private RemoteGUIView guiView;
 	
 	private Expression expression;
-	
+	/**
+	 * Constructs the object initializing all the variables to the default values.
+	 * @param swingUI - Interface to interact with UI
+	 * @param guiView - The current socket view
+	 * @param expression - Tags used in socket protocol
+	 */
 	public DynamicContentsExpression(SocketSwingUI swingUI, RemoteGUIView guiView, Expression expression) {
 		this.swingUI = swingUI;
 		this.guiView = guiView;

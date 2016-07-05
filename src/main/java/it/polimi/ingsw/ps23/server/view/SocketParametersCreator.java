@@ -272,7 +272,7 @@ class SocketParametersCreator {
 		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + ACTION_TAG_CLOSE;
 	}
 
-	public String createEndGame() {
+	String createEndGame() {
 		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
 	}
 
