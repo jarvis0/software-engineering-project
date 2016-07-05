@@ -25,22 +25,29 @@ public class TestRecycleRewardTokenBonus {
 		TurnHandler turnHandler = new TurnHandler();
 		RecycleRewardTokenBonus bonus = new RecycleRewardTokenBonus("Recycle Reward Token");
 		bonus.updateBonus(game, turnHandler);
-		assertTrue(turnHandler.getSuperBonuses().contains(bonus));
-		String checkBonus = bonus.checkBonus(game.getCurrentPlayer());
+		assertTrue(!turnHandler.getSuperBonuses().contains(bonus));
 		Iterator<City> iterator = game.getGameMap().getCities().values().iterator();
 		boolean found = false;
 		City city = null;
-		while(!found && iterator.hasNext()) {
+		while(iterator.hasNext() && !found) {
 			city = iterator.next();
-			if(!city.isCapital()) {
+			if(city instanceof NormalCity) {
 				for(Bonus bonus2 : ((NormalCity)city).getRewardToken().getBonuses()) {
 					if(!(bonus2 instanceof NobilityTrackStepBonus)) {
 						found = true;
 					}
+					else {
+						found = false;
+					}
 				}
+				
 			}
 		}
 		game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet().add(city);
+		bonus.updateBonus(game, turnHandler);
+		assertTrue(turnHandler.getSuperBonuses().contains(bonus));
+		String checkBonus = bonus.checkBonus(game.getCurrentPlayer());
+		found = false;
 		List<String> input = new ArrayList<>();
 		input.add(city.getName());
 		bonus.acquireSuperBonus(input, game, turnHandler);

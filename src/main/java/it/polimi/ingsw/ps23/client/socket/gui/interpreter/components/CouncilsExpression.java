@@ -27,7 +27,7 @@ class CouncilsExpression extends GUIParser {
 		return councilsColor;
 	}
 	
-	private String addCouncil(List<List<String>> councilsColor, String message) {
+	private String addCouncil(String message) {
 		String parsingMessage = message;
 		String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 		int councillorsNumber = Integer.parseInt(field);
@@ -51,10 +51,10 @@ class CouncilsExpression extends GUIParser {
 			parsingMessage = parsingMessage.substring(parsingMessage.indexOf(',') + 1);
 			for(int i = 0; i < regionalCouncilsNumber; i++) {
 				parsingMessage = addField(councilsName, parsingMessage);
-				parsingMessage = addCouncil(councilsColor, parsingMessage);
+				parsingMessage = addCouncil(parsingMessage);
 			}
 			councilsName.add(KINGDOM);
-			addCouncil(councilsColor, parsingMessage);
+			addCouncil(parsingMessage);
 		}
 	}
 

@@ -3,7 +3,12 @@ package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
-
+/**
+ * Provides methods to parse and get available all the static info of the game like 
+ * {@link RewardToken} and {@link NobilityTrack}.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class StaticContentExpression extends GUIParser {
 
 	private static final String REWARD_TOKENS_TAG_OPEN = "<reward_tokens>";
@@ -14,7 +19,11 @@ public class StaticContentExpression extends GUIParser {
 	private SocketSwingUI swingUI;
 	
 	private Expression expression;
-	
+	/**
+	 * Constructs the object initializing all the variables to the default values.
+	 * @param swingUI - Interface to interact with UI
+	 * @param expression - Tags used in socket protocol
+	 */
 	public StaticContentExpression(SocketSwingUI swingUI, Expression expression) {
 		this.swingUI = swingUI;
 		this.expression = expression;
