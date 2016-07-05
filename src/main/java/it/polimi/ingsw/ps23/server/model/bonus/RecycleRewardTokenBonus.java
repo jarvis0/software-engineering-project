@@ -47,5 +47,10 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 			game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getChosenCity(input.get(VALUE_POSITION)).useRewardToken(game, turnHandler);
 		//}
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 	
 }

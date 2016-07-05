@@ -47,4 +47,9 @@ public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
 		}
 	}
 
+	@Override
+	public boolean isNull() {
+		return false;
+	}
+
 }

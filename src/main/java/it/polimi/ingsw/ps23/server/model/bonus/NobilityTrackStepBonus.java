@@ -25,5 +25,10 @@ public class NobilityTrackStepBonus extends Bonus {
 	public void updateBonus(Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().updateNobilityPoints(getValue());
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 	
 }

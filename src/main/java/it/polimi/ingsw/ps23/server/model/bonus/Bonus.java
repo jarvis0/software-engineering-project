@@ -30,9 +30,13 @@ public abstract class Bonus implements Cloneable, Serializable {
 	 */
 	public abstract void updateBonus(Game game, TurnHandler turnHandler);
 
+	
+	
 	public String getName() {
 		return name;
 	}
+	
+	public abstract boolean isNull();
 	
 	public int getValue() {
 		return value;

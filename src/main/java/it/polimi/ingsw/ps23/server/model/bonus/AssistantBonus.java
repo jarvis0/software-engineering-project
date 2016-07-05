@@ -26,4 +26,9 @@ public class AssistantBonus extends Bonus {
 		game.getCurrentPlayer().updateAssistants(getValue());
 	}
 
+	@Override
+	public boolean isNull() {
+		return false;
+	}
+
 }
