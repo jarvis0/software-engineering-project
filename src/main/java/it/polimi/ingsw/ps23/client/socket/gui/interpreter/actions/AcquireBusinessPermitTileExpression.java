@@ -52,8 +52,9 @@ class AcquireBusinessPermitTileExpression extends GUIParser {
 			}
 			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + chosenCards + ".\nNow, you can press on the permit tile you want to acquire.");
 			swingUI.enablePoliticCards(false);
-			swingUI.enablePermitTilesPanel(chosenCouncil);
+			swingUI.enablePermitTilesPanel(chosenCouncil, true);
 			guiView.pause();
+			swingUI.enablePermitTilesPanel(chosenCouncil, false);
 			guiView.getClient().send(chosenCouncil);
 			guiView.getClient().send(String.valueOf(chosenCards.size()));
 			for(String card : chosenCards) {
