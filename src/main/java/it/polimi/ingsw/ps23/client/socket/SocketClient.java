@@ -80,7 +80,7 @@ public class SocketClient {
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
 		//String clientInfos = CONSOLE_TAG + "AleGiuMir";
 		//String clientInfos = GUI_TAG + "AleGiuMir";
-		String clientInfos = CONSOLE_TAG + scanner.next();
+		String clientInfos = GUI_TAG + scanner.next();
 		try {
 			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
 			client.start(clientInfos);

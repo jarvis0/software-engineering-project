@@ -116,7 +116,7 @@ public class Connection implements Runnable {
 	}
 	
 	void close() {
-		server.endGame();
+		server.endGame();//TODO verificare
 		closeConnection();
 		try {
 			server.deregisterSocketConnection(this);

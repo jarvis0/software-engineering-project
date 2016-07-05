@@ -181,19 +181,19 @@ public class GameInstance {
 
 	void reconnectPlayer(String name, Connection connection) {
 		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
-		for(SocketView gameSocketView : socketViews) {
-			gameSocketView.getConnection().sendNoInput(message);
-		}
+		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
 		createSocketView(connection, name);
-		String mapType = MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE;//TODO anche per RMI
-		connection.sendNoInput(mapType);
+		connection.sendNoInput(MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE);
 		model.setOnlinePlayer(name);
 		connection.setReconnected();
 	}
 	
 	void reconnectPlayer(String name, ClientInterface client) {
-		model.sendRMIInfoMessage(PLAYER_PRINT + name + " has been reconnected to the game.");
+		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
+		sendSocketInfoMessage(message);
+		model.sendRMIInfoMessage(message);
+		model.rmiInfoMessage(client, MAP_TYPE_TAG_OPEN + model.getMapType() + MAP_TYPE_TAG_CLOSE);
 		createRMIGame(name, client, controller);
 		model.setOnlinePlayer(name);
 	}
