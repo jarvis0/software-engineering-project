@@ -157,6 +157,15 @@ class RMISwingUI extends SwingUI {
 		}
 	}
 
+	private void citiesToolTipToStrings(Map<String, City> citiesMap, List<String> citiesNames, List<List<String>> citiesBuiltEmporium) {
+		Set<Entry<String, City>> citiesSet = citiesMap.entrySet();
+		for (Entry<String, City> city : citiesSet) {	
+			citiesNames.add(city.getValue().getName());
+			citiesBuiltEmporium.add(city.getValue().getEmporiumsPlayersList());
+		}
+		
+	}
+
 	void refreshDynamicContents(MapUpdateState currentState) {
 		refreshKingPosition(currentState.getKingPosition());
 		List<String> freeCouncillorsColor = new ArrayList<>();
@@ -219,6 +228,12 @@ class RMISwingUI extends SwingUI {
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		totalPermitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAllPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		Map<String, City> cities = currentState.getGameMap().getCities();
+		List<String> citiesNames = new ArrayList<>();
+		List<List<String>> citiesBuiltEmporium = new ArrayList<>();
+		citiesToolTipToStrings(cities, citiesNames, citiesBuiltEmporium);
+		refreshCitiesToolTip(citiesNames, citiesBuiltEmporium);
+		
 		getFrame().repaint();
 		getFrame().revalidate();
 	}

@@ -217,6 +217,25 @@ public abstract class SwingUI {
 			}
 		}
 	}
+	
+	private void drawNobilityTrackBonus(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue, int xParam, int yParam, int yOffsetParam, int i, int j) {
+		int yOffset = yOffsetParam;
+		int x = xParam;
+		int y = yParam;
+		if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
+			int width = 23;
+			int height = 25;
+			if ("1".equals(stepsBonusesValue.get(i).get(j))) {
+				y = 490;
+			}
+			if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
+				y = 476;
+				height = 40;
+			}
+			drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffset);
+			yOffset -= 25;
+		}
+	}
 
 	protected void addNobilityTrackBonuses(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue) {
 		int stepNumber = 0;
@@ -225,19 +244,7 @@ public abstract class SwingUI {
 			int x = (int) 38.1 * stepNumber + 8;
 			int y = 495;
 			for (int j = 0; j < stepsBonusesName.get(i).size(); j++) {
-				if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
-					int width = 23;
-					int height = 25;
-					if ("1".equals(stepsBonusesValue.get(i).get(j))) {
-						y = 490;
-					}
-					if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
-						y = 476;
-						height = 40;
-					}
-					drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffset);
-					yOffset -= 25;
-				}
+				drawNobilityTrackBonus(stepsBonusesName, stepsBonusesValue, x, y, yOffset, i, j);
 			}
 			stepNumber++;
 		}
@@ -731,7 +738,7 @@ public abstract class SwingUI {
 	private void loadCitiesButtons() {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
-			cityLabel.getValue().setToolTipText("");
+			cityLabel.getValue().setToolTipText("ciao");
 			cityLabel.getValue().addMouseListener(new MouseAdapter() {
 				@Override
                 public void mouseClicked(MouseEvent e) {
@@ -741,6 +748,21 @@ public abstract class SwingUI {
                 }
 			});   
 		}
+	}
+	
+	protected void refreshCitiesToolTip(List<String> citiesName, List<List<String>> citiesBuiltEmporium) {
+		int i = 0;
+		for(String cityName : citiesName) {
+			StringBuilder toolTipString = new StringBuilder();
+			toolTipString.append("List of Player's Emporiums:\n");
+			JLabel cityLabel = cityLabels.get(cityName);
+			for(String playerNameString : citiesBuiltEmporium.get(i)) {
+				toolTipString.append(playerNameString);
+			}
+			cityLabel.setToolTipText(new String(toolTipString) + "\n");
+			i++;
+		}
+		
 	}
 
 	private void enableCitiesButtons(boolean display) {
@@ -896,8 +918,7 @@ public abstract class SwingUI {
 			jLabel.setEnabled(display);
 		}
 		totalPermitsCardDialog.setVisible(display);
-		
 	}	
 	
-
+	
 }
