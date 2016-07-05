@@ -176,7 +176,9 @@ public abstract class SwingUI {
 		btnKingdom.setEnabled(display);
 	}
 
-	private List<JLabel> drawBonus(Container container, String bonusName, String bonusValue, int x, int y, int width, int height, int yOffset) {
+	private List<JLabel> drawBonus(Container container, String bonusName, String bonusValue, Point point, int width, int height, int yOffset) {
+		int x = (int) point.getX();
+		int y = (int) point.getY();
 		List<JLabel> bonusList = new ArrayList<>();
 		BufferedImage bonusImage = guiLoad.readImage(IMAGES_PATH + bonusName + PNG_EXTENSION);
 		Image resizedBonusImage = bonusImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -210,7 +212,7 @@ public abstract class SwingUI {
 			int x = point.x;
 			int y = point.y;
 			for (int j = 0; j < citiesBonusesName.get(i).size(); j++) {
-				drawBonus(mapPanel, citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), x + 50, y - 20, 23, 25, 0);
+				drawBonus(mapPanel, citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), new Point(x + 50, y - 20), 23, 25, 0);
 				x += 22;
 			}
 		}
@@ -233,7 +235,7 @@ public abstract class SwingUI {
 						y = 476;
 						height = 40;
 					}
-					drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), x, y, width, height, yOffset);
+					drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffset);
 					yOffset -= 25;
 				}
 			}
@@ -327,7 +329,9 @@ public abstract class SwingUI {
 		}
 	}
 
-	private void drawPermitTile(Container container, Map<JLabel, List<JLabel>> permitLabels, List<String> permitTileCities, List<String> permitTileBonusesName, List<String> permitTileBonusesValue, int indexOfTile, int x, int y) {
+	private void drawPermitTile(Container container, Map<JLabel, List<JLabel>> permitLabels, List<String> permitTileCities, List<String> permitTileBonusesName, List<String> permitTileBonusesValue, int indexOfTile, Point point) {
+		int x = (int) point.getX();
+		int y = (int) point.getY();
 		List<JLabel> listJlabel = new ArrayList<>();
 		BufferedImage permissionTileImage = readImage(IMAGES_PATH + PERMIT_TILE_PATH);
 		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -348,7 +352,7 @@ public abstract class SwingUI {
 		int bonusCoordX = x - 47;
 		int bonusCoordY = y + 40;
 		for (int i = 0; i < permitTileBonusesName.size(); i++) {
-			listJlabel.addAll(drawBonus(container, permitTileBonusesName.get(i), permitTileBonusesValue.get(i), bonusCoordX + 50, bonusCoordY - 20, 23, 25, 0));
+			listJlabel.addAll(drawBonus(container, permitTileBonusesName.get(i), permitTileBonusesValue.get(i), new Point(bonusCoordX + 50, bonusCoordY - 20), 23, 25, 0));
 			bonusCoordX = bonusCoordX + 24;
 		}
 		int cityCoordX = x + 5;
@@ -378,7 +382,7 @@ public abstract class SwingUI {
 		int y = yCoord;
 		int indexOfTile = 0;
 		for (int i = 0; i < permitTilesCities.size(); i++) {
-			drawPermitTile(container, permitLabels, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), indexOfTile, x, y);
+			drawPermitTile(container, permitLabels, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), indexOfTile, new Point(x, y));
 			x -= 52;
 			indexOfTile++;
 		}
@@ -414,7 +418,7 @@ public abstract class SwingUI {
 		tileLabel.setBounds(0, 0, 50, 35);
 		tileLabel.setLocation(x, y);
 		mapPanel.add(tileLabel, 0);
-		drawBonus(mapPanel, bonusName, bonusValue, x + 25, y + 10, 23, 25, -5);
+		drawBonus(mapPanel, bonusName, bonusValue, new Point(x + 25, y + 10), 23, 25, -5);
 	}
 
 	protected void refreshBonusTiles(List<String> groupsName, List<String> groupsBonusName, List<String> groupsBonusValue, String kingBonusName, String kingBonusValue) {
@@ -797,10 +801,6 @@ public abstract class SwingUI {
 		for (JLabel jLabel : playerPermitTiles.keySet()) {
 			jLabel.setEnabled(display);
 		}
-	}
-
-	public void enableButtons(boolean display) {
-		enableRegionButtons(display);
 	}
 
 	protected void clearChosenRegion() {

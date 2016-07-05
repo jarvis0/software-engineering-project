@@ -73,4 +73,12 @@ class GameInstancesSet {
 		}
 	}
 
+	public void checkIfEndGame() {
+		for(GameInstance gameInstance : gameInstances) {
+			if(gameInstance.checkIfEndGame()) {
+				gameInstances.remove(gameInstance);//TODO
+			}
+		}
+	}
+
 }

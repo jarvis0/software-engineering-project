@@ -11,7 +11,6 @@ import it.polimi.ingsw.ps23.client.rmi.ClientInterface;
  * @author Giuseppe Mascellaro & Mirco Manzoni
  *
  */
-@FunctionalInterface
 public interface ServerInterface extends Remote {
 
 	/**
@@ -23,5 +22,12 @@ public interface ServerInterface extends Remote {
 	 * @throws RemoteException if the remote server is unreachable
 	 */
 	public void registerRMIClient(String name, ClientInterface client) throws RemoteException;
+	
+	/**
+	 * Sets the end game state into the server so it can check if the game is ended
+	 * and remove it from the game instances set.
+	 * @throws RemoteException if the remote server is unreachable
+	 */
+	public void endGame() throws RemoteException;
 		
 }

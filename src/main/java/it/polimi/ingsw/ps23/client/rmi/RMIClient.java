@@ -52,9 +52,9 @@ class RMIClient implements ClientInterface {
 			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to RMI registry.", e);
 		}
 	}
-	
+
 	@Override
-	public void setController(ServerControllerInterface controller) {
+	public void setController(ServerControllerInterface controller) throws RemoteException {
 		rmiView.setController(controller);
 	}
 

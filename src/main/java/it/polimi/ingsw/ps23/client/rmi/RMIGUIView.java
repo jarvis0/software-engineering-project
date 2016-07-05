@@ -27,7 +27,6 @@ import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
-import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class RMIGUIView extends RMIView implements GUIView {
@@ -37,9 +36,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private RMISwingUI swingUI;
 	private PrintStream output;
-	private State state;
 	private boolean endGame;
-	private boolean waiting;
 	private boolean firstUIRefresh;
 	
 	RMIGUIView(String playerName, PrintStream output) {
@@ -48,10 +45,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 		this.output = output;
 	}
 
-	public State getCurrentState() {
-		return state;
-	}
-	
 	private void sendAction(Action action) {
 		try {
 			getControllerInterface().wakeUpServer(action);
@@ -92,7 +85,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		} else {
 			swingUI.setConsoleText("\nIt's " + currentState.getCurrentPlayer().getName() + "'s turn.");
 			swingUI.showAvailableActions(false, false);
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
 	}
@@ -110,11 +103,11 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.enableRegionButtons(true);
 		swingUI.enableKingButton(true);
 		pause();
-		String chosenBalcony = swingUI.getChosenRegion();
+		String balcony = swingUI.getChosenRegion();
 		swingUI.enableRegionButtons(false);
 		swingUI.enableKingButton(false);
-		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + chosenBalcony + "'s balcony");
-		sendAction(currentState.createAction(chosenCouncillor, chosenBalcony));
+		swingUI.appendConsoleText("\nYou have just elected a " + chosenCouncillor + " councillor in " + balcony + "'s balcony");
+		sendAction(currentState.createAction(chosenCouncillor, balcony));
 
 	}
 
@@ -153,7 +146,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			int numberOfCards = 4;
 			boolean finish = false;
 			int i = 0;
-			while (i < numberOfCards && i < currentState.getPoliticHandSize() && !finish) {
+			while (!finish && i < numberOfCards && i < currentState.getPoliticHandSize()) {
 				pause();
 				finish = swingUI.hasFinished();
 				swingUI.enableFinish(true);
@@ -170,7 +163,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
 		} catch (InvalidCardException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}
 
 	}
@@ -231,7 +224,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			sendAction(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}	
 	}
 
@@ -315,14 +308,14 @@ public class RMIGUIView extends RMIView implements GUIView {
 			try {
 				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards,
 							chosenPermissionCards, chosenAssistants, cost));
-			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-				state.setExceptionString(e.toString());
+				getState().setExceptionString(e.toString());
+			} catch (RemoteException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		} else {
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
 	}
@@ -337,21 +330,19 @@ public class RMIGUIView extends RMIView implements GUIView {
 					swingUI.setConsoleText("\nChoose the offert that you want to buy: \n" + currentState.getAvaiableOffers());
 					swingUI.enableMarketInputArea(true);
 					pause();
-					int chosenOffert = swingUI.getChosenValue();
 					swingUI.enableMarketInputArea(false);
-					getControllerInterface().wakeUpServer(currentState.createTransation(chosenOffert - 1));
+					getControllerInterface().wakeUpServer(currentState.createTransation(swingUI.getChosenValue() - 1));
 				} else {
-					output.println("You can buy nothing.");
+					swingUI.appendConsoleText("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
 			} catch (RemoteException | NumberFormatException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			}
 		} else {
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
-
 	}
 	
 	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
@@ -402,7 +393,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				}
 			} catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {
 					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-					state.setExceptionString(e.toString());
+					getState().setExceptionString(e.toString());
 			}
 		}
 		currentState.confirmChange();
@@ -420,26 +411,13 @@ public class RMIGUIView extends RMIView implements GUIView {
 		endGame = true;
 	}
 
-	protected boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
-	}
-
-	@Override
-	public void update(State state) {
-		this.state = state;
-		if(waitResumeCondition() && waiting) {
-			resume();
-			waiting = false;
-		}
-	}
-
 	@Override
 	public synchronized void run() {
-		waiting = true;
+		setWaiting(true);
 		pause();
-		waiting = false;
+		setWaiting(false);
 		do {
-			state.acceptView(this);
+			getState().acceptView(this);
 		} while(!endGame);
 	}
 

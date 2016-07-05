@@ -63,8 +63,11 @@ public class City implements Serializable {
 		emporiumsList.add(player);
 		return assitantsCost;
 	}
-
-	List<String> getEmporiumsPlayersList() {
+	/**
+	 * Finds the emporiums players list related to the specified city.
+	 * @return the emporiums players list.
+	 */
+	public List<String> getEmporiumsPlayersList() {
 		List<String> emporiumsPlayersList = new ArrayList<>();
 		for(Player emporium : emporiumsList) {
 			emporiumsPlayersList.add(emporium.getName());

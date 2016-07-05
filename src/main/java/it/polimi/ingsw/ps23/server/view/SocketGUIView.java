@@ -7,8 +7,10 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -183,12 +185,12 @@ public class SocketGUIView extends SocketView {
 		String playerName = currentState.getPlayerName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
-			List<String> chosenPoliticCards = sellPoliticCard(currentState);
+			List<String> politicCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermitCards(currentState);
 			int chosenAssistants = sellAssistant(currentState);
 			int cost = Integer.parseInt(receive());
 			try {
-				wakeUp(currentState.createMarketObject(chosenPoliticCards, chosenPermissionCards, chosenAssistants, cost));
+				wakeUp(currentState.createMarketObject(politicCards, chosenPermissionCards, chosenAssistants, cost));
 			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 				getState().setExceptionString(e.toString());
@@ -201,20 +203,81 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createMarketBuyPhase());
+		String playerName = currentState.getPlayerName();
+		getConnection().send(playerName);
+		if(playerName.equals(getClientName())) {
+			try {
+				boolean canBuy = currentState.canBuy();
+				getConnection().send(String.valueOf(canBuy));
+				if(canBuy) {
+					getConnection().send("Available offers: " + currentState.getAvaiableOffers());
+					wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+				}
+				else {
+					getConnection().sendNoInput("You can buy nothing.");
+					wakeUp(currentState.createTransation());
+				}
+			} catch(NumberFormatException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			}
+		}
+		else {
+			pause();
+		}
+	}
+	
+	private void additionalOutput(SuperBonusState currentState) throws InvalidRegionException {
+		boolean isBuildingPermitTileBonus = currentState.isBuildingPemitTileBonus();
+		getConnection().send(String.valueOf(isBuildingPermitTileBonus));
+		if (isBuildingPermitTileBonus) {
+			getConnection().send(currentState.useBonus());
+			String chosenRegion = receive();
+			currentState.analyzeInput(chosenRegion);
+		}
 	}
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createSuperBonus());
+		boolean otherBonus = currentState.hasNext();
+		getConnection().send(String.valueOf(otherBonus));
+		while(otherBonus) {
+			String selectedItem;
+			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
+			getConnection().send(String.valueOf(numberOfCurrentBonus));
+			for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+				try {
+					currentState.checkKey();
+					additionalOutput(currentState);
+					getConnection().send(currentState.useBonus());
+					boolean isRecycleBuildingPermitBonus = currentState.isRecycleBuildingPermitBonus();
+					getConnection().send(String.valueOf(isRecycleBuildingPermitBonus));
+					if(isRecycleBuildingPermitBonus) {
+						selectedItem = getConnection().receive();
+					}
+					boolean isRecycleRewardTokenBonus = currentState.isRecycleRewardTokenBonus();
+					getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
+					selectedItem = getConnection().receive();
+					getConnection().send(currentState.useBonus());
+					currentState.addValue(selectedItem);
+				} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
+					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+					currentState.setExceptionString(e.toString());//TODO state?
+				}
+			}
+			otherBonus = currentState.hasNext();
+			getConnection().send(String.valueOf(otherBonus));
+		}
+		currentState.confirmChange();
+		wakeUp(currentState.createSuperBonusesGiver());
 	}
 
 	@Override
 	public void visit(EndGameState currentState) {
-		// TODO Auto-generated method stub
-		
+		getConnection().send(gameParameters.createEndGame());
+		getConnection().send(currentState.getWinner());
+		setEndGame(true);
 	}
 
 }

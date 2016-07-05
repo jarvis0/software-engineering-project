@@ -15,7 +15,7 @@ public class SocketClient {
 	private static final String CONSOLE_TAG = "<console>";
 	private static final String GUI_TAG = "<gui>";
 	private static final String END_OF_MESSAGE_TAG = "<eom>";
-	
+
 	private Scanner scanner;
 	private PrintStream output;
 	
