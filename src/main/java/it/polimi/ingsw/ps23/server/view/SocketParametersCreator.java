@@ -31,8 +31,8 @@ class SocketParametersCreator {
 	private static final String NOBILITY_TRACK_TAG_CLOSE = "</nobility_track>";
 	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
 	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
-	private static final String KING_POSITION_TAG_OPEN = "<king_position>";
-	private static final String KING_POSITION_TAG_CLOSE = "</king_position>";
+	private static final String KING_TAG_OPEN = "<king_position>";
+	private static final String KING_TAG_CLOSE = "</king_position>";
 	private static final String FREE_COUNCILLORS_TAG_OPEN = "<free_councillors>";
 	private static final String FREE_COUNCILLORS_TAG_CLOSE = "</free_councillors>";
 	private static final String COUNCILS_TAG_OPEN = "<councils>";
@@ -57,9 +57,12 @@ class SocketParametersCreator {
 	private static final String BUILD_EMPORIUM_KING_TAG = "<build_emporium_king>";
 	private static final String BUILD_EMPORIUM_PERMIT_TILE_TAG = "<build_emporium_permit_tile>";
 	private static final String MARKET_OFFER_PHASE_TAG = "<market_offer_phase>";
+	private static final String MARKET_BUY_PHASE_TAG = "<market_buy_phase>";
+	private static final String SUPER_BONUS_TAG = "<super_bonus>";
+	private static final String END_GAME_TAG = "<end_game>";
 	
 	private String addKingPosition(String kingPosition) {
-		return KING_POSITION_TAG_OPEN + kingPosition + KING_POSITION_TAG_CLOSE;
+		return KING_TAG_OPEN + kingPosition + KING_TAG_CLOSE;
 	}
 	
 	private void addBonuses(StringBuilder bonusesSend, List<Bonus> bonuses) {
@@ -259,6 +262,18 @@ class SocketParametersCreator {
 	
 	String createMarketOfferPhase() {
 		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createMarketBuyPhase() {
+		return ACTION_TAG_OPEN + MARKET_BUY_PHASE_TAG + ACTION_TAG_CLOSE;
+	}
+	
+	String createSuperBonus() {
+		return ACTION_TAG_OPEN + SUPER_BONUS_TAG + ACTION_TAG_CLOSE;
+	}
+
+	public String createEndGame() {
+		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
 	}
 
 }

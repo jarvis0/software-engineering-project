@@ -29,7 +29,6 @@ import it.polimi.ingsw.ps23.server.model.state.EngageAnAssistantState;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
-import it.polimi.ingsw.ps23.server.model.state.State;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 class RMIConsoleView extends RMIView {
@@ -38,13 +37,10 @@ class RMIConsoleView extends RMIView {
 	private static final String SKIP = "skip";
 	private Scanner scanner;
 	private PrintStream output;
-	private State state;
 	private boolean endGame;
-	private boolean waiting;
 	
 	RMIConsoleView(String playerName, PrintStream output) {
 		super(playerName);
-		waiting = false;
 		endGame = false;
 		scanner = new Scanner(System.in);
 		this.output = output;
@@ -84,7 +80,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} else {
 			output.println("It's player " + player.getName() + " turn.");
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
 	}
@@ -117,7 +113,7 @@ class RMIConsoleView extends RMIView {
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenCard));
 		} catch (InvalidCouncilException | InvalidCardException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}
 	}
 
@@ -174,7 +170,7 @@ class RMIConsoleView extends RMIView {
 			sendAction(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}
 	}
 
@@ -197,7 +193,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch (InvalidCardException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}
 
 	}
@@ -243,22 +239,22 @@ class RMIConsoleView extends RMIView {
 		output.print(currentState.getStatus());
 		output.println("It's " + player + " market phase turn.");
 		if (player.equals(getClientName())) {
-			List<String> chosenPoliticCards = sellPoliticCard(currentState);
+			List<String> politicCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermissionCard(currentState);
 			int chosenAssistants = sellAssistant(currentState);
 			output.println("Choose the price for your offer: ");
 			int cost = Integer.parseInt(scanner.nextLine());
 			try {
-				getControllerInterface().wakeUpServer(currentState.createMarketObject(chosenPoliticCards,
+				getControllerInterface().wakeUpServer(currentState.createMarketObject(politicCards,
 							chosenPermissionCards, chosenAssistants, cost));
 			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException | NumberFormatException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-				state.setExceptionString(e.toString());
+				getState().setExceptionString(e.toString());
 			}
 		} else {
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
 	}
@@ -280,7 +276,7 @@ class RMIConsoleView extends RMIView {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			}
 		} else {
-			waiting = true;
+			setWaiting(true);
 			pause();
 		}
 	}
@@ -308,7 +304,7 @@ class RMIConsoleView extends RMIView {
 			}
 		} catch (InvalidRegionException | InvalidCityException | InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-			state.setExceptionString(e.toString());
+			getState().setExceptionString(e.toString());
 		}
 		try {
 			getControllerInterface().wakeUpServer(currentState.createSuperBonusesGiver());
@@ -329,30 +325,17 @@ class RMIConsoleView extends RMIView {
 		
 	}
 
-	private boolean waitResumeCondition() {
-		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
-	}
-
-	@Override
-	public void update(State state) {
-		this.state = state;
-		if (waitResumeCondition() && waiting) {
-			resume();
-			waiting = false;
-		}
-	}
-
 	@Override
 	public synchronized void run() {
-		waiting = true;
+		setWaiting(true);
 		pause();
-		waiting = false;
+		setWaiting(false);
 		do {
-			state.acceptView(this);
-			if (state.arePresentException()) {
-				output.println(state.getExceptionString());
+			getState().acceptView(this);
+			if (getState().arePresentException()) {
+				output.println(getState().getExceptionString());
 			}
-		} while (!endGame);
+		} while(!endGame);
 	}
 
 }

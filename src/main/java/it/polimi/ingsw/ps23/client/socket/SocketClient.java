@@ -15,7 +15,7 @@ public class SocketClient {
 	private static final String CONSOLE_TAG = "<console>";
 	private static final String GUI_TAG = "<gui>";
 	private static final String END_OF_MESSAGE_TAG = "<eom>";
-	
+
 	private Scanner scanner;
 	private PrintStream output;
 	
@@ -78,8 +78,8 @@ public class SocketClient {
 		//Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
-		//String clientInfos = CONSOLE_TAG + "AleGiuMir";
-		String clientInfos = GUI_TAG + "AleGiuMir";
+		String clientInfos = CONSOLE_TAG + "AleGiuMir";
+		//String clientInfos = GUI_TAG + "AleGiuMir";
 		try {
 			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
 			client.start(clientInfos);

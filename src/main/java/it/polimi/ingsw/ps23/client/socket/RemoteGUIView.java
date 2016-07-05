@@ -91,14 +91,17 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 	protected void run() {
 		cliPrints();
 		getStaticContentExpression().parse(getClient().receive());
+		NoInputExpression isNoInput = getNoInputExpression();
+		isNoInput.setSwingUI(swingUI);
 		DynamicContentsExpression isDynamicContent = getDynamicContentExpression();
 		ActionsExpression isAction = getActionsExpression();
 		String message;
 		do {
-			message = getClient().receive();//TODO ricevo info su player disconnessi
+			message = getClient().receive();
+			isNoInput.infoMessage(message);
 			isDynamicContent.parse(message);
 			isAction.parse(message);
-		} while(!getConnectionTimedOut());
+		} while(!getConnectionTimedOut() && !getEndGame());
 		getClient().closeConnection();
 	}
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.ps23.client;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -30,6 +31,7 @@ import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 
 public abstract class SwingUI {
 
@@ -69,7 +71,7 @@ public abstract class SwingUI {
 	private JButton skipButton;
 	private Map<String, JLabel> cityLabels;
 	private Map<String, Point> councilPoints;
-	private Map<String, JLabel> freeCouncillorsLabels;
+	private Map<String, Map<JLabel,JLabel>> freeCouncillorsLabels;
 	private JFrame frame;
 	private JPanel mapPanel;
 	private Map<String, Map<JLabel, List<JLabel>>> permitTiles;
@@ -78,10 +80,12 @@ public abstract class SwingUI {
 	private JButton finished;
 	private List<JLabel> cardsList;
 	private Map<JLabel, List<JLabel>> playerPermitTiles;
+	private Map<JLabel, List<JLabel>> playerAllPermitTiles;
 	boolean finish;
 	private String chosenCard;
 	private JSpinner marketSpinner;
 	private JButton marketSendButton;
+	private JDialog totalPermitsCardDialog;
 	private int spinnerValue;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
@@ -103,6 +107,7 @@ public abstract class SwingUI {
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
+		totalPermitsCardDialog = new JDialog(frame, "Your Permission Total HandDeck");
 		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
@@ -240,8 +245,12 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshFreeCouncillors(List<String> freeCouncillors) {
-		for (Entry<String, JLabel> entry : freeCouncillorsLabels.entrySet()) {
-			mapPanel.remove(entry.getValue());
+		for (Entry<String, Map<JLabel, JLabel>> entry : freeCouncillorsLabels.entrySet()) {
+			Map<JLabel, JLabel> freeCouncillor = entry.getValue();
+			for(Entry<JLabel, JLabel> jlabel : freeCouncillor.entrySet()) {
+				mapPanel.remove(jlabel.getValue());
+				mapPanel.remove(jlabel.getKey());
+			}
 		}
 		Point freeCouncillorsPoint = councilPoints.get("free");
 		int x = freeCouncillorsPoint.x;
@@ -272,7 +281,6 @@ public abstract class SwingUI {
 			});   
 			councillorLabel.setBounds(0, 0, 28, 52);
 			councillorLabel.setLocation(x, y);
-			freeCouncillorsLabels.put(color, councillorLabel);
 			mapPanel.add(councillorLabel, 0);
 			JLabel councillorsValue = new JLabel();
 			councillorsValue.setBounds(0, 0, 10, 25);
@@ -285,6 +293,9 @@ public abstract class SwingUI {
 			}
 			councillorsValue.setText(String.valueOf(entry.getValue()));
 			mapPanel.add(councillorsValue, 0);
+			Map<JLabel, JLabel> freeCouncillor = new HashMap<>();
+			freeCouncillor.put(councillorLabel, councillorsValue);
+			freeCouncillorsLabels.put(color, freeCouncillor);
 			y += 43;
 		}
 	}
@@ -314,7 +325,7 @@ public abstract class SwingUI {
 		}
 	}
 
-	private void drawPermitTile(Map<JLabel, List<JLabel>> permitLabels, List<String> permitTileCities, List<String> permitTileBonusesName, List<String> permitTileBonusesValue, int indexOfTile, int x, int y) {
+	private void drawPermitTile(Container container, Map<JLabel, List<JLabel>> permitLabels, List<String> permitTileCities, List<String> permitTileBonusesName, List<String> permitTileBonusesValue, int indexOfTile, int x, int y) {
 		List<JLabel> listJlabel = new ArrayList<>();
 		BufferedImage permissionTileImage = readImage(IMAGES_PATH + PERMIT_TILE_PATH);
 		Image resizedPermissionTile = permissionTileImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -330,7 +341,7 @@ public abstract class SwingUI {
 				guiView.resume();
 			}
 		});
-		mapPanel.add(permitTileLabel, 0);
+		container.add(permitTileLabel, 0);
 		permitTileLabel.setEnabled(false);
 		int bonusCoordX = x - 47;
 		int bonusCoordY = y + 40;
@@ -353,19 +364,19 @@ public abstract class SwingUI {
 				slash = " / ";
 			}
 			cityInitial.setText(cityName + slash);
-			mapPanel.add(cityInitial, 0);
+			container.add(cityInitial, 0);
 			listJlabel.add(cityInitial);
 			cityCoordX += 17;
 		}
 		permitLabels.put(permitTileLabel, listJlabel);
 	}
 
-	private void drawPermitTiles(Map<JLabel, List<JLabel>> permitLabels, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue, int xCoord, int yCoord) {
+	private void drawPermitTiles(Container container, Map<JLabel, List<JLabel>> permitLabels, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue, int xCoord, int yCoord) {
 		int x = xCoord;
 		int y = yCoord;
 		int indexOfTile = 0;
 		for (int i = 0; i < permitTilesCities.size(); i++) {
-			drawPermitTile(permitLabels, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), indexOfTile, x, y);
+			drawPermitTile(container, permitLabels, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), indexOfTile, x, y);
 			x -= 52;
 			indexOfTile++;
 		}
@@ -378,7 +389,7 @@ public abstract class SwingUI {
 			int x = point.x;
 			int y = point.y;
 			Map<JLabel, List<JLabel>> permitTilesLabels = new HashMap<>();
-			drawPermitTiles(permitTilesLabels, allPermitTilesCities.get(i), allPermitTilesBonusesName.get(i), allPermitTilesBonusesValue.get(i), x - 120, y - 12);
+			drawPermitTiles(mapPanel, permitTilesLabels, allPermitTilesCities.get(i), allPermitTilesBonusesName.get(i), allPermitTilesBonusesValue.get(i), x - 120, y - 12);
 			permitTiles.put(regions.get(i), permitTilesLabels);
 		}
 	}
@@ -463,7 +474,7 @@ public abstract class SwingUI {
 			mapPanel.add(cardLabel, 0);
 			cardLabel.setEnabled(false);
 		}
-		finished = new JButton("finished");
+		finished = new JButton("Finished");
 		finished.addActionListener(new ActionListener() {
 			@Override 
             public void actionPerformed(ActionEvent e)
@@ -750,10 +761,13 @@ public abstract class SwingUI {
 	}
 
 	public void enableFreeCouncillorsButtons(boolean display) {
-		Set<Entry<String, JLabel>> freeCouncillors = freeCouncillorsLabels.entrySet();
-		for(Entry<String, JLabel> freeCouncillorLabel : freeCouncillors) {
-			freeCouncillorLabel.getValue().setEnabled(display);
+		for (Entry<String, Map<JLabel, JLabel>> entry : freeCouncillorsLabels.entrySet()) {
+			Map<JLabel, JLabel> freeCouncillor = entry.getValue();
+			for(Entry<JLabel, JLabel> jlabel : freeCouncillor.entrySet()) {
+				jlabel.getKey().setEnabled(true);
+			}
 		}
+	
 	}
 
 	public void enablePoliticCards(boolean display) {
@@ -781,10 +795,6 @@ public abstract class SwingUI {
 		for (JLabel jLabel : playerPermitTiles.keySet()) {
 			jLabel.setEnabled(display);
 		}
-	}
-
-	public void enableButtons(boolean display) {
-		enableRegionButtons(display);
 	}
 
 	protected void clearChosenRegion() {
@@ -838,12 +848,39 @@ public abstract class SwingUI {
 	}
 	
 	protected void refreshAcquiredPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities, List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		Set<Entry<JLabel, List<JLabel>>> playerPermitTilesSet = playerPermitTiles.entrySet();
+		for(Entry<JLabel, List<JLabel>> playerPermitTile : playerPermitTilesSet) {
+			mapPanel.remove(playerPermitTile.getKey());
+			for(JLabel jLabel : playerPermitTile.getValue()){
+				mapPanel.remove(jLabel);
+			}
+		}
 		playerPermitTiles.clear();
+		
 		int x = 0;
 		int y = 611;
 		int playerIndex = playersName.indexOf(playerName);
 		for(int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
-			drawPermitTiles(playerPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
+			drawPermitTiles(mapPanel, playerPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
+			x += 52;
+		}
+	}
+	
+	protected void refreshAllPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities, List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		Set<Entry<JLabel, List<JLabel>>> playerAllPermitTilesSet = playerAllPermitTiles.entrySet();
+		for(Entry<JLabel, List<JLabel>> playerPermitTile : playerAllPermitTilesSet) {
+			totalPermitsCardDialog.remove(playerPermitTile.getKey());
+			for(JLabel jLabel : playerPermitTile.getValue()){
+				totalPermitsCardDialog.remove(jLabel);
+			}
+		}
+		playerPermitTiles.clear();
+		
+		int x = 0;
+		int y = 611;
+		int playerIndex = playersName.indexOf(playerName);
+		for(int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
+			drawPermitTiles(totalPermitsCardDialog, playerPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
 			x += 52;
 		}
 	}

@@ -2,10 +2,12 @@ package it.polimi.ingsw.ps23.client.socket.gui;
 
 import java.io.PrintStream;
 
+import it.polimi.ingsw.ps23.client.SwingUI;
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.Parser;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
 public class NoInputExpression implements Parser {
 
@@ -17,6 +19,8 @@ public class NoInputExpression implements Parser {
 	private PrintStream output;
 	
 	private Expression expression;
+	
+	private SwingUI swingUI;
 	
 	private PlayerNameExpression isPlayerName;
 	private MapTypeExpression isMapType;
@@ -36,6 +40,20 @@ public class NoInputExpression implements Parser {
 	private MapTypeExpression getMapTypeExpression(RemoteGUIView remoteView) {
 		Expression mapTypeExpression = new TerminalExpression(MAP_TYPE_TAG_OPEN, MAP_TYPE_TAG_CLOSE);
 		return new MapTypeExpression(remoteView, output, mapTypeExpression);
+	}
+
+	public void setSwingUI(SocketSwingUI swingUI) {
+		this.swingUI = swingUI;
+	}
+
+	/**
+	 * Prints a message from the server into the GUI text box.
+	 * @param message - message to be printed to the GUI.
+	 */
+	public void infoMessage(String message) {
+		if(expression.interpret(message)) {
+			swingUI.appendConsoleText(expression.selectBlock(message));
+		}
 	}
 	
 	@Override

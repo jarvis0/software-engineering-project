@@ -41,6 +41,7 @@ public class Model extends ModelObservable {
 	private TurnHandler turnHandler;
 	private int currentPlayerIndex;
 	private PlayersResumeHandler playersResumeHandler;
+	private boolean endGame;
 	
 	private void newGame(List<String> playerNames) {
 		game = new Game(playerNames);
@@ -58,6 +59,7 @@ public class Model extends ModelObservable {
 		setStartingPlayerIndex();
 		this.playersResumeHandler = playersResumeHandler;
 		newGame(playerNames);
+		endGame = false;
 	}
 	
 	/**
@@ -147,6 +149,7 @@ public class Model extends ModelObservable {
 		context = new Context();
 		EndGameState endGameState = new EndGameState();	
 		endGameState.changeState(context, game);
+		endGame = true;
 		wakeUp(endGameState);
 	}
 
@@ -377,6 +380,10 @@ public class Model extends ModelObservable {
 		startTurnState.changeState(context, game);
 		context.addExceptionText(e);
 		wakeUp(startTurnState);		
+	}
+	
+	public boolean getEndGame() {
+		return endGame;
 	}
 	
 }

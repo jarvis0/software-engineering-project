@@ -17,8 +17,8 @@ public class DynamicContentsExpression extends GUIParser {
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
 	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
-	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
-	private static final String PERMIT_TILES_UP_TAG_CLOSE = "</permit_tiles_up>";
+	private static final String PERMIT_TILES_TAG_OPEN = "<permit_tiles_up>";
+	private static final String PERMIT_TILES_TAG_CLOSE = "</permit_tiles_up>";
 	private static final String TURN_PARAMETERS_TAG_OPEN = "<turn_parameters>";
 	private static final String TURN_PARAMETERS_TAG_CLOSE = "</turn_parameters>";
 	
@@ -60,7 +60,7 @@ public class DynamicContentsExpression extends GUIParser {
 	}
 	
 	private PermitTilesUpExpression getPermitTilesUpExpression() {
-		Expression permitTilesUpExpression = new TerminalExpression(PERMIT_TILES_UP_TAG_OPEN, PERMIT_TILES_UP_TAG_CLOSE);
+		Expression permitTilesUpExpression = new TerminalExpression(PERMIT_TILES_TAG_OPEN, PERMIT_TILES_TAG_CLOSE);
 		return new PermitTilesUpExpression(permitTilesUpExpression);
 	}
 	
