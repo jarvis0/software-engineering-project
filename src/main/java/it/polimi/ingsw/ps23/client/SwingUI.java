@@ -85,6 +85,10 @@ public abstract class SwingUI {
 	private JButton marketSendButton;
 	private JDialog totalPermitsCardDialog;
 	private int spinnerValue;
+	private boolean cityListener;
+	private boolean freeCuncillorListener;
+	private boolean permitTileListener;
+	private boolean politicCardListener;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
 		this.guiView = guiView;
@@ -97,6 +101,10 @@ public abstract class SwingUI {
 		marketSpinner = guiLoad.getMarketSpinner();
 		marketSendButton = guiLoad.getMarketSendButton();
 		freeCouncillorsLabels = new HashMap<>();
+		cityListener = false;
+		freeCuncillorListener = false;
+		permitTileListener = false;
+		politicCardListener = false;
 		loadCitiesButtons();
 		councilPoints = guiLoad.getCouncilPoints();
 		cardsList = new ArrayList<>();
@@ -218,7 +226,6 @@ public abstract class SwingUI {
 	}
 	
 	private void drawNobilityTrackBonus(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue, int xParam, int yParam, int yOffsetParam, int i, int j) {
-		int yOffset = yOffsetParam;
 		int x = xParam;
 		int y = yParam;
 		if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
@@ -231,8 +238,7 @@ public abstract class SwingUI {
 				y = 476;
 				height = 40;
 			}
-			drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffset);
-			yOffset -= 25;
+			drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffsetParam);
 		}
 	}
 
@@ -244,6 +250,7 @@ public abstract class SwingUI {
 			int y = 495;
 			for (int j = 0; j < stepsBonusesName.get(i).size(); j++) {
 				drawNobilityTrackBonus(stepsBonusesName, stepsBonusesValue, x, y, yOffset, i, j);
+				yOffset -= 25;
 			}
 			stepNumber++;
 		}
@@ -284,9 +291,11 @@ public abstract class SwingUI {
 			councillorLabel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					if(freeCuncillorListener) {
 					chosenCouncillor = color;
-					councillorLabel.setEnabled(false);
+					councillorLabel.setEnabled(true);
 					guiView.resume();
+					}
 				}
 			});
 			councillorLabel.setBounds(0, 0, 28, 52);
@@ -350,9 +359,11 @@ public abstract class SwingUI {
 		permitTileLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				chosenTile = indexOfTile;
-				permitTileLabel.setEnabled(false);
-				guiView.resume();
+				if(permitTileListener) {
+					chosenTile = indexOfTile;
+					permitTileLabel.setEnabled(true);
+					guiView.resume();
+				}
 			}
 		});
 		container.add(permitTileLabel, 0);
@@ -482,9 +493,11 @@ public abstract class SwingUI {
 			cardLabel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					chosenCard = card;
-					cardLabel.setEnabled(false);
-					guiView.resume();
+					if(politicCardListener) {
+						chosenCard = card;
+						cardLabel.setEnabled(true);
+						guiView.resume();
+					}
 				}
 			});
 			cardLabel.setBounds(0, 0, 42, 66);
@@ -693,9 +706,11 @@ public abstract class SwingUI {
 			cityLabel.getValue().addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					chosenCity = cityLabel.getKey();
-					cityLabel.getValue().setEnabled(false);
-					guiView.resume();
+					if(cityListener) {
+						chosenCity = cityLabel.getKey();
+						cityLabel.getValue().setEnabled(true);
+						guiView.resume();
+					}
 				}
 			});
 		}
@@ -717,13 +732,16 @@ public abstract class SwingUI {
 	}
 
 	private void enableCitiesButtons(boolean display) {
+		cityListener = display;
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet) {
 			cityLabel.getValue().setEnabled(display);
 		}
+		
 	}
 
 	private void enableCards(boolean display) {
+		politicCardListener = display;
 		for (JLabel jLabel : cardsList) {
 			jLabel.setEnabled(display);
 		}
@@ -740,6 +758,7 @@ public abstract class SwingUI {
 	}
 
 	public void enableFreeCouncillorsButtons(boolean display) {
+		freeCuncillorListener = display;
 		for (Entry<String, Map<JLabel, JLabel>> entry : freeCouncillorsLabels.entrySet()) {
 			Map<JLabel, JLabel> freeCouncillor = entry.getValue();
 			for (Entry<JLabel, JLabel> jlabel : freeCouncillor.entrySet()) {
@@ -753,10 +772,11 @@ public abstract class SwingUI {
 		enableCards(display);
 	}
 
-	public void enablePermitTilesPanel(String chosenCouncil) {
+	public void enablePermitTilesPanel(String chosenCouncil, boolean display) {
+		permitTileListener = display;
 		Map<JLabel, List<JLabel>> permitTilesLabels = permitTiles.get(chosenCouncil);
 		for (JLabel jLabel : permitTilesLabels.keySet()) {
-			jLabel.setEnabled(true);
+			jLabel.setEnabled(display);
 		}
 	}
 
@@ -771,6 +791,7 @@ public abstract class SwingUI {
 	}
 
 	public void enablePermitTileDeck(boolean display) {
+		permitTileListener = true;
 		for (JLabel jLabel : playerPermitTiles.keySet()) {
 			jLabel.setEnabled(display);
 		}
@@ -859,6 +880,7 @@ public abstract class SwingUI {
 	}
 
 	public void enableTotalHandDeck(boolean display) {
+		permitTileListener = display;
 		for (JLabel jLabel : playerAllPermitTiles.keySet()) {
 			jLabel.setEnabled(display);
 		}

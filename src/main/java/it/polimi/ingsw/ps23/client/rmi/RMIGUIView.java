@@ -120,8 +120,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(ChangePermitTilesState currentState) {
-		swingUI.enableRegionButtons(true);
 		swingUI.showAvailableActions(false, false);
+		swingUI.enableRegionButtons(true);
 		swingUI.appendConsoleText("\n\nYou are performing a Change Permits Tile quick action,\n please select the region where you what to change tiles.");
 		pause();
 		String chosenRegion = swingUI.getChosenRegion();
@@ -158,8 +158,9 @@ public class RMIGUIView extends RMIView implements GUIView {
 			}
 			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards.toString() + "\nyou can now press on the permit tile that you want acquire.");
 			swingUI.enablePoliticCards(false);
-			swingUI.enablePermitTilesPanel(chosenCouncil);
+			swingUI.enablePermitTilesPanel(chosenCouncil, true);
 			pause();
+			swingUI.enablePermitTilesPanel(chosenCouncil, false);
 			int chosenTile = swingUI.getChosenTile();
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
 		} catch (InvalidCardException | NumberFormatException e) {
@@ -237,6 +238,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile Main Action,\npress on the permit tile that you want use.");
 		pause();
 		int chosenCard = swingUI.getChosenTile();
+		swingUI.enablePermitTileDeck(false);
 		swingUI.appendConsoleText("\nYou have chose tile number: " + chosenCard + "\npress on the city want to build.");
 		swingUI.enableCities(true);
 		pause();
@@ -373,8 +375,9 @@ public class RMIGUIView extends RMIView implements GUIView {
 			selectedItem = swingUI.getChosenCity();
 		}
 		if(currentState.isBuildingPemitTileBonus()) { 
-			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion());
+			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
 			pause();
+			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
 			selectedItem = String.valueOf(swingUI.getChosenTile());
 		}
 		return selectedItem;
