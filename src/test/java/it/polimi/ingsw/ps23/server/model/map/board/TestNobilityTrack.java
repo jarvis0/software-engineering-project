@@ -10,6 +10,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 
 public class TestNobilityTrack {
 
@@ -29,7 +30,9 @@ public class TestNobilityTrack {
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayer(game.getPlayersNumber() - 2));
 		for(NobilityTrackStep step : nobilityTrackSteps) {
 			for(Bonus bonus : step.getBonuses()) {
-				bonus.updateBonus(game, turnHandler2);
+				if(!bonus.isNull()) {
+					((RealBonus)bonus).updateBonus(game, turnHandler2);
+				}				
 			}
 		}
 		assertAll(game, turnHandler, turnHandler2);

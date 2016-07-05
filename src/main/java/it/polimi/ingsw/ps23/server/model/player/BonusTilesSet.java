@@ -7,6 +7,7 @@ import java.util.List;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 
 class BonusTilesSet implements Serializable {
 	
@@ -26,7 +27,7 @@ class BonusTilesSet implements Serializable {
 	
 	void useBonus(Game game, TurnHandler turnHandler) {
 		for(Bonus bonus : bonuses) {
-			bonus.updateBonus(game, turnHandler);
+			((RealBonus)bonus).updateBonus(game, turnHandler);
 		}
 	}
 	

@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
  * @author Alessandro Erba
  *
  */
-public class RecycleBuildingPermitBonus extends Bonus implements SuperBonus {
+public class RecycleBuildingPermitBonus extends RealBonus implements SuperBonus {
 	
 	/**
 	 * 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 /**
  * Provides methods to use bonuses on the {@link NobilityTrack}.
  * @author Alessandro Erba
@@ -29,7 +30,9 @@ public class NobilityTrackStep implements BonusSlot {
 	
 	void useBonus(Game game, TurnHandler turnHandler) {
 		for (Bonus bonus : bonuses) {
-			bonus.updateBonus(game, turnHandler);
+			if(!bonus.isNull()) {
+				((RealBonus)bonus).updateBonus(game, turnHandler);
+			}
 		}
 	}
 	

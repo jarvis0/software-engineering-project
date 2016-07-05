@@ -15,7 +15,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
  * @author Alessandro Erba
  *
  */
-public class BuildingPermitBonus extends Bonus implements SuperBonus {
+public class BuildingPermitBonus extends RealBonus implements SuperBonus {
 	
 	/**
 	 * 

@@ -25,6 +25,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 
 class RMISwingUI extends SwingUI {
 	
@@ -59,7 +60,7 @@ class RMISwingUI extends SwingUI {
 
 	private void bonusToStrings(Bonus bonus, List<String> bonusesName, List<String> bonusesValue) {
 		bonusesName.add(bonus.getName());
-		bonusesValue.add(String.valueOf(bonus.getValue()));
+		bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
 	}
 	
 	
@@ -203,7 +204,7 @@ class RMISwingUI extends SwingUI {
 		String kingBonusValue;
 		if(kingTile != null) {
 			kingBonusName = kingTile.getName();
-			kingBonusValue = String.valueOf(kingTile.getValue());
+			kingBonusValue = String.valueOf(((RealBonus)kingTile).getValue());
 		}
 		else {
 			kingBonusName = getNoKingTile();

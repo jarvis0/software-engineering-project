@@ -12,6 +12,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncillorException;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
@@ -59,7 +60,7 @@ public class TestRegion {
 			assertTrue(iterator.next().equals(councillor));			
 		}
 		Bonus bonusTile = regions.get(0).acquireBonusTile();
-		assertTrue(bonusTile.getName().equals("victoryPoint") && bonusTile.getValue() == 5);
+		assertTrue(bonusTile.getName().equals("victoryPoint") && ((RealBonus)bonusTile).getValue() == 5);
 		List<String[]> rawPermissionCards = new RawObject(TEST_CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
 		Map<String, Deck> deck = new PermitTilesBuilder(rawPermissionCards, citiesFactory.getHashMap()).makeDecks(bonusCache);
 		for(Region region : regions) {

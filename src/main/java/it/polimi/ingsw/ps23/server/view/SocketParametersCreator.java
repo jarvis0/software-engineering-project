@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
@@ -74,7 +75,11 @@ class SocketParametersCreator {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + bonus.getValue());
+			if(!bonus.isNull()) {
+				bonusesSend.append("," + ((RealBonus)bonus).getValue());
+			} else {
+				bonusesSend.append("," + 0);
+			}
 		}
 	}
 	
@@ -141,7 +146,7 @@ class SocketParametersCreator {
 			bonusTilesSend.append("," + region.getName());
 			Bonus bonus = region.getBonusTile();
 			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + bonus.getValue());
+			bonusTilesSend.append("," + ((RealBonus)bonus).getValue());
 		}
 	}
 	
@@ -152,7 +157,7 @@ class SocketParametersCreator {
 		addBonusTiles(bonusTilesSend, groupRegionalCity);
 		addBonusTiles(bonusTilesSend, groupColoredCity);
 		bonusTilesSend.append("," + currentKingTile.getName());
-		bonusTilesSend.append("," + currentKingTile.getValue());
+		bonusTilesSend.append("," + ((RealBonus)currentKingTile).getValue());
 		bonusTilesSend.append(",");
 		return BONUS_TILES_TAG_OPEN + bonusTilesSend + BONUS_TILES_TAG_CLOSE;
 	}

@@ -10,6 +10,7 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
@@ -34,7 +35,7 @@ public class TestPermitTilesUpExpression {
 				}				
 				for(Bonus bonus : ((BusinessPermitTile)card).getBonuses()) {
 					assertTrue(permitTilesUpExpression.getPermitTilesBonusesName().toString().contains(bonus.getName()));
-					assertTrue(permitTilesUpExpression.getPermitTilesBonusesValue().toString().contains(String.valueOf(bonus.getValue())));
+					assertTrue(permitTilesUpExpression.getPermitTilesBonusesValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
 				}
 			}
 		}
@@ -70,7 +71,7 @@ public class TestPermitTilesUpExpression {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + bonus.getValue());
+			bonusesSend.append("," + ((RealBonus)bonus).getValue());
 		}
 	}
 

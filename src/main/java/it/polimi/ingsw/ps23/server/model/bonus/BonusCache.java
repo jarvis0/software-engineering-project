@@ -44,7 +44,9 @@ public class BonusCache {
 	public Bonus getBonus(String bonusName, int value) {
 		Bonus cachedBonus = bonusesMap.get(bonusName);
 		Bonus bonus = (Bonus) cachedBonus.clone();
-		bonus.setValue(value);
+		if(!(bonus.isNull())) {
+			((RealBonus)bonus).setValue(value);
+		}		
 		return bonus;
 	}
 	
