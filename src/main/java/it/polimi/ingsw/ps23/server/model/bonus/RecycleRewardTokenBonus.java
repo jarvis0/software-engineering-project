@@ -28,7 +28,9 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public void updateBonus(Game game, TurnHandler turnHandler) {
-		turnHandler.addSuperBonus(this);		
+		if(!(game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getBuiltEmporiumsSet().isEmpty())) {
+			turnHandler.addSuperBonus(this);	
+		}
 	}
 
 	@Override
@@ -37,15 +39,13 @@ public class RecycleRewardTokenBonus extends Bonus implements SuperBonus {
 			return "You have encountred a Recycle Reward Token Bonus on Nobility Track \nchoose the city for recycle the reward a token: " + currentPlayer.getEmporiumForRecycleRewardToken().toString();
 		}
 		else {
-			return "Impossible to use Recycle Building Permit Bonus because your Built Emporium set is empty, or because all the Reward Tokens of the cities where you have built an emporium gives you Noblity Track Points (0 to skip)";
+			return "Impossible to use Recycle Building Permit Bonus because your Built Emporium set is empty, or because all the Reward Tokens of the cities where you have built an emporium gives you Noblity Track Points";
 		}
 	}
 	
 	@Override
-	public void acquireSuperBonus(List<String>input, Game game, TurnHandler turnHandler) throws InvalidCityException { //TODO riguardare questa condizione
-		//if(Integer.parseInt(input.get(VALUE_POSITION)) != 0) {
-			game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getChosenCity(input.get(VALUE_POSITION)).useRewardToken(game, turnHandler);
-		//}
+	public void acquireSuperBonus(List<String>input, Game game, TurnHandler turnHandler) throws InvalidCityException {
+		game.getCurrentPlayer().getEmporiumForRecycleRewardToken().getChosenCity(input.get(VALUE_POSITION)).useRewardToken(game, turnHandler);
 	}
 
 	@Override

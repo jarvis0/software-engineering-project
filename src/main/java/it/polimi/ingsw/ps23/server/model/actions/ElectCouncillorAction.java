@@ -15,9 +15,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
  * @author Mirco Manzoni
  *
  */
-@SuppressWarnings("serial")
 public abstract class ElectCouncillorAction extends Action {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3985119248583613706L;
 	private String councillor;
 	private String council;
 	private Map<String, Council> councilsMap;

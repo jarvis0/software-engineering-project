@@ -10,9 +10,12 @@ import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
-@SuppressWarnings("serial")
 abstract class ElectCouncillorActionState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3353345238431265969L;
 	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;
 	

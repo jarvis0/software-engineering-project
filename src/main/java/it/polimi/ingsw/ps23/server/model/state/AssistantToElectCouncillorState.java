@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ps23.server.model.state;
 
-
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;

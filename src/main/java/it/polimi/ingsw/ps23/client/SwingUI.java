@@ -106,7 +106,9 @@ public abstract class SwingUI {
 		frame = guiLoad.getFrame();
 		mapPanel = guiLoad.getMapPanel();
 		tableModel = guiLoad.getTableModel();
+		playerAllPermitTiles = new HashMap<>();
 		totalPermitsCardDialog = new JDialog(frame, "Your Permission Total HandDeck");
+		totalPermitsCardDialog.setBounds(300, 200, 600, 50);
 		loadMarketInputArea();
 		loadRegionButtons();
 		loadMainActionPanel();
@@ -173,8 +175,7 @@ public abstract class SwingUI {
 		btnKingdom.setEnabled(display);
 	}
 
-	private List<JLabel> drawBonus(String bonusName, String bonusValue, Point point, int width, int height,
-			int yOffset) {
+	private List<JLabel> drawBonus(Container container, String bonusName, String bonusValue, Point point, int width, int height, int yOffset) {
 		int x = (int) point.getX();
 		int y = (int) point.getY();
 		List<JLabel> bonusList = new ArrayList<>();
@@ -184,7 +185,7 @@ public abstract class SwingUI {
 		bonusLabel.setBounds(0, 0, width, height);
 		bonusLabel.setLocation(x, y + yOffset);
 		bonusList.add(bonusLabel);
-		mapPanel.add(bonusLabel, 0);
+		container.add(bonusLabel, 0);
 		int bonusNumber = Integer.parseInt(bonusValue);
 		if (bonusNumber > 1 || "victoryPoint".equals(bonusName)) {
 			JLabel bonusLabelValue = new JLabel();
@@ -198,7 +199,7 @@ public abstract class SwingUI {
 			}
 			bonusLabelValue.setText(String.valueOf(bonusNumber));
 			bonusList.add(bonusLabelValue);
-			mapPanel.add(bonusLabelValue, 0);
+			container.add(bonusLabelValue, 0);
 		}
 		return bonusList;
 	}
@@ -211,10 +212,28 @@ public abstract class SwingUI {
 			int x = point.x;
 			int y = point.y;
 			for (int j = 0; j < citiesBonusesName.get(i).size(); j++) {
-				drawBonus(citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), new Point(x + 50, y - 20),
-						23, 25, 0);
+				drawBonus(mapPanel, citiesBonusesName.get(i).get(j), citiesBonusesValue.get(i).get(j), new Point(x + 50, y - 20), 23, 25, 0);
 				x += 22;
 			}
+		}
+	}
+	
+	private void drawNobilityTrackBonus(List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue, int xParam, int yParam, int yOffsetParam, int i, int j) {
+		int yOffset = yOffsetParam;
+		int x = xParam;
+		int y = yParam;
+		if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
+			int width = 23;
+			int height = 25;
+			if ("1".equals(stepsBonusesValue.get(i).get(j))) {
+				y = 490;
+			}
+			if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
+				y = 476;
+				height = 40;
+			}
+			drawBonus(mapPanel, stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width, height, yOffset);
+			yOffset -= 25;
 		}
 	}
 
@@ -225,20 +244,7 @@ public abstract class SwingUI {
 			int x = (int) 38.1 * stepNumber + 8;
 			int y = 495;
 			for (int j = 0; j < stepsBonusesName.get(i).size(); j++) {
-				if (!("nullBonus").equals(stepsBonusesName.get(i).get(j))) {
-					int width = 23;
-					int height = 25;
-					if ("1".equals(stepsBonusesValue.get(i).get(j))) {
-						y = 490;
-					}
-					if (("recycleRewardToken").equals(stepsBonusesName.get(i).get(j))) {
-						y = 476;
-						height = 40;
-					}
-					drawBonus(stepsBonusesName.get(i).get(j), stepsBonusesValue.get(i).get(j), new Point(x, y), width,
-							height, yOffset);
-					yOffset -= 25;
-				}
+				drawNobilityTrackBonus(stepsBonusesName, stepsBonusesValue, x, y, yOffset, i, j);
 			}
 			stepNumber++;
 		}
@@ -355,8 +361,7 @@ public abstract class SwingUI {
 		int bonusCoordX = x - 47;
 		int bonusCoordY = y + 40;
 		for (int i = 0; i < permitTileBonusesName.size(); i++) {
-			listJlabel.addAll(drawBonus(permitTileBonusesName.get(i), permitTileBonusesValue.get(i),
-					new Point(bonusCoordX + 50, bonusCoordY - 20), 23, 25, 0));
+			listJlabel.addAll(drawBonus(container, permitTileBonusesName.get(i), permitTileBonusesValue.get(i), new Point(bonusCoordX + 50, bonusCoordY - 20), 23, 25, 0));
 			bonusCoordX = bonusCoordX + 24;
 		}
 		int cityCoordX = x + 5;
@@ -425,7 +430,7 @@ public abstract class SwingUI {
 		tileLabel.setBounds(0, 0, 50, 35);
 		tileLabel.setLocation(x, y);
 		mapPanel.add(tileLabel, 0);
-		drawBonus(bonusName, bonusValue, new Point(x + 25, y + 10), 23, 25, -5);
+		drawBonus(mapPanel, bonusName, bonusValue, new Point(x + 25, y + 10), 23, 25, -5);
 	}
 
 	protected void refreshBonusTiles(List<String> groupsName, List<String> groupsBonusName,
@@ -684,7 +689,8 @@ public abstract class SwingUI {
 
 	private void loadCitiesButtons() {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
-		for (Entry<String, JLabel> cityLabel : cityLabelsSet) {
+		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
+			cityLabel.getValue().setToolTipText("ciao");
 			cityLabel.getValue().addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -695,15 +701,26 @@ public abstract class SwingUI {
 			});
 		}
 	}
+	
+	protected void refreshCitiesToolTip(List<String> citiesName, List<List<String>> citiesBuiltEmporium) {
+		int i = 0;
+		for(String cityName : citiesName) {
+			StringBuilder toolTipString = new StringBuilder();
+			toolTipString.append("List of Player's Emporiums:\n");
+			JLabel cityLabel = cityLabels.get(cityName);
+			for(String playerNameString : citiesBuiltEmporium.get(i)) {
+				toolTipString.append(playerNameString);
+			}
+			cityLabel.setToolTipText(new String(toolTipString) + "\n");
+			i++;
+		}
+		
+	}
 
 	private void enableCitiesButtons(boolean display) {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet) {
 			cityLabel.getValue().setEnabled(display);
-			cityLabel.getValue().setToolTipText("hola"); // TODO aggiungere i
-															// tooltip in mdo
-															// univoco anche per
-															// scoket
 		}
 	}
 
@@ -837,16 +854,21 @@ public abstract class SwingUI {
 				totalPermitsCardDialog.remove(jLabel);
 			}
 		}
-		playerPermitTiles.clear();
-
 		int x = 0;
-		int y = 611;
+		int y = 0;
 		int playerIndex = playersName.indexOf(playerName);
-		for (int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
-			drawPermitTiles(totalPermitsCardDialog, playerPermitTiles, permitTilesCities.get(i),
-					permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
+		for(int i = 0; i < permitTilesCities.get(playerIndex).size(); i++) {
+			drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(i), permitTilesBonusesName.get(i), permitTilesBonusesValue.get(i), x, y);
 			x += 52;
 		}
 	}
 
+	public void enableTotalHandDeck(boolean display) {
+		for (JLabel jLabel : playerAllPermitTiles.keySet()) {
+			jLabel.setEnabled(display);
+		}
+		totalPermitsCardDialog.setVisible(display);
+	}	
+	
+	
 }
