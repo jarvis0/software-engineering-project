@@ -727,6 +727,7 @@ public abstract class SwingUI {
 	private void loadCitiesButtons() {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
+			cityLabel.getValue().setToolTipText("");
 			cityLabel.getValue().addMouseListener(new MouseAdapter() {
 				@Override
                 public void mouseClicked(MouseEvent e) {
@@ -742,7 +743,6 @@ public abstract class SwingUI {
 		Set<Entry<String, JLabel>> cityLabelsSet = cityLabels.entrySet();
 		for (Entry<String, JLabel> cityLabel : cityLabelsSet){
 			cityLabel.getValue().setEnabled(display);
-			cityLabel.getValue().setToolTipText("hola"); //TODO aggiungere i tooltip  in mdo univoco anche per scoket
 		}
 	}
 
