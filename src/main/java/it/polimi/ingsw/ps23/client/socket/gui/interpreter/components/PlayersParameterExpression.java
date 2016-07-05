@@ -26,7 +26,7 @@ class PlayersParameterExpression extends GUIParser {
 	private List<List<List<String>>> usedPermitTilesBonusesName;//TODO inviare TOTAL
 	private List<List<List<String>>> usedPermitTilesBonusesValue;
 	private Map<String, List<String>> politicCards;
-	private List<String> isOnline;
+	private List<String> areOnline;
 	
 	PlayersParameterExpression(Expression expression) {
 		this.expression = expression;
@@ -68,6 +68,10 @@ class PlayersParameterExpression extends GUIParser {
 		return permitTilesBonusesValue;
 	}
 	
+	List<String> getOnline() {
+		return areOnline;
+	}
+	
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
@@ -84,7 +88,7 @@ class PlayersParameterExpression extends GUIParser {
 			usedPermitTilesCities = new ArrayList<>();
 			usedPermitTilesBonusesName = new ArrayList<>();
 			usedPermitTilesBonusesValue = new ArrayList<>();
-			isOnline = new ArrayList<>();
+			areOnline = new ArrayList<>();
 			politicCards = new HashMap<>();
 			String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 			int playersNumber = Integer.parseInt(field);
@@ -118,7 +122,7 @@ class PlayersParameterExpression extends GUIParser {
 				}
 				politicCards.put(names.get(i), playerPoliticCards);
 				
-				parsingMessage = addField(isOnline, parsingMessage);
+				parsingMessage = addField(areOnline, parsingMessage);
 			}
 		}
 	}

@@ -23,7 +23,7 @@ public class SocketSwingUI extends SwingUI {
 		refreshFreeCouncillors(freeCouncillors.getFreeCouncillors());
 		refreshCouncils(councils.getCouncilsName(), councils.getCouncilsColor());
 		refreshBonusTiles(bonusTiles.getGroupsName(), bonusTiles.getGroupsBonusName(), bonusTiles.getGroupsBonusValue(), bonusTiles.getKingBonusName(), bonusTiles.getKingBonusValue());
-		refreshPlayersTable(players.getNames(), players.getCoins(), players.getAssistants(), players.getNobilityTrackPoints(), players.getVictoryPoints());
+		refreshPlayersTable(players.getNames(), players.getCoins(), players.getAssistants(), players.getNobilityTrackPoints(), players.getVictoryPoints(), players.getOnline());
 		refreshPermitTilesUp(permitTilesUp.getRegions(), permitTilesUp.getPermitTilesCities(), permitTilesUp.getPermitTilesBonusesName(), permitTilesUp.getPermitTilesBonusesValue());
 		refreshCitiesToolTip(arePlayersEmporiums.getCitiesName(), arePlayersEmporiums.getPlayersEmporiums());
 		refreshAcquiredPermitTiles(players.getNames(), players.getPermitTilesCities(), players.getPermitTilesBonusesName(), players.getPermitTilesBonusesValue());

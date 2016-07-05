@@ -181,7 +181,7 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(MarketOfferPhaseState currentState) {
-		getConnection().send(gameParameters.createMarketOfferPhase());
+		getConnection().send(gameParameters.createMarketOfferPhase(currentState));
 		String playerName = currentState.getPlayerName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
@@ -239,7 +239,7 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(SuperBonusState currentState) {
-		
+		//TODO
 		getConnection().send(gameParameters.createSuperBonus());
 		boolean otherBonus = currentState.hasNext();
 		getConnection().send(String.valueOf(otherBonus));

@@ -33,6 +33,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
 	private static final String SKIP = "skip";
+	private static final String ITS_PRINT = "\nIt's ";
 	
 	private RMISwingUI swingUI;
 	private PrintStream output;
@@ -83,7 +84,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
 			}
 		} else {
-			swingUI.setConsoleText("\nIt's " + currentState.getCurrentPlayer().getName() + "'s turn.");
+			swingUI.setConsoleText(ITS_PRINT + currentState.getCurrentPlayer().getName() + "'s turn.");
 			swingUI.showAvailableActions(false, false);
 			setWaiting(true);
 			pause();
@@ -295,7 +296,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(MarketOfferPhaseState currentState) {
 		swingUI.refreshDynamicContents(currentState);
 		String player = currentState.getPlayerName();
-		swingUI.setConsoleText("\nIt's " + player + " market phase turn.");
+		swingUI.setConsoleText(ITS_PRINT + player + " market phase turn.");
 		if (player.equals(getClientName())) {
 			List<String> chosenPoliticCards = sellPoliticCard(currentState);
 			List<Integer> chosenPermissionCards = sellPermissionCard(currentState);
@@ -323,7 +324,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	@Override
 	public void visit(MarketBuyPhaseState currentState) {
 		String player = currentState.getPlayerName();
-		swingUI.setConsoleText("\nIt's " + player + " market phase turn.");
+		swingUI.setConsoleText(ITS_PRINT + player + " market phase turn.");
 		if(player.equals(getClientName())) {
 			try {
 				if (currentState.canBuy()) {

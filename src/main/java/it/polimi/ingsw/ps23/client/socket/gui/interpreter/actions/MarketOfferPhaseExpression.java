@@ -5,11 +5,15 @@ import java.util.List;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
-import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
+import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.RefreshContent;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
-class MarketOfferPhaseExpression extends GUIParser {
+class MarketOfferPhaseExpression extends RefreshContent {
 
+	private static final String DYNAMIC_CONTENT_TAG_OPEN = "<dynamic_content>";
+	private static final String DYNAMIC_CONTENT_TAG_CLOSE = "</dynamic_content>";
+	
 	private SocketSwingUI swingUI;
 	
 	private RemoteGUIView guiView;
@@ -21,6 +25,8 @@ class MarketOfferPhaseExpression extends GUIParser {
 		this.guiView = guiView;
 		this.expression = expression;
 	}
+	
+	
 	
 	private void sellPoliticCard(boolean canSellPoliticCards) {
 		List<String> chosenPoliticCards = new ArrayList<>();
@@ -78,6 +84,9 @@ class MarketOfferPhaseExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
+			Expression dynamicContent = new TerminalExpression(DYNAMIC_CONTENT_TAG_OPEN, DYNAMIC_CONTENT_TAG_CLOSE);
+			String noTagMessage = dynamicContent.selectBlock(message);
+			updateDynamicContent(swingUI, noTagMessage);			
 			String player = guiView.getClient().receive();
 			swingUI.setConsoleText("\nIt's " + player + " market phase turn.");
 			if (player.equals(guiView.getPlayerName())) {

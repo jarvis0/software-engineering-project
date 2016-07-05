@@ -21,7 +21,7 @@ public class DynamicContentsExpression extends RefreshContent {
 	public void parse(String message) {
 		if(expression.interpret(message)) {
 			String noTagMessage = expression.selectBlock(message);
-			getDynamicContent(swingUI, noTagMessage);
+			updateDynamicContent(swingUI, noTagMessage);
 			String currentPlayer = guiView.getClient().receive();
 			if(currentPlayer.equals(guiView.getPlayerName())) {
 				boolean isAvailableMainAction = Boolean.valueOf(guiView.getClient().receive());

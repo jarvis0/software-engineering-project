@@ -20,6 +20,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
+import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 
 class SocketParametersCreator {
 
@@ -268,8 +269,8 @@ class SocketParametersCreator {
 		return ACTION_TAG_OPEN + BUILD_EMPORIUM_PERMIT_TILE_TAG + ACTION_TAG_CLOSE;
 	}
 	
-	String createMarketOfferPhase() {
-		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + ACTION_TAG_CLOSE;
+	String createMarketOfferPhase(MarketOfferPhaseState currentState) {
+		return ACTION_TAG_OPEN + MARKET_OFFER_PHASE_TAG + createUIDynamicContents(currentState) + ACTION_TAG_CLOSE;
 	}
 	
 	String createMarketBuyPhase() {

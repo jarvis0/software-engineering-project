@@ -63,7 +63,7 @@ public abstract class RefreshContent extends GUIParser {
 		return new PlayersEmporiumsExpression(playersEmporiumsExpression);
 	}
 
-	protected void getDynamicContent(SocketSwingUI swingUI, String noTagMessage) {
+	protected void updateDynamicContent(SocketSwingUI swingUI, String noTagMessage) {
 		KingPositionExpression isKingPosition = getKingPositionExpression();
 		isKingPosition.parse(noTagMessage);
 		FreeCouncillorsExpression areFreeCouncillors = getFreeCouncillorsExpression();

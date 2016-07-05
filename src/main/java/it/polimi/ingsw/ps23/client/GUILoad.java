@@ -207,7 +207,7 @@ class GUILoad {
 
 	private void loadPlayersTable() {
 		int numRows = 0;
-		String[] columnNames = new String[] { "Name", "Coins", "Assistants", "Nobility Points", "Victory Points" };
+		String[] columnNames = new String[] { "Name", "Coins", "Assistants", "Nobility Points", "Victory Points", "Online" };
 		tableModel = new DefaultTableModel(numRows, columnNames.length) {
 			/**
 			 * 

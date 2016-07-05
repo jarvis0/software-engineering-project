@@ -32,7 +32,7 @@ class SuperBonusExpression extends RefreshContent {
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
 			String noTagMessage = expression.selectBlock(message);
-			getDynamicContent(swingUI, noTagMessage);
+			updateDynamicContent(swingUI, noTagMessage);
 			String selectedItem;
 			boolean otherBonus = Boolean.valueOf(guiView.getClient().receive());
 			while(otherBonus) {
