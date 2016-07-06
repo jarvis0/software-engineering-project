@@ -3,14 +3,15 @@ package it.polimi.ingsw.ps23.server.model;
 import java.io.Serializable;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.initialization.Initialization;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.board.King;
+import it.polimi.ingsw.ps23.server.model.map.board.KingRewardTilesSet;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
 import it.polimi.ingsw.ps23.server.model.market.Market;
-import it.polimi.ingsw.ps23.server.model.player.KingTilesSet;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.state.StateCache;
@@ -32,12 +33,14 @@ public class Game implements Serializable {
 	private FreeCouncillorsSet freeCouncillors;
 	private GameMap gameMap;
 	private King king;
-	private KingTilesSet kingTiles;
+	private KingRewardTilesSet kingTiles;
 	private NobilityTrack nobilityTrack;
 	private PlayersSet playersSet;
 	private Player currentPlayer;
 	private Market currentMarket;
 	private StateCache stateCache;
+	private boolean lastEmporiumBuilt;
+	private String lastActionPerformed;
 
 	/**
 	 * Create a new game initialization object taking game player names
@@ -58,6 +61,8 @@ public class Game implements Serializable {
 		nobilityTrack = init.getNobilityTrack();
 		playersSet = init.getPlayersSet();
 		stateCache = new StateCache();
+		lastEmporiumBuilt = false;
+		lastActionPerformed = new String();
 	}
 	
 	public String getMapType() {
@@ -92,7 +97,7 @@ public class Game implements Serializable {
 		return king;
 	}
 	 
-	public KingTilesSet getKingTilesSet() {
+	public KingRewardTilesSet getKingTilesSet() {
 		return kingTiles;
 	}
 
@@ -103,7 +108,9 @@ public class Game implements Serializable {
 	public StateCache getStateCache() {
 		return stateCache;
 	}
-	
+	/**
+	 * Create a new instance of market and save the references.
+	 */
 	public void createNewMarket() {
 		currentMarket = new Market(playersSet);
 	}
@@ -118,6 +125,33 @@ public class Game implements Serializable {
 	
 	public Market getMarket() {
 		return currentMarket;
+	}
+	/**
+	 * Set the condition to take check if a player can take the bonus of last emporium built
+	 */
+	public void lastEmporiumBuilt() {
+		lastEmporiumBuilt = true;
+	}
+	/**
+	 * Calculate if the current {@link Player} can take the bonus for last emporium build
+	 * @return true if can, false if can't
+	 */
+	public boolean canTakeBonusLastEmporium() {
+		return !lastEmporiumBuilt;
+	}
+	
+	public void setLastActionPerformed(Action action) {
+		lastActionPerformed = action.toString();
+	}
+	
+	public String getLastActionPerformed() {
+		return lastActionPerformed;
+	}
+	/**
+	 * refresh the status of the last action performed to the initial state
+	 */
+	public void refreshLastActionPerformed() {
+		lastActionPerformed = new String();
 	}
 	
 }

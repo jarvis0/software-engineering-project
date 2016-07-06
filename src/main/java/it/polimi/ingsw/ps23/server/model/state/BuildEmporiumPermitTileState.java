@@ -6,10 +6,14 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.BuildEmporiumPermitTile;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
-import it.polimi.ingsw.ps23.server.model.player.PermissionHandDeck;
+import it.polimi.ingsw.ps23.server.model.player.PermitHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-public class BuildEmporiumPermitTileState extends ActionState {
+/**
+ * Provides methods to get all info to create {@link BuildEmporiumPermitTile} action.
+ * @author Alessandro Erba, Mirco Manzoni
+ *
+ */
+public class BuildEmporiumPermitTileState extends MainActionState {
 
 	/**
 	 * 
@@ -21,20 +25,30 @@ public class BuildEmporiumPermitTileState extends ActionState {
 		super(name);
 	}
 
-	public String getAvaibleCards() throws IllegalActionSelectedException {
+	public String getAvailableCards() throws IllegalActionSelectedException {
 		if (availableCards.getHandSize() == 0) {
 			throw new IllegalActionSelectedException();
 		}
 		return availableCards.toString();
 	}
-	
+	/**
+	 * Finds the {@link Card} at the specific position in the pool.
+	 * @param index - the position of the card
+	 * @return the string of the selected card
+	 * @throws InvalidCardException if an invalid card has been selected
+	 */
 	public String getChosenCard(int index) throws InvalidCardException {
 		if(index >= availableCards.getHandSize() || index < 0) {
 			throw new InvalidCardException();
 		}
 		return availableCards.getCards().get(index).toString();
 	}
-
+	/**
+	 * Create the {@link builEmporiumPermitTile} action with all parametres required.
+	 * @param chosenCity - the chosen city where to build
+	 * @param chosenCard - the card selected
+	 * @return the created action
+	 */
 	public Action createAction(String chosenCity, int chosenCard) {
 		return new BuildEmporiumPermitTile(chosenCity, chosenCard);
 	}
@@ -42,7 +56,7 @@ public class BuildEmporiumPermitTileState extends ActionState {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		availableCards = ((PermissionHandDeck)game.getCurrentPlayer().getPermissionHandDeck()).getAvaiblePermissionCards();
+		availableCards = ((PermitHandDeck)game.getCurrentPlayer().getPermitHandDeck()).getAvaiblePermissionCards();
 	}
 
 	@Override

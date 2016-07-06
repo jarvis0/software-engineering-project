@@ -21,7 +21,12 @@ class MarketPlayersSet extends PlayersSet {
 	}
 	
 	boolean isEmpty() {
-		return getPlayers().isEmpty();
+		for(Player player : getPlayers()) {
+			if(player.isOnline()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	Player getCurrentPlayer() {

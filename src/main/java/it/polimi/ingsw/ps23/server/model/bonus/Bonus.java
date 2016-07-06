@@ -3,10 +3,11 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import it.polimi.ingsw.ps23.server.model.Game;
-import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+ * Provides methods to create a specific bonus
+ * @author Giuseppe Mascellaro
+ *
+ */
 public abstract class Bonus implements Cloneable, Serializable {
 
 	/**
@@ -14,25 +15,16 @@ public abstract class Bonus implements Cloneable, Serializable {
 	 */
 	private static final long serialVersionUID = -4322173540984705455L;
 	private final String name;
-	private int value;
 	
 	Bonus(String name) {
 		this.name = name;
 	}
 	
-	public abstract void updateBonus(Game game, TurnHandler turnHandler);
-
 	public String getName() {
 		return name;
 	}
 	
-	public int getValue() {
-		return value;
-	}
-	
-	public void setValue(int value) {
-		this.value = value;
-	}
+	public abstract boolean isNull();
 
 	@Override
 	protected Object clone() {
@@ -43,16 +35,6 @@ public abstract class Bonus implements Cloneable, Serializable {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot create bonus object.", e);
 		}
 		return clone;
-	}
-	
-	@Override
-	public String toString() {
-		if(!(this instanceof NullBonus)) {
-			return name + " " + value;
-		}
-		else {
-			return " - ";
-		}
 	}
 	
 }

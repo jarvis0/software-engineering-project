@@ -27,14 +27,17 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
-	private static final int MINIMUM_PLAYERS_NUMBER = 1;
+	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 10000;
+	private static final int CONNECTION_TIMEOUT = 20000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
-	private static final String NO_INPUT = "NOINPUTNEEDED";
 	private static final int RANDOM_NUMBERS_POOL = 20;
+	private static final String CONSOLE_TAG = "<console>";
+	private static final String GUI_TAG = "<gui>";
+	private static final String PLAYER_NAME_TAG_OPEN = "<player_name>";
+	private static final String PLAYER_NAME_TAG_CLOSE = "</player_name>";
 	
 	private ExecutorService executor;
 	
@@ -68,6 +71,13 @@ class Server implements ServerInterface {
 		output.println("A new game is started.");
 	}
 
+	@Override
+	public void endGame() {
+		if(gameInstances.checkIfEndGame()) {
+			output.println("A game has ended.");
+		}
+	}
+
 	synchronized void setRMITimerEnd(Timer timer) {
 		timer.cancel();
 		for(Connection connection : socketWaitingConnections.values()) {
@@ -82,13 +92,13 @@ class Server implements ServerInterface {
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			for(Connection connection : socketWaitingConnections.values()) {
-				connection.send(NO_INPUT + message);
+				connection.sendNoInput(message);
 			}
 			for(ClientInterface client : rmiWaitingConnections.values()) {
 				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
-			timer.schedule(new LaunchingGameTask(timer, this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+			timer.schedule(new LaunchingGameTask(timer, this, LAUNCH_TIMEOUT, output), LAUNCH_TIMEOUT, 1000L);
 		}
 	}
 
@@ -141,7 +151,7 @@ class Server implements ServerInterface {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot change the name to the RMI client.", e);
 		}
 	}
-	
+
 	/**
 	 * This method is a RMIClient entry point into the Server.
 	 * It's a remote call invocation from the client who wants to 
@@ -160,7 +170,6 @@ class Server implements ServerInterface {
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
 		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
 			infoMessage(client, "Invalid name format.");
-			//TODO devo chiudere la connessione?
 		}
 		else {
 			output.println("New RMI client connection received.");
@@ -170,7 +179,7 @@ class Server implements ServerInterface {
 				if(isDouble(playerName)) {
 					playerName = solveDoubles(playerName, 2);
 				}
-				infoMessage(client, "Here you are your unique in-game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
+				infoMessage(client, "Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				rmiChangeName(client, playerName);
 				rmiWaitingConnections.put(playerName,  client);
 				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
@@ -183,8 +192,8 @@ class Server implements ServerInterface {
 			}
 			else {
 				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
+				infoMessage(client, "You have been prompted to your previous game as " + name + ", please wait your turn.");
 				gameInstances.reconnectPlayer(name, client);
-				infoMessage(client, "You have been prompted to your previous game, please wait your turn.");
 			}
 		}
 	}
@@ -215,13 +224,13 @@ class Server implements ServerInterface {
 			output.println(LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT);
 			String message = LAUNCH_PRINT + LAUNCH_TIMEOUT + SECONDS_PRINT;
 			for(Connection connection : socketWaitingConnections.values()) {
-				connection.send(NO_INPUT + message);
+				connection.sendNoInput(message);
 			}
 			for(ClientInterface client : rmiWaitingConnections.values()) {
 				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
-			timer.schedule(new LaunchingGameTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+			timer.schedule(new LaunchingGameTask(this, LAUNCH_TIMEOUT, output), LAUNCH_TIMEOUT, 1000L);
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -235,35 +244,51 @@ class Server implements ServerInterface {
 			}
 		}
 	}
-
-	synchronized void joinToSocketWaitingList(String name, Connection connection) {
+	
+	private String checkIfConsole(String clientInfos, Connection connection) {
+		String name = new String();
+		if(clientInfos.contains(CONSOLE_TAG)) {
+			name = clientInfos.replace(CONSOLE_TAG, "");
+			connection.setConsole(true);
+		}
+		else {
+			if(clientInfos.contains(GUI_TAG)) {
+				name = clientInfos.replace(GUI_TAG, "");
+				connection.setConsole(false);
+			}
+		}
+		return name;
+	}
+	
+	synchronized void joinToSocketWaitingList(String clientInfos, Connection connection) {
+		String name = checkIfConsole(clientInfos, connection);
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
 		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
-			connection.send(NO_INPUT + "\nInvalid name format.");
+			connection.sendNoInput("\nInvalid name format.");
 			connection.closeConnection();
 		}
 		else {
 			output.println("New socket client connection received.");
-			connection.send(NO_INPUT + "Connection established at " + new Date().toString() + "\n");
+			connection.sendNoInput("Connection established at " + new Date().toString() + "\n");
 			if(!formerPlayer) {
 				String playerName = newName(name, 1);
 				if(isDouble(playerName)) {
 					playerName = solveDoubles(playerName, 1);
 				}
-				connection.send(NO_INPUT + "Here you are your unique in game name: \"" + playerName + "\".\nIn case of reconnection, use this name to rejoin your game.");
+				connection.sendNoInput("Here you are your unique in game name: \"" + PLAYER_NAME_TAG_OPEN + playerName + PLAYER_NAME_TAG_CLOSE + "\".\nIn case of reconnection, use this name to rejoin your game.");
 				output.println(PLAYER_PRINT + playerName + " has been added to the waiting list.");
 				socketWaitingConnections.put(playerName, connection);
 				String message = new String();
 				if(launchingGame) {
 					message += "A new game is starting in less than " + LAUNCH_TIMEOUT + SECONDS_PRINT + "\n";
 				}
-				connection.send(NO_INPUT + message + "Waiting other players to connect...");
+				connection.sendNoInput(message + "Waiting other players to connect...");
 				startCountdownFromSocket();
 			}
 			else {
 				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
+				connection.sendNoInput("You have been prompted to your previous game as " + PLAYER_NAME_TAG_OPEN + name + PLAYER_NAME_TAG_CLOSE + ", please wait your turn.");
 				gameInstances.reconnectPlayer(name, connection);
-				connection.send(NO_INPUT + "You have been prompted to your previous game, please wait your turn.");
 			}
 		}
 	}

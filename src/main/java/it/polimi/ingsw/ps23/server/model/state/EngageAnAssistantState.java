@@ -4,8 +4,12 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssistant;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-public class EngageAnAssistantState extends ActionState {
+/**
+ * Provides methods to create {@link EngageAnAssistant} action.
+ * @author Alessandro Erba
+ *
+ */
+public class EngageAnAssistantState extends QuickActionState {
 	
 	/**
 	 * 
@@ -15,7 +19,10 @@ public class EngageAnAssistantState extends ActionState {
 	EngageAnAssistantState(String name) {
 		super(name);
 	}
-
+	/**
+	 * Create the selected action to be performed.
+	 * @return the action created
+	 */
 	public Action createAction() {
 		return new EngageAnAssistant();
 	}

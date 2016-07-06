@@ -2,7 +2,11 @@ package it.polimi.ingsw.ps23.server.model.map.board;
 
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
-
+/**
+ * Provide methods to recognize the different politic cards in the {@link Deck}.
+ * @author Alessandro Erba & Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class PoliticCard implements Card {
 	
 	/**
@@ -12,8 +16,11 @@ public class PoliticCard implements Card {
 
 	private static final String MULTI = "multi";
 	
-	private GameColor color;
-	
+	private final GameColor color;
+	/**
+	 * Construct a politic card with a defined color.
+	 * @param color - the color of the card
+	 */
 	public PoliticCard(GameColor color) {
 		this.color = color;
 	}

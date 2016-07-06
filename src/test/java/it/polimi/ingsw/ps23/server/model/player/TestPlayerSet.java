@@ -14,7 +14,11 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
-
+/**
+ * Tests the {@link PlayerSet}. In particular the way how the method manage th players during the game.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestPlayerSet {
 
 	@Test

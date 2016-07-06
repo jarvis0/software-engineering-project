@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.AlreadyBuiltHereException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
@@ -15,7 +16,7 @@ import it.polimi.ingsw.ps23.server.model.Model;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 /**
@@ -45,7 +46,11 @@ public class Controller implements ControllerObserver {
 
 	@Override
 	public void update(State state) {
-		model.setActionState(state);
+		try {
+			model.setActionState(state);
+		} catch (IllegalActionSelectedException e) {
+			model.rollBack(e);
+		}
 	}
 
 	@Override
@@ -67,15 +72,15 @@ public class Controller implements ControllerObserver {
 	}
 
 	@Override
-	public void update(MarketTransation marketTransation) {
-		model.doBuyMarket(marketTransation);
+	public void update(MarketTransaction marketTransaction) {
+		model.doBuyMarket(marketTransaction);
 	}
 
 	@Override
 	public void update(SuperBonusGiver superBonusGiver) {
 		try {
 			model.doSuperBonusesAcquisition(superBonusGiver);
-		} catch (InvalidCardException e) {
+		} catch (InvalidCardException | InvalidCityException e) {
 			model.rollBack(e);
 		}
 	}

@@ -24,6 +24,12 @@ import it.polimi.ingsw.ps23.server.view.SocketView;
  */
 public class Connection implements Runnable {
 	
+	private static final String NO_INPUT_TAG_OPEN = "<no_input>";
+	private static final String NO_INPUT_TAG_CLOSE = "</no_input>";
+	private static final String YES_INPUT_TAG_OPEN = "<yes_input>";
+	private static final String YES_INPUT_TAG_CLOSE = "</yes_input>";
+	private static final String END_OF_MESSAGE_TAG = "<eom>";
+	
 	private Server server;
 	private Socket socket;
 	private Scanner textIn;
@@ -35,6 +41,7 @@ public class Connection implements Runnable {
 	private boolean reconnected;
 
 	private SocketView socketView;
+	private boolean isConsole;
 	
 	Connection(Server server, Socket socket, int timeout) throws IOException {
 		super();
@@ -42,10 +49,18 @@ public class Connection implements Runnable {
 		this.socket = socket;
 		this.timeout = timeout;
 		textIn = new Scanner(socket.getInputStream());
-		textIn.useDelimiter("EOM");
+		textIn.useDelimiter(END_OF_MESSAGE_TAG);
 		textOut = new PrintStream(socket.getOutputStream(), true);
 		started = false;
 		reconnected = false;
+	}
+
+	void setConsole(boolean isConsole) {
+		this.isConsole = isConsole;
+	}
+	
+	boolean isConsole() {
+		return isConsole;
 	}
 	
 	Server getServer() {
@@ -53,7 +68,7 @@ public class Connection implements Runnable {
 	}
 	/**
 	 * Send a socket message to the active socket connection.
-	 * The string aurgment must not contain the communication protocol string:
+	 * The string argument must not contain the communication protocol string:
 	 * "EOM" (End of Message) or the sent message will be corrupted. 
 	 * <p>
 	 * This method always return immediately, whether or not the 
@@ -62,9 +77,24 @@ public class Connection implements Runnable {
 	 * @param message to be sent to the socket client
 	 */
 	public void send(String message) {
- 		textOut.print(message + "EOM");
+ 		textOut.print(message + END_OF_MESSAGE_TAG);
  	}
- 	
+ 	/**
+ 	 * Sends a no input requested message to the socket client.
+ 	 * @param message - to be printed onto the socket client.
+ 	 */
+	public void sendNoInput(String message) {
+		send(NO_INPUT_TAG_OPEN + message + NO_INPUT_TAG_CLOSE);
+	}
+	/**
+	 * Sends a yes input requested m essage to the socket client.
+	 * @param message - to be printed on the socket client and after that the client request a input
+	 * to the user.
+	 */
+	public void sendYesInput(String message) {
+		send(YES_INPUT_TAG_OPEN + message + YES_INPUT_TAG_CLOSE);
+	}
+	
 	/**
 	 * This method is a listener for socket client connection. It receives 
 	 * a string message.
@@ -93,6 +123,7 @@ public class Connection implements Runnable {
 	}
 	
 	void close() {
+		server.endGame();
 		closeConnection();
 		try {
 			server.deregisterSocketConnection(this);

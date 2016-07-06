@@ -3,7 +3,7 @@ package it.polimi.ingsw.ps23.server.commons.viewcontroller;
 import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.bonus.SuperBonusGiver;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
-import it.polimi.ingsw.ps23.server.model.market.MarketTransation;
+import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.model.state.State;
 
 /**
@@ -56,19 +56,39 @@ public class ViewObservable {
 	public void wakeUp(Action action) {
 		observer.update(action);
 	}
-	
+	/**
+	 * Invokes update method on the observer. This wake up will
+	 * set the player chosen market objects to the mode, but first checked
+	 * by the controller.
+	 * @param marketObject - container of all objects to sell
+	 */
 	public void wakeUp(MarketObject marketObject) {
 		observer.update(marketObject);
 	}
-	
-	public void wakeUp(MarketTransation marketTransation) {
-		observer.update(marketTransation);
+	/**
+	 * Invokes update method on the observer. This wake up will
+	 * set the player chosen transaction to the model, but first checked
+	 * by the controller.
+	 * @param marketTransaction - the transaction selected
+	 */
+	public void wakeUp(MarketTransaction marketTransaction) {
+		observer.update(marketTransaction);
 	}
-	
+	/**
+	 * Invokes update method on the observer. This wake up will
+	 * set all the player chosen superbonuses to the model, but first checked
+	 * by the controller.
+	 * @param superBonusGiver - container of all suberbonuses considered
+	 */
 	public void wakeUp(SuperBonusGiver superBonusGiver) {
 		observer.update(superBonusGiver);
 	}
-	
+	/**
+	 * Invokes update method on the observer. This wake up will
+	 * set exception occured in the view to the model, but first checked
+	 * by the controller.
+	 * @param e - exception occured in the view
+	 */
 	public void wakeUp(Exception e) {
 		observer.update(e);
 	}

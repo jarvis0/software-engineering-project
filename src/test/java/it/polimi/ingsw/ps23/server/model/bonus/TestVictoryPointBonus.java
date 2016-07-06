@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+  * Tests all the changes made by {@link VictoryPointBonus} to the {@link Player} status.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestVictoryPointBonus {
 
 	@Test

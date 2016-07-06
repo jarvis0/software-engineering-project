@@ -7,9 +7,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+ * Provide methods to give all the {@link SuperBonus} selected.
+ * @author Alessandro Erba
+ *
+ */
 public class SuperBonusGiver implements Serializable {
 	
 	/**
@@ -17,12 +22,21 @@ public class SuperBonusGiver implements Serializable {
 	 */
 	private static final long serialVersionUID = 4395249203502864570L;
 	private Map<Bonus, List<String>> selectedBonuses;
-	
+	/**
+	 * Constructs the object starting from a map with {@link SuperBonus} and a list of input.
+	 * @param selectedBonuses - map of selected bonus and the relative input
+	 */
 	public SuperBonusGiver(Map<Bonus, List<String>> selectedBonuses) {
 		this.selectedBonuses = selectedBonuses;
 	}
-	
-	public void giveBonus(Game game, TurnHandler turnHandler) throws InvalidCardException {
+	/**
+	 * Gives all {@link SuperBonus} in the map to the current {@link Player}.
+	 * @param game - current game to add bonuses
+	 * @param turnHandler - current turn handler to add bonuses
+	 * @throws InvalidCardException if it's selected an invalid card
+	 * @throws InvalidCityException if it's selected an invalid city
+	 */
+	public void giveBonus(Game game, TurnHandler turnHandler) throws InvalidCityException, InvalidCardException {
 		for(Entry<Bonus, List<String>> entry : selectedBonuses.entrySet()) {
 			Bonus bonus = entry.getKey();
 			List <String> values = entry.getValue();
@@ -31,11 +45,11 @@ public class SuperBonusGiver implements Serializable {
 					List<String> inputs = new ArrayList<>();
 					inputs.add(values.get(i));
 					inputs.add(values.get(i+1));
-					game.getCurrentPlayer().updateSuperBonus(bonus, inputs, game, turnHandler);
+					((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
 				}
 			} 
 			else {
-				game.getCurrentPlayer().updateSuperBonus(bonus, values, game, turnHandler);
+				((SuperBonus) bonus).acquireSuperBonus(values, game, turnHandler);
 			}			
 		}
 	}

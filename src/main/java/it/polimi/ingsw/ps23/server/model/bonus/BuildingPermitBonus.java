@@ -3,14 +3,19 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
-public class BuildingPermitBonus extends Bonus implements SuperBonus {
+/**
+ * Provides methods to take the specified bonus
+ * @author Alessandro Erba
+ *
+ */
+public class BuildingPermitBonus extends RealBonus implements SuperBonus {
 	
 	/**
 	 * 
@@ -23,15 +28,26 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	private Map<String, Region> regionMap;
 	private Deck permitDeck;
 	
-	
+	/**
+	 * Construct the bonus to be cloned by {@link BonusCache} and initialize all local variables to default values.
+	 * @param name - the name of the bonus
+	 */
 	public BuildingPermitBonus(String name) {
 		super(name);
 		writeSecondOutput = false;
 	}
-
-	public void selectRegion(String chosenRegion) {
-		writeSecondOutput = true;
-		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermissionDeckUp();
+	/**
+	 * Checks the if chosen region exists and takes from it the {@link PermitDeck}. After this set the
+	 * availability of the second output to true.
+	 * @param chosenRegion - the selected region
+	 * @throws InvalidRegionException if the selected region doesn't exist
+	 */
+	public void selectRegion(String chosenRegion) throws InvalidRegionException {
+		if(regionMap.get(chosenRegion) == null) {
+			throw new InvalidRegionException();
+		}
+		permitDeck = ((GroupRegionalCity)regionMap.get(chosenRegion)).getPermitTilesUp();
+		writeSecondOutput = true;		
 	}
 
 	@Override
@@ -43,7 +59,7 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 	@Override
 	public String checkBonus(Player currentPlayer) {
 		if(!writeSecondOutput) {
-			return "You have enconutred a Building Permit Bonus on Nobility Track\n Choose the Region where to pick a permission card: " +regionMap.toString();
+			return "You have encountred a Building Permit Bonus on Nobility Track\n Choose the Region where to pick a permission card: " + regionMap.toString();
 		}
 		else {
 			return "Choose a permission card (press 1 or 2): " + permitDeck.toString();
@@ -52,7 +68,12 @@ public class BuildingPermitBonus extends Bonus implements SuperBonus {
 
 	@Override
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) {
-		game.getCurrentPlayer().pickPermitCard(game, turnHandler, game.getGameMap().getRegion(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
+		game.getCurrentPlayer().pickPermitCard(game, turnHandler, game.getGameMap().getRegionMap().get(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
+	}
+	
+	@Override
+	public boolean isNull() {
+		return false;
 	}
 
 }

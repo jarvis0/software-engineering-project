@@ -1,81 +1,65 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
 import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.server.ServerInterface;
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.model.state.State;
-
-class RMIClient implements ClientInterface {
-	
-	private static final int RMI_PORT_NUMBER = 1099;
-	private static final String POLICY_NAME = "cofRegistry";
-	
-	private PrintStream output;
+/**
+ * Provides methods to manage the client with RMI. With class handle the connection, disconnection and all 
+ * state send by model.
+ * @author Giuseppe Mascellaro
+ *
+ */
+public class RMIClient implements ClientInterface {
 	
 	private RMIView rmiView;
-
-	private ExecutorService executor;
 	
-	private RMIClient(String playerName) {
-		//rmiView = new RMIConsoleView(playerName);
-		rmiView = new RMIGUIView(playerName);
+	private ExecutorService executor;
+	/**
+	 * Constructs the client in rmi with the chosen visualization: GUI or CLI.
+	 * @param playerName - the name of the user
+	 * @param scanner - the scanner to take input
+	 * @param output - object to take output from user
+	 */
+	public RMIClient(String playerName, Scanner scanner, PrintStream output) {
+		//rmiView = new RMIConsoleView(playerName, scanner, output);
+		rmiView = new RMIGUIView(playerName, output);
+	}
+
+	@Override
+	public void setController(ServerControllerInterface controller) throws RemoteException {
+		rmiView.setController(controller);
 		executor = Executors.newSingleThreadExecutor();
 		executor.submit(rmiView);
-		output = new PrintStream(System.out);
-	}
-
-	public static void main(String[] args) {
-		//@SuppressWarnings("resource")
-		//Scanner scanner = new Scanner(System.in);
-		PrintStream output = new PrintStream(System.out, true);
-		output.print("Welcome, what's your name (only letters or previous in-game name)? ");
-		String playerName = "AleGiuMir";
-		try {
-			Registry registry = LocateRegistry.getRegistry(InetAddress.getLocalHost().getHostAddress(), RMI_PORT_NUMBER);
-			ServerInterface server = (ServerInterface) registry.lookup(POLICY_NAME);
-			ClientInterface client = new RMIClient(playerName);
-			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
-			server.registerRMIClient(playerName, stub);
-		} catch (RemoteException | UnknownHostException | NotBoundException e) {
-			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to RMI registry.", e);
-		}
-	}
-	
-	@Override
-	public void setController(ServerControllerInterface controller) {
-		rmiView.setController(controller);
 	}
 
 	@Override
 	public void infoMessage(String message) {
-		if(!message.contains("<MapType>")) {
-			output.println(message);
+		if(!message.contains("<map_type>") && !message.contains("</map_type>")) {
+			rmiView.infoMessage(message);
 		}
 		else {
-			((RMIView) rmiView).setMapType(message.replace("<MapType>", ""));
+			rmiView.setMapType(message.replace("<map_type>", "").replace("</map_type>", ""));
 		}
 	}
 
 	@Override
 	public void changeState(State currentState) {
-		((RMIView) rmiView).update(currentState);
+		 rmiView.update(currentState);
 	}
 
 	@Override
 	public void changeName(String newName) throws RemoteException {
 		rmiView.setNewClientName(newName);
+	}
+
+	@Override
+	public void disconnectRMIPlayer() throws RemoteException {
+		rmiView.setEndGame();
 	}
 
 }

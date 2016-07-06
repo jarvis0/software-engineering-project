@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
-
+/**
+ * Provides methods to generate a specific {@link ActionState} starting from a string.
+ * @author Alessandro Erba & Mirco Manzoni
+ *
+ */
 public class StateCache implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3414059855156529082L;
-	private HashMap<String, ActionState> stateMap = new HashMap<>();
+	private HashMap<String, ActionState> stateMap;
 	private static final String ELECT_COUNCILLOR = "elect councillor";
 	private static final String ACQUIRE_BUSINESS_PERMIT_TILE = "acquire business permit tile";
 	private static final String ASSISTANT_TO_ELECT_COUNCILLOR = "assistant to elect councillor";
@@ -20,15 +24,37 @@ public class StateCache implements Serializable {
 	private static final String CHANGE_PERMIT_TILE= "change permit tile";
 	private static final String BUILD_EMPORIUM_KING= "build emporium king";
 	private static final String BUILD_EMPORIUM_TILE = "build emporium permit tile";
-
+	/**
+	 * Initialize the object creating the cache of possible {@link ActionState}.
+	 */
 	public StateCache() {
+		stateMap = new HashMap<>();
+		loadCache();
+	}
+
+	/**
+	 * Returns the cloned action from action cache based on the string name for the specified
+	 * action.
+	 * @param actionStateName - of the action to be created
+	 * @return an action state based on the string name of the action.
+	 */
+	public ActionState getAction(String actionStateName) {
+		return (ActionState) stateMap.get(actionStateName).clone();
+	}
+	
+	private void putAction(ActionState actionState) {
+		stateMap.put(actionState.getName(), actionState);
+	}
+
+	private void loadCache() {
+		
 		ElectCouncillorState electCouncillorState = new ElectCouncillorState(ELECT_COUNCILLOR);
 		putAction(electCouncillorState);
 	
 		EngageAnAssistantState engageAnAssistantState = new EngageAnAssistantState(ENGAGE_ASSITANT);
 		putAction(engageAnAssistantState);
 		
-		ChangePermitsTileState changePermitsTileState = new ChangePermitsTileState(CHANGE_PERMIT_TILE);
+		ChangePermitTilesState changePermitsTileState = new ChangePermitTilesState(CHANGE_PERMIT_TILE);
 		putAction(changePermitsTileState);
 		
 		BuildEmporiumKingState buildEmporiumKingState = new BuildEmporiumKingState(BUILD_EMPORIUM_KING);
@@ -45,14 +71,6 @@ public class StateCache implements Serializable {
 		
 		AdditionalMainActionState additionalMainActionState = new AdditionalMainActionState(ADDITIONAL_MAIN_ACTION);
 		putAction(additionalMainActionState);
+		
 	}
-
-	public ActionState getAction(String actionStateName) {
-		return (ActionState) stateMap.get(actionStateName).clone();
-	}
-	
-	private void putAction(ActionState actionState) {
-		stateMap.put(actionState.getName(), actionState);
-	}
-
 }

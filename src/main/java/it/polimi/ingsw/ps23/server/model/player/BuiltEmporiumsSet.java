@@ -4,9 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-
+/**
+ * Provides methods to manage the emporiums built by a {@link Player}.
+ * @author Mirco Manzoni
+ *
+ */
 public class BuiltEmporiumsSet implements Serializable {
 	
 	/**
@@ -14,7 +19,7 @@ public class BuiltEmporiumsSet implements Serializable {
 	 */
 	private static final long serialVersionUID = 6249094998409712661L;
 
-	private static final int MAX_EMPORIUMS = 2;//TODO reset to real game default value
+	private static final int MAX_EMPORIUMS = 4;//TODO reset to real game default value
 	
 	private List<City> builtEmporiums;
 	
@@ -43,14 +48,19 @@ public class BuiltEmporiumsSet implements Serializable {
 		}
 		return citiesWithoutNobilityTrackPoints;				
 	}
-
-	public NormalCity getChosenCity(String cityName) {
+	/**
+	 * Search a {@link NormalCity} by name in the BuiltEmproiumSet and return it.
+	 * @param cityName - the chosen city name
+	 * @return the chosen city
+	 * @throws InvalidCityException if the city isn't present in the set
+	 */
+	public NormalCity getChosenCity(String cityName) throws InvalidCityException {
 		for(City city : builtEmporiums) {
 			if(city.getName().equals(cityName)) {
 				return (NormalCity) city;
 			}	
 		}
-		return null;
+		throw new InvalidCityException();
 	}
 
 	public String getCitiesPrint() {

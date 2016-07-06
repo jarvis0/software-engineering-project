@@ -10,9 +10,12 @@ import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 
-@SuppressWarnings("serial")
-public abstract class ElectCouncillorActionState extends ActionState {
+abstract class ElectCouncillorActionState extends ActionState {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3353345238431265969L;
 	private FreeCouncillorsSet freeCouncillors;
 	private Map<String, Council> councilsMap;
 	
@@ -29,10 +32,6 @@ public abstract class ElectCouncillorActionState extends ActionState {
 		return councilsMap.toString();
 	}
 	
-	Council getCouncilMap(String chosenBalcony) {
-		return councilsMap.get(chosenBalcony);
-	}
-	
 	void setParameters(Game game) {
 		freeCouncillors = game.getFreeCouncillors();
 		councilsMap.put("king", game.getKing().getCouncil());
@@ -40,7 +39,12 @@ public abstract class ElectCouncillorActionState extends ActionState {
 			councilsMap.put(region.getName(), ((GroupRegionalCity) region).getCouncil());
 		}
 	}
-	
+	/**
+	 * Create the object to perform the action that the user had selected.
+	 * @param chosenCouncillor - the name of the color of the councillor selected
+	 * @param chosenBalcony - the name of the selected council
+	 * @return the action created
+	 */
 	public abstract Action createAction(String chosenCouncillor, String chosenBalcony);
 
 }

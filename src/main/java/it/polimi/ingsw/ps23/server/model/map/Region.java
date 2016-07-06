@@ -65,17 +65,15 @@ public abstract class Region implements Serializable {
 	 * @throws InvalidCityException if the specified city has been already
 	 * inserted
 	 */
-	public void addCity(City city) throws InvalidCityException {
+	public void addCity(City city) {
 		String cityName = city.getName();
 		if(!cities.containsKey(cityName)) {
 			cities.put(cityName, city);
 		}
-		else
-			throw new InvalidCityException();
 	}
 	
 	/**
-	 * Set the bonus tile of the specified region or colored cities group
+	 * Sets the bonus tile of the specified region or colored cities group
 	 * as acquired so no one else can acquire this bonus tile.
 	 * @return the acquired regional or colored cities group bonus tile.
 	 */
@@ -84,15 +82,23 @@ public abstract class Region implements Serializable {
 		return bonusTile;
 	}
 	
-	protected Bonus getBonusTile() {
+	/**
+	 * Gets the bonus tile of the specified region or colored cities group
+	 * @return the bonus tile of the specified region
+	 */
+	public Bonus getBonusTile() {
 		return bonusTile;
 	}
 	
 	public String getName() {
 		return name;
 	}
-
-	protected boolean alreadyUsedBonusTile() {
+	
+	/**
+	 * Checks if the bonus tile of a specified region is already acquired or not.
+	 * @return the boolean variable that indicates if the bonus tile is acquired or not.
+	 */
+	public boolean alreadyUsedBonusTile() {
 		return alreadyAcquiredBonusTile;
 	}
 

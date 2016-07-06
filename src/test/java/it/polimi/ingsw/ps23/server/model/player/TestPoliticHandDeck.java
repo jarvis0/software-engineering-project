@@ -12,7 +12,11 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-
+/**
+ * Tests the way how the {@link PoliticHandDeck} manage the cards of a player. 
+ * @author Mirco Manzoni
+ *
+ */
 public class TestPoliticHandDeck {
 
 	@Test
@@ -26,24 +30,28 @@ public class TestPoliticHandDeck {
 		player.getPoliticHandDeck().getCardInPosition(0).equals(card);
 		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card));
 		player.getPoliticHandDeck().removeCard(card);
-		assertTrue(player.getNumberOfPoliticCard() == 0);
+		assertTrue(player.getNumberOfPoliticCards() == 0);
 		player.getPoliticHandDeck().addCard(card);
-		assertTrue(player.getPoliticHandDeck().getAndRemove(0).equals(card) && player.getNumberOfPermissionCard() == 0);
+		assertTrue(player.getPoliticHandDeck().getAndRemove(0).equals(card) && player.getNumberOfPermitCards() == 0);
 		assertTrue(player.getPoliticHandDeck().getCards().isEmpty());
 		cards.add(card);
 		List<Card> soldBuyCards = new ArrayList<>();
 		soldBuyCards.addAll(cards);
 		politicDeck = new Deck(cards);
 		player.pickCard(politicDeck, 1);
-		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card) && player.getNumberOfPoliticCard() == 1);
-		player.soldPoliticCards(soldBuyCards);
+		assertTrue(player.getPoliticHandDeck().getCardInPosition(0).equals(card) && player.getNumberOfPoliticCards() == 1);
+		player.sellPoliticCards(soldBuyCards);
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 0);
 		gameColor = new GameColor("multi");
 		card = new PoliticCard(gameColor);
+		List<Card> multiCards = new ArrayList<>();
+		multiCards.add(card);
 		soldBuyCards.add(card);
 		player.buyPoliticCards(soldBuyCards);
 		assertTrue(((PoliticHandDeck)(player.getPoliticHandDeck())).getJokerCardsNumber() == 1);
-		assertTrue(card.equals(((PoliticHandDeck)(player.getPoliticHandDeck())).getCardFromName("multi")));
+		List<String> multiCardsString = new ArrayList<>();
+		multiCardsString.add("multi");
+		assertTrue(multiCards.equals(((PoliticHandDeck)(player.getPoliticHandDeck())).getCardsByName(multiCardsString)));
 		assertTrue(player.getPoliticHandDeck().getHandSize() == 2);
 		List<String> removedCards = new ArrayList<>();
 		removedCards.add("multi");

@@ -3,7 +3,11 @@ package it.polimi.ingsw.ps23.server.model;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/**
+ * Tests the {@link TurnHandler} and all methods to manage the action of the current player.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestTurnHandler {
 
 	@Test

@@ -2,42 +2,31 @@ package it.polimi.ingsw.ps23.server.model.state;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
-import it.polimi.ingsw.ps23.server.model.map.GameMap;
-import it.polimi.ingsw.ps23.server.model.map.board.King;
-import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrack;
-import it.polimi.ingsw.ps23.server.model.map.regions.Council;
-import it.polimi.ingsw.ps23.server.model.player.Player;
-import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-public class StartTurnState extends State {
+/**
+ * Provides methods to show the state of the game to users and to create the actions selected.
+ * @author Alessandro Erba, Giuseppe Mascellaro, Mirco Manzoni
+ *
+ */
+public class StartTurnState extends MapUpdateState {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6709781155533826821L;
-	private Player currentPlayer;
-	private TurnHandler turnHandler;
-	private GameMap gameMap;
-	private PlayersSet gamePlayersSet;
-	private Council kingCouncil;
-	private NobilityTrack nobilityTrack;
-	private King king;
-	private Bonus currentKingTile;
 	
+	private TurnHandler turnHandler;	
 	private StateCache stateCache;
-	private boolean finalTurn;
 	
+	/**
+	 * Constructs the objects setting the turn handler of the current game.
+	 * @param turnHandler - the current turn handler
+	 */
 	public StartTurnState(TurnHandler turnHandler) {
 		this.turnHandler = turnHandler;
 	}
 	
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-	
-	public String getAvaiableAction() {
+	public String getAvailableAction() {
 		String avaiableAction = new String();
 		if(turnHandler.isAvailableMainAction()) {
 			avaiableAction += "\n--Main Action--\nElect Councillor\nAcquire Business Permit Tile\nBuild Emporium Permit Tile\nBuild Emporium King";
@@ -48,65 +37,23 @@ public class StartTurnState extends State {
 		return avaiableAction;
 	}
 
-	public GameMap getGameMap() {
-		return gameMap;
-	}
-	
-	public PlayersSet getPlayersSet() {
-		return gamePlayersSet;
-	}
-	
-	public King getKing() {
-		return king;
-	}	
-
 	public StateCache getStateCache() {
 		return stateCache;
 	}
+
+	public boolean isAvailableMainAction() {
+		return turnHandler.isAvailableMainAction();
+	}
 	
-	public String getStatus() {
-		String print = "\n===============================================================================================================\n";
-		print += "===============================================================================================================\n\n";
-		print += "\t\t\t\t\t+++++++++++++++++++++\n";
-		print += "\t\t\t\t\t+                   +\n";
-		print += "\t\t\t\t\t+    GAME STATUS    +\n";
-		print += "\t\t\t\t\t+                   +\n";
-		print += "\t\t\t\t\t+++++++++++++++++++++\n\n\n";
-		print += gameMap;
-		print += "\n\n\t\t\t\t\t+++++++GAME BOARD+++++++\n\n";
-		print += "> KING COUNCIL: " + kingCouncil + "\n> CURRENT KING BONUS TILE: " + currentKingTile + "\n> CITY COLORED BONUS TILE:" + gameMap.printColoredBonusTile() + "\n> NOBILITY TRACK: " + nobilityTrack;
-		print += "\n\n\n\t\t\t\t\t++++++++PLAYERS++++++++\n\n";
-		StringBuilder loopPrint = new StringBuilder();
-		for(Player gamePlayer : gamePlayersSet.getPlayers()) {
-			loopPrint.append("> " + gamePlayer + "\n");
-		}
-		print += loopPrint;
-		print += "\n\n===============================================================================================================\n";
-		print += "===============================================================================================================\n";
-		if(finalTurn) {
-			print += "This is the final round.";
-		}
-		return print;
+	public boolean isAvailableQuickAction() {
+		return turnHandler.isAvailableQuickAction();
 	}
 	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
-		currentPlayer = game.getCurrentPlayer();
-		gameMap = game.getGameMap();
-		gamePlayersSet = game.getGamePlayersSet();
-		kingCouncil = game.getKing().getCouncil();
-		nobilityTrack = game.getNobilityTrack();
-		king = game.getKing();
-		currentKingTile = game.getKingTilesSet().getCurrentTile();
-		stateCache = game.getStateCache();
-		finalTurn = false;
-		for(Player player : gamePlayersSet.getPlayers()) {
-			if(player.hasFinished()) {
-				finalTurn = true;
-				return;
-			}
-		}
+		setParameters(game);
+		stateCache = game.getStateCache();		
 	}
 	
 	@Override

@@ -99,16 +99,25 @@ public class ModelObservable {
 	}
 	
 	/**
+	 * Sends a info message to a specific remote RMI client.
+	 * @param client - who will receive the info message
+	 * @param message - the info message to be sent
+	 */
+	public void rmiInfoMessage(ClientInterface client, String message) {
+		try {
+			client.infoMessage(message);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach the RMI remote client.", e);
+		}
+	}
+	
+	/**
 	 * Sends a RMI info message to all online players for this game.
 	 * @param message - message to be received from the online RMI players
 	 */
 	public void sendRMIInfoMessage(String message) {
 		for(ClientInterface client : rmiObservers.values()) {
-			try {
-				client.infoMessage(message);
-			} catch (RemoteException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach the RMI remote client.", e);
-			}
+			rmiInfoMessage(client, message);
 		}
 	}
 

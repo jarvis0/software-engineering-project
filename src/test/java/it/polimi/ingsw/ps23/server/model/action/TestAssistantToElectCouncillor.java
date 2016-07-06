@@ -17,7 +17,11 @@ import it.polimi.ingsw.ps23.server.model.actions.AssistantToElectCouncillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the mechanics of the {@link AssistantToElectCouncillor} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestAssistantToElectCouncillor {
 
 	@Test
@@ -28,13 +32,13 @@ public class TestAssistantToElectCouncillor {
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		int initialAssistant = game.getCurrentPlayer().getAssistants();
 		TurnHandler turnHandler = new TurnHandler();
-		String councillor = game.getFreeCouncillors().getFreeCouncillors().get(0).getColor().toString();
+		String councillor = game.getFreeCouncillors().getFreeCouncillorsList().get(0).getColor().toString();
 		Council council = ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getCouncil();
 		String councilName = game.getGameMap().getGroupRegionalCity().get(0).getName();
 		AssistantToElectCouncillor action = new AssistantToElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
 		assertTrue(!turnHandler.isAvailableQuickAction());
-		Iterator<Councillor> iterator = council.getCouncil().iterator();
+		Iterator<Councillor> iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();

@@ -10,7 +10,11 @@ import it.polimi.ingsw.ps23.server.model.bonus.CoinBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.PoliticCardBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-
+/**
+ * Provide methods to create a specific type of bonus starting from a string
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class BonusCache {
 
 	private Map<String, Bonus> bonusesMap;
@@ -24,16 +28,25 @@ public class BonusCache {
 	private static final String RECYCLE_REWARD_TOKEN = "recycleRewardToken";
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
-
+	/**
+	 * construct the bonus cache mapping all the bonuses.
+	 */
 	public BonusCache() {
 		bonusesMap = new HashMap<>();
 		loadCache();
 	}
-	
+	/**
+	 * Starting from a string, the methods create the corresponding {@link Bonus}.
+	 * @param bonusName - the name of the bonus
+	 * @param value - value of bonus
+	 * @return the created bonus
+	 */
 	public Bonus getBonus(String bonusName, int value) {
 		Bonus cachedBonus = bonusesMap.get(bonusName);
 		Bonus bonus = (Bonus) cachedBonus.clone();
-		bonus.setValue(value);
+		if(!(bonus.isNull())) {
+			((RealBonus)bonus).setValue(value);
+		}		
 		return bonus;
 	}
 	

@@ -8,7 +8,12 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusSlot;
 import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
-
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
+/**
+ * Provide methods to give specific {@link Bonus} to the player when build in a {@link NormalCity}.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class RewardToken implements BonusSlot {
 	
 	/**
@@ -17,7 +22,9 @@ public class RewardToken implements BonusSlot {
 	private static final long serialVersionUID = -549430028050607050L;
 
 	private List<Bonus> bonuses;
-	
+	/**
+	 * Initialize all the variables to the default values.
+	 */
 	public RewardToken() {
 		bonuses = new ArrayList<>();
 	}
@@ -33,7 +40,7 @@ public class RewardToken implements BonusSlot {
 	
 	void useBonus(Game game, TurnHandler turnHandler) {
 		for(Bonus bonus : bonuses) {
-			bonus.updateBonus(game, turnHandler);
+			((RealBonus)bonus).updateBonus(game, turnHandler);
 		}
 	}
 

@@ -3,8 +3,13 @@ package it.polimi.ingsw.ps23.server.model.actions;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
-public class EngageAnAssistant implements Action {
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Mirco Manzoni
+ *
+ */
+public class EngageAnAssistant extends Action {
 
 	/**
 	 * 
@@ -21,6 +26,7 @@ public class EngageAnAssistant implements Action {
 		game.getCurrentPlayer().updateCoins(COINS_COST);
 		game.getCurrentPlayer().updateAssistants(EARNED_ASSITANTS);
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " engage an assistant");
 	}
 
 }

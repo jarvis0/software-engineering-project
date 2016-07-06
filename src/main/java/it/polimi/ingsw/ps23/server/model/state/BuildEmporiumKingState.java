@@ -12,8 +12,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.player.HandDeck;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-public class BuildEmporiumKingState extends ActionState {
+/**
+ * Provides methods to get all info to create {@link BuildEmporiumKing} action.
+ * @author Alessandro Erba, Mirco Manzoni
+ *
+ */
+public class BuildEmporiumKingState extends MainActionState {
 	
 	/**
 	 * 
@@ -22,21 +26,16 @@ public class BuildEmporiumKingState extends ActionState {
 	private Council kingCouncil;
 	private HandDeck availableCards;
 	private City kingPosition;
-	private HandDeck deck;
 	
 	BuildEmporiumKingState(String name) {
 		super(name);
 	}
 	
 	public int getPoliticHandSize() {
-		if(deck.getHandSize() > 4){
+		if(availableCards.getHandSize() > 4){
 			return 4;
 		}
-		return deck.getHandSize();
-	}
-
-	public String getDeck() {
-		return deck.toString();
+		return availableCards.getHandSize();
 	}
 	
 	public String getAvailableCards() {
@@ -65,7 +64,13 @@ public class BuildEmporiumKingState extends ActionState {
 			}
 		}
 	}
-
+	/**
+	 * Create the {@link BuildEmporiumKingState} action with all the parameters selected.
+	 * @param removedCards - the politic card selected
+	 * @param arrivalCity - the city where the {@link King} will put
+	 * @return the created action
+	 * @throws InvalidCardException if an invalid card has been selected
+	 */
 	public Action createAction(List<String> removedCards, String arrivalCity) throws InvalidCardException {
 		checkCards(removedCards);
 		return new BuildEmporiumKing(removedCards, arrivalCity);
@@ -76,7 +81,6 @@ public class BuildEmporiumKingState extends ActionState {
 		context.setState(this);
 		kingPosition = game.getKing().getPosition();
 		kingCouncil = game.getKing().getCouncil();
-		deck = game.getCurrentPlayer().getPoliticHandDeck();
 		availableCards = ((PoliticHandDeck) game.getCurrentPlayer().getPoliticHandDeck()).getAvailableCards(kingCouncil);
 	}
 

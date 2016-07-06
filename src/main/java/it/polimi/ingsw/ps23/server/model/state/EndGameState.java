@@ -7,8 +7,12 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.WinnerComparator;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
-public class EndGameState extends State {
+/**
+ * Provides methods to show the result of the current game 
+ * @author Mirco Manzoni
+ *
+ */
+public class EndGameState extends MapUpdateState {
 
 	/**
 	 * 
@@ -18,12 +22,18 @@ public class EndGameState extends State {
 
 	public String getWinner() {
 		Collections.sort(players, new WinnerComparator());
-		return "The winner is: " + players.get(0) + "\nClassification: " + players.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		int i = 0;
+		for(Player player : players) {
+			stringBuilder.append("\n" + i + ": " + player.getName() + ", Victory Points:" + player.getVictoryPoints());
+		}
+		return "\nThe winner is: " + players.get(0).getName() + "\nClassification: " + stringBuilder;
 	}
 	
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
+		setParameters(game);
 		players = game.getGamePlayersSet().getPlayers();
 	}
 

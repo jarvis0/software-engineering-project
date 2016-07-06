@@ -16,10 +16,15 @@ import it.polimi.ingsw.ps23.server.model.bonus.CoinBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.NobilityTrackStepBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.NullBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.PoliticCardBonus;
+import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleBuildingPermitBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleRewardTokenBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-
+/**
+ * Tests the construction of some bonuses in {@link BonusCache} when the game is in the initialization phase.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class TestBonusCache {
 	
 	private static final String ASSISTANT = "assistant";
@@ -33,40 +38,40 @@ public class TestBonusCache {
 	private static final String BUILDING_PERMIT = "buildingPermit";
 	private static final String RECYCLE_BUILDING_PERMIT = "recycleBuildingPermit";
 	
+	List<Bonus> bonuses;
+	
 	@Test
 	public void test() {
-		
-		List<Bonus> bonuses = new ArrayList<>();
-		
+		bonuses = new ArrayList<>();
 		bonuses.add(new AssistantBonus(ASSISTANT));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new CoinBonus(COIN));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new VictoryPointBonus(VICTORY_POINT));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new PoliticCardBonus(POLITIC_CARD));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new AdditionalMainActionBonus(ADDITIONAL_MAIN_ACTION));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new NobilityTrackStepBonus(NOBILITY_TRACK_STEP));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 		
 		bonuses.add(new NullBonus(NULL_BONUS));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 	
 		bonuses.add(new RecycleRewardTokenBonus(RECYCLE_REWARD_TOKEN));
-		bonuses.get(bonuses.size() - 1).setValue(1);
+		setValue();
 
 		bonuses.add(new BuildingPermitBonus(BUILDING_PERMIT));
-		bonuses.get(bonuses.size() - 1).setValue(1);
-
+		setValue();
+		
 		bonuses.add(new RecycleBuildingPermitBonus(RECYCLE_BUILDING_PERMIT));
-		bonuses.get(bonuses.size() - 1).setValue(1);		
+		setValue();
 
 		BonusCache bonusCache = new BonusCache();
 		List<Bonus> cachedBonuses = new ArrayList<>();
@@ -85,7 +90,15 @@ public class TestBonusCache {
 		assertTrue(n == bonuses.size());
 		for(int i = 0; i < n; i++) {
 			assertTrue(cachedBonuses.get(i).getName() == bonuses.get(i).getName());
-			assertTrue(cachedBonuses.get(i).getValue() == bonuses.get(i).getValue());
+			if(!bonuses.get(i).isNull()) {
+				assertTrue(((RealBonus)cachedBonuses.get(i)).getValue() == ((RealBonus)bonuses.get(i)).getValue());
+			}
+		}
+	}
+	
+	private void setValue() {
+		if(!(bonuses.get(bonuses.size() - 1)).isNull()) {
+			((RealBonus)bonuses.get(bonuses.size() - 1)).setValue(1);
 		}
 	}
 

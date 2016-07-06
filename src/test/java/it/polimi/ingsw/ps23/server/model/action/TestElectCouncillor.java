@@ -16,7 +16,11 @@ import it.polimi.ingsw.ps23.server.model.actions.ElectCouncillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the mechanics of the {@link ElectCouncillor} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestElectCouncillor {
 
 	@Test
@@ -27,13 +31,13 @@ public class TestElectCouncillor {
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		int initialCoin = game.getCurrentPlayer().getCoins();
 		TurnHandler turnHandler = new TurnHandler();
-		String councillor = game.getFreeCouncillors().getFreeCouncillors().get(0).getColor().toString();
+		String councillor = game.getFreeCouncillors().getFreeCouncillorsList().get(0).getColor().toString();
 		Council council = ((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getCouncil();
 		String councilName = game.getGameMap().getGroupRegionalCity().get(0).getName();
 		ElectCouncillor action = new ElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
 		assertTrue(!turnHandler.isAvailableMainAction());
-		Iterator<Councillor> iterator = council.getCouncil().iterator();
+		Iterator<Councillor> iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();
@@ -41,12 +45,12 @@ public class TestElectCouncillor {
 		assertTrue(initialCoin + 4 == game.getCurrentPlayer().getCoins());
 		initialCoin = game.getCurrentPlayer().getCoins();
 		turnHandler = new TurnHandler();
-		councillor = game.getFreeCouncillors().getFreeCouncillors().get(0).getColor().toString();
+		councillor = game.getFreeCouncillors().getFreeCouncillorsList().get(0).getColor().toString();
 		council = game.getKing().getCouncil();
 		councilName = "king";
 		action = new ElectCouncillor(councillor, councilName);
 		action.doAction(game, turnHandler);
-		iterator = council.getCouncil().iterator();
+		iterator = council.getCouncillors().iterator();
 		iterator.next();
 		iterator.next();
 		iterator.next();

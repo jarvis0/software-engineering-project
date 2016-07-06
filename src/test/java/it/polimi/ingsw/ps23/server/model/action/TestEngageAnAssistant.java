@@ -11,7 +11,11 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesExcep
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.EngageAnAssistant;
-
+/**
+ * Tests the mechanics of the {@link EngageAnAssistant} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestEngageAnAssistant {
 
 	@Test

@@ -8,7 +8,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
-
+/**
+ * Tests the construction of the {@link FreeCouncillorTest} and all methods provided by taht class.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestFreeCouncillors {
 	
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
@@ -19,13 +23,13 @@ public class TestFreeCouncillors {
 	@Test
 	public void test() {
 		List<String[]> rawCouncillors = new RawObject(TEST_CONFIGURATION_PATH + COUNCILLORS_CSV).getRawObject();
-		freeCouncillors = new CouncillorsFactory().makeCouncillors(rawCouncillors);
+		freeCouncillors = new CouncillorsBuilder().makeCouncillors(rawCouncillors);
 		boolean foundShuffled = false;
-		GameColor orange = GameColorFactory.makeColor("orange");
-		GameColor blue = GameColorFactory.makeColor("blue");
-		int size = freeCouncillors.getFreeCouncillors().size();
+		GameColor orange = GameColorsBuilder.makeColor("orange");
+		GameColor blue = GameColorsBuilder.makeColor("blue");
+		int size = freeCouncillors.getFreeCouncillorsList().size();
 		for(int i = 0; i < (size - 1) / 2; i++) {
-			if(freeCouncillors.getFreeCouncillors().get(i) != freeCouncillors.getFreeCouncillors().get(i+1)) {
+			if(freeCouncillors.getFreeCouncillorsList().get(i) != freeCouncillors.getFreeCouncillorsList().get(i+1)) {
 				foundShuffled = true;
 			}
 		}
@@ -33,7 +37,7 @@ public class TestFreeCouncillors {
 		int countOrange = 0;
 		int countBlue = 0;
 		for(int i = 0; i < size; i++) {
-			GameColor color = freeCouncillors.getFreeCouncillors().get(i).getColor();
+			GameColor color = freeCouncillors.getFreeCouncillorsList().get(i).getColor();
 			if(color.equals(blue)) {
 				countBlue++;
 			}
@@ -42,7 +46,7 @@ public class TestFreeCouncillors {
 			}
 		}
 		assertTrue(countBlue == 10 && countOrange == 10);
-		assertTrue(freeCouncillors.getFreeCouncillors().get(0) == freeCouncillors.getFreeCouncillors().remove(0) && size == freeCouncillors.getFreeCouncillors().size() + 1);
+		assertTrue(freeCouncillors.getFreeCouncillorsList().get(0) == freeCouncillors.getFreeCouncillorsList().remove(0) && size == freeCouncillors.getFreeCouncillorsList().size() + 1);
 	}
 
 }

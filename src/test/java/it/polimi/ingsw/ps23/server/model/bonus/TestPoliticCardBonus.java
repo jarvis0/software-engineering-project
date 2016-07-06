@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
-
+/**
+  * Tests all the changes made by {@link PoliticCardBonus} to the {@link Player} status.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestPoliticCardBonus {
 
 	@Test
@@ -20,9 +24,9 @@ public class TestPoliticCardBonus {
 		game.setCurrentPlayer(game.getGamePlayersSet().getPlayers().get(0));
 		TurnHandler turnHandler = new TurnHandler();
 		PoliticCardBonus bonus = new PoliticCardBonus("Politic Card Bonus");
-		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCard();
+		int initialCards = game.getCurrentPlayer().getNumberOfPoliticCards();
 		bonus.updateBonus(game, turnHandler);
-		assertTrue(game.getCurrentPlayer().getNumberOfPoliticCard() == initialCards + bonus.getValue());
+		assertTrue(game.getCurrentPlayer().getNumberOfPoliticCards() == initialCards + bonus.getValue());
 	}
 
 }

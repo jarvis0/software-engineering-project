@@ -5,8 +5,13 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
-public class ChangePermitsTile implements Action {
+/**
+ * Provides methods to perform the specified game action if 
+ * the action is in a valid format.
+ * @author Alessandro Erba, Mirco Manzoni
+ *
+ */
+public class ChangePermitsTile extends Action {
 
 	/**
 	 * 
@@ -14,7 +19,10 @@ public class ChangePermitsTile implements Action {
 	private static final long serialVersionUID = 4131871312323174768L;
 	private static final int ASSISTANTS_COST = -1;
 	private String regionName;
-	
+	/**
+	 * Constructs all specified action parameters.
+	 * @param regionName - the selected region where the current player wants to change the business permit tile
+	 */
 	public ChangePermitsTile(String regionName) {
 		this.regionName = regionName;
 	}
@@ -24,12 +32,10 @@ public class ChangePermitsTile implements Action {
 		if(Math.abs(ASSISTANTS_COST) > game.getCurrentPlayer().getAssistants()) {
 			throw new InsufficientResourcesException();
 		}
-		if(((GroupRegionalCity) game.getGameMap().getRegion(regionName)) == null) {
-			throw new InvalidRegionException();
-		}
-		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		((GroupRegionalCity) game.getGameMap().getRegion(regionName)).changePermitTiles();
+		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);		
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " change the permit tile in " + regionName);
 	}
 
 }

@@ -1,7 +1,11 @@
 package it.polimi.ingsw.ps23.server.commons.exceptions;
 
 import java.io.IOException;
-
+/**
+ * IOexception that notify the players that the current {@link Player} have selected a city where he has already built
+ * @author Mirco Manzoni
+ *
+ */
 public class AlreadyBuiltHereException extends IOException {
 
 	/**

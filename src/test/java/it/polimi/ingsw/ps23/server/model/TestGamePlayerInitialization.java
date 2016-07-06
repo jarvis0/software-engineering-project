@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
+/**
+ * Tests if the all the players who want to join the game starting really that game.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestGamePlayerInitialization {
 
 	@Test

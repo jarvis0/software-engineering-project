@@ -4,7 +4,13 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InsufficientResourcesExcep
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 
-public class AdditionalMainAction implements Action {
+/**
+ * Provides methods to perform the specified game action if
+ * the action is in a valid format.
+ * @author Mirco Manzoni
+ *
+ */
+public class AdditionalMainAction extends Action {
 
 	/**
 	 * 
@@ -21,6 +27,7 @@ public class AdditionalMainAction implements Action {
 		game.getCurrentPlayer().updateAssistants(ASSISTANTS_COST);
 		turnHandler.addMainAction();
 		turnHandler.useQuickAction();
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " take an additional main action");
 	}
 
 }
