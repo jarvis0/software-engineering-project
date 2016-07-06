@@ -193,7 +193,7 @@ public class SocketGUIView extends SocketView {
 			getConnection().send(String.valueOf(currentState.getPermissionHandSize()));
 			int numberOfCards = Integer.parseInt(receive());
 			for(int i = 0; i < numberOfCards && i < currentState.getPermissionHandSize(); i++) {
-				chosenPermissionCards.add(Integer.parseInt(receive()) - 1);
+				chosenPermissionCards.add(Integer.parseInt(receive()));
 			}
 		}
 		return chosenPermissionCards;
