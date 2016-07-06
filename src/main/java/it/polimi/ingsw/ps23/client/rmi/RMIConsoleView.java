@@ -282,6 +282,7 @@ class RMIConsoleView extends RMIView {
 	
 	@Override
 	public void visit(SuperBonusState currentState) {
+		output.println(currentState.getStatus());
 		try {
 			while (currentState.hasNext()) {				
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
@@ -306,6 +307,7 @@ class RMIConsoleView extends RMIView {
 
 	@Override
 	public void visit(EndGameState currentState) {
+		output.println(currentState.getStatus());
 		output.println(currentState.getWinner());
 		endGame = true;
 	}
