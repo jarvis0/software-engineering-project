@@ -41,7 +41,6 @@ public abstract class SwingUI {
 	private static final String PNG_EXTENSION = ".png";
 
 	private static final String KINGDOM = "kingdom";
-	private static final String ALREADY_ACQUIRED_BONUS_TILE = "alreadyAcquired";
 	private static final String NO_KING_TILE = "noKingTile";
 
 	private static final String ELECT_COUNCILLOR = "elect councillor";
@@ -128,7 +127,6 @@ public abstract class SwingUI {
 		loadOthersPlayersStatusButton();
 	}
 
-
 	private void loadOthersPlayersStatusButton() {
 		otherPlayersStatusButton = new JButton("Players Status");
 		otherPlayersStatusButton.addActionListener(e -> 
@@ -172,10 +170,6 @@ public abstract class SwingUI {
 
 	protected static String getKingdom() {
 		return KINGDOM;
-	}
-
-	protected static String getAlreadyAcquiredBonusTile() {
-		return ALREADY_ACQUIRED_BONUS_TILE;
 	}
 
 	protected static String getNoKingTile() {
@@ -463,9 +457,7 @@ public abstract class SwingUI {
 			List<String> groupsBonusValue, String kingBonusName, String kingBonusValue) {
 		for (int i = 0; i < groupsBonusName.size(); i++) {
 			String regionBonusName = groupsBonusName.get(i);
-			if (!ALREADY_ACQUIRED_BONUS_TILE.equals(regionBonusName)) {
-				drawBonusTile(groupsName.get(i), regionBonusName, groupsBonusValue.get(i));
-			}
+			drawBonusTile(groupsName.get(i), regionBonusName, groupsBonusValue.get(i));
 		}
 		if (!NO_KING_TILE.equals(kingBonusName)) {
 			drawBonusTile(KINGDOM, kingBonusName, kingBonusValue);
@@ -744,7 +736,6 @@ public abstract class SwingUI {
 			cityLabel.setToolTipText(new String(toolTipString) + "\n");
 			i++;
 		}
-		
 	}
 
 	private void enableCitiesButtons(boolean display) {

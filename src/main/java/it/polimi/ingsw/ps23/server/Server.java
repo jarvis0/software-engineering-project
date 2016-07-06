@@ -30,7 +30,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 50000;
+	private static final int CONNECTION_TIMEOUT = 5;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
@@ -186,7 +186,7 @@ class Server implements ServerInterface {
 			}
 			else {
 				output.println(PLAYER_PRINT + name + " is being prompted to his previous game.");
-				infoMessage(client, "You have been prompted to your previous game, please wait your turn.");
+				infoMessage(client, "You have been prompted to your previous game as " + name + ", please wait your turn.");
 				gameInstances.reconnectPlayer(name, client);
 			}
 		}

@@ -149,8 +149,8 @@ public class Model extends ModelObservable {
 		context = new Context();
 		EndGameState endGameState = new EndGameState();	
 		endGameState.changeState(context, game);
-		wakeUp(endGameState);
 		endGame = true;//TODO
+		wakeUp(endGameState);
 	}
 
 	private void setUpMarket() {

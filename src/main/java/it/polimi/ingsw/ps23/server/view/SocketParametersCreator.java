@@ -42,6 +42,7 @@ class SocketParametersCreator {
 	private static final String COUNCILS_TAG_CLOSE = "</councils>";
 	private static final String BONUS_TILES_TAG_OPEN = "<bonus_tiles>";
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
+	private static final String NO_KING_TILE = "noKingTile";
 	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
@@ -143,21 +144,29 @@ class SocketParametersCreator {
 
 	private void addBonusTiles(StringBuilder bonusTilesSend, List<Region> regions) {
 		for(Region region : regions) {
-			bonusTilesSend.append("," + region.getName());
 			Bonus bonus = region.getBonusTile();
-			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + ((RealBonus)bonus).getValue());
+			if(!region.alreadyUsedBonusTile()) {
+				bonusTilesSend.append("," + region.getName());
+				bonusTilesSend.append("," + bonus.getName());
+				bonusTilesSend.append("," + ((RealBonus) bonus).getValue());
+			}
 		}
 	}
 	
 	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		StringBuilder bonusTilesSend = new StringBuilder();
 		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
-		bonusTilesSend.append(groupsNumber);//TODO already aquired
+		bonusTilesSend.append(groupsNumber);
 		addBonusTiles(bonusTilesSend, groupRegionalCity);
 		addBonusTiles(bonusTilesSend, groupColoredCity);
-		bonusTilesSend.append("," + currentKingTile.getName());
-		bonusTilesSend.append("," + ((RealBonus)currentKingTile).getValue());
+		if(!currentKingTile.isNull()) {
+			bonusTilesSend.append("," + currentKingTile.getName());
+			bonusTilesSend.append("," + ((RealBonus) currentKingTile).getValue());//TODO testare
+		}
+		else {
+			bonusTilesSend.append("," + NO_KING_TILE);
+			bonusTilesSend.append("," + "0");
+		}
 		bonusTilesSend.append(",");
 		return BONUS_TILES_TAG_OPEN + bonusTilesSend + BONUS_TILES_TAG_CLOSE;
 	}

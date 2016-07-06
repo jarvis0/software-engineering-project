@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 /**
  * Provides methods to manage the emporiums built by a {@link Player}.
- * @author mirma
+ * @author Mirco Manzoni
  *
  */
 public class BuiltEmporiumsSet implements Serializable {
@@ -19,7 +19,7 @@ public class BuiltEmporiumsSet implements Serializable {
 	 */
 	private static final long serialVersionUID = 6249094998409712661L;
 
-	private static final int MAX_EMPORIUMS = 2;//TODO reset to real game default value
+	private static final int MAX_EMPORIUMS = 4;//TODO reset to real game default value
 	
 	private List<City> builtEmporiums;
 	

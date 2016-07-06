@@ -28,7 +28,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
 
-	private static final String SKIP = "skip";
+	private static final String SKIP = "Skip";
 	
 	private SocketParametersCreator gameParameters;
 	private boolean firstUIrefresh;

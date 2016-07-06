@@ -23,7 +23,7 @@ public class Player implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 663214081725066833L;
-	private static final int MAX_EMPORIUMS_POINTS_REACHED = 3;//TODO rimettere a 10
+	private static final int MAX_EMPORIUMS_POINTS_REACHED = 3;
 	
 	private String name;
 	private int coins;

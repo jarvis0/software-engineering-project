@@ -106,11 +106,8 @@ class RMISwingUI extends SwingUI {
 		for(Region region : regions) {
 			if(!region.alreadyUsedBonusTile()) {
 				groupsName.add(region.getName());
+				bonusToStrings(region.getBonusTile(), bonusesName, bonusesValue);
 			}
-			else {
-				groupsName.add(getAlreadyAcquiredBonusTile());
-			}
-			bonusToStrings(region.getBonusTile(), bonusesName, bonusesValue);
 		}
 	}
 
@@ -209,9 +206,9 @@ class RMISwingUI extends SwingUI {
 		Bonus kingTile = currentState.getCurrentKingTile();
 		String kingBonusName;
 		String kingBonusValue;
-		if(kingTile != null) {
+		if(!kingTile.isNull()) {
 			kingBonusName = kingTile.getName();
-			kingBonusValue = String.valueOf(((RealBonus)kingTile).getValue());
+			kingBonusValue = String.valueOf(((RealBonus) kingTile).getValue());
 		}
 		else {
 			kingBonusName = getNoKingTile();
