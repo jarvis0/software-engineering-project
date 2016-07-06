@@ -83,6 +83,11 @@ public class TestVisitState implements ViewVisitor {
 		assertTrue(game.getGameMap().getGroupColoredCity().equals(currentState.getGroupColoredCity()));
 		assertTrue(turnHandler.isAvailableMainAction() == currentState.isAvailableMainAction());
 		assertTrue(turnHandler.isAvailableQuickAction() == currentState.isAvailableQuickAction());
+		assertFalse(currentState.arePresentException());
+		String text = "hello world";
+		currentState.setExceptionString(text);
+		assertTrue(currentState.arePresentException());
+		assertTrue(currentState.getExceptionString().equals(text));
 		setContext(new ElectCouncillorState("elect councillor"));
 	}
 
@@ -98,18 +103,28 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(EngageAnAssistantState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		assertTrue(currentState.createAction() instanceof EngageAnAssistant);
 		setContext(new ChangePermitTilesState("change permit tile"));
 	}
 
 	@Override
 	public void visit(ChangePermitTilesState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		assertTrue(currentState.createAction(game.getGameMap().getGroupColoredCity().get(0).getName()) instanceof ChangePermitsTile);
 		setContext(new AcquireBusinessPermitTileState("acquire business permit tile"));
 	}
 
 	@Override
 	public void visit(AcquireBusinessPermitTileState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
+		currentState.getCouncilsMap();
 		while(game.getCurrentPlayer().getNumberOfPoliticCards() != currentState.getPoliticHandSize()) {
 			if(game.getCurrentPlayer().getNumberOfPoliticCards() >= 4) {
 				assertTrue(currentState.getPoliticHandSize() == 4);
@@ -160,6 +175,9 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		List<String> removedPoliticCards = new ArrayList<>();
 		assertTrue(game.getKing().getPosition().toString().equals(currentState.getKingPosition()));
 		for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
@@ -184,6 +202,9 @@ public class TestVisitState implements ViewVisitor {
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
+		try {
+			currentState.canPerformThisAction(turnHandler);
+		} catch (IllegalActionSelectedException e) {}
 		game.getCurrentPlayer().getPermitHandDeck().getCards().add(new BusinessPermitTile());
 		try {
 			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().toString().equals(currentState.getAvailableCards()));
