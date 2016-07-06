@@ -241,19 +241,19 @@ class GUILoad {
 		textArea = new JTextArea();
 		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		textArea.setBounds(897, 503, 440, 70);
+		textArea.setBounds(897, 503, 440, 130);
 		textArea.setEditable(false);
 		scrollTextPane = new JScrollPane();
-		scrollTextPane.setBounds(0, 0, 440, 70);
+		scrollTextPane.setBounds(0, 0, 440, 130);
 		scrollTextPane.setLocation(897, 503);
 		scrollTextPane.setViewportView(textArea);
 		mapPanel.add(scrollTextPane,0);	
 		sendButton = new JButton("OK");
-		sendButton.setBounds(935, 613, 89, 23);
+		sendButton.setBounds(935, 653, 89, 23);
 		mapPanel.add(sendButton,0);
 		sendButton.setVisible(false);
 		marketSpinner = new JSpinner();
-		marketSpinner.setBounds(897, 613, 35, 20);
+		marketSpinner.setBounds(897, 656, 35, 20);
 		mapPanel.add(marketSpinner,0);
 		marketSpinner.setVisible(false);
 	}
@@ -272,7 +272,7 @@ class GUILoad {
 	
 	private void loadOthersPlayersDialog() {
 		otherPlayersDialog = new JDialog(frame, "Other Players Permit Tiles Status");
-		otherPlayersDialog.setBounds(300, 200, 600, 50);
+		otherPlayersDialog.setBounds(300, 200, 600, 200);
 		otherPlayersDialog.setVisible(false);
 	}
 
