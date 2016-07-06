@@ -30,7 +30,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 5;
+	private static final int CONNECTION_TIMEOUT = 500000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
@@ -144,7 +144,7 @@ class Server implements ServerInterface {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot change the name to the RMI client.", e);
 		}
 	}
-	
+
 	/**
 	 * This method is a RMIClient entry point into the Server.
 	 * It's a remote call invocation from the client who wants to 
@@ -163,7 +163,6 @@ class Server implements ServerInterface {
 		boolean formerPlayer = gameInstances.checkIfFormerPlayer(name);
 		if(!formerPlayer && !name.matches("[a-zA-Z]+")) {
 			infoMessage(client, "Invalid name format.");
-			//TODO devo chiudere la connessione?
 		}
 		else {
 			output.println("New RMI client connection received.");
@@ -318,7 +317,9 @@ class Server implements ServerInterface {
 
 	@Override
 	public void endGame() {
-		gameInstances.checkIfEndGame();
+		if(gameInstances.checkIfEndGame()) {
+			output.println("A game has ended.");
+		}
 	}
 
 	/**

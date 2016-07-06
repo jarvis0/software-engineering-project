@@ -50,7 +50,9 @@ public class TestBuildingEmporiumsForColoredRegionsTile {
 		}
 		int initialPoints = game.getCurrentPlayer().getVictoryPoints();
 		game.getCurrentPlayer().getAllTilesPoints(game, turnHandler);
-		assertTrue(!game.getKingTilesSet().getCurrentTile().equals(initialTile));
+		if(!game.getKingTilesSet().isEmpty()) {
+			assertTrue(!game.getKingTilesSet().getCurrentTile().equals(initialTile));
+		}
 		assertTrue(game.getCurrentPlayer().getVictoryPoints() > initialPoints);
 	}
 		

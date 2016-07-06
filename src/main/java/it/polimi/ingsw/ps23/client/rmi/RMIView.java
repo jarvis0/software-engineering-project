@@ -1,9 +1,12 @@
 package it.polimi.ingsw.ps23.client.rmi;
 
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.ps23.server.ServerInterface;
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
+import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
@@ -12,7 +15,10 @@ import it.polimi.ingsw.ps23.server.view.View;
 
 abstract class RMIView extends View {
 	
+	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
+	
 	private ServerControllerInterface controllerInterface;
+	private ServerInterface server;
 	private String clientName;
 	private State state;
 	private boolean waiting;
@@ -42,6 +48,18 @@ abstract class RMIView extends View {
 		this.clientName = clientName;
 	}
 	
+	protected void setServer(ServerInterface server) {
+		this.server = server;
+	}
+
+	protected void setServerEndGame() {
+		try {
+			server.endGame();
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+		}
+	}
+	
 	protected void setController(ServerControllerInterface controllerInterface) {
 		this.controllerInterface = controllerInterface;
 	}
@@ -65,10 +83,17 @@ abstract class RMIView extends View {
 	public synchronized void resume() {
 		notifyAll();
 	}
-	
 
 	private boolean waitResumeCondition() {
 		return state instanceof StartTurnState || state instanceof MarketBuyPhaseState || state instanceof MarketOfferPhaseState;
+	}
+
+	protected void sendAction(Action action) {
+		try {
+			getControllerInterface().wakeUpServer(action);
+		} catch (RemoteException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
+		}
 	}
 
 	@Override
@@ -79,5 +104,7 @@ abstract class RMIView extends View {
 			waiting = false;
 		}
 	}
+
+	abstract void setEndGame();
 
 }

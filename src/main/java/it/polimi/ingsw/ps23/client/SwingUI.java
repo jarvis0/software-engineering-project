@@ -673,7 +673,6 @@ public abstract class SwingUI {
 		skipButton.setEnabled(false);
 		skipButton.setBounds(1283, 453, 66, 40);
 		mapPanel.add(skipButton, 0);
-
 	}
 
 	private void loadRegionButtons() {

@@ -14,7 +14,6 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -50,14 +49,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 		super(playerName);
 		firstUIRefresh = true;
 		this.output = output;
-	}
-
-	private void sendAction(Action action) {
-		try {
-			getControllerInterface().wakeUpServer(action);
-		} catch (RemoteException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-		}
 	}
 
 	@Override
@@ -401,8 +392,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 					pause();
 					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
 					selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
-				}
-			
+		}
 		return selectedItem;
 	}
 
@@ -439,17 +429,8 @@ public class RMIGUIView extends RMIView implements GUIView {
 		endGame = true;
 	}
 
-	@Override
-	public synchronized void run() {
-		setWaiting(true);
-		pause();
-		setWaiting(false);
-		do {
-			getState().acceptView(this);
-			if(getState().arePresentException()) {
-				swingUI.appendConsoleText(getState().getExceptionString());
-			}
-		} while(!endGame);
+	void setEndGame() {
+		endGame = false;
 	}
 
 	@Override
@@ -462,4 +443,18 @@ public class RMIGUIView extends RMIView implements GUIView {
 		}
 	}
 	
+	@Override
+	public synchronized void run() {
+		setWaiting(true);
+		pause();
+		setWaiting(false);
+		do {
+			getState().acceptView(this);
+			if(getState().arePresentException()) {
+				swingUI.appendConsoleText(getState().getExceptionString());
+			}
+		} while(!endGame);
+		setServerEndGame();
+	}
+
 }

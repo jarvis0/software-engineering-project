@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ps23.server;
 
+import java.io.PrintStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -162,16 +163,21 @@ public class GameInstance {
 		String playerName = model.getCurrentPlayer();
 		playersName.remove(playerName);
 		String message = PLAYER_PRINT +  playerName + " has been disconnected from the game due to connection timeout.";
-		System.out.println(message);
+		PrintStream output = new PrintStream(System.out);
+		output.println(message);
 		sendSocketInfoMessage(message);
 		try {
 			client.infoMessage("You have been disconnected from the game due to connection timeout.");
+			client.disconnectRMIPlayer();
 		} catch (RemoteException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot reach the RMI remote client.", e);
 		}
 		model.detachRMIClient();
 		model.sendRMIInfoMessage(message);
 		model.setCurrentPlayerOffline();
+		if(checkIfEndGame()) {
+			output.println("A game has ended.");
+		}
 	}
 
 	boolean isInGame(String name) {

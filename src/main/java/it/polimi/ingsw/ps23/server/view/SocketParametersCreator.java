@@ -155,8 +155,18 @@ class SocketParametersCreator {
 	
 	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		StringBuilder bonusTilesSend = new StringBuilder();
-		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
-		bonusTilesSend.append(groupsNumber);
+		int activeBonusTilesNumber = 0;
+		for(int i = 0; i < groupRegionalCity.size(); i++) {
+			if(!groupRegionalCity.get(i).alreadyUsedBonusTile()) {
+				activeBonusTilesNumber++;
+			}
+		}
+		for(int i = 0; i < groupColoredCity.size(); i++) {
+			if(!groupColoredCity.get(i).alreadyUsedBonusTile()) {
+				activeBonusTilesNumber++;
+			}
+		}
+		bonusTilesSend.append(activeBonusTilesNumber);
 		addBonusTiles(bonusTilesSend, groupRegionalCity);
 		addBonusTiles(bonusTilesSend, groupColoredCity);
 		if(!currentKingTile.isNull()) {
