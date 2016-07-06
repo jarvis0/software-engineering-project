@@ -424,6 +424,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(EndGameState currentState) {
+		swingUI.refreshDynamicContents(currentState);
 		swingUI.appendConsoleText(currentState.getExceptionString());
 		swingUI.appendConsoleText(currentState.getWinner());
 		endGame = true;

@@ -26,6 +26,11 @@ import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
+/**
+ * This class managages the socket GUI view of classic MVC.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class SocketGUIView extends SocketView {
 
 	private static final String SKIP = "Skip";
@@ -33,6 +38,12 @@ public class SocketGUIView extends SocketView {
 	private SocketParametersCreator gameParameters;
 	private boolean firstUIrefresh;
 	
+	/**
+	 * Creates a new socket parameter creator which provides a string pattern representation
+	 * (communication protocol) for sending strings over socket.
+	 * @param clientName - name of the remote client
+	 * @param connection - socket connection to communicate with the remote client
+	 */
 	public SocketGUIView(String clientName, Connection connection) {
 		super(clientName, connection);
 		gameParameters = new SocketParametersCreator();
@@ -117,6 +128,15 @@ public class SocketGUIView extends SocketView {
 		wakeUp(currentState.createAction());
 	}
 
+	private void createAction(BuildEmporiumKingState currentState, List<String> cards, String arrivalCity) {
+		try {
+			wakeUp(currentState.createAction(cards, arrivalCity));
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			getState().setExceptionString(e.toString());
+		}
+	}
+	
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
@@ -129,12 +149,7 @@ public class SocketGUIView extends SocketView {
 				removedCards.add(getConnection().receive());
 			}
 			String arrivalCity = getConnection().receive();
-			try {
-				wakeUp(currentState.createAction(removedCards, arrivalCity));
-			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-				getState().setExceptionString(e.toString());
-			}
+			createAction(currentState, removedCards, arrivalCity);
 		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			wakeUp(e);

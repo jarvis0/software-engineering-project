@@ -6,6 +6,12 @@ import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
+/**
+ * Provides a collection of action string communication protocol parsing methods based
+ * on the various kind of regular expression created.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class ActionsExpression extends GUIParser {
 
 	private static final String ELECT_COUNCILLOR_TAG = "<elect_councillor>";
@@ -27,6 +33,12 @@ public class ActionsExpression extends GUIParser {
 
 	private Expression expression;
 	
+	/**
+	 * Stores a reference for swingUI and the guiView useful for update both Remote view and swingUI.
+	 * @param swingUI - the socket swing UI for this game session
+	 * @param guiView - the GUI view for manage various application states
+	 * @param expression - the regular expression for actions expressions
+	 */
 	public ActionsExpression(SocketSwingUI swingUI, RemoteGUIView guiView, Expression expression) {
 		this.swingUI = swingUI;
 		this.guiView = guiView;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Deque;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
+import it.polimi.ingsw.ps23.server.model.bonus.NullBonus;
 /**
  * Provides methods to manage king reward tiles.
  * @author Alessandro Erba
@@ -25,7 +26,10 @@ public class KingRewardTilesSet implements Serializable {
 	}
 	
 	public Bonus getCurrentTile() {
-		return kingTiles.getFirst();
+		if(!kingTiles.isEmpty()) {
+			return kingTiles.getFirst();
+		}
+		return new NullBonus("nullBonus");
 	}
 	/**
 	 * Removes the first {@link Bonus} from the reward tile set

@@ -6,6 +6,11 @@ import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.Parser;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 
+/**
+ * This class provides all needed to parse a string received via socket.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class NoInputExpression implements Parser {
 
 	private static final String MAP_TYPE_TAG_OPEN = "<map_type>";
@@ -17,6 +22,12 @@ public class NoInputExpression implements Parser {
 	
 	private MapTypeExpression isMapType;
 	
+	/**
+	 * Creates a new string receiving string pattern for parse
+	 * the map type of the game.
+	 * @param output - PrintStream useful for console prints
+	 * @param expression - expression pattern for no input expressions
+	 */
 	public NoInputExpression(PrintStream output, Expression expression) {
 		this.output = output;
 		this.expression = expression;

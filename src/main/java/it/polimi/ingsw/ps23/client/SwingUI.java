@@ -910,7 +910,7 @@ public abstract class SwingUI {
 		finished.setEnabled(display);
 	}
 
-	protected void refreshAcquiredPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
+	private void refreshAcquiredPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
 			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
 		Set<Entry<JLabel, List<JLabel>>> playerPermitTilesSet = playerPermitTiles.entrySet();
 		for (Entry<JLabel, List<JLabel>> playerPermitTile : playerPermitTilesSet) {
@@ -929,25 +929,8 @@ public abstract class SwingUI {
 					permitTilesBonusesValue.get(playerIndex), new Point(x, y), increment);
 		
 	}
-
-	protected void refreshAllPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
-			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
-		Set<Entry<JLabel, List<JLabel>>> playerAllPermitTilesSet = playerAllPermitTiles.entrySet();
-		for (Entry<JLabel, List<JLabel>> playerPermitTile : playerAllPermitTilesSet) {
-			totalPermitsCardDialog.remove(playerPermitTile.getKey());
-			for (JLabel jLabel : playerPermitTile.getValue()) {
-				totalPermitsCardDialog.remove(jLabel);
-			}
-		}
-		playerAllPermitTiles.clear();
-		int x = 0;
-		int y = 0;
-		int playerIndex = playersName.indexOf(playerName);
-		drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(playerIndex), permitTilesBonusesName.get(playerIndex), permitTilesBonusesValue.get(playerIndex), new Point(x, y), 52);
-		
-	}
 	
-	protected void refeshOtherPlayersStatusDialog(List<String> playersName, List<List<List<String>>> permitTilesCities,
+	private void refreshOtherPlayersStatusDialog(List<String> playersName, List<List<List<String>>> permitTilesCities,
 			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
 	
 		for (Entry<JLabel, Map<JLabel, List<JLabel>>> playerPermitTile : otherPlayersPermitTiles.entrySet()) {
@@ -984,11 +967,30 @@ public abstract class SwingUI {
 			i++;
 		}
 	}
-	/**
-	 * Sets the visibility of the total permit tile deck. If is it true it will display the total permit tile deck else
-	 * the total permit tile deck will be not displayed.
-	 * @param display - the visibility of total permit deck
-	 */
+
+	protected void refreshGamePlayersPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
+		List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshOtherPlayersStatusDialog(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+	}
+	
+	protected void refreshAllPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
+			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		Set<Entry<JLabel, List<JLabel>>> playerAllPermitTilesSet = playerAllPermitTiles.entrySet();
+		for (Entry<JLabel, List<JLabel>> playerPermitTile : playerAllPermitTilesSet) {
+			totalPermitsCardDialog.remove(playerPermitTile.getKey());
+			for (JLabel jLabel : playerPermitTile.getValue()) {
+				totalPermitsCardDialog.remove(jLabel);
+			}
+		}
+		playerAllPermitTiles.clear();
+		int x = 0;
+		int y = 0;
+		int playerIndex = playersName.indexOf(playerName);
+		drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(playerIndex), permitTilesBonusesName.get(playerIndex), permitTilesBonusesValue.get(playerIndex), new Point(x, y), 52);
+		
+	}
+
 	public void enableTotalHandDeck(boolean display) {
 		permitTileListener = display;
 		for (JLabel jLabel : playerAllPermitTiles.keySet()) {

@@ -12,7 +12,7 @@ import it.polimi.ingsw.ps23.server.view.ViewVisitor;
  * @author Mirco Manzoni
  *
  */
-public class EndGameState extends State {
+public class EndGameState extends MapUpdateState {
 
 	/**
 	 * 
@@ -33,6 +33,7 @@ public class EndGameState extends State {
 	@Override
 	public void changeState(Context context, Game game) {
 		context.setState(this);
+		setParameters(game);
 		players = game.getGamePlayersSet().getPlayers();
 	}
 
