@@ -11,7 +11,12 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
-
+/**
+ * Performs the {@link NobilityTrack#walkOnNobilityTrack(int, int, Game, TurnHandler)} method to check 
+ * all bonus encountered during the walk.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestNobilityTrack {
 
 	@Test

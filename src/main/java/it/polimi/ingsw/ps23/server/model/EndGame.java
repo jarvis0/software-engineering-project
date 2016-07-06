@@ -28,12 +28,10 @@ class EndGame implements Serializable {
 	}
 	
 	boolean isGameEnded() {
-		//for(Player player : game.getGamePlayersSet().getPlayers()) {TODO
-			if(game.getCurrentPlayer().hasFinished()) {
-				applyFinalBonus();
-				return true;
-			}
-		//}
+		if(game.getCurrentPlayer().hasFinished()) {
+			applyFinalBonus();
+			return true;
+		}
 		return false;
 	}
 	

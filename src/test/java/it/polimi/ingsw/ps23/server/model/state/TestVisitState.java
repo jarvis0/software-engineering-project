@@ -34,7 +34,14 @@ import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.market.MarketObject;
 import it.polimi.ingsw.ps23.server.model.market.MarketTransaction;
 import it.polimi.ingsw.ps23.server.view.ViewVisitor;
-
+/**
+ * Tests the visit pattern used in {@link ViewVisitor} to perform all the methods of the current state.
+ * It follows the same mechanics of the view to call the visit. In this way it can test if the view can
+ * see the real content of the model and show it to the user. In this test there are also testes all the
+ * state called during the visit.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestVisitState implements ViewVisitor {
 
 	private Game game;

@@ -14,7 +14,11 @@ import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.actions.ChangePermitsTile;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the mechanics of the {@link ChangePermitTile} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestChangePermitTile {
 
 	@Test

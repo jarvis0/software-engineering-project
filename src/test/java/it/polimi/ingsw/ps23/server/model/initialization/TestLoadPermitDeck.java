@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
@@ -18,12 +17,15 @@ import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
-
-public class TestLoadPermissionDeck {
+/**
+ * Tests the constructions of the {@link PermitDeck} retrieving info from configuration file.
+ * @author Mirco Manzoni
+ *
+ */
+public class TestLoadPermitDeck {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
-	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";
-	
+	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";	
 	private static final String NOBILITY_TRACK_STEP = "nobilityTrackStep";
 	
 	@Test

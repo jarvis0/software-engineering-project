@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-
+/**
+ * Tests the {@link KingRewardTileSet}'s methods gaining the bonus and checking the queue when is empty.
+ * @author mirma
+ *
+ */
 public class TestKingRewardTilesSet {
 
 	@Test

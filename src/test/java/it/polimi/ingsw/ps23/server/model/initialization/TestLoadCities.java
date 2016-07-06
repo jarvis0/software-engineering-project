@@ -18,7 +18,12 @@ import it.polimi.ingsw.ps23.server.model.map.CitiesGraph;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.RewardToken;
-
+/**
+ * Tests the construction of the {@link City} retrieving data from configuration file and tests all methods of
+ * {@link CitiesGraph}, cities connection, cities's hashmap and {@link RewardToken}.
+ * @author Giuseppe Mascellaro & Mirco Manzoni
+ *
+ */
 public class TestLoadCities {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
@@ -27,7 +32,7 @@ public class TestLoadCities {
 	private static final String CONNECTIONS_CSV = "citiesConnections.csv";
 	
 	private BonusCache bonusCache;
-	private CitiesBuilder citiesFactory;
+	private CitiesBuilder citiesBuilder;
 	private List<City> cities;
 	private int initialCitiesSize;
 	private City firstRemovedCity;
@@ -38,9 +43,9 @@ public class TestLoadCities {
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
 		bonusCache = new BonusCache();
-		citiesFactory = new CitiesBuilder();
-		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
-		cities = citiesFactory.getCities();
+		citiesBuilder = new CitiesBuilder();
+		citiesBuilder.makeCities(rawCities, rawRewardTokens, bonusCache);
+		cities = citiesBuilder.getCities();
 		initialCitiesSize = cities.size();		
 		citiesTest();
 		bonusesTest();
@@ -77,7 +82,7 @@ public class TestLoadCities {
 	}
 	
 	private void hashMapTest() {
-		Map<String, City> citiesMap = citiesFactory.getHashMap();
+		Map<String, City> citiesMap = citiesBuilder.getHashMap();
 		assertTrue(citiesMap.containsKey("A"));
 		assertTrue(citiesMap.containsKey("B"));
 		assertTrue(citiesMap.containsKey("J"));
@@ -87,12 +92,12 @@ public class TestLoadCities {
 	}
 	
 	private void graphTest() {
-		Map<String, City> citiesMap = citiesFactory.getHashMap();
+		Map<String, City> citiesMap = citiesBuilder.getHashMap();
 		List<String[]> rawCitiesConnections = new RawObject(TEST_CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
-		CitiesGraphBuilder citiesGraphFactory = new CitiesGraphBuilder();
-		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, citiesMap);
-		citiesConnections = citiesGraphFactory.getCitiesConnections();
-		CitiesGraph citiesGraph = citiesGraphFactory.getCitiesGraph();
+		CitiesGraphBuilder citiesGraphBuilder = new CitiesGraphBuilder();
+		citiesGraphBuilder.makeCitiesGraph(rawCitiesConnections, citiesMap);
+		citiesConnections = citiesGraphBuilder.getCitiesConnections();
+		CitiesGraph citiesGraph = citiesGraphBuilder.getCitiesGraph();
 		GraphIterator<City, DefaultEdge> iterator = new DepthFirstIterator<>(citiesGraph.getGraph());
 		assertTrue(iterator.next().equals(citiesMap.get("A")));
 		assertTrue(iterator.next().equals(citiesMap.get("B")));

@@ -12,7 +12,11 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-
+/**
+ * Tests the way how the {@link PoliticHandDeck} manage the cards of a player. 
+ * @author Mirco Manzoni
+ *
+ */
 public class TestPoliticHandDeck {
 
 	@Test

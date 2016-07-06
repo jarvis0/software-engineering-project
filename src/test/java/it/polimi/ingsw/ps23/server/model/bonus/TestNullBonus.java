@@ -3,7 +3,11 @@ package it.polimi.ingsw.ps23.server.model.bonus;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/**
+  * Tests all the changes made by {@link NullBonus} to the {@link Player} status.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestNullBonus {
 
 	@Test

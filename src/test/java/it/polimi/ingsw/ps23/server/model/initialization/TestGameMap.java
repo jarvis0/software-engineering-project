@@ -13,7 +13,11 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameMap;
 import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the construction of the {@link GameMap} calling all builder of cities and regions.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class TestGameMap {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
@@ -29,23 +33,23 @@ public class TestGameMap {
 		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();
 		List<String[]> rawRewardTokens = new RawObject(TEST_CONFIGURATION_PATH + REWARD_TOKENS_CSV).getRawObject();
-		CitiesBuilder citiesFactory = new CitiesBuilder();
-		citiesFactory.makeCities(rawCities, rawRewardTokens, bonusCache);
+		CitiesBuilder citiesBuilder = new CitiesBuilder();
+		citiesBuilder.makeCities(rawCities, rawRewardTokens, bonusCache);
 		List<String[]> rawCitiesConnections = new RawObject(TEST_CONFIGURATION_PATH + CONNECTIONS_CSV).getRawObject();
-		CitiesGraphBuilder citiesGraphFactory = new CitiesGraphBuilder();
-		citiesGraphFactory.makeCitiesGraph(rawCitiesConnections, citiesFactory.getHashMap());
+		CitiesGraphBuilder citiesGraphBuilder = new CitiesGraphBuilder();
+		citiesGraphBuilder.makeCitiesGraph(rawCitiesConnections, citiesBuilder.getHashMap());
 		List<String[]> rawRegions = new RawObject(TEST_CONFIGURATION_PATH + REGIONS_CSV).getRawObject();
-		List<Region> groupRegional = new GroupRegionalCitiesBuilder().makeRegions(rawRegions, citiesFactory.getHashMap(), citiesGraphFactory.getCitiesConnections());
+		List<Region> groupRegional = new GroupRegionalCitiesBuilder().makeRegions(rawRegions, citiesBuilder.getHashMap(), citiesGraphBuilder.getCitiesConnections());
 		List<String[]> rawColoredCities = new RawObject(TEST_CONFIGURATION_PATH + GROUP_COLORED_CSV).getRawObject();
-		List<Region> groupColored = new GroupColoredCitiesBuilder().makeGroup(rawColoredCities, citiesFactory.getCities());
+		List<Region> groupColored = new GroupColoredCitiesBuilder().makeGroup(rawColoredCities, citiesBuilder.getCities());
 		List<String[]> rawPermissionCards = new RawObject(TEST_CONFIGURATION_PATH + PERMISSION_DECK_CSV).getRawObject();
-		Map<String, Deck> deck = new PermitTilesBuilder(rawPermissionCards, citiesFactory.getHashMap()).makeDecks(bonusCache);
+		Map<String, Deck> deck = new PermitTilesBuilder(rawPermissionCards, citiesBuilder.getHashMap()).makeDecks(bonusCache);
 		for(Region region : groupRegional) {
 			((GroupRegionalCity) region).setPermitTiles(deck.get(region.getName()));
 		}
-		GameMap gameMap = new GameMap(citiesFactory.getHashMap(), citiesGraphFactory.getCitiesGraph(), groupRegional, groupColored);
-		assertTrue(citiesGraphFactory.getCitiesGraph().equals(gameMap.getCitiesGraph()));
-		assertTrue(citiesFactory.getHashMap().equals(gameMap.getCities()));
+		GameMap gameMap = new GameMap(citiesBuilder.getHashMap(), citiesGraphBuilder.getCitiesGraph(), groupRegional, groupColored);
+		assertTrue(citiesGraphBuilder.getCitiesGraph().equals(gameMap.getCitiesGraph()));
+		assertTrue(citiesBuilder.getHashMap().equals(gameMap.getCities()));
 		assertTrue(groupRegional.equals(gameMap.getGroupRegionalCity()));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegion("seaside")));
 		assertTrue(groupRegional.get(0).equals(gameMap.getRegionMap().get("seaside")));

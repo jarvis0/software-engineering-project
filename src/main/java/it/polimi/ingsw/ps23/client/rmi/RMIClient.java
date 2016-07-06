@@ -14,7 +14,7 @@ public class RMIClient implements ClientInterface {
 	private RMIView rmiView;
 	
 	private ExecutorService executor;
-	
+
 	public RMIClient(String playerName, Scanner scanner, PrintStream output) {
 		rmiView = new RMIConsoleView(playerName, scanner, output);
 		//rmiView = new RMIGUIView(playerName, output);

@@ -19,7 +19,10 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the mechanics of the {@link AcquireBusinessPermitTile} action and all classes involved in.
+ *
+ */
 public class TestAcquireBusinessPermitTile {
 
 	@Test

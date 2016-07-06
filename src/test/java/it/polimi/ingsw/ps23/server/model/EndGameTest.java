@@ -17,7 +17,13 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Tests the condition of the end game and all methods to take all the {@link BonusTile} that players have
+ * gained during the game. There are also tested the {@link WinnerComparator} and other comparator to determinate
+ * the winner of the current game.
+ * @author Mirco Manzoni
+ *
+ */
 public class EndGameTest {
 
 	@Test

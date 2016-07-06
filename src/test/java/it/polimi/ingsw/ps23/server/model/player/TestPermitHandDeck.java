@@ -13,8 +13,12 @@ import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
-
-public class TestPermissionHandDeck {
+/**
+ * Tests the way how the {@link PermitHandDeck} manage the cards of a player. 
+ * @author Mirco Manzoni
+ *
+ */
+public class TestPermitHandDeck {
 
 	@Test
 	public void test() throws InvalidCardException {

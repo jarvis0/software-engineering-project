@@ -16,7 +16,12 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
-
+/**
+ * Tests the mechanics of the {@link BuildingEmporiumsKing} action and all classes involved in to check
+ * the {@link BonusTile} of {@link GroupRegionalCity}.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestBuildingEmporiumKingForRegionTile {
 
 	@Test

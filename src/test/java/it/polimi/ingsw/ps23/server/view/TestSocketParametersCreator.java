@@ -25,7 +25,11 @@ import it.polimi.ingsw.ps23.server.model.state.Context;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
-
+/**
+ * Tests if the {@link SocketParametersCreator} generate the correct message to send to the client sides 
+ * @author Mirco Manzoni
+ *
+ */
 public class TestSocketParametersCreator {
 
 	@Test

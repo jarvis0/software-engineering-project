@@ -15,7 +15,11 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests if the correct info are obtained from a message after {@link CouncilExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestConcilExpression {
 
 	@Test

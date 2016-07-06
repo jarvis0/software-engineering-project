@@ -23,7 +23,13 @@ import it.polimi.ingsw.ps23.server.model.state.MarketBuyPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.State;
-
+/**
+ * Tests the way how {@link Controller} and {@link Model} dialog to make this program working.
+ * All the wakeUp() methods are called and the class tests if the model create the right state after
+ * the call.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestControllerModel extends ViewObservable implements ViewObserver {
 
 	private Model model;

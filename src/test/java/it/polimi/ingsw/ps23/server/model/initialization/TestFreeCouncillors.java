@@ -8,7 +8,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
-
+/**
+ * Tests the construction of the {@link FreeCouncillorTest} and all methods provided by taht class.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestFreeCouncillors {
 	
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";

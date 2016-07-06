@@ -14,7 +14,12 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Tests the core object of the market phase, the {@link MarketTransaction}. It tests all the player's
+ * parameters before and after the transaction.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestMarketTransation {
 
 	@Test
