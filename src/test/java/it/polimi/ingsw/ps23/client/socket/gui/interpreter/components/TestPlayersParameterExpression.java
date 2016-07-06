@@ -15,6 +15,7 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
+import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 /**
   * Tests if the correct info are obtained from a message after {@link PlayerParameterExpression} parsing.
@@ -28,6 +29,10 @@ public class TestPlayersParameterExpression {
 		List<String> players = new ArrayList<>();
 		players.add("Player 1");
 		Game game = new Game(players);
+		BusinessPermitTile permitCard = (BusinessPermitTile) ((GroupRegionalCity)game.getGameMap().getGroupRegionalCity().get(0)).getPermitTilesUp().getCards().get(0);
+		List<Card> cards = new ArrayList<>();
+		cards.add(permitCard);
+		game.getGamePlayersSet().getPlayer(0).buyPermitCards(cards);
 		String message = addPlayerParameters(game.getGamePlayersSet().getPlayers());
 		PlayersParameterExpression playersParameterExpression = new PlayersParameterExpression(new TerminalExpression("<players_parameters>", "</players_parameters>"));
 		playersParameterExpression.parse(message);
@@ -39,6 +44,15 @@ public class TestPlayersParameterExpression {
 		for(Card card : game.getGamePlayersSet().getPlayer(0).getPoliticHandDeck().getCards()) {
 			assertTrue(playersParameterExpression.getPoliticCards().toString().contains(((PoliticCard)card).toString()));
 		}
+		assertTrue(playersParameterExpression.getOnline().get(0).equals(String.valueOf(game.getGamePlayersSet().getPlayer(0).isOnline())));
+		for(City city : permitCard.getCities()) {
+			assertTrue(playersParameterExpression.getPermitTilesCities().toString().contains(String.valueOf(city.toString().charAt(0))));
+		}
+		for(Bonus bonus : permitCard.getBonuses()) {
+			assertTrue(playersParameterExpression.getPermitTilesBonusesName().toString().contains(String.valueOf(bonus.getName())));
+			assertTrue(playersParameterExpression.getPermitTilesBonusesValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
+		}
+		
 	}
 
 	private String addPlayerParameters(List<Player> playersList) {
