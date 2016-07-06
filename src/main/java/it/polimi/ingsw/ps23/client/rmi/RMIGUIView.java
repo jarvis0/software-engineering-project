@@ -38,7 +38,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 	
 	private static final String CANNOT_REACH_SERVER_PRINT = "Cannot reach remote server.";
 	private static final int MAX_CARDS_NUMBER = 4;
-	private static final String SKIP = "skip";
+	private static final String SKIP = "Skip";
 	private static final String ITS_PRINT = "\nIt's ";
 	
 	private RMISwingUI swingUI;
@@ -400,7 +400,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
 					pause();
 					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
-					selectedItem = String.valueOf(swingUI.getChosenTile());
+					selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
 				}
 			
 		return selectedItem;
