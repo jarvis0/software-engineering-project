@@ -12,7 +12,7 @@ public class IllegalActionSelectedException extends IOException {
 	 * 
 	 */
 	private static final long serialVersionUID = 5633750940150851188L;
-	private static final String EXCEPTION_STRING = "You cannot perform this action.";
+	private static final String EXCEPTION_STRING = "The current player cannot perform this action.";
 	
 	@Override
 	public String toString() {

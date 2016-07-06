@@ -12,7 +12,7 @@ public class AlreadyBuiltHereException extends IOException {
 	 * 
 	 */
 	private static final long serialVersionUID = -9099831006835354232L;
-	private static final String EXCEPTION_STRING = "You have already built here.";
+	private static final String EXCEPTION_STRING = "The current player has already built here.";
 	
 	@Override
 	public String toString() {
