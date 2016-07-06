@@ -10,7 +10,12 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
-
+/**
+ * Tests the {@link MarketPlayerSet}. In particular the handler of players during market phase and when
+ * a disconnection occurred during the market.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestMarketPlayerSet {
 
 	@Test

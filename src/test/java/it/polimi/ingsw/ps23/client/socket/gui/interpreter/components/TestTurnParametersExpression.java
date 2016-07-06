@@ -10,7 +10,11 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+ * Tests if the correct info are obtained from a message after {@link TurnParametersExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestTurnParametersExpression {
 
 	@Test

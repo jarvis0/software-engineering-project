@@ -20,7 +20,11 @@ import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleBuildingPermitBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RecycleRewardTokenBonus;
 import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
-
+/**
+ * Tests the construction of some bonuses in {@link BonusCache} when the game is in the initialization phase.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class TestBonusCache {
 	
 	private static final String ASSISTANT = "assistant";

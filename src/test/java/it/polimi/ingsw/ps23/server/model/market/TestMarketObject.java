@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
+/**
+ * Tests the construction of {@link MarketObject}.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestMarketObject {
 
 	@Test

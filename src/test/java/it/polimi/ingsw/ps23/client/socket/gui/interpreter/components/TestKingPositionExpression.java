@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
 import it.polimi.ingsw.ps23.server.model.Game;
-
+/**
+  * Tests if the correct info are obtained from a message after {@link KingPositionExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestKingPositionExpression {
 
 	@Test

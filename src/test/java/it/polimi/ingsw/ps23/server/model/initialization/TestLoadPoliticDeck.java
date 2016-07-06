@@ -13,7 +13,12 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-
+/**
+ * Tests the construction of {@link PoliticDeck} and the methods of {@link PoliticCard} to check if the correct
+ * cards are created by the configuration file.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestLoadPoliticDeck {
 	
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";

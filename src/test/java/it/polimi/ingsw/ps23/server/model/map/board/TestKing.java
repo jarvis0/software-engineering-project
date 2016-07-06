@@ -12,7 +12,12 @@ import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
-
+/**
+ * Tests all methods provided by the {@link King} class including king's movements and changes on
+ * king's {@link Council}.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestKing {
 
 	@Test

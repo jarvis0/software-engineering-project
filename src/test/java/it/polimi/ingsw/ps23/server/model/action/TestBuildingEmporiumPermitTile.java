@@ -24,7 +24,11 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
-
+/**
+ * Tests the mechanics of the {@link BuildingEmporiumPermitTile} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestBuildingEmporiumPermitTile {
 
 	@Test

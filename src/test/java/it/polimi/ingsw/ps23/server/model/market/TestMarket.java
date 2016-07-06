@@ -10,7 +10,11 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
-
+/**
+ * Tests the creating of {@link Market} and all methods involved when the game enter in the market phase.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestMarket {
 
 	@Test

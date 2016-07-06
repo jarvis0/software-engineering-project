@@ -18,7 +18,11 @@ import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-
+/**
+ * Tests if the correct info are obtained from a message after {@link RewardTokensExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestRewardTokensExpression {
 
 	@Test
