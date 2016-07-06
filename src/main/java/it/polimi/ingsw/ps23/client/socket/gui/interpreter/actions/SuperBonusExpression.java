@@ -52,7 +52,7 @@ class SuperBonusExpression extends RefreshContent {
 			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
 			guiView.pause();
 			swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
-			selectedItem = String.valueOf(swingUI.getChosenTile());
+			selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
 		}
 		guiView.getClient().send(selectedItem);
 	}
