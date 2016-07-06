@@ -128,7 +128,7 @@ class RMISwingUI extends SwingUI {
 			playersPoliticCards.put(player.getName(), playerPoliticCards);
 		}
 	}
-	
+	//TODO: mettere assieme questo metodo con il motodo sotto
 	private void totalPermitTilesToStrings(List<Player> playersList, List<String> playersName, List<List<List<String>>> allPermitTilesCities,
 			List<List<List<String>>> allPermitTilesBonusesName, List<List<List<String>>> allPermitTilesBonusesValue) {
 		for(Player player : playersList) {
