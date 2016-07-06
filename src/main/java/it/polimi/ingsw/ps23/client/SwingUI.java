@@ -857,7 +857,9 @@ public abstract class SwingUI {
 	protected void clearChosenRegion() {
 		chosenRegion = null;
 	}
-
+	/**
+	 * Refresh all parameters to the initial state during an action when an exception occurs. 
+	 */
 	public void clearSwingUI() {
 		chosenCard = null;
 		finish = false;
@@ -870,7 +872,10 @@ public abstract class SwingUI {
 			}
 		}
 	}
-	
+	/**
+	 * Controls if "finish" button has been pushed.
+	 * @return true if it has been pushed, false otherwise
+	 */
 	public boolean hasFinished() {
 		return finish;
 	}
@@ -990,7 +995,11 @@ public abstract class SwingUI {
 		drawPermitTiles(totalPermitsCardDialog, playerAllPermitTiles, permitTilesCities.get(playerIndex), permitTilesBonusesName.get(playerIndex), permitTilesBonusesValue.get(playerIndex), new Point(x, y), 52);
 		
 	}
-
+	/**
+	 * Sets the visibility of the total permit tile deck. If is it true it will display the total 
+	 * permit tile deck else the total permit tile deck will be not displayed.
+	 * @param display - the visibility of total permit deck
+	 */
 	public void enableTotalHandDeck(boolean display) {
 		permitTileListener = display;
 		for (JLabel jLabel : playerAllPermitTiles.keySet()) {

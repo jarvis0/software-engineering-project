@@ -8,13 +8,23 @@ import java.util.concurrent.Executors;
 
 import it.polimi.ingsw.ps23.server.controller.ServerControllerInterface;
 import it.polimi.ingsw.ps23.server.model.state.State;
-
+/**
+ * Provides methods to manage the client with RMI. With class handle the connection, disconnection and all 
+ * state send by model.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class RMIClient implements ClientInterface {
 	
 	private RMIView rmiView;
 	
 	private ExecutorService executor;
-
+	/**
+	 * Constructs the client in rmi with the chosen visualization: GUI or CLI.
+	 * @param playerName - the name of the user
+	 * @param scanner - the scanner to take input
+	 * @param output - object to take output from user
+	 */
 	public RMIClient(String playerName, Scanner scanner, PrintStream output) {
 		//rmiView = new RMIConsoleView(playerName, scanner, output);
 		rmiView = new RMIGUIView(playerName, output);
