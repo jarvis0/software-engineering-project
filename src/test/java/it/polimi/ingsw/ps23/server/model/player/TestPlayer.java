@@ -11,7 +11,11 @@ import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Deck;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
-
+/**
+ * Tests all the methods of the {@link Player} that give him points or cards.
+ * @author mirma
+ *
+ */
 public class TestPlayer {
 
 	@Test

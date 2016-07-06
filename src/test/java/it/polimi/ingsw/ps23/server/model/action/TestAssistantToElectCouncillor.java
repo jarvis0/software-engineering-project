@@ -17,7 +17,11 @@ import it.polimi.ingsw.ps23.server.model.actions.AssistantToElectCouncillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the mechanics of the {@link AssistantToElectCouncillor} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestAssistantToElectCouncillor {
 
 	@Test

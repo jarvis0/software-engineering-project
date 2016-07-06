@@ -16,7 +16,11 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.player.Player;
-
+/**
+  * Tests if the correct info are obtained from a message after {@link PlayerParameterExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestPlayersParameterExpression {
 
 	@Test

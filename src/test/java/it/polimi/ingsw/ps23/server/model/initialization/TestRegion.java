@@ -20,7 +20,12 @@ import it.polimi.ingsw.ps23.server.model.map.Region;
 import it.polimi.ingsw.ps23.server.model.map.board.FreeCouncillorsSet;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
-
+/**
+ * Tests the construction of {@link Region} and all methods provided by {@link GroupRegionalCity}. In particular there
+ * is a focus on the {@link BonusTile} of the region.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestRegion {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";
@@ -31,7 +36,7 @@ public class TestRegion {
 	private static final String COUNCILLORS_CSV = "councillors.csv";
 	private static final String PERMISSION_DECK_CSV = "permissionDecks.csv";
 	
-	@Test//TODO manca da verificare quando un deck viene reinizializzato
+	@Test
 	public void test() {
 		BonusCache bonusCache = new BonusCache();
 		List<String[]> rawCities = new RawObject(TEST_CONFIGURATION_PATH + CITIES_CSV).getRawObject();

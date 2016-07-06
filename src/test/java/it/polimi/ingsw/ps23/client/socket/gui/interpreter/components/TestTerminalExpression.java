@@ -6,19 +6,24 @@ import org.junit.Test;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
-
+/**
+ * Tests if {@link TerminalExpression} can interpret message inside defined tags.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestTerminalExpression {
 
+	private static final String START = "<a>";
+	private static final String FINISH = "</a>";
+	
 	@Test
 	public void test() {
-		String startTag = "<a>";
-		String finishTag = "</a>";
-		Expression expression = new TerminalExpression(startTag, finishTag);
+		Expression expression = new TerminalExpression(START, FINISH);
 		String message = "hello world!";
-		assertTrue(expression.interpret(startTag + message + finishTag));
-		assertTrue(expression.selectBlock(startTag + message + finishTag).equals(message));
-		assertTrue(expression.removeTags(startTag + message + finishTag).equals(message));
-		assertTrue(expression.removeBlock(startTag + message + finishTag).equals(""));		
+		assertTrue(expression.interpret(START + message + FINISH));
+		assertTrue(expression.selectBlock(START + message + FINISH).equals(message));
+		assertTrue(expression.removeTags(START + message + FINISH).equals(message));
+		assertTrue(expression.removeBlock(START + message + FINISH).equals(""));		
 	}
 
 }

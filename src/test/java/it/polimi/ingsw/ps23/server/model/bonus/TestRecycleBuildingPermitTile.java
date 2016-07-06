@@ -12,7 +12,11 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.regions.BusinessPermitTile;
-
+/**
+ * Tests all the changes made by {@link RecycleBuildingPermitTile} to the {@link Player} status.
+ * @author Mirco Manzoni
+ * 
+ *  */
 public class TestRecycleBuildingPermitTile {
 
 	@Test

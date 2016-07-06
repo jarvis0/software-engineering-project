@@ -112,11 +112,11 @@ public class Model extends ModelObservable {
 
 	private void selectNextGameState() {
 		if(nextPlayerIndex()) {
+			changePlayer();
 			if(new EndGame(game, turnHandler).isGameEnded()) {
 				setEndGameState();
 			}
 			else {
-				changePlayer();
 				setStartTurnState();
 			}
 		}
@@ -150,7 +150,8 @@ public class Model extends ModelObservable {
 		EndGameState endGameState = new EndGameState();	
 		endGameState.changeState(context, game);
 		wakeUp(endGameState);
-		endGame = true;//TODO
+		endGame = true;
+		playersResumeHandler.resume();
 	}
 
 	private void setUpMarket() {
@@ -242,9 +243,7 @@ public class Model extends ModelObservable {
 		}
 		else {
 			setStartingPlayerIndex();
-			nextPlayerIndex();
-			changePlayer();
-			setStartTurnState();
+			selectNextGameState();
 		}
 	}
 	/**
@@ -323,7 +322,6 @@ public class Model extends ModelObservable {
 		else {
 			(new EndGame(game, turnHandler)).applyFinalBonus();
 			setEndGameState();
-			playersResumeHandler.resume();
 		}
 	}
 	

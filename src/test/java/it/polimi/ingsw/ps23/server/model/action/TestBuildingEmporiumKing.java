@@ -18,7 +18,11 @@ import it.polimi.ingsw.ps23.server.model.map.board.PoliticCard;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.Council;
 import it.polimi.ingsw.ps23.server.model.player.PoliticHandDeck;
-
+/**
+ * Tests the mechanics of the {@link TestBuildingEmporiumKing} action and all classes involved in.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestBuildingEmporiumKing {
 
 	@Test

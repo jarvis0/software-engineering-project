@@ -9,7 +9,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 /**
  * Provides methods to manage the emporiums built by a {@link Player}.
- * @author mirma
+ * @author Mirco Manzoni
  *
  */
 public class BuiltEmporiumsSet implements Serializable {

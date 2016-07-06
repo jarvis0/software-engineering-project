@@ -9,7 +9,11 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.bonus.BonusCache;
 import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.Region;
-
+/**
+ * Tests the construction of the {@link GroupColoredCity} retrieving data from configuration files.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestGroupColored {
 
 	private static final String TEST_CONFIGURATION_PATH = "src/test/java/it/polimi/ingsw/ps23/server/model/initialization/configuration/";

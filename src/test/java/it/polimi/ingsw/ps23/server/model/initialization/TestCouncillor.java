@@ -7,7 +7,11 @@ import org.junit.Test;
 import it.polimi.ingsw.ps23.server.model.initialization.GameColorsBuilder;
 import it.polimi.ingsw.ps23.server.model.map.GameColor;
 import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
-
+/**
+ * Tests the construction of the {@link Councillor}.
+ * @author mirma
+ *
+ */
 public class TestCouncillor {
 
 	@Test

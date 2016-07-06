@@ -8,7 +8,11 @@ import it.polimi.ingsw.ps23.server.model.bonus.VictoryPointBonus;
 import it.polimi.ingsw.ps23.server.model.map.board.GroupColoredCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.CapitalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
-
+/**
+ * Tests the protected methods of {@link Region} class, inaccessible from initialization package.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestProtectedMethodRegion {
 
 	@Test

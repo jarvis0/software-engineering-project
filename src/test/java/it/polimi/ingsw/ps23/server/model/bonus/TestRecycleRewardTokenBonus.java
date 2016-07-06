@@ -13,7 +13,11 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.TurnHandler;
 import it.polimi.ingsw.ps23.server.model.map.regions.City;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
-
+/**
+ * Tests all the changes made by {@link RecycleRewardTokenBonus} to the {@link Player} status.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestRecycleRewardTokenBonus {
 
 	@Test

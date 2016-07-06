@@ -12,7 +12,11 @@ import it.polimi.ingsw.ps23.server.model.Game;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.bonus.RealBonus;
 import it.polimi.ingsw.ps23.server.model.map.board.NobilityTrackStep;
-
+/**
+ * Tests if the correct info are obtained from a message after {@link NobilityTrackExpression} parsing.
+ * @author Mirco Manzoni
+ *
+ */
 public class TestNobilityTrackExpression {
 
 	@Test
