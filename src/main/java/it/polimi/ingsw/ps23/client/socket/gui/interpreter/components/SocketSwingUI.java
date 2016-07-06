@@ -5,8 +5,19 @@ import java.util.List;
 import it.polimi.ingsw.ps23.client.GUIView;
 import it.polimi.ingsw.ps23.client.SwingUI;
 
+/**
+ * Creates a bridge to SwingUI and refreshes it starting from strings received via socket.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class SocketSwingUI extends SwingUI {
 	
+	/**
+	 * Constructs the swing UI
+	 * @param guiView - socket view useful for receiving and sending updates by the swing UI
+	 * @param mapType - map type of the current game
+	 * @param playerName - client game player name
+	 */
 	public SocketSwingUI(GUIView guiView, String mapType, String playerName) {
 		super(guiView, mapType, playerName);
 	}
