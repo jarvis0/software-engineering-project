@@ -19,7 +19,7 @@ public class BuiltEmporiumsSet implements Serializable {
 	 */
 	private static final long serialVersionUID = 6249094998409712661L;
 
-	private static final int MAX_EMPORIUMS = 4;//TODO reset to real game default value
+	private static final int MAX_EMPORIUMS = 10;
 	
 	private List<City> builtEmporiums;
 	
