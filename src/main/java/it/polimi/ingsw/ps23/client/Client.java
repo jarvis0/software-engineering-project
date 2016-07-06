@@ -64,7 +64,7 @@ class Client {
 		String playerName = scanner.next();
 		//if vuole avviare rmi then... else
 		initializeRMI(playerName);
-		initializeSocket(playerName);
+		//initializeSocket(playerName);
 	}
 	
 	/**
