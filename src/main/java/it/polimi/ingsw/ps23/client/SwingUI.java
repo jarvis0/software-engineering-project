@@ -189,7 +189,10 @@ public abstract class SwingUI {
 	private Point getCouncilPoint(String region) {
 		return councilPoints.get(region);
 	}
-
+	/**
+	 * Sets the value of display of the king buttons in GUI. True will set visible, false not visible.
+	 * @param display - value of display
+	 */
 	public void enableKingButton(boolean display) {
 		btnKingdom.setEnabled(display);
 	}
@@ -282,8 +285,6 @@ public abstract class SwingUI {
 			}
 		}
 		Point freeCouncillorsPoint = councilPoints.get("free");
-		int x = freeCouncillorsPoint.x;
-		int y = freeCouncillorsPoint.y;
 		Map<String, Integer> freeCouncillorsMap = new HashMap<>();
 		for (String freeCouncillor : freeCouncillors) {
 			if (freeCouncillorsMap.containsKey(freeCouncillor)) {
@@ -292,6 +293,12 @@ public abstract class SwingUI {
 				freeCouncillorsMap.put(freeCouncillor, 1);
 			}
 		}
+		drawFreeCouncillor(freeCouncillorsMap, freeCouncillorsPoint);
+	}
+	
+	private void drawFreeCouncillor(Map<String, Integer> freeCouncillorsMap, Point freeCouncillorsPoint) {
+		int x = freeCouncillorsPoint.x;
+		int y = freeCouncillorsPoint.y;
 		for (Entry<String, Integer> entry : freeCouncillorsMap.entrySet()) {
 			String color = entry.getKey();
 			BufferedImage councillorImage = guiLoad.readImage(IMAGES_PATH + color + COUNCILLOR_PATH);
@@ -766,7 +773,12 @@ public abstract class SwingUI {
 			jLabel.setEnabled(display);
 		}
 	}
-
+	/**
+	 * Sets the visibility of the panel of main action and quick action. If is it true it will display the 
+	 * panel else the panel will be not displayed.
+	 * @param isAvailableMainAction - the visibility of main action
+	 * @param isAvailableQuickAction - the visibility of quick action
+	 */
 	public void showAvailableActions(boolean isAvailableMainAction, boolean isAvailableQuickAction) {
 		mainActionPanel.setVisible(isAvailableMainAction);
 		quickActionPanel.setVisible(isAvailableQuickAction);
@@ -776,7 +788,11 @@ public abstract class SwingUI {
 		}
 		enableRegionButtons(false);
 	}
-
+	/**
+	 * Sets the visibility of the free councillor buttons. If is it true it will display the button else
+	 * the button will be not enabled.
+	 * @param display - the visibility of the free councillors buttons
+	 */
 	public void enableFreeCouncillorsButtons(boolean display) {
 		freeCuncillorListener = display;
 		for (Entry<String, Map<JLabel, JLabel>> entry : freeCouncillorsLabels.entrySet()) {
@@ -787,11 +803,20 @@ public abstract class SwingUI {
 		}
 
 	}
-
+	/**
+	 * Sets the visibility of politic cards label. If is it true it will display the labels else
+	 * the labels will be not enabled.
+	 * @param display - the visibility of the politic card labels
+	 */
 	public void enablePoliticCards(boolean display) {
 		enableCards(display);
 	}
-
+	/**
+	 * Sets the visibility of the specific permit tile panel. If is it true it will display the panel else
+	 * the panel will be not enabled
+	 * @param chosenCouncil - the selected council
+	 * @param display - the visibility of the permit tile panel
+	 */
 	public void enablePermitTilesPanel(String chosenCouncil, boolean display) {
 		permitTileListener = display;
 		Map<JLabel, List<JLabel>> permitTilesLabels = permitTiles.get(chosenCouncil);
@@ -799,17 +824,29 @@ public abstract class SwingUI {
 			jLabel.setEnabled(display);
 		}
 	}
-
+	/**
+	 * Sets the visibility of the cities. If is it true it will display the cities else the cities will be not
+	 * enabled
+	 * @param display - the visibility of cities
+	 */
 	public void enableCities(boolean display) {
 		enableCitiesButtons(display);
 	}
-
+	/**
+	 * Sets the visibility of the region buttons. If is it true it will display the region buttons else
+	 * the region buttons will be not enabled
+	 * @param display - the visibility of region buttons
+	 */
 	public void enableRegionButtons(boolean display) {
 		for (JButton regionButton : regionsButtons) {
 			regionButton.setEnabled(display);
 		}
 	}
-
+	/**
+	 * Sets the visibility of the permit tile deck. If is it true it will display the permit tile deck else
+	 * the permit tile deck will be not displayed.
+	 * @param display - the visibility of permit deck
+	 */
 	public void enablePermitTileDeck(boolean display) {
 		permitTileListener = true;
 		for (JLabel jLabel : playerPermitTiles.keySet()) {
@@ -833,29 +870,42 @@ public abstract class SwingUI {
 			}
 		}
 	}
-
+	
 	public boolean hasFinished() {
 		return finish;
 	}
-
+	/**
+	 * Loads the area used by the user when the game enter in market phase.
+	 */
 	public void loadMarketInputArea() {
 		marketSendButton.addActionListener(e -> {
 			spinnerValue = (int) marketSpinner.getValue();
 			guiView.resume();
 		});
 	}
-
+	/**
+	 * Appends a string to the text displayed on the console.
+	 * @param string - the string to append
+	 */
 	public void appendConsoleText(String string) {
 		guiLoad.appendText(string);
 	}
-
+	/**
+	 * Set the visibility of the market input area. If is it true it will display the input area else
+	 * the market input area will be not displayed.
+	 * @param display - the visibility of market input area
+	 */
 	public void enableMarketInputArea(boolean display) {
 		marketSpinner.setVisible(display);
 		marketSpinner.setEnabled(display);
 		marketSendButton.setVisible(display);
 		marketSendButton.setEnabled(display);
 	}
-
+	/**
+	 * Sets the visibility of finish button. If is it true it will display the button else
+	 * the finish button will be not enabled.
+	 * @param display
+	 */
 	public void enableFinish(boolean display) {
 		finished.setEnabled(display);
 	}
@@ -919,7 +969,7 @@ public abstract class SwingUI {
 	}
 
 	protected void refreshGamePlayersPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,
-			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
+		List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshOtherPlayersStatusDialog(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 	}

@@ -117,9 +117,9 @@ public abstract class MapUpdateState extends State {
 		print += "\n\n===============================================================================================================\n";
 		print += "===============================================================================================================\n";
 		if(finalTurn) {
-			print += "This is the final round.";
+			print += "This is the final round.\n";
 		}
-		print += lastActionPerformed;
+		print += lastActionPerformed + "\n";
 		return print;
 	}
 }

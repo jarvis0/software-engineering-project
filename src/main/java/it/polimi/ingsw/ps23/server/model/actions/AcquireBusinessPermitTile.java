@@ -59,7 +59,7 @@ public class AcquireBusinessPermitTile extends Action {
 		player.updateCoins(cost);
 		player.pickPermitCard(game, turnHandler, game.getGameMap().getRegionMap().get(chosenRegion), chosenPermissionCard);
 		turnHandler.useMainAction();
-		setActionReport("Player " + player.getName() + " acquired a business permit tile (" + player.getPermitHandDeck().getCardInPosition(player.getPermitHandDeck().getHandSize() - 1) + ") sutisfying the " + chosenRegion + "'s council with these cards: " + removedPoliticCards);
+		setActionReport("Player " + player.getName() + " acquired a business permit tile (" + player.getPermitHandDeck().getCardInPosition(player.getPermitHandDeck().getHandSize() - 1) + ") satisfying the " + chosenRegion + "'s council with these cards: " + removedPoliticCards);
 	}
 		
 }
