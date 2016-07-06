@@ -68,7 +68,6 @@ class PlayersParameterExpression extends GUIParser {
 		return permitTilesBonusesValue;
 	}
 	
-	
 	List<List<List<String>>> getTotalPermitTilesCities() {
 		return totalPermitTilesCities;
 	}
