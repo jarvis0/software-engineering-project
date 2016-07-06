@@ -46,11 +46,11 @@ public class TestPlayersParameterExpression {
 		}
 		assertTrue(playersParameterExpression.getOnline().get(0).equals(String.valueOf(game.getGamePlayersSet().getPlayer(0).isOnline())));
 		for(City city : permitCard.getCities()) {
-			assertTrue(playersParameterExpression.getPermitTilesCities().toString().contains(String.valueOf(city.toString().charAt(0))));
+			assertTrue(playersParameterExpression.getTotalPermitTilesCities().toString().contains(String.valueOf(city.toString().charAt(0))));
 		}
 		for(Bonus bonus : permitCard.getBonuses()) {
-			assertTrue(playersParameterExpression.getPermitTilesBonusesName().toString().contains(String.valueOf(bonus.getName())));
-			assertTrue(playersParameterExpression.getPermitTilesBonusesValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
+			assertTrue(playersParameterExpression.getTotalPermitTilesBonusesName().toString().contains(String.valueOf(bonus.getName())));
+			assertTrue(playersParameterExpression.getTotalPermitTilesBonusesValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
 		}
 		
 	}
@@ -71,17 +71,17 @@ public class TestPlayersParameterExpression {
 				playersParameterSend.append("," + builtEmporiums.get(j).getName());
 			}
 			addPermitHandDeck(playersParameterSend, player.getPermitHandDeck().getCards());
-			addPermitHandDeck(playersParameterSend, player.getPermitUsedHandDeck().getCards());
+			addPermitHandDeck(playersParameterSend, player.getAllPermitHandDeck().getCards());
 			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
 			playersParameterSend.append("," + player.isOnline());
-		}		
+		}
 		playersParameterSend.append(",");
 		return "<players_parameters>" + playersParameterSend + "</players_parameters>";
 	}
 
 	private void addPoliticHandDeck(StringBuilder playersParameterSend, List<Card> cards) {
 		playersParameterSend.append("," + cards.size());
-		for (Card politicCard : cards) {
+		for(Card politicCard : cards) {
 			playersParameterSend.append("," + ((PoliticCard) politicCard).getColor().toString());
 		}
 	}
@@ -104,7 +104,11 @@ public class TestPlayersParameterExpression {
 		bonusesSend.append(bonusesNumber);
 		for(Bonus bonus : bonuses) {
 			bonusesSend.append("," + bonus.getName());
-			bonusesSend.append("," + ((RealBonus)bonus).getValue());
+			if(!bonus.isNull()) {
+				bonusesSend.append("," + ((RealBonus)bonus).getValue());
+			} else {
+				bonusesSend.append("," + 0);
+			}
 		}
 	}
 }
