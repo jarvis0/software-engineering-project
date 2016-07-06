@@ -26,7 +26,7 @@ public class TestBuildingPermitBonus {
 		bonus.updateBonus(game, turnHandler);
 		assertTrue(turnHandler.getSuperBonuses().contains(bonus));
 		String checkBonus = bonus.checkBonus(game.getCurrentPlayer());
-		Card card = ((GroupRegionalCity)game.getGameMap().getGroupRegionalCity().get(0)).getPermitTilesUp().getCards().get(0);
+		Card card = ((GroupRegionalCity) game.getGameMap().getGroupRegionalCity().get(0)).getPermitTilesUp().getCards().get(0);
 		bonus.selectRegion(game.getGameMap().getGroupRegionalCity().get(0).getName());
 		assertFalse(checkBonus.equals(bonus.checkBonus(game.getCurrentPlayer())));
 		List<String> input = new ArrayList<>();
@@ -34,7 +34,6 @@ public class TestBuildingPermitBonus {
 		input.add(String.valueOf(1));
 		bonus.acquireSuperBonus(input, game, turnHandler);
 		assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().contains(card));
-		
 	}
 
 }

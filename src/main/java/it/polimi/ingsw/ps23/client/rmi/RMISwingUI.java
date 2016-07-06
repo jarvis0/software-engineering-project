@@ -64,7 +64,12 @@ class RMISwingUI extends SwingUI {
 			bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
 		}
 	}
-	
+
+	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
+		for(int i = 0; i < bonuses.size(); i++)  {
+			bonusToStrings(bonuses.get(i), bonusesName, bonusesValue);
+		}
+	}
 	
 	private void permitTilesToString(List<Card> permitTilesUp, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue) {
 		for(Card card : permitTilesUp) {
@@ -278,12 +283,6 @@ class RMISwingUI extends SwingUI {
 		getFrame().revalidate();
 	}
 
-	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
-		for(int i = 0; i < bonuses.size(); i++)  {
-			bonusToStrings(bonuses.get(i), bonusesName, bonusesValue);
-		}
-	}
-	
 	private void rewardTokensToStrings(Map<String, City> cityMap, List<String> citiesName, List<List<String>> citiesBonusesName, List<List<String>> citiesBonusesValue) {
 		Set<Entry<String, City>> citiesEntries = cityMap.entrySet();
 		for(Entry<String, City> cityEntry : citiesEntries) {

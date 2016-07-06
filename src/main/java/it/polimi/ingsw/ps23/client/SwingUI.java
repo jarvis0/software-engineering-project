@@ -854,7 +854,7 @@ public abstract class SwingUI {
 			}
 		}
 		playerPermitTiles.clear();
-
+		
 		int x = 0;
 		int y = 611;
 		int playerIndex = playersName.indexOf(playerName);

@@ -74,13 +74,12 @@ public class SocketClient {
 	}
 	
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
+		//@SuppressWarnings("resource")
+		//Scanner scanner = new Scanner(System.in);
 		PrintStream output = new PrintStream(System.out, true);
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
 		//String clientInfos = CONSOLE_TAG + "AleGiuMir";
-		//String clientInfos = GUI_TAG + "AleGiuMir";
-		String clientInfos = GUI_TAG + scanner.next();
+		String clientInfos = GUI_TAG + "AleGiuMir";
 		try {
 			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
 			client.start(clientInfos);
