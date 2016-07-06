@@ -303,7 +303,7 @@ public class SocketGUIView extends SocketView {
 
 	@Override
 	public void visit(EndGameState currentState) {
-		getConnection().send(gameParameters.createEndGame());
+		getConnection().send(gameParameters.createEndGame(currentState));
 		getConnection().send(currentState.getWinner());
 		setEndGame(true);
 	}

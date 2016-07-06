@@ -22,6 +22,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.state.Context;
+import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.StartTurnState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
@@ -62,7 +63,6 @@ public class TestSocketParametersCreator {
 			assertTrue(content.substring(content.indexOf("<players_parameters>"), content.indexOf("</players_parameters>")).contains(((PoliticCard)card).toString()));
 		}
 		content = creator.createUIStaticContents(game.getGameMap().getCities(), game.getNobilityTrack());
-		System.out.println(content);
 		assertTrue(content.contains("<static_content>") && content.contains("</static_content>"));
 		Iterator<City> iterator = game.getGameMap().getCities().values().iterator();
 		while(iterator.hasNext()) {
@@ -95,8 +95,9 @@ public class TestSocketParametersCreator {
 		SuperBonusState superState = new SuperBonusState(turnHandler);
 		superState.changeState(new Context(), game);
 		assertTrue(creator.createSuperBonus(superState).contains("super_bonus"));
-		assertTrue(creator.createEndGame().contains("end_game"));
-		
-}
+		EndGameState endGame = new EndGameState();
+		endGame.changeState(new Context(), game);
+		assertTrue(creator.createEndGame(endGame).contains("end_game"));
+	}
 
 }

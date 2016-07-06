@@ -20,6 +20,7 @@ import it.polimi.ingsw.ps23.server.model.map.regions.Councillor;
 import it.polimi.ingsw.ps23.server.model.map.regions.GroupRegionalCity;
 import it.polimi.ingsw.ps23.server.model.map.regions.NormalCity;
 import it.polimi.ingsw.ps23.server.model.player.Player;
+import it.polimi.ingsw.ps23.server.model.state.EndGameState;
 import it.polimi.ingsw.ps23.server.model.state.MapUpdateState;
 import it.polimi.ingsw.ps23.server.model.state.MarketOfferPhaseState;
 import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
@@ -314,8 +315,9 @@ class SocketParametersCreator {
 				REFRESH_CONTENT_TAG_CLOSE + ACTION_TAG_CLOSE;
 	}
 
-	String createEndGame() {//TODO refresh end game
-		return ACTION_TAG_OPEN + END_GAME_TAG + ACTION_TAG_CLOSE;
+	String createEndGame(EndGameState currentState) {
+		return ACTION_TAG_OPEN + END_GAME_TAG + REFRESH_CONTENT_TAG_OPEN + refreshUIStrings(currentState) +
+				REFRESH_CONTENT_TAG_CLOSE + ACTION_TAG_CLOSE;
 	}
 
 }
