@@ -25,10 +25,12 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 	private String playerName;
 	
 	private boolean endCLIPrints;
+	private boolean invalidName;
 	
 	RemoteGUIView(SocketClient client, PrintStream output) {
 		super(client, output);
 		endCLIPrints = false;
+		invalidName = false;
 	}
 
 	private NoInputExpression getNoInputExpression() {
@@ -63,14 +65,20 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		return playerName;
 	}
 
+	public void setInvalidName() {
+		invalidName = true;
+	}
+
 	private void cliPrints() {
 		String message;
 		NoInputExpression isNoInput = getNoInputExpression();
 		do {
 			message = getClient().receive();
 			message = isNoInput.parse(message);
-		} while(!endCLIPrints);
-		swingUI = new SocketSwingUI(this, message, playerName);
+		} while(!endCLIPrints && !invalidName);
+		if(!invalidName) {
+			swingUI = new SocketSwingUI(this, message, playerName);
+		}
 	}
 	
 	public synchronized void pause() {
@@ -87,9 +95,7 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		notifyAll();
 	}
 
-	@Override
-	protected void run() {
-		cliPrints();
+	private void startGUIInterpreter() {
 		getStaticContentExpression().parse(getClient().receive());
 		NoInputExpression isNoInput = getNoInputExpression();
 		isNoInput.setSwingUI(swingUI);
@@ -102,6 +108,14 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 			isDynamicContent.parse(message);
 			isAction.parse(message);
 		} while(!getConnectionTimedOut() && !getEndGame());
+	}
+	
+	@Override
+	protected void run() {
+		cliPrints();
+		if(!invalidName) {
+			startGUIInterpreter();
+		}
 		getClient().closeConnection();
 	}
 

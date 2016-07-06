@@ -79,11 +79,18 @@ public class Connection implements Runnable {
 	public void send(String message) {
  		textOut.print(message + END_OF_MESSAGE_TAG);
  	}
- 	
+ 	/**
+ 	 * Sends a no input requested message to the socket client.
+ 	 * @param message - to be printed onto the socket client.
+ 	 */
 	public void sendNoInput(String message) {
 		send(NO_INPUT_TAG_OPEN + message + NO_INPUT_TAG_CLOSE);
 	}
-	
+	/**
+	 * Sends a yes input requested m essage to the socket client.
+	 * @param message - to be printed on the socket client and after that the client request a input
+	 * to the user.
+	 */
 	public void sendYesInput(String message) {
 		send(YES_INPUT_TAG_OPEN + message + YES_INPUT_TAG_CLOSE);
 	}

@@ -22,9 +22,9 @@ class PlayersParameterExpression extends GUIParser {
 	private List<List<List<String>>> permitTilesCities;
 	private List<List<List<String>>> permitTilesBonusesName;
 	private List<List<List<String>>> permitTilesBonusesValue;
-	private List<List<List<String>>> usedPermitTilesCities;
-	private List<List<List<String>>> usedPermitTilesBonusesName;//TODO inviare TOTAL
-	private List<List<List<String>>> usedPermitTilesBonusesValue;
+	private List<List<List<String>>> totalPermitTilesCities;
+	private List<List<List<String>>> totalPermitTilesBonusesName;
+	private List<List<List<String>>> totalPermitTilesBonusesValue;
 	private Map<String, List<String>> politicCards;
 	private List<String> areOnline;
 	
@@ -68,6 +68,19 @@ class PlayersParameterExpression extends GUIParser {
 		return permitTilesBonusesValue;
 	}
 	
+	
+	List<List<List<String>>> getTotalPermitTilesCities() {
+		return totalPermitTilesCities;
+	}
+	
+	List<List<List<String>>> getTotalPermitTilesBonusesName() {
+		return totalPermitTilesBonusesName;
+	}
+	
+	List<List<List<String>>> getTotalPermitTilesBonusesValue() {
+		return totalPermitTilesBonusesValue;
+	}
+	
 	List<String> getOnline() {
 		return areOnline;
 	}
@@ -85,9 +98,9 @@ class PlayersParameterExpression extends GUIParser {
 			permitTilesCities = new ArrayList<>();
 			permitTilesBonusesName = new ArrayList<>();
 			permitTilesBonusesValue = new ArrayList<>();
-			usedPermitTilesCities = new ArrayList<>();
-			usedPermitTilesBonusesName = new ArrayList<>();
-			usedPermitTilesBonusesValue = new ArrayList<>();
+			totalPermitTilesCities = new ArrayList<>();
+			totalPermitTilesBonusesName = new ArrayList<>();
+			totalPermitTilesBonusesValue = new ArrayList<>();
 			areOnline = new ArrayList<>();
 			politicCards = new HashMap<>();
 			String field = parsingMessage.substring(0, parsingMessage.indexOf(','));
@@ -111,7 +124,7 @@ class PlayersParameterExpression extends GUIParser {
 
 				parsingMessage = addPermitTiles(parsingMessage, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 				
-				parsingMessage = addPermitTiles(parsingMessage, usedPermitTilesCities, usedPermitTilesBonusesName, usedPermitTilesBonusesValue);
+				parsingMessage = addPermitTiles(parsingMessage, totalPermitTilesCities, totalPermitTilesBonusesName, totalPermitTilesBonusesValue);
 				
 				field = parsingMessage.substring(0, parsingMessage.indexOf(','));
 				int politicCardsNumber = Integer.parseInt(field);

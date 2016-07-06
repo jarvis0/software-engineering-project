@@ -15,7 +15,6 @@ import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCouncilException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
-import it.polimi.ingsw.ps23.server.model.actions.Action;
 import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.state.AcquireBusinessPermitTileState;
 import it.polimi.ingsw.ps23.server.model.state.AdditionalMainActionState;
@@ -39,24 +38,16 @@ class RMIConsoleView extends RMIView {
 	private PrintStream output;
 	private boolean endGame;
 	
-	RMIConsoleView(String playerName, PrintStream output) {
+	RMIConsoleView(String playerName, Scanner scanner, PrintStream output) {
 		super(playerName);
 		endGame = false;
-		scanner = new Scanner(System.in);
+		this.scanner = scanner;
 		this.output = output;
 	}
 
 	@Override
 	void setMapType(String mapType) {
 		output.println("\nMap type: " + mapType + ".");
-	}
-
-	private void sendAction(Action action) {
-		try {
-			getControllerInterface().wakeUpServer(action);
-		} catch (RemoteException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e);
-		}
 	}
 
 	@Override
@@ -318,6 +309,10 @@ class RMIConsoleView extends RMIView {
 		output.println(currentState.getWinner());
 		endGame = true;
 	}
+	
+	void setEndGame() {
+		endGame = true;
+	}
 
 	@Override
 	void infoMessage(String message) {
@@ -336,6 +331,7 @@ class RMIConsoleView extends RMIView {
 				output.println(getState().getExceptionString());
 			}
 		} while(!endGame);
+		setServerEndGame();
 	}
 
 }

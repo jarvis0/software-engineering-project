@@ -42,6 +42,7 @@ class SocketParametersCreator {
 	private static final String COUNCILS_TAG_CLOSE = "</councils>";
 	private static final String BONUS_TILES_TAG_OPEN = "<bonus_tiles>";
 	private static final String BONUS_TILES_TAG_CLOSE = "</bonus_tiles>";
+	private static final String NO_KING_TILE = "noKingTile";
 	private static final String PLAYERS_PARAMETERS_TAG_OPEN = "<players_parameters>";
 	private static final String PLAYERS_PARAMETERS_TAG_CLOSE = "</players_parameters>";
 	private static final String PERMIT_TILES_UP_TAG_OPEN = "<permit_tiles_up>";
@@ -143,21 +144,39 @@ class SocketParametersCreator {
 
 	private void addBonusTiles(StringBuilder bonusTilesSend, List<Region> regions) {
 		for(Region region : regions) {
-			bonusTilesSend.append("," + region.getName());
 			Bonus bonus = region.getBonusTile();
-			bonusTilesSend.append("," + bonus.getName());
-			bonusTilesSend.append("," + ((RealBonus)bonus).getValue());
+			if(!region.alreadyUsedBonusTile()) {
+				bonusTilesSend.append("," + region.getName());
+				bonusTilesSend.append("," + bonus.getName());
+				bonusTilesSend.append("," + ((RealBonus) bonus).getValue());
+			}
 		}
 	}
 	
 	private String addBonusTiles(List<Region> groupRegionalCity, List<Region> groupColoredCity, Bonus currentKingTile) {
 		StringBuilder bonusTilesSend = new StringBuilder();
-		int groupsNumber = groupRegionalCity.size() + groupColoredCity.size();
-		bonusTilesSend.append(groupsNumber);//TODO already aquired
+		int activeBonusTilesNumber = 0;
+		for(int i = 0; i < groupRegionalCity.size(); i++) {
+			if(!groupRegionalCity.get(i).alreadyUsedBonusTile()) {
+				activeBonusTilesNumber++;
+			}
+		}
+		for(int i = 0; i < groupColoredCity.size(); i++) {
+			if(!groupColoredCity.get(i).alreadyUsedBonusTile()) {
+				activeBonusTilesNumber++;
+			}
+		}
+		bonusTilesSend.append(activeBonusTilesNumber);
 		addBonusTiles(bonusTilesSend, groupRegionalCity);
 		addBonusTiles(bonusTilesSend, groupColoredCity);
-		bonusTilesSend.append("," + currentKingTile.getName());
-		bonusTilesSend.append("," + ((RealBonus)currentKingTile).getValue());
+		if(!currentKingTile.isNull()) {
+			bonusTilesSend.append("," + currentKingTile.getName());
+			bonusTilesSend.append("," + ((RealBonus) currentKingTile).getValue());//TODO testare
+		}
+		else {
+			bonusTilesSend.append("," + NO_KING_TILE);
+			bonusTilesSend.append("," + "0");
+		}
 		bonusTilesSend.append(",");
 		return BONUS_TILES_TAG_OPEN + bonusTilesSend + BONUS_TILES_TAG_CLOSE;
 	}
@@ -198,10 +217,10 @@ class SocketParametersCreator {
 				playersParameterSend.append("," + builtEmporiums.get(j).getName());
 			}
 			addPermitHandDeck(playersParameterSend, player.getPermitHandDeck().getCards());
-			addPermitHandDeck(playersParameterSend, player.getPermitUsedHandDeck().getCards());
+			addPermitHandDeck(playersParameterSend, player.getAllPermitHandDeck().getCards());
 			addPoliticHandDeck(playersParameterSend, player.getPoliticHandDeck().getCards());
 			playersParameterSend.append("," + player.isOnline());
-		}//verificare se ha i permit tile ecc.. con il debug F5 TODO
+		}
 		playersParameterSend.append(",");
 		return PLAYERS_PARAMETERS_TAG_OPEN + playersParameterSend + PLAYERS_PARAMETERS_TAG_CLOSE;
 	}

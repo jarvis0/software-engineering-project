@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.ps23.server.Connection;
 import it.polimi.ingsw.ps23.server.commons.exceptions.IllegalActionSelectedException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCardException;
+import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCityException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidCostException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidNumberOfAssistantException;
 import it.polimi.ingsw.ps23.server.commons.exceptions.InvalidRegionException;
@@ -27,7 +28,7 @@ import it.polimi.ingsw.ps23.server.model.state.SuperBonusState;
 
 public class SocketGUIView extends SocketView {
 
-	private static final String SKIP = "skip";
+	private static final String SKIP = "Skip";
 	
 	private SocketParametersCreator gameParameters;
 	private boolean firstUIrefresh;
@@ -241,10 +242,22 @@ public class SocketGUIView extends SocketView {
 		boolean isBuildingPermitTileBonus = currentState.isBuildingPemitTileBonus();
 		getConnection().send(String.valueOf(isBuildingPermitTileBonus));
 		if (isBuildingPermitTileBonus) {
-			getConnection().send(currentState.useBonus());
-			String chosenRegion = receive();
-			currentState.analyzeInput(chosenRegion);
+			currentState.analyzeInput(receive());
 		}
+	}
+
+	private String performSuperBonus(SuperBonusState currentState){
+		getConnection().send(currentState.useBonus());
+		boolean isRecycleBuildingPermitBonus = currentState.isRecycleBuildingPermitBonus();
+		getConnection().send(String.valueOf(isRecycleBuildingPermitBonus));
+		
+		boolean isRecycleRewardTokenBonus = currentState.isRecycleRewardTokenBonus();
+		getConnection().send(String.valueOf(isRecycleRewardTokenBonus));
+
+		boolean isBuildingPemitTileBonus = currentState.isBuildingPemitTileBonus();
+		getConnection().send(String.valueOf(isBuildingPemitTileBonus));
+
+		return receive();
 	}
 
 	@Override
@@ -253,11 +266,19 @@ public class SocketGUIView extends SocketView {
 		boolean otherBonus = currentState.hasNext();
 		getConnection().send(String.valueOf(otherBonus));
 		while(otherBonus) {
-			String selectedItem;
 			int numberOfCurrentBonus = currentState.getCurrentBonusValue();
 			getConnection().send(String.valueOf(numberOfCurrentBonus));
-			
-			
+			try {
+				for (int numberOfBonuses = 0; numberOfBonuses < numberOfCurrentBonus; numberOfBonuses++) {
+					currentState.checkKey();
+					additionalOutput(currentState);
+					String selectedItem = performSuperBonus(currentState);
+					currentState.addValue(selectedItem);
+				}
+			} catch (InvalidCityException | InvalidCardException | InvalidRegionException e) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+				getState().setExceptionString(e.toString());
+			}
 			otherBonus = currentState.hasNext();
 			getConnection().send(String.valueOf(otherBonus));
 		}

@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -58,6 +59,7 @@ class GUILoad {
 	private JTextArea textArea;
 	private JSpinner marketSpinner;
 	private JButton sendButton;
+	private JDialog otherPlayersDialog;
 	
 	GUILoad(String mapPath) {
 		this.mapPath = mapPath;
@@ -114,6 +116,10 @@ class GUILoad {
 
 	DefaultTableModel getTableModel() {
 		return tableModel;
+	}
+	
+	JDialog getOthersPlayersDialog() {
+		return otherPlayersDialog;
 	}
 
 	BufferedImage readImage(String path) {
@@ -231,6 +237,26 @@ class GUILoad {
 		scrollPane.setBounds(0, 0, 567, 110);
 		scrollPane.setLocation(800, 0);
 	}
+	private void loadTextArea() {	
+		textArea = new JTextArea();
+		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		textArea.setBounds(897, 503, 440, 130);
+		textArea.setEditable(false);
+		scrollTextPane = new JScrollPane();
+		scrollTextPane.setBounds(0, 0, 440, 130);
+		scrollTextPane.setLocation(897, 503);
+		scrollTextPane.setViewportView(textArea);
+		mapPanel.add(scrollTextPane,0);	
+		sendButton = new JButton("OK");
+		sendButton.setBounds(935, 653, 89, 23);
+		mapPanel.add(sendButton,0);
+		sendButton.setVisible(false);
+		marketSpinner = new JSpinner();
+		marketSpinner.setBounds(897, 656, 35, 20);
+		mapPanel.add(marketSpinner,0);
+		marketSpinner.setVisible(false);
+	}
 	
 	void loadComponents() {
 		loadCouncilsPositions();
@@ -241,33 +267,15 @@ class GUILoad {
 		loadNobiltyTrack();
 		loadPlayersTable();
 		loadTextArea();
-	}
-
-	private void loadTextArea() {	
-		textArea = new JTextArea();
-		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		textArea.setBounds(897, 503, 440, 70);
-		textArea.setEditable(false);
-		scrollTextPane = new JScrollPane();
-		scrollTextPane.setBounds(0, 0, 440, 70);
-		scrollTextPane.setLocation(897, 503);
-		scrollTextPane.setViewportView(textArea);
-		mapPanel.add(scrollTextPane,0);	
-		sendButton = new JButton("OK");
-		sendButton.setBounds(935, 613, 89, 23);
-		mapPanel.add(sendButton,0);
-		sendButton.setVisible(false);
-		marketSpinner = new JSpinner();
-		marketSpinner.setBounds(897, 613, 35, 20);
-		mapPanel.add(marketSpinner,0);
-		marketSpinner.setVisible(false);
-	}
-
-	public void setText(String string) {
-		textArea.setText(string);
+		loadOthersPlayersDialog();
 	}
 	
+	private void loadOthersPlayersDialog() {
+		otherPlayersDialog = new JDialog(frame, "Other Players Permit Tiles Status");
+		otherPlayersDialog.setBounds(300, 200, 600, 200);
+		otherPlayersDialog.setVisible(false);
+	}
+
 	public void appendText(String string) {
 		textArea.append(string);
 	}

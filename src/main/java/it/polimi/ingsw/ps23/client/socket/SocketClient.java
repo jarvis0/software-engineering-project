@@ -8,10 +8,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * This class has all methods to make the client socket connection work.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class SocketClient {
 
-	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final String CONSOLE_TAG = "<console>";
 	private static final String GUI_TAG = "<gui>";
 	private static final String END_OF_MESSAGE_TAG = "<eom>";
@@ -24,8 +27,13 @@ public class SocketClient {
 	private PrintStream textOut;
 	
 	private RemoteView remoteView;
-
-	private SocketClient(int portNumber) throws IOException {
+	
+	/**
+	 * Initializes a new socket connection with the server.
+	 * @param portNumber - TCP port number
+	 * @throws IOException if the remote server is unreachable.
+	 */
+	public SocketClient(int portNumber) throws IOException {
 		scanner = new Scanner(System.in);
 		output = new PrintStream(System.out, true);
 		socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
@@ -34,10 +42,18 @@ public class SocketClient {
 		textOut = new PrintStream(socket.getOutputStream());
 	}
 
+	/**
+	 * Sends a string message to the server.
+	 * @param message - to be sent to the server
+	 */
 	public void send(String message) {
  		textOut.print(message + END_OF_MESSAGE_TAG);
  	}
 	
+	/**
+	 * Sleeps until the server sends a string message.
+	 * @return the received string message.
+	 */
 	public String receive() {
 		String message = new String();
 		try {
@@ -51,15 +67,12 @@ public class SocketClient {
 		return message;
  	}
 
-	synchronized void closeConnection() {
-		try {
-			socket.close();
-		} catch (IOException e) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot close the connection.", e);
-		}
-	}
-	
-	void start(String clientInfos) {
+	/**
+	 * Starts a new RemoteView related to the specified
+	 * type of view the user has chosen previously.
+	 * @param clientInfos
+	 */
+	public void start(String clientInfos) {
 		send(clientInfos);
 		if(clientInfos.contains(CONSOLE_TAG)) {
 			remoteView = new RemoteConsoleView(this, scanner, output);
@@ -72,20 +85,13 @@ public class SocketClient {
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		//@SuppressWarnings("resource")
-		//Scanner scanner = new Scanner(System.in);
-		PrintStream output = new PrintStream(System.out, true);
-		output.print("Welcome, what's your name (only letters or previous in game name)? ");
-		String clientInfos = CONSOLE_TAG + "AleGiuMir";
-		//String clientInfos = GUI_TAG + "AleGiuMir";
+
+	synchronized void closeConnection() {
 		try {
-			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
-			client.start(clientInfos);
-		} catch(IOException e) {
-			Logger.getLogger("main").log(Level.SEVERE, "Cannot connect to server.", e);
+			socket.close();
+		} catch (IOException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot close the connection.", e);
 		}
 	}
-
+	
 }

@@ -43,5 +43,12 @@ public interface ClientInterface extends Remote {
 	 * @throws RemoteException if the remote client is unreachable
 	 */
 	public void changeName(String newName) throws RemoteException;
+
+	/**
+	 * Set the end of the game for the specified RMI client because of
+	 * connection timeout.
+	 * @throws RemoteException
+	 */
+	public void disconnectRMIPlayer() throws RemoteException;
 	
 }

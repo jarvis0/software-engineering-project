@@ -60,9 +60,16 @@ class RMISwingUI extends SwingUI {
 
 	private void bonusToStrings(Bonus bonus, List<String> bonusesName, List<String> bonusesValue) {
 		bonusesName.add(bonus.getName());
-		bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
+		if(!bonus.isNull()) {
+			bonusesValue.add(String.valueOf(((RealBonus)bonus).getValue()));
+		}
 	}
-	
+
+	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
+		for(int i = 0; i < bonuses.size(); i++)  {
+			bonusToStrings(bonuses.get(i), bonusesName, bonusesValue);
+		}
+	}
 	
 	private void permitTilesToString(List<Card> permitTilesUp, List<List<String>> permitTilesCities, List<List<String>> permitTilesBonusesName, List<List<String>> permitTilesBonusesValue) {
 		for(Card card : permitTilesUp) {
@@ -99,11 +106,8 @@ class RMISwingUI extends SwingUI {
 		for(Region region : regions) {
 			if(!region.alreadyUsedBonusTile()) {
 				groupsName.add(region.getName());
+				bonusToStrings(region.getBonusTile(), bonusesName, bonusesValue);
 			}
-			else {
-				groupsName.add(getAlreadyAcquiredBonusTile());
-			}
-			bonusToStrings(region.getBonusTile(), bonusesName, bonusesValue);
 		}
 	}
 
@@ -202,9 +206,9 @@ class RMISwingUI extends SwingUI {
 		Bonus kingTile = currentState.getCurrentKingTile();
 		String kingBonusName;
 		String kingBonusValue;
-		if(kingTile != null) {
+		if(!kingTile.isNull()) {
 			kingBonusName = kingTile.getName();
-			kingBonusValue = String.valueOf(((RealBonus)kingTile).getValue());
+			kingBonusValue = String.valueOf(((RealBonus) kingTile).getValue());
 		}
 		else {
 			kingBonusName = getNoKingTile();
@@ -241,6 +245,7 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refeshOtherPlayersStatusDialog(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 	}
 
 	private void addTotalPermitTiles(MapUpdateState currentState) {
@@ -275,12 +280,6 @@ class RMISwingUI extends SwingUI {
 		getFrame().revalidate();
 	}
 
-	private void bonusesToStrings(List<Bonus> bonuses, List<String> bonusesName, List<String> bonusesValue) {
-		for(int i = 0; i < bonuses.size(); i++)  {
-			bonusToStrings(bonuses.get(i), bonusesName, bonusesValue);
-		}
-	}
-	
 	private void rewardTokensToStrings(Map<String, City> cityMap, List<String> citiesName, List<List<String>> citiesBonusesName, List<List<String>> citiesBonusesValue) {
 		Set<Entry<String, City>> citiesEntries = cityMap.entrySet();
 		for(Entry<String, City> cityEntry : citiesEntries) {
@@ -299,7 +298,7 @@ class RMISwingUI extends SwingUI {
 
 	private void nobilityTrackToStrings(List<NobilityTrackStep> steps, List<List<String>> stepsBonusesName, List<List<String>> stepsBonusesValue) {
 		for(NobilityTrackStep step : steps) {
-			List<Bonus> bonuses = step.getBonuses();		
+			List<Bonus> bonuses = step.getBonuses();	
 			List<String> bonusesName = new ArrayList<>();
 			List<String> bonusesValue = new ArrayList<>();
 			bonusesToStrings(bonuses, bonusesName, bonusesValue);

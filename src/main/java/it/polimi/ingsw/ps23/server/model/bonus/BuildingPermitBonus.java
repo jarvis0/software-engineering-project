@@ -70,6 +70,7 @@ public class BuildingPermitBonus extends RealBonus implements SuperBonus {
 	public void acquireSuperBonus(List<String> input, Game game, TurnHandler turnHandler) {
 		game.getCurrentPlayer().pickPermitCard(game, turnHandler, game.getGameMap().getRegionMap().get(input.get(REGION_NAME_POSITION)), Integer.parseInt(input.get(CHOSEN_TILE_POSITION)) - 1);
 	}
+	
 	@Override
 	public boolean isNull() {
 		return false;
