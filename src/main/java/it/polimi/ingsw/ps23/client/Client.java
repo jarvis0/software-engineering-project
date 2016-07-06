@@ -24,7 +24,7 @@ class Client {
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	
-	//private static final String CONSOLE_TAG = "<console>";
+	private static final String CLI_TAG = "<console>";
 	private static final String GUI_TAG = "<gui>";
 
 	private Scanner scanner;
@@ -47,24 +47,58 @@ class Client {
 		}
 	}
 	
+	private boolean isCLI(String ui) {
+		return "cli".equalsIgnoreCase(ui);
+	}
+	
+	private boolean isGUI(String ui) {
+		return "gui".equalsIgnoreCase(ui);
+	}
+	
 	private void initializeSocket(String playerName) {
-		//if GUI then add GUI_TAG else....
-		String clientInfos = GUI_TAG + "AleGiuMir";
-		//String clientInfos = CONSOLE_TAG + "AleGiuMir";
+		String ui;
+		do {
+			output.print("Do you want to use CLI or GUI? ");
+			ui = scanner.nextLine();
+			
+		} while(!(isCLI(ui) || isGUI(ui)));
+		String clientInfo;
+		if(isCLI(ui)) {
+			clientInfo = CLI_TAG + playerName;
+		}
+		else {
+			clientInfo = GUI_TAG + playerName;
+		}
 		try {
 			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER, scanner, output);
-			client.start(clientInfos);
+			client.start(clientInfo);
 		} catch(IOException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot connect to server.", e);
 		}
 	}
 	
+	private boolean isRMI(String connection) {
+		return "rmi".equalsIgnoreCase(connection);
+	}
+	
+	private boolean isSocket(String connection) {
+		return "socket".equalsIgnoreCase(connection);
+	}
+	
 	private void start() {
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
 		String playerName = scanner.nextLine();
-		//if vuole avviare rmi then... else
-		//initializeRMI(playerName);
-		initializeSocket("");
+		String connection;
+		do {
+			output.print("Choose the connection protocolol [RMI/Socket]: ");
+			connection = scanner.nextLine();
+		} while(!(isRMI(connection) || isSocket(connection)));
+		if(isRMI(connection)) {
+			initializeRMI(playerName);
+		}
+		else {
+			initializeSocket(playerName);
+		}
 	}
 	
 	/**

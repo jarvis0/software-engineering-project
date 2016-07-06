@@ -44,7 +44,7 @@ class SuperBonusExpression extends RefreshContent {
 		}
 		if(Boolean.valueOf(guiView.getClient().receive())) {
 			swingUI.enableCities(true);
-			guiView.pause();//TODO
+			guiView.pause();
 			swingUI.enableCities(false);
 			selectedItem = swingUI.getChosenCity();
 		}

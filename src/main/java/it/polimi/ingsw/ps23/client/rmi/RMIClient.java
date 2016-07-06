@@ -26,10 +26,28 @@ public class RMIClient implements ClientInterface {
 	 * @param output - object to take output from user
 	 */
 	public RMIClient(String playerName, Scanner scanner, PrintStream output) {
-		//rmiView = new RMIConsoleView(playerName, scanner, output);
-		rmiView = new RMIGUIView(playerName, output);
+		String ui;
+		do {
+			output.print("Do you want to use CLI or GUI? ");
+			ui = scanner.nextLine();
+			
+		} while(!(isCLI(ui) || isGUI(ui)));
+		if(isCLI(ui)) {
+			rmiView = new RMIConsoleView(playerName, scanner, output);
+		}
+		else {
+			rmiView = new RMIGUIView(playerName, output);
+		}
 	}
-
+	
+	private boolean isCLI(String ui) {
+		return "cli".equalsIgnoreCase(ui);
+	}
+	
+	private boolean isGUI(String ui) {
+		return "gui".equalsIgnoreCase(ui);
+	}
+	
 	@Override
 	public void setController(ServerControllerInterface controller) throws RemoteException {
 		rmiView.setController(controller);

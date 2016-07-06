@@ -264,6 +264,7 @@ public class SocketConsoleView extends SocketView {
 	
 	@Override
 	public void visit(SuperBonusState currentState) {
+		getConnection().sendNoInput(currentState.getStatus());
 		try {
 			while (currentState.hasNext()) {				
 				int numberOfCurrentBonus = currentState.getCurrentBonusValue();
@@ -284,6 +285,7 @@ public class SocketConsoleView extends SocketView {
 
 	@Override
 	public void visit(EndGameState currentState) {
+		getConnection().sendNoInput(currentState.getStatus());
 		getConnection().sendNoInput(END_GAME_TAG + currentState.getWinner());
 		setEndGame(true);
 	}

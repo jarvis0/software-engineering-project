@@ -34,6 +34,7 @@ public class DynamicContentsExpression extends RefreshContent {
 		if(expression.interpret(message)) {
 			String noTagMessage = expression.selectBlock(message);
 			updateDynamicContent(swingUI, noTagMessage);
+			swingUI.appendConsoleText(guiView.getClient().receive());
 			String currentPlayer = guiView.getClient().receive();
 			if(currentPlayer.equals(guiView.getPlayerName())) {
 				Boolean isAvailableMainAction = Boolean.valueOf(guiView.getClient().receive());
@@ -44,7 +45,7 @@ public class DynamicContentsExpression extends RefreshContent {
 				guiView.getClient().send(swingUI.getChosenAction());
 			}
 			else {
-				swingUI.appendConsoleText("\nIt's " + currentPlayer + "'s turn.");
+				swingUI.appendConsoleText("\nIt's " + currentPlayer + "'s turn.\n");
 				swingUI.showAvailableActions(false, false);
 			}
 		}

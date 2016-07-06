@@ -2,10 +2,14 @@ package it.polimi.ingsw.ps23.client.socket.gui.interpreter.actions;
 
 import it.polimi.ingsw.ps23.client.socket.Expression;
 import it.polimi.ingsw.ps23.client.socket.RemoteGUIView;
-import it.polimi.ingsw.ps23.client.socket.gui.interpreter.GUIParser;
+import it.polimi.ingsw.ps23.client.socket.TerminalExpression;
+import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.RefreshContent;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 
-class EndGameExpression extends GUIParser {
+class EndGameExpression extends RefreshContent {
+
+	private static final String REFRESH_CONTENT_TAG_OPEN = "<refresh_content>";
+	private static final String REFRESH_CONTENT_TAG_CLOSE = "</refresh_content>";
 	
 	private SocketSwingUI swingUI;
 	
@@ -22,7 +26,9 @@ class EndGameExpression extends GUIParser {
 	@Override
 	protected void parse(String message) {
 		if(expression.interpret(message)) {
-			swingUI.appendConsoleText(guiView.getClient().receive());
+			Expression dynamicContent = new TerminalExpression(REFRESH_CONTENT_TAG_OPEN, REFRESH_CONTENT_TAG_CLOSE);
+			updateDynamicContent(swingUI, dynamicContent.selectBlock(message));
+			swingUI.appendConsoleText("\n\n" + guiView.getClient().receive());
 			guiView.setEndGame();
 		}
 	}
