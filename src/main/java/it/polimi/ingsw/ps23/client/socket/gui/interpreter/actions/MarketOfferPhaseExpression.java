@@ -32,8 +32,8 @@ class MarketOfferPhaseExpression extends RefreshContent {
 			swingUI.appendConsoleText("\nHow many politic cards do you want to sell?");
 			swingUI.enableMarketInputArea(true);
 			guiView.pause();
-			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enableMarketInputArea(false);
+			int numberOfCards = swingUI.getChosenValue();
 			swingUI.enablePoliticCards(true);
 			swingUI.appendConsoleText("\nPlease, press on the cards you want to sell.");
 			int politicHandNumber = Integer.parseInt(guiView.getClient().receive());
@@ -51,7 +51,7 @@ class MarketOfferPhaseExpression extends RefreshContent {
 	private void sellPermissionCard(boolean canSellPermitTiles) {
 		List<Integer> chosenPermissionCards = new ArrayList<>();
 		if (canSellPermitTiles) {
-			swingUI.appendConsoleText("\nHow many permit tiles do you want to use? (numerical input > 0)");
+			swingUI.appendConsoleText("\nHow many permit tiles do you want to use?");
 			swingUI.enableMarketInputArea(true);
 			guiView.pause();
 			int numberOfCards = swingUI.getChosenValue();
@@ -75,6 +75,7 @@ class MarketOfferPhaseExpression extends RefreshContent {
 			swingUI.appendConsoleText("\nSelect the number of assistants (max: " + guiView.getClient().receive() + ").");
 			swingUI.enableMarketInputArea(true);
 			guiView.pause(); 
+			swingUI.enableMarketInputArea(false);
 			guiView.getClient().send(String.valueOf(swingUI.getChosenValue()));
 		}
 	}
