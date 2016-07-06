@@ -400,7 +400,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), true);
 					pause();
 					swingUI.enablePermitTilesPanel(swingUI.getChosenRegion(), false);
-					selectedItem = String.valueOf(swingUI.getChosenTile());
+					selectedItem = String.valueOf(swingUI.getChosenTile() + 1);
 				}
 			
 		return selectedItem;
