@@ -27,7 +27,7 @@ public class EndGameState extends State {
 		for(Player player : players) {
 			stringBuilder.append("\n" + i + ": " + player.getName() + ", Victory Points:" + player.getVictoryPoints());
 		}
-		return "The winner is: " + players.get(0).getName() + "\nClassification: " + stringBuilder;
+		return "\nThe winner is: " + players.get(0).getName() + "\nClassification: " + stringBuilder;
 	}
 	
 	@Override
