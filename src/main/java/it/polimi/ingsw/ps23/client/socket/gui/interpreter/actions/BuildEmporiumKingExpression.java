@@ -45,6 +45,7 @@ class BuildEmporiumKingExpression extends GUIParser {
 				}
 				i++;
 			}
+			swingUI.enableFinish(false);
 			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + "\nplease press on the city where you want to move the King.");
 			swingUI.enablePoliticCards(false);
 			swingUI.enableCities(true);

@@ -27,7 +27,7 @@ class Server implements ServerInterface {
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	private static final int RMI_PORT_NUMBER = 1099;
 	private static final String POLICY_NAME = "cofRegistry";
-	private static final int MINIMUM_PLAYERS_NUMBER = 2;
+	private static final int MINIMUM_PLAYERS_NUMBER = 1;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
 	private static final int CONNECTION_TIMEOUT = 200000;

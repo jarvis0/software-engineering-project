@@ -56,8 +56,8 @@ public class SocketGUIView extends SocketView {
 			getConnection().send(gameParameters.createUIStaticContents(currentState.getGameMap().getCities(), currentState.getNobilityTrack()));
 			firstUIrefresh = false;
 		}
-		getConnection().send(currentState.getLastActionPerformed());
 		getConnection().send(gameParameters.createUIDynamicContents(currentState));
+		getConnection().send(currentState.getLastActionPerformed());
 		String playerName = currentState.getCurrentPlayer().getName();
 		getConnection().send(playerName);
 		if(playerName.equals(getClientName())) {
