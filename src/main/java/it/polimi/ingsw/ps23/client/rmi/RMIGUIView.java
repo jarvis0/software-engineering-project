@@ -67,7 +67,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		Player player = currentState.getCurrentPlayer();
 		swingUI.appendConsoleText(currentState.getLastActionPerformed());
 		if(player.getName().equals(getClientName())) {
-			swingUI.appendConsoleText("\nIt's your turn, please select an action from the pool displayed above.");
+			swingUI.appendConsoleText("\nIt's your turn, please select an action from the pool displayed above.\n");
 			swingUI.showAvailableActions(currentState.isAvailableMainAction(), currentState.isAvailableQuickAction());
 			pause();
 			try {
