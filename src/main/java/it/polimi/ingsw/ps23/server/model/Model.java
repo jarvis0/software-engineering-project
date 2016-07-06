@@ -149,7 +149,7 @@ public class Model extends ModelObservable {
 		context = new Context();
 		EndGameState endGameState = new EndGameState();	
 		endGameState.changeState(context, game);
-		endGame = true;//TODO
+		endGame = true;
 		wakeUp(endGameState);
 	}
 
