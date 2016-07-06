@@ -92,6 +92,7 @@ public abstract class SwingUI {
 	private boolean politicCardListener;
 	private JDialog otherPlayersDialog;
 	private JButton otherPlayersStatusButton;
+	private Map<String, Map<JLabel,List<JLabel>>> bonusTilePanels;
 
 	protected SwingUI(GUIView guiView, String mapType, String playerName) {
 		this.guiView = guiView;
@@ -99,6 +100,7 @@ public abstract class SwingUI {
 		regionsButtons = new ArrayList<>();
 		playerPermitTiles = new HashMap<>();
 		otherPlayersPermitTiles = new HashMap<>();
+		bonusTilePanels = new HashMap<>();
 		mapPath = CONFIGURATION_PATH + mapType + "/";
 		guiLoad = new GUILoad(mapPath);
 		cityLabels = guiLoad.getCityLabels();
@@ -456,11 +458,23 @@ public abstract class SwingUI {
 		tileLabel.setBounds(0, 0, 50, 35);
 		tileLabel.setLocation(x, y);
 		mapPanel.add(tileLabel, 0);
-		drawBonus(mapPanel, bonusName, bonusValue, new Point(x + 25, y + 10), 23, 25, -5);
+		Map<JLabel, List<JLabel>> permiTilesMap = new HashMap<>();
+		permiTilesMap.put(tileLabel, drawBonus(mapPanel, bonusName, bonusValue, new Point(x + 25, y + 10), 23, 25, -5));
+		bonusTilePanels.put(groupName, permiTilesMap);
+		
 	}
 
 	protected void refreshBonusTiles(List<String> groupsName, List<String> groupsBonusName,
 			List<String> groupsBonusValue, String kingBonusName, String kingBonusValue) {
+		for (Entry<String, Map<JLabel, List<JLabel>>> bonusTile : bonusTilePanels.entrySet()) {
+			for(Entry<JLabel, List<JLabel>> bonusLabel  : bonusTile.getValue().entrySet()) {
+				mapPanel.remove(bonusLabel.getKey());
+				for(JLabel jLabel : bonusLabel.getValue()) {
+					mapPanel.remove(jLabel);
+				}
+			}
+		}
+		bonusTilePanels.clear();
 		for (int i = 0; i < groupsBonusName.size(); i++) {
 			String regionBonusName = groupsBonusName.get(i);
 			if (!ALREADY_ACQUIRED_BONUS_TILE.equals(regionBonusName)) {
@@ -511,7 +525,7 @@ public abstract class SwingUI {
 				public void mouseClicked(MouseEvent e) {
 					if(politicCardListener) {
 						chosenCard = card;
-						cardLabel.setEnabled(true);
+						cardLabel.setEnabled(false);
 						guiView.resume();
 					}
 				}
@@ -896,7 +910,7 @@ public abstract class SwingUI {
 	protected void refeshOtherPlayersStatusDialog(List<String> playersName, List<List<List<String>>> permitTilesCities,
 			List<List<List<String>>> permitTilesBonusesName, List<List<List<String>>> permitTilesBonusesValue) {
 	
-			for (Entry<JLabel, Map<JLabel, List<JLabel>>> playerPermitTile : otherPlayersPermitTiles.entrySet()) {
+		for (Entry<JLabel, Map<JLabel, List<JLabel>>> playerPermitTile : otherPlayersPermitTiles.entrySet()) {
 			otherPlayersDialog.remove(playerPermitTile.getKey());
 			for(Entry<JLabel, List<JLabel>> permitLabel  : playerPermitTile.getValue().entrySet()) {
 				otherPlayersDialog.remove(permitLabel.getKey());
