@@ -999,5 +999,4 @@ public abstract class SwingUI {
 		totalPermitsCardDialog.setVisible(display);
 	}	
 	
-	
 }

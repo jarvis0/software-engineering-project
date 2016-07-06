@@ -52,7 +52,7 @@ class Client {
 		String clientInfos = GUI_TAG + "AleGiuMir";
 		//String clientInfos = CONSOLE_TAG + "AleGiuMir";
 		try {
-			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER);
+			SocketClient client = new SocketClient(SOCKET_PORT_NUMBER, scanner, output);
 			client.start(clientInfos);
 		} catch(IOException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot connect to server.", e);

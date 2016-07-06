@@ -197,6 +197,15 @@ public class RMIGUIView extends RMIView implements GUIView {
 		sendAction(currentState.createAction());
 	}
 
+	private void createAction(BuildEmporiumKingState currentState, List<String> removedCards, String arrivalCity) {
+		try {
+			wakeUp(currentState.createAction(removedCards, arrivalCity));
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			getState().setExceptionString(e.toString());
+		}
+	}
+	
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
@@ -226,12 +235,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			pause();
 			swingUI.enableCities(false);
 			String arrivalCity = swingUI.getChosenCity();
-			try {
-				sendAction(currentState.createAction(removedCards, arrivalCity));
-			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-				getState().setExceptionString(e.toString());
-			}
+			createAction(currentState, removedCards, arrivalCity);
 		} catch (IllegalActionSelectedException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			try {
@@ -430,6 +434,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 		endGame = true;
 	}
 
+	@Override
 	void setEndGame() {
 		endGame = false;
 	}

@@ -26,6 +26,11 @@ public class RewardTokensSet {
 		return rewardTokens.size();
 	}
 	
+	/**
+	 * Removes the reward token bonus to the set of reward tokens.
+	 * @param index - index of the reward token bonuses to be removed
+	 * @return the removed reward token bonus at the specified index.
+	 */
 	public RewardToken removeRewardToken(int index) {
 		return rewardTokens.remove(index);
 	}

@@ -73,6 +73,10 @@ class GameInstancesSet {
 		}
 	}
 
+	/**
+	 * Checks if a game can end and can be removed from the list of game instances.
+	 * @return true if a game has ended.
+	 */
 	public boolean checkIfEndGame() {
 		boolean gameEnded = false;
 		for(GameInstance gameInstance : gameInstances) {

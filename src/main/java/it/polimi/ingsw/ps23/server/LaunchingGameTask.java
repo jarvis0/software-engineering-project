@@ -17,20 +17,20 @@ class LaunchingGameTask extends TimerTask {
 	private int seconds;
 	private int i;
 
-	LaunchingGameTask(Server server, int seconds) {
+	LaunchingGameTask(Server server, int seconds, PrintStream output) {
 		this.server = server;
 		this.seconds = seconds;
+		this.output = output;
 		isRMI = false;
-		output = new PrintStream(System.out, true);
 		i = 1;
 	}
 	
-	LaunchingGameTask(Timer timer, Server server, int seconds) {
+	LaunchingGameTask(Timer timer, Server server, int seconds, PrintStream output) {
 		this.timer = timer;
 		this.server = server;
 		this.seconds = seconds;
+		this.output = output;
 		isRMI = true;
-		output = new PrintStream(System.out, true);
 		i = 1;
 	}
 	

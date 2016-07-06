@@ -31,11 +31,13 @@ public class SocketClient {
 	/**
 	 * Initializes a new socket connection with the server.
 	 * @param portNumber - TCP port number
+	 * @param output - useful to print to console
+	 * @param scanner - useful to scan a consle input
 	 * @throws IOException if the remote server is unreachable.
 	 */
-	public SocketClient(int portNumber) throws IOException {
-		scanner = new Scanner(System.in);
-		output = new PrintStream(System.out, true);
+	public SocketClient(int portNumber, Scanner scanner, PrintStream output) throws IOException {
+		this.scanner = scanner;
+		this.output = output;
 		socket = new Socket(InetAddress.getLocalHost().getHostName(), portNumber);
 		textIn = new Scanner(socket.getInputStream());
 		textIn.useDelimiter(END_OF_MESSAGE_TAG);

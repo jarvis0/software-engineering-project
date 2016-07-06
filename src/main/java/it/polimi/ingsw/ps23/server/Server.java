@@ -98,7 +98,7 @@ class Server implements ServerInterface {
 				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
-			timer.schedule(new LaunchingGameTask(timer, this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+			timer.schedule(new LaunchingGameTask(timer, this, LAUNCH_TIMEOUT, output), LAUNCH_TIMEOUT, 1000L);
 		}
 	}
 
@@ -230,7 +230,7 @@ class Server implements ServerInterface {
 				infoMessage(client, message);
 			}
 			Timer timer = new Timer();
-			timer.schedule(new LaunchingGameTask(this, LAUNCH_TIMEOUT), LAUNCH_TIMEOUT, 1000L);
+			timer.schedule(new LaunchingGameTask(this, LAUNCH_TIMEOUT, output), LAUNCH_TIMEOUT, 1000L);
 			try {
 				wait();
 			} catch (InterruptedException e) {

@@ -2,7 +2,11 @@ package it.polimi.ingsw.ps23.client.socket.gui.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *  * Provides an abstract class for parsing string sent via socket.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public abstract class GUIParser {
 
 	protected abstract void parse(String message);

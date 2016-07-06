@@ -172,7 +172,7 @@ class SocketParametersCreator {
 		addBonusTiles(bonusTilesSend, groupColoredCity);
 		if(!currentKingTile.isNull()) {
 			bonusTilesSend.append("," + currentKingTile.getName());
-			bonusTilesSend.append("," + ((RealBonus) currentKingTile).getValue());//TODO testare
+			bonusTilesSend.append("," + ((RealBonus) currentKingTile).getValue());
 		}
 		else {
 			bonusTilesSend.append("," + NO_KING_TILE);

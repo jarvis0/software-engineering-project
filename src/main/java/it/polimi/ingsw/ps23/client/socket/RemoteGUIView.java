@@ -11,6 +11,12 @@ import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.DynamicCont
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.SocketSwingUI;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.StaticContentExpression;
 
+/**
+ * Parses socket strings following the communication protocol and performs
+ * GUI updates.
+ * @author Giuseppe Mascellaro
+ *
+ */
 public class RemoteGUIView extends RemoteView implements GUIView {
 
 	private static final String STATIC_CONTENT_TAG_OPEN = "<static_content>";
@@ -53,6 +59,10 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		return new ActionsExpression(swingUI, this, expression);
 	}
 
+	/**
+	 * Sets the end of CLI prints so the program can change the type of communication parsing
+	 * switching to GUI.
+	 */
 	public void setEndCLIPrints() {
 		endCLIPrints = true;
 	}
@@ -65,6 +75,9 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		return playerName;
 	}
 
+	/**
+	 * An invalid name has been inserted so the client have to end.
+	 */
 	public void setInvalidName() {
 		invalidName = true;
 	}
@@ -81,6 +94,9 @@ public class RemoteGUIView extends RemoteView implements GUIView {
 		}
 	}
 	
+	/**
+	 * Set the current thread pause.
+	 */
 	public synchronized void pause() {
 		try {
 			wait();

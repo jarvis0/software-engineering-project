@@ -237,6 +237,7 @@ class GUILoad {
 		scrollPane.setBounds(0, 0, 567, 110);
 		scrollPane.setLocation(800, 0);
 	}
+	
 	private void loadTextArea() {	
 		textArea = new JTextArea();
 		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
@@ -276,7 +277,12 @@ class GUILoad {
 		otherPlayersDialog.setVisible(false);
 	}
 
+	/**
+	 * Append a string message into the JTextArea
+	 * @param string - message to be printed into the JTextArea
+	 */
 	public void appendText(String string) {
 		textArea.append(string);
 	}
+	
 }

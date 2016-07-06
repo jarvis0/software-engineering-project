@@ -310,6 +310,7 @@ class RMIConsoleView extends RMIView {
 		endGame = true;
 	}
 	
+	@Override
 	void setEndGame() {
 		endGame = true;
 	}
