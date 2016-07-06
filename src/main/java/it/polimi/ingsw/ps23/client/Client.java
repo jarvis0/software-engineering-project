@@ -24,7 +24,7 @@ class Client {
 	private static final String POLICY_NAME = "cofRegistry";
 	private static final int SOCKET_PORT_NUMBER = 12345;
 	
-	private static final String CONSOLE_TAG = "<console>";
+	//private static final String CONSOLE_TAG = "<console>";
 	private static final String GUI_TAG = "<gui>";
 
 	private Scanner scanner;
@@ -64,7 +64,7 @@ class Client {
 		String playerName = scanner.next();
 		//if vuole avviare rmi then... else
 		initializeRMI(playerName);
-		initializeSocket(playerName);
+		//initializeSocket(playerName);
 	}
 	
 	/**

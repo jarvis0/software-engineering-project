@@ -127,6 +127,15 @@ public class SocketConsoleView extends SocketView {
 		wakeUp(currentState.createAction());
 	}
 
+	private void createAction(BuildEmporiumKingState currentState, List<String> removedCards, String arrivalCity) {
+		try {
+			wakeUp(currentState.createAction(removedCards, arrivalCity));
+		} catch (InvalidCardException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			getState().setExceptionString(e.toString());
+		}
+	}
+	
 	@Override
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
@@ -140,12 +149,7 @@ public class SocketConsoleView extends SocketView {
 			}
 			getConnection().sendYesInput("please insert the route for the king.[king's initial position: " + currentState.getKingPosition()+"] insert the arrival city: ");
 			String arrivalCity = receive();
-			try {
-				wakeUp(currentState.createAction(removedCards, arrivalCity));
-			} catch (InvalidCardException e) {
-				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
-				getState().setExceptionString(e.toString());
-			}
+			createAction(currentState, removedCards, arrivalCity);
 		} catch(IllegalActionSelectedException | NumberFormatException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			wakeUp(e);

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import it.polimi.ingsw.ps23.server.model.state.ElectCouncillorState;
 /**
- * Provides methods to generate a specific {@link ActionState} starting form a string.
+ * Provides methods to generate a specific {@link ActionState} starting from a string.
  * @author Alessandro Erba & Mirco Manzoni
  *
  */
@@ -32,6 +32,12 @@ public class StateCache implements Serializable {
 		loadCache();
 	}
 
+	/**
+	 * Returns the cloned action from action cache based on the string name for the specified
+	 * action.
+	 * @param actionStateName - of the action to be created
+	 * @return an action state based on the string name of the action.
+	 */
 	public ActionState getAction(String actionStateName) {
 		return (ActionState) stateMap.get(actionStateName).clone();
 	}

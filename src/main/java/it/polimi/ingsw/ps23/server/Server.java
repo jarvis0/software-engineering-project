@@ -30,7 +30,7 @@ class Server implements ServerInterface {
 	private static final int MINIMUM_PLAYERS_NUMBER = 2;
 	private static final int LAUNCH_TIMEOUT = 1;
 	private static final String LAUNCH_PRINT = "A new game is starting in ";
-	private static final int CONNECTION_TIMEOUT = 500000;
+	private static final int CONNECTION_TIMEOUT = 20000;
 	private static final String SECONDS_PRINT =  " seconds...";
 	private static final String PLAYER_PRINT = "Player ";
 	private static final int RANDOM_NUMBERS_POOL = 20;
@@ -69,6 +69,13 @@ class Server implements ServerInterface {
 		socketWaitingConnections.clear();
 		rmiWaitingConnections.clear();
 		output.println("A new game is started.");
+	}
+
+	@Override
+	public void endGame() {
+		if(gameInstances.checkIfEndGame()) {
+			output.println("A game has ended.");
+		}
 	}
 
 	synchronized void setRMITimerEnd(Timer timer) {
@@ -312,13 +319,6 @@ class Server implements ServerInterface {
 		} catch (IOException e) {
 			socketActive = false;
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Cannot initialize the server socket connection.", e);
-		}
-	}
-
-	@Override
-	public void endGame() {
-		if(gameInstances.checkIfEndGame()) {
-			output.println("A game has ended.");
 		}
 	}
 
