@@ -12,7 +12,7 @@ public class InvalidCouncilException extends IOException {
 	 * 
 	 */
 	private static final long serialVersionUID = -3949419734949149729L;
-	private static final String EXCEPTION_STRING = "You have selected an illegal council.";
+	private static final String EXCEPTION_STRING = "The current player has selected an illegal council.";
 	
 	@Override
 	public String toString() {

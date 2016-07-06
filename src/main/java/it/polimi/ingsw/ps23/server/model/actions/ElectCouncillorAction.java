@@ -52,7 +52,7 @@ public abstract class ElectCouncillorAction extends Action {
 		createCouncilMap(game);
 		checkAction();
 		game.getFreeCouncillors().electCouncillor(councillor, councilsMap.get(council));
-		setActionReport("Player " + game.getCurrentPlayer().getName() + "elect " + councillor + " councillor in " + council + " council");
+		setActionReport("Player " + game.getCurrentPlayer().getName() + " elect " + councillor + " councillor in " + council + " council.");
 	}
 	
 }
