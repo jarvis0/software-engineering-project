@@ -244,8 +244,7 @@ class RMISwingUI extends SwingUI {
 		List<List<List<String>>> permitTilesBonusesName = new ArrayList<>();
 		List<List<List<String>>> permitTilesBonusesValue = new ArrayList<>();
 		permitTilesToStrings(currentState.getPlayersList(), playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
-		refreshAcquiredPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
-		refeshOtherPlayersStatusDialog(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
+		refreshGamePlayersPermitTiles(playersName, permitTilesCities, permitTilesBonusesName, permitTilesBonusesValue);
 	}
 
 	private void addTotalPermitTiles(MapUpdateState currentState) {

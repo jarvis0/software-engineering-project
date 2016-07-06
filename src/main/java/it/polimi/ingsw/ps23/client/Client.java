@@ -61,15 +61,15 @@ class Client {
 	
 	private void start() {
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
-		String playerName = scanner.next();
+		String playerName = scanner.nextLine();
 		//if vuole avviare rmi then... else
-		initializeRMI(playerName);
-		//initializeSocket(playerName);
+		//initializeRMI(playerName);
+		initializeSocket("");
 	}
 	
 	/**
 	 * This is the client entry point for Council Of Four application.
-	 * When starts, it asks for the player game name
+	 * When started, it asks for the player game name
 	 * @param args
 	 */
 	public static void main(String[] args) {
