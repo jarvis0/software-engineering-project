@@ -134,7 +134,7 @@ public abstract class SwingUI {
 		otherPlayersStatusButton.addActionListener(e -> 
 			otherPlayersDialog.setVisible(true)
 		);
-		otherPlayersStatusButton.setBounds(1300, 150, 66, 40);
+		otherPlayersStatusButton.setBounds(1150, 110, 200, 30);
 		mapPanel.add(otherPlayersStatusButton, 0);
 	}
 
@@ -405,6 +405,9 @@ public abstract class SwingUI {
 			listJlabel.addAll(drawBonus(container, permitTileBonusesName.get(i), permitTileBonusesValue.get(i), new Point(bonusCoordX + 50, bonusCoordY - 20), 23, 25, 0));
 			bonusCoordX = bonusCoordX + 24;
 		}
+		JLabel emptyLabel = new JLabel();
+		emptyLabel.setText(" ");
+		container.add(emptyLabel, 0);
 		permitLabels.put(permitTileLabel, listJlabel);
 	}
 
@@ -540,7 +543,7 @@ public abstract class SwingUI {
 
 	protected void loadMainActionPanel() {
 		mainActionPanel = new JPanel();
-		mainActionPanel.setBounds(925, 181, 215, 272);
+		mainActionPanel.setBounds(925, 145, 215, 272);
 		mapPanel.add(mainActionPanel, 0);
 		mainActionPanel.setVisible(false);
 		GridBagLayout gblMainActionPanel = new GridBagLayout();
@@ -604,7 +607,7 @@ public abstract class SwingUI {
 
 	protected void loadQuickActionPanel() {
 		quickActionPanel = new JPanel();
-		quickActionPanel.setBounds(1150, 181, 199, 272);
+		quickActionPanel.setBounds(1150, 145, 199, 272);
 		mapPanel.add(quickActionPanel, 0);
 		quickActionPanel.setVisible(false);
 		GridBagLayout gblQuickActionPanel = new GridBagLayout();
@@ -671,7 +674,7 @@ public abstract class SwingUI {
 			guiView.resume();
 		});
 		skipButton.setEnabled(false);
-		skipButton.setBounds(1283, 453, 66, 40);
+		skipButton.setBounds(1283, 417, 66, 30);
 		mapPanel.add(skipButton, 0);
 	}
 
@@ -904,7 +907,7 @@ public abstract class SwingUI {
 				JLabel playerNameLabel = new JLabel();
 				playerNameLabel.setText(playerNameString);
 				playerNameLabel.setBounds(0, 0, 100, 25);
-				playerNameLabel.setLocation(x, y - 30);
+				playerNameLabel.setLocation(x, y - 20);
 				playerNameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 				playerNameLabel.setForeground(Color.black);
 				otherPlayersDialog.add(playerNameLabel,0);
@@ -912,10 +915,12 @@ public abstract class SwingUI {
 				drawPermitTiles(otherPlayersDialog, otherPlayerPermitTilesMap, permitTilesCities.get(i), permitTilesBonusesName.get(i),
 							permitTilesBonusesValue.get(i), new Point(x, y), increment);
 				otherPlayersPermitTiles.put(playerNameLabel, otherPlayerPermitTilesMap);
-				y += 70;
+				y += 110;
 			}
 			i++;
 		}
+		otherPlayersDialog.repaint();
+		otherPlayersDialog.revalidate();
 	}
 
 	protected void refreshGamePlayersPermitTiles(List<String> playersName, List<List<List<String>>> permitTilesCities,

@@ -63,8 +63,8 @@ class Client {
 		output.print("Welcome, what's your name (only letters or previous in game name)? ");
 		String playerName = scanner.nextLine();
 		//if vuole avviare rmi then... else
-		//initializeRMI(playerName);
-		initializeSocket("");
+		initializeRMI(playerName);
+		//initializeSocket("");
 	}
 	
 	/**
