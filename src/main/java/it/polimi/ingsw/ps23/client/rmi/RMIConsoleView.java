@@ -258,7 +258,7 @@ class RMIConsoleView extends RMIView {
 			try {
 				if (currentState.canBuy()) {
 					output.println("Available offers: " + currentState.getAvaiableOffers());
-					getControllerInterface().wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine())));
+					getControllerInterface().wakeUpServer(currentState.createTransation(Integer.parseInt(scanner.nextLine()) - 1));
 				} else {
 					output.println("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());

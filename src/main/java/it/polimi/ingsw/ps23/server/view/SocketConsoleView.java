@@ -239,7 +239,7 @@ public class SocketConsoleView extends SocketView {
 			try {
 				if(currentState.canBuy()) {
 					getConnection().sendYesInput("Available offers: " + currentState.getAvaiableOffers());
-					wakeUp(currentState.createTransation(Integer.parseInt(receive())));
+					wakeUp(currentState.createTransation(Integer.parseInt(receive()) - 1));
 				}
 				else {
 					getConnection().sendNoInput("You can buy nothing.");
