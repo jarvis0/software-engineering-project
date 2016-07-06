@@ -162,7 +162,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 			swingUI.enablePermitTilesPanel(chosenCouncil, false);
 			int chosenTile = swingUI.getChosenTile();
 			sendAction(currentState.createAction(chosenCouncil, removedCards, chosenTile));
-		} catch (InvalidCardException | NumberFormatException e) {
+		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			getState().setExceptionString(e.toString());
 		}
@@ -197,7 +197,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	private void createAction(BuildEmporiumKingState currentState, List<String> removedCards, String arrivalCity) {
 		try {
-			wakeUp(currentState.createAction(removedCards, arrivalCity));
+			sendAction(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			getState().setExceptionString(e.toString());
@@ -208,7 +208,6 @@ public class RMIGUIView extends RMIView implements GUIView {
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
 			currentState.getAvailableCardsNumber();
-			swingUI.appendConsoleText(currentState.getExceptionString());
 			swingUI.clearSwingUI();
 			List<String> removedCards = new ArrayList<>();
 			swingUI.showAvailableActions(false, false);
@@ -227,6 +226,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 				}
 				i++;
 			}
+			swingUI.enableFinish(false);
 			swingUI.appendConsoleText("\nYou have selected these politic cards:\n" + removedCards + "\nplease press on the city where you want to move the King.");
 			swingUI.enablePoliticCards(false);
 			swingUI.enableCities(true);
@@ -246,19 +246,29 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	@Override
 	public void visit(BuildEmporiumPermitTileState currentState) {
-		swingUI.clearSwingUI();
-		swingUI.showAvailableActions(false, false);
-		swingUI.enablePermitTileDeck(true);
-		swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile main action,\npress on the permit tile you want to use.");
-		pause();
-		int chosenCard = swingUI.getChosenTile();
-		swingUI.enablePermitTileDeck(false);
-		swingUI.appendConsoleText("\nYou have chosen this tile number: " + chosenCard + "\npress on the city where you want to build in.");
-		swingUI.enableCities(true);
-		pause();
-		swingUI.enableCities(false);
-		String chosenCity = swingUI.getChosenCity();
-		sendAction(currentState.createAction(chosenCity, chosenCard));
+		try {
+			currentState.getAvailableCards();
+			swingUI.clearSwingUI();
+			swingUI.showAvailableActions(false, false);
+			swingUI.enablePermitTileDeck(true);
+			swingUI.appendConsoleText("\n\nYou are performing a Build Emporium Permit Tile main action,\npress on the permit tile you want to use.");
+			pause();
+			int chosenCard = swingUI.getChosenTile();
+			swingUI.enablePermitTileDeck(false);
+			swingUI.appendConsoleText("\nYou have chosen this tile number: " + chosenCard + "\npress on the city where you want to build in.");
+			swingUI.enableCities(true);
+			pause();
+			swingUI.enableCities(false);
+			String chosenCity = swingUI.getChosenCity();
+			sendAction(currentState.createAction(chosenCity, chosenCard));
+		} catch (IllegalActionSelectedException e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
+			try {
+				getControllerInterface().wakeUpServer(e);
+			} catch (RemoteException e1) {
+				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, CANNOT_REACH_SERVER_PRINT, e1);
+			}
+		}
 	}
 	
 	private List<String> sellPoliticCard(MarketOfferPhaseState currentState) {
@@ -355,7 +365,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 					swingUI.appendConsoleText("You can buy nothing.");
 					getControllerInterface().wakeUpServer(currentState.createTransation());
 				}
-			} catch (RemoteException | NumberFormatException e) {
+			} catch (RemoteException e) {
 				Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			}
 		} else {
