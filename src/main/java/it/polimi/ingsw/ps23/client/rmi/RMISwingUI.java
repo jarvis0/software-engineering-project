@@ -10,8 +10,8 @@ import java.util.Set;
 
 import java.util.Map.Entry;
 
-import it.polimi.ingsw.ps23.client.GUIView;
-import it.polimi.ingsw.ps23.client.SwingUI;
+import it.polimi.ingsw.ps23.client.gui.GUIView;
+import it.polimi.ingsw.ps23.client.gui.SwingUI;
 import it.polimi.ingsw.ps23.server.model.bonus.Bonus;
 import it.polimi.ingsw.ps23.server.model.map.Card;
 import it.polimi.ingsw.ps23.server.model.map.Region;

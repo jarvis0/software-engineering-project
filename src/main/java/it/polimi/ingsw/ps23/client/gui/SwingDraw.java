@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.client;
+package it.polimi.ingsw.ps23.client.gui;
 
 import java.awt.Color;
 import java.awt.Container;

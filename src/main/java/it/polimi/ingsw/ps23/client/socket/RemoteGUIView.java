@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.ps23.client.GUIView;
+import it.polimi.ingsw.ps23.client.gui.GUIView;
 import it.polimi.ingsw.ps23.client.socket.gui.NoInputExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.actions.ActionsExpression;
 import it.polimi.ingsw.ps23.client.socket.gui.interpreter.components.DynamicContentsExpression;

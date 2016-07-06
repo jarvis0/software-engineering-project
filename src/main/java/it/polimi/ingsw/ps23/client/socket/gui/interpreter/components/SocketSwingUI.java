@@ -2,8 +2,8 @@ package it.polimi.ingsw.ps23.client.socket.gui.interpreter.components;
 
 import java.util.List;
 
-import it.polimi.ingsw.ps23.client.GUIView;
-import it.polimi.ingsw.ps23.client.SwingUI;
+import it.polimi.ingsw.ps23.client.gui.GUIView;
+import it.polimi.ingsw.ps23.client.gui.SwingUI;
 
 /**
  * Creates a bridge to SwingUI and refreshes it starting from strings received via socket.

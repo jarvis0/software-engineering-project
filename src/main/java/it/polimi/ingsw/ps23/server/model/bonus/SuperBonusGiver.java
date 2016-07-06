@@ -39,12 +39,12 @@ public class SuperBonusGiver implements Serializable {
 	public void giveBonus(Game game, TurnHandler turnHandler) throws InvalidCityException, InvalidCardException {
 		for(Entry<Bonus, List<String>> entry : selectedBonuses.entrySet()) {
 			Bonus bonus = entry.getKey();
-			List <String> values = entry.getValue();
+			List<String> values = entry.getValue();
 			if(bonus instanceof BuildingPermitBonus) {
-				for (int i = 0 ; i< values.size(); i = i + 2) {
+				for (int i = 0 ; i < values.size(); i = i + 2) {
 					List<String> inputs = new ArrayList<>();
 					inputs.add(values.get(i));
-					inputs.add(values.get(i+1));
+					inputs.add(values.get(i + 1));
 					((SuperBonus) bonus).acquireSuperBonus(inputs, game, turnHandler);
 				}
 			} 
