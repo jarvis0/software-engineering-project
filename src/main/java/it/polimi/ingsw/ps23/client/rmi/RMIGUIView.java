@@ -197,7 +197,7 @@ public class RMIGUIView extends RMIView implements GUIView {
 
 	private void createAction(BuildEmporiumKingState currentState, List<String> removedCards, String arrivalCity) {
 		try {
-			wakeUp(currentState.createAction(removedCards, arrivalCity));
+			sendAction(currentState.createAction(removedCards, arrivalCity));
 		} catch (InvalidCardException e) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.toString(), e);
 			getState().setExceptionString(e.toString());
