@@ -41,6 +41,11 @@ public class GroupRegionalCity extends Region {
 		this.council = council;
 	}
 	
+	/**
+	 * Sets a new collection of regional permit tiles picking them from the
+	 * permit tiles deck.
+	 * @param permitTiles - the previous regional permit tiles deck.
+	 */
 	public void setPermitTiles(Deck permitTiles) {
 		permitDeckDown = permitTiles;
 		permitDeckUp = new Deck(permitDeckDown.pickCards(PERMIT_CARDS_UP_NUMBER));

@@ -36,10 +36,18 @@ public class AcquireBusinessPermitTileState extends MainActionState {
 		regionsMap = new HashMap<>();
 	}
 
+	/**
+	 * @return a CLI print of the current player politic hand cards.
+	 */
 	public String getPoliticHandDeck() {
 		return politicHandDeck.toString();
 	}
 	
+	/**
+	 * Returns the number of current player's politic hand cards, if he has more than 4 politic cards,
+	 * this method returns exactly 4.
+	 * @return the size of the current player politic hand deck size.
+	 */
 	public int getPoliticHandSize() {
 		if(politicHandDeck.getHandSize() > 4){
 			return 4;
@@ -47,6 +55,9 @@ public class AcquireBusinessPermitTileState extends MainActionState {
 		return politicHandDeck.getHandSize();
 	}
 	
+	/**
+	 * @return a CLI print of every game map council.
+	 */
 	public String getCouncilsMap() {
 		return regionsMap.toString();
 	}

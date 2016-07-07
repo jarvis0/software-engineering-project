@@ -24,10 +24,16 @@ abstract class ElectCouncillorActionState extends ActionState {
 		councilsMap = new HashMap<>();
 	}
 	
+	/**
+	 * @return a CLI print of free councillors.
+	 */
 	public String getFreeCouncillors() {
 		return freeCouncillors.toString();
 	}
 	
+	/**
+	 * @return a CLI print of every game map council.
+	 */
 	public String getCouncilsMap() {
 		return councilsMap.toString();
 	}

@@ -32,10 +32,16 @@ public class TurnHandler implements Serializable {
 		resetSuperBonusesSet();
 	}
 	
+	/**
+	 * @return true if the current player can perform a main action.
+	 */
 	public boolean isAvailableMainAction() {
 		return mainActionsNumber > 0;
 	}
 	
+	/**
+	 * @return true if the current player can perform a quick action.
+	 */
 	public boolean isAvailableQuickAction() {
 		return quickAction;
 	}
@@ -73,6 +79,10 @@ public class TurnHandler implements Serializable {
 		superBonusesSet.add(superBonus);
 	}
 	
+	/**
+	 * @return true if the current player can perform a super bonus action based on the fact
+	 * that he won a bonus on the nobility track that is a super bonus.
+	 */
 	public boolean isStartSuperTurnState() {
 		return !superBonusesSet.isEmpty();
 		

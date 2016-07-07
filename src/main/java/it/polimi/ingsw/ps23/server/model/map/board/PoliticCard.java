@@ -29,6 +29,9 @@ public class PoliticCard implements Card {
 		return color;
 	}
 	
+	/**
+	 * @return true if this politic card is a multi color card.
+	 */
 	public boolean isJoker() {
 		return color.toString().equals(MULTI);
 	}

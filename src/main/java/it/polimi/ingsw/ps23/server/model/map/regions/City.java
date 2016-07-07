@@ -35,6 +35,9 @@ public class City implements Serializable {
 		return name;
 	}
 	
+	/**
+	 * @return a string representation of the city game color.
+	 */
 	public String getColor() {
 		return color.toString();
 	}

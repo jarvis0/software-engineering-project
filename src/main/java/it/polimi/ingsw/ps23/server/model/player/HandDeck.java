@@ -31,6 +31,9 @@ public abstract class HandDeck implements Serializable {
 		return cards;
 	}
 	
+	/**
+	 * @return the number of cards in the specified deck.
+	 */
 	public int getHandSize() {
 		return cards.size();
 	}

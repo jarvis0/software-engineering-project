@@ -20,6 +20,9 @@ public class MarketBuyPhaseState extends State {
 	private Market market;
 	private Player currentPlayer;
 
+	/**
+	 * @return the current player name.
+	 */
 	public String getPlayerName() {
 		return currentPlayer.getName();
 	}
@@ -36,6 +39,9 @@ public class MarketBuyPhaseState extends State {
 		return false;
 	}
 	
+	/**
+	 * @return a CLI print for all available market offers.
+	 */
 	public String getAvaiableOffers() {
 		StringBuilder avaiableOffers = new StringBuilder();
 		for(MarketObject marketObject : market.getMarketObject()) {

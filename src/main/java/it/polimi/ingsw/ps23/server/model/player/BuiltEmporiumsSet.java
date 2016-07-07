@@ -63,6 +63,9 @@ public class BuiltEmporiumsSet implements Serializable {
 		throw new InvalidCityException();
 	}
 
+	/**
+	 * @return a CLI representation of all player's built emporiums.
+	 */
 	public String getCitiesPrint() {
 		StringBuilder loopString = new StringBuilder();
 		City city;

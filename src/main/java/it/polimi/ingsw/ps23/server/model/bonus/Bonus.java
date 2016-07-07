@@ -24,6 +24,9 @@ public abstract class Bonus implements Cloneable, Serializable {
 		return name;
 	}
 	
+	/**
+	 * @return true if the specified bonus object is a null bonus.
+	 */
 	public abstract boolean isNull();
 
 	@Override

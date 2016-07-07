@@ -20,6 +20,11 @@ public class EndGameState extends MapUpdateState {
 	private static final long serialVersionUID = -8226148165092467541L;
 	private List<Player> players;
 
+	/**
+	 * Performs a comparison among all players in game in order to
+	 * choose the winner of the game according to the Council Of Four game ending.
+	 * @return the winner of the game.
+	 */
 	public String getWinner() {
 		Collections.sort(players, new WinnerComparator());
 		StringBuilder stringBuilder = new StringBuilder();

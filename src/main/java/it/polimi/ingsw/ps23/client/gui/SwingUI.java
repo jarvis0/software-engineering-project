@@ -135,10 +135,16 @@ public abstract class SwingUI {
 		return spinnerValue;
 	}
 
+	/**
+	 * @return the current player chosen action.
+	 */
 	public String getChosenAction() {
 		return buttons.getChosenAction();
 	}
 
+	/**
+	 * @return the current player chosen region.
+	 */
 	public String getChosenRegion() {
 		return buttons.getChosenRegion();
 	}

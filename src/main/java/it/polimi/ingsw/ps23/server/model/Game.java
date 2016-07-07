@@ -115,10 +115,16 @@ public class Game implements Serializable {
 		currentMarket = new Market(playersSet);
 	}
 	
+	/**
+	 * @return the original number of player for this game.
+	 */
 	public int getPlayersNumber() {
 		return playersSet.playersNumber();
 	}
 	
+	/**
+	 * @return the number of players participating to the market phase.
+	 */
 	public int getMarketPlayersNumber() {
 		return playersSet.marketPlayersNumber();
 	}

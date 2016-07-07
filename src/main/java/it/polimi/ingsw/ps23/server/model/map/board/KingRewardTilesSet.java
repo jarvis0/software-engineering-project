@@ -25,6 +25,10 @@ public class KingRewardTilesSet implements Serializable {
 		this.kingTiles = kingTiles;
 	}
 	
+	/**
+	 * @return the current bonus tile. If it is a null bonus because of there are no further bonus tiles in
+	 * this set, it returns a null bonus instance.
+	 */
 	public Bonus getCurrentTile() {
 		if(!kingTiles.isEmpty()) {
 			return kingTiles.getFirst();
@@ -39,6 +43,9 @@ public class KingRewardTilesSet implements Serializable {
 		return kingTiles.pop();
 	}
 	
+	/**
+	 * @return true if there is no further bonus tile in this set.
+	 */
 	public boolean isEmpty() {
 		return kingTiles.isEmpty();
 	}

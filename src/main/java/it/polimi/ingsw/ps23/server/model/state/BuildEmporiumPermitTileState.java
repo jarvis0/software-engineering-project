@@ -25,6 +25,11 @@ public class BuildEmporiumPermitTileState extends MainActionState {
 		super(name);
 	}
 
+	/**
+	 * @return a string representation of all available cards in a deck.
+	 * @throws IllegalActionSelectedException if the player cannot perform this action
+	 * due to the fact he has not any card in his hand deck.
+	 */
 	public String getAvailableCards() throws IllegalActionSelectedException {
 		if (availableCards.getHandSize() == 0) {
 			throw new IllegalActionSelectedException();

@@ -127,6 +127,9 @@ public class PoliticHandDeck extends HandDeck {
 		return cards;
 	}
 
+	/**
+	 * @return the number of player's multi color cards.
+	 */
 	public int getJokerCardsNumber() {
 		return getJokerCards().size();
 	}

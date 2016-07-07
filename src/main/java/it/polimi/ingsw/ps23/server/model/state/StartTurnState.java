@@ -50,10 +50,16 @@ public class StartTurnState extends MapUpdateState {
 		return stateCache;
 	}
 	
+	/**
+	 * @return true if the current player can perform a main action.
+	 */
 	public boolean isAvailableMainAction() {
 		return turnHandler.isAvailableMainAction();
 	}
 	
+	/**
+	 * @return true if the current player can perform a quick action.
+	 */
 	public boolean isAvailableQuickAction() {
 		return turnHandler.isAvailableQuickAction();
 	}

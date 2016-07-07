@@ -71,6 +71,9 @@ public class Model extends ModelObservable {
 		setStartTurnState();
 	}
 	
+	/**
+	 * @return the type of the map randomly chosen at the game startup.
+	 */
 	public String getMapType() {
 		return game.getMapType();
 	}
@@ -159,6 +162,11 @@ public class Model extends ModelObservable {
 		launchOfferMarket();
 	}
 
+	/**
+	 * Sets the next action state based on the player choice.
+	 * @param state - action state which the player will perform.
+	 * @throws IllegalActionSelectedException if an illegal action has been selected by the current player.
+	 */
 	public void setActionState(State state) throws IllegalActionSelectedException {
 		((ActionState)state).canPerformThisAction(turnHandler);
 		context = new Context();
@@ -325,6 +333,10 @@ public class Model extends ModelObservable {
 		}
 	}
 	
+	/**
+	 * Sets the specified player online after his reconnection to the server.
+	 * @param player - to be re-joined to the game.
+	 */
 	public void setOnlinePlayer(String player) {
 		for(Player gamePlayer : game.getGamePlayersSet().getPlayers()) {
 			if(gamePlayer.getName().equals(player)) {

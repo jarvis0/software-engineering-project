@@ -26,6 +26,9 @@ public class PermitHandDeck extends HandDeck {
 		}
 	}
 	
+	/**
+	 * @return all current player's available hand permit tiles.
+	 */
 	public HandDeck getAvaiblePermissionCards() {
 		List<Card> returnCards = new ArrayList<>();
 		returnCards.addAll(getCards());
