@@ -26,6 +26,11 @@ public class StartTurnState extends MapUpdateState {
 		this.turnHandler = turnHandler;
 	}
 	
+	/**
+	 * Returns a CLI print to show the current player available actions.
+	 * @return a print to be shown to the current player in order to understand which actions
+	 * he can perform.
+	 */
 	public String getAvailableAction() {
 		String avaiableAction = new String();
 		if(turnHandler.isAvailableMainAction()) {
@@ -37,10 +42,14 @@ public class StartTurnState extends MapUpdateState {
 		return avaiableAction;
 	}
 
+	/**
+	 * Returns the state cache in order to create the action taken by input.
+	 * @return the state cache from state prototype pattern.
+	 */
 	public StateCache getStateCache() {
 		return stateCache;
 	}
-
+	
 	public boolean isAvailableMainAction() {
 		return turnHandler.isAvailableMainAction();
 	}

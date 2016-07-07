@@ -63,7 +63,7 @@ public class MarketOfferPhaseState extends MapUpdateState {
 	
 	/**
 	 * Returns the size of the current player politic hand deck.
-	 * @return the current player's cards number.
+	 * @return the current player's politic cards number.
 	 */
 	public int getPoliticHandSize() {
 		return getCurrentPlayer().getPoliticHandDeck().getHandSize();
@@ -77,8 +77,8 @@ public class MarketOfferPhaseState extends MapUpdateState {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the size of the current player permit hand deck.
+	 * @return the current player's permit cards number.
 	 */
 	public int getPermissionHandSize() {
 		return getCurrentPlayer().getPermitHandDeck().getHandSize();
