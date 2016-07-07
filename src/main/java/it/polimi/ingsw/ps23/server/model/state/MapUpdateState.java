@@ -38,10 +38,16 @@ public abstract class MapUpdateState extends State {
 		return kingPosition;
 	}
 	
+	/**
+	 * @return the list of free councillors.
+	 */
 	public List<Councillor> getFreeCouncillors() {
 		return freeCouncillors.getFreeCouncillorsList();
 	}
 	
+	/**
+	 * @return the list of all game regions.
+	 */
 	public List<Region> getGroupRegionalCity() {
 		return gameMap.getGroupRegionalCity();
 	}
@@ -50,6 +56,9 @@ public abstract class MapUpdateState extends State {
 		return gameMap;
 	}
 	
+	/**
+	 * @return the list of all game colored cities groups.
+	 */
 	public List<Region> getGroupColoredCity() {
 		return gameMap.getGroupColoredCity();
 	}
@@ -58,6 +67,9 @@ public abstract class MapUpdateState extends State {
 		return currentKingTile;		
 	}
 	
+	/**
+	 * @return the list of all game players.
+	 */
 	public List<Player> getPlayersList() {
 		return gamePlayersSet.getPlayers();
 	}
