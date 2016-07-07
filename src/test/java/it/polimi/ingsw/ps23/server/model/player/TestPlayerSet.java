@@ -34,6 +34,7 @@ public class TestPlayerSet {
 		assertTrue(playersSet.getPlayers().get(0).equals(player));
 		assertTrue(playersSet.playersNumber() == 1);
 		assertTrue(playersSet.marketPlayersNumber() == 1);
+		assertTrue(playersSet.toString().contains("1"));
 	}
 
 }

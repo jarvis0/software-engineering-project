@@ -95,7 +95,10 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(ElectCouncillorState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		assertTrue(!currentState.getCouncilsMap().isEmpty());
 		assertTrue(game.getFreeCouncillors().toString().equals(currentState.getFreeCouncillors()));
 		assertTrue(currentState.createAction("white", "king") instanceof ElectCouncillor);
 		setContext(new EngageAnAssistantState("engage an assistant"));
@@ -105,7 +108,9 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(EngageAnAssistantState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		assertTrue(currentState.createAction() instanceof EngageAnAssistant);
 		setContext(new ChangePermitTilesState("change permit tile"));
 	}
@@ -114,7 +119,10 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(ChangePermitTilesState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		assertTrue(!currentState.toString().isEmpty());
 		assertTrue(currentState.createAction(game.getGameMap().getGroupColoredCity().get(0).getName()) instanceof ChangePermitsTile);
 		setContext(new AcquireBusinessPermitTileState("acquire business permit tile"));
 	}
@@ -123,7 +131,10 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(AcquireBusinessPermitTileState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		assertFalse(currentState.getPoliticHandDeck().isEmpty());
 		currentState.getCouncilsMap();
 		while(game.getCurrentPlayer().getNumberOfPoliticCards() != currentState.getPoliticHandSize()) {
 			if(game.getCurrentPlayer().getNumberOfPoliticCards() >= 4) {
@@ -147,11 +158,15 @@ public class TestVisitState implements ViewVisitor {
 		removedPoliticCards.add("multi");
 		try {
 			assertTrue(currentState.getAvailablePoliticCardsNumber(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getName()) == game.getCurrentPlayer().getNumberOfPoliticCards());
-		} catch (InvalidCouncilException e) {}
+		} catch (InvalidCouncilException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		assertTrue(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getPermitTilesUp().toString().equals(currentState.getAvailablePermitTile(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getName())));
 		try {
 			assertTrue(currentState.createAction(((GroupRegionalCity)(game.getGameMap().getGroupRegionalCity().get(0))).getName(), removedPoliticCards, 0) instanceof AcquireBusinessPermitTile);
-		} catch (InvalidCardException e) {}
+		} catch (InvalidCardException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		setContext(new AssistantToElectCouncillorState("assistant to elct councillor"));
 	}
 
@@ -159,7 +174,9 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(AssistantToElectCouncillorState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		assertTrue(currentState.createAction("white", "king")instanceof AssistantToElectCouncillor);
 		setContext(new AdditionalMainActionState("additional main action"));
 	}
@@ -168,7 +185,9 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(AdditionalMainActionState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		assertTrue(currentState.createAction() instanceof AdditionalMainAction);
 		setContext(new BuildEmporiumKingState("building emporium king"));
 	}
@@ -177,7 +196,9 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(BuildEmporiumKingState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		List<String> removedPoliticCards = new ArrayList<>();
 		assertTrue(game.getKing().getPosition().toString().equals(currentState.getKingPosition()));
 		for(Card card : game.getCurrentPlayer().getPoliticHandDeck().getCards()) {
@@ -193,10 +214,14 @@ public class TestVisitState implements ViewVisitor {
 		try {
 			currentState.getAvailableCardsNumber();
 			assertTrue(game.getCurrentPlayer().getNumberOfPoliticCards() == currentState.getPoliticHandSize());
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		try {
 			assertTrue(currentState.createAction(removedPoliticCards, "a") instanceof BuildEmporiumKing);
-		} catch (InvalidCardException e) {}
+		} catch (InvalidCardException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		setContext(new BuildEmporiumPermitTileState("build emporium permit tile"));		
 	}
 
@@ -204,14 +229,30 @@ public class TestVisitState implements ViewVisitor {
 	public void visit(BuildEmporiumPermitTileState currentState) {
 		try {
 			currentState.canPerformThisAction(turnHandler);
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		try {
+			assertTrue(currentState.getAvailableCards().isEmpty());
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		try {
+			assertTrue(currentState.getChosenCard(0).isEmpty());
+		} catch (InvalidCardException e1) {
+			assertTrue(!e1.toString().isEmpty());
+		}
 		game.getCurrentPlayer().getPermitHandDeck().getCards().add(new BusinessPermitTile());
 		try {
 			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().toString().equals(currentState.getAvailableCards()));
-		} catch (IllegalActionSelectedException e) {}
+		} catch (IllegalActionSelectedException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		try {
 			assertTrue(game.getCurrentPlayer().getPermitHandDeck().getCards().get(0).toString().equals(currentState.getChosenCard(0)));
-		} catch (InvalidCardException e) {}
+		} catch (InvalidCardException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		assertTrue(currentState.createAction("a", 0) instanceof BuildEmporiumPermitTile);
 		setContext(new MarketOfferPhaseState());
 	}
@@ -231,7 +272,9 @@ public class TestVisitState implements ViewVisitor {
 		chosenPermissionCards.add(0);
 		try {
 			assertTrue(currentState.createMarketObject(new ArrayList<>(), chosenPermissionCards, 1, 1) instanceof MarketObject);
-		} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException e) {}
+		} catch (InvalidCardException | InvalidNumberOfAssistantException | InvalidCostException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		game.getMarket().addMarketObject(new MarketObject("a", new ArrayList<>(), new ArrayList<>(), 0, game.getCurrentPlayer().getCoins() + 1));
 		setContext(new MarketBuyPhaseState());
 	}
@@ -258,17 +301,24 @@ public class TestVisitState implements ViewVisitor {
 		assertTrue(currentState.hasNext());
 		currentState.getCurrentBonusValue();
 		assertTrue(currentState.isBuildingPemitTileBonus());
+		assertFalse(currentState.isRecycleBuildingPermitBonus());
+		assertFalse(currentState.isRecycleRewardTokenBonus());
 		currentState.checkKey();
 		try {
 			currentState.analyzeInput(game.getGameMap().getGroupRegionalCity().get(0).getName());
-		} catch (InvalidRegionException e) {}
+		} catch (InvalidRegionException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
 		currentState.checkKey();
 		currentState.confirmChange();
 		currentState.checkKey();
 		currentState.confirmChange();
 		try {
 			currentState.addValue(String.valueOf(1));
-		} catch (InvalidCityException | InvalidCardException e) {}
+		} catch (InvalidCityException | InvalidCardException e) {
+			assertTrue(!e.toString().isEmpty());
+		}
+		assertTrue(!currentState.useBonus().isEmpty());
 		assertTrue(currentState.createSuperBonusesGiver() instanceof SuperBonusGiver);
 		setContext(new EndGameState());
 	}

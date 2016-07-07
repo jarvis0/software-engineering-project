@@ -52,7 +52,10 @@ public class TestPlayersParameterExpression {
 			assertTrue(playersParameterExpression.getTotalPermitTilesBonusesName().toString().contains(String.valueOf(bonus.getName())));
 			assertTrue(playersParameterExpression.getTotalPermitTilesBonusesValue().toString().contains(String.valueOf(((RealBonus)bonus).getValue())));
 		}
-		
+		playersParameterExpression.parse("");
+		assertTrue(!playersParameterExpression.getPermitTilesCities().isEmpty());
+		assertTrue(!playersParameterExpression.getPermitTilesBonusesName().isEmpty());
+		assertTrue(!playersParameterExpression.getPermitTilesBonusesValue().isEmpty());
 	}
 
 	private String addPlayerParameters(List<Player> playersList) {

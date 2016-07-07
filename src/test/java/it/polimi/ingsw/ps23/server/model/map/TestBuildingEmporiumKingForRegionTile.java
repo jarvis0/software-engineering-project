@@ -45,6 +45,8 @@ public class TestBuildingEmporiumKingForRegionTile {
 			assertTrue(game.getCurrentPlayer().getEmporiums().getBuiltEmporiumsSet().contains(city));
 		}
 		assertTrue(game.getGameMap().getGroupRegionalCity().get(0).alreadyUsedBonusTile());
+		String mapType = game.getMapType();
+		assertTrue(mapType.equals("easy") || mapType.equals("medium") || mapType.equals("hard"));
 	}
 	
 	private List<String> getStringFromCards(List<Card> cards) {

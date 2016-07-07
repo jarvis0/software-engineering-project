@@ -25,7 +25,7 @@ public class TestKingRewardTilesSet {
 		assertTrue(kingRewardTilesSet.getCurrentTile().equals(bonus));
 		kingRewardTilesSet.pop();
 		assertTrue(kingRewardTilesSet.isEmpty());
-		
+		assertFalse(kingRewardTilesSet.toString().isEmpty());
 	}
 
 }

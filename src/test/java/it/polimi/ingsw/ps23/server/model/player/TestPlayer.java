@@ -38,6 +38,8 @@ public class TestPlayer {
 		assertTrue(player.getNobilityTrackPoints() == 1);
 		player.setOnline(false);
 		assertFalse(player.isOnline());
+		assertTrue(!player.showSecretStatus().isEmpty());
+		assertTrue(player.toString().contains("offline"));
 	}
 
 }

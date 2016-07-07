@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ps23.server.model.action;
+package it.polimi.ingsw.ps23.server.model.actions;
 
 import static org.junit.Assert.*;
 

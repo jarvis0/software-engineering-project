@@ -31,6 +31,7 @@ public class TestKing {
 		city = new CapitalCity("b", gameColor);
 		king.setNewPosition(city);
 		assertTrue(king.getPosition().equals(city));
+		assertTrue(king.toString().contains("position"));
 	}
 
 }

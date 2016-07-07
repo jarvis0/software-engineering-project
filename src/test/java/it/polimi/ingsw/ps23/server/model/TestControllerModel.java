@@ -47,8 +47,11 @@ public class TestControllerModel extends ViewObservable implements ViewObserver 
 		}
 		PlayersResumeHandler playersResumeHandler = new PlayersResumeHandler(new ArrayList<>());
 		model.setUpModel(playerNames, playersResumeHandler);
+		String mapType = model.getMapType();
+		assertTrue(mapType.equals("medium") || mapType.equals("easy") || mapType.equals("hard"));
 		model.startGame();
 		checkState();
+		model.detach(this);
 	}
 	
 	private void checkState() throws IOException {

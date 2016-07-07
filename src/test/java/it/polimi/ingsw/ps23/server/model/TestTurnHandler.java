@@ -20,6 +20,7 @@ public class TestTurnHandler {
 		assertTrue(!turnHandler.isAvailableQuickAction());
 		turnHandler.addMainAction();
 		assertTrue(turnHandler.isAvailableMainAction());
+		assertTrue(!turnHandler.isStartSuperTurnState());
 	}
 
 }

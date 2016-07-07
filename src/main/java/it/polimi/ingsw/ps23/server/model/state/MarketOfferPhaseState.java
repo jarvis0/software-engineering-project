@@ -22,18 +22,34 @@ public class MarketOfferPhaseState extends MapUpdateState {
 	 */
 	private static final long serialVersionUID = -6288171557528132844L;
 	
+	/**
+	 * Returns the string of the current player.
+	 * @return the name of the current player.
+	 */
 	public String getPlayerName() {
 		return getCurrentPlayer().getName();
 	}
 	
+	/**
+	 * Returns the string of the current player politic hand deck.
+	 * @return the set of the current player politic hand deck.
+	 */
 	public String getPoliticHandDeck() {
 		return "Politic Hand Deck: " + getCurrentPlayer().getPoliticHandDeck().toString();
 	}
 	
+	/**
+	 * Returns the string of the current player permit hand deck.
+	 * @return the set of the current player permit hand deck.
+	 */
 	public String getPermissionHandDeck() {
 		return "Permission Hand Deck: " + getCurrentPlayer().getPermitHandDeck().toString();
 	}
 	
+	/**
+	 * Returns the string of the current player assistants number.
+	 * @return the number of the current player's assistants.
+	 */
 	public String getAssistants() {
 		  return "Assistants: " + getCurrentPlayer().getAssistants();
 	}
@@ -45,6 +61,10 @@ public class MarketOfferPhaseState extends MapUpdateState {
 		return getCurrentPlayer().getPoliticHandDeck().getHandSize() > 0;
 	}
 	
+	/**
+	 * Returns the size of the current player politic hand deck.
+	 * @return the current player's cards number.
+	 */
 	public int getPoliticHandSize() {
 		return getCurrentPlayer().getPoliticHandDeck().getHandSize();
 	}
@@ -56,6 +76,10 @@ public class MarketOfferPhaseState extends MapUpdateState {
 		return getCurrentPlayer().getPermitHandDeck().getHandSize() > 0;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getPermissionHandSize() {
 		return getCurrentPlayer().getPermitHandDeck().getHandSize();
 	}
