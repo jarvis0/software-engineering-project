@@ -138,7 +138,6 @@ public class GameInstance {
 	
 	String disconnectSocketClient(SocketView socketView) {
 		String currentPlayer = model.getCurrentPlayer();
-		playersName.remove(currentPlayer);
 		String message = "The player " + currentPlayer + " has been disconnected due to connection timeout.";
 		socketViews.remove(socketView);
 		sendSocketInfoMessage(message);
@@ -161,7 +160,6 @@ public class GameInstance {
 	 */
 	public void disconnectRMIClient(ClientInterface client) {
 		String playerName = model.getCurrentPlayer();
-		playersName.remove(playerName);
 		String message = PLAYER_PRINT +  playerName + " has been disconnected from the game due to connection timeout.";
 		PrintStream output = new PrintStream(System.out);
 		output.println(message);
@@ -189,7 +187,6 @@ public class GameInstance {
 	}
 
 	void reconnectPlayer(String name, Connection connection) {
-		playersName.add(name);
 		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
 		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
@@ -200,7 +197,6 @@ public class GameInstance {
 	}
 	
 	void reconnectPlayer(String name, ClientInterface client) {
-		playersName.add(name);
 		String message = PLAYER_PRINT + name + " has been reconnected to the game.";
 		sendSocketInfoMessage(message);
 		model.sendRMIInfoMessage(message);
