@@ -28,9 +28,10 @@ public class EndGameState extends MapUpdateState {
 	public String getWinner() {
 		Collections.sort(players, new WinnerComparator());
 		StringBuilder stringBuilder = new StringBuilder();
-		int i = 0;
+		int i = 1;
 		for(Player player : players) {
 			stringBuilder.append("\n" + i + ": " + player.getName() + ", Victory Points:" + player.getVictoryPoints());
+			i++;
 		}
 		return "\nThe winner is: " + players.get(0).getName() + "\nClassification: " + stringBuilder;
 	}
