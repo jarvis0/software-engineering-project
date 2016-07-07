@@ -40,6 +40,14 @@ public class ModelObservable {
 	public ModelObservable() {
 		observers = new ArrayList<>();
 		rmiObservers = new HashMap<>();
+		timer = null;
+	}
+	
+	/**
+	 * Reset the current disconnecting player timer.
+	 */
+	public void resetTimer() {
+		timer = null;
 	}
 	
 	public String getCurrentPlayer() {
@@ -125,8 +133,14 @@ public class ModelObservable {
 		Set<Entry<String, ClientInterface>> rmiPlayers = rmiObservers.entrySet();
 		for(Entry<String, ClientInterface> rmiPlayer : rmiPlayers) {
 			if(rmiPlayer.getKey() == currentPlayer) {
-				timer = new Timer();
-				timer.schedule(new RMITimeoutTask(gameInstance, rmiPlayer.getValue(), timer), timeout * 1000L);
+				if(timer == null) {
+					timer = new Timer();
+					timer.schedule(new RMITimeoutTask(gameInstance, rmiPlayer.getValue(), timer), timeout * 1000L);
+				}
+				else {
+					timer.cancel();
+					timer = null;
+				}
 			}
 			try {
 				rmiPlayer.getValue().changeState(state);

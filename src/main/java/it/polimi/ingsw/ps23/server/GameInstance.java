@@ -160,6 +160,7 @@ public class GameInstance {
 	 */
 	public void disconnectRMIClient(ClientInterface client) {
 		String playerName = model.getCurrentPlayer();
+		model.resetTimer();
 		String message = PLAYER_PRINT +  playerName + " has been disconnected from the game due to connection timeout.";
 		PrintStream output = new PrintStream(System.out);
 		output.println(message);
@@ -174,7 +175,7 @@ public class GameInstance {
 		model.sendRMIInfoMessage(message);
 		model.setCurrentPlayerOffline();
 		if(checkIfEndGame()) {
-			output.println("A game has ended.");
+			output.println("A game is ended.");
 		}
 	}
 

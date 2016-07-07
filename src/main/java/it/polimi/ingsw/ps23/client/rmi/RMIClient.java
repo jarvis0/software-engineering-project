@@ -58,7 +58,7 @@ public class RMIClient implements ClientInterface {
 	@Override
 	public void infoMessage(String message) {
 		if(!message.contains("<map_type>") && !message.contains("</map_type>")) {
-			rmiView.infoMessage(message);
+			rmiView.infoMessage(message + "\n");
 		}
 		else {
 			rmiView.setMapType(message.replace("<map_type>", "").replace("</map_type>", ""));
