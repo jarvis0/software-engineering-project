@@ -65,6 +65,10 @@ public class SuperBonusState extends MapUpdateState {
 	public String useBonus() {
 		return ((SuperBonus) currentBonus).checkBonus(currentPlayer);
 	}
+	/**
+	 * Get the value of the {@link SuperBonus} that is being considered in the SuperBonusState visit.
+	 * @return the value of the current bonus
+	 */
 
 	public int getCurrentBonusValue() {
 		if(exceptionOccured) {
@@ -80,15 +84,24 @@ public class SuperBonusState extends MapUpdateState {
 	public SuperBonusGiver createSuperBonusesGiver() {
 		return new SuperBonusGiver(selectedBonuses);
 	}
-
+	/**
+	 * Analyzes the super bonus runtime instance.
+	 * @return true if the bonus analyzed in the view is a {@link BuildingPermitBonus}
+	 */
 	public boolean isBuildingPemitTileBonus() {
 		return currentBonus instanceof BuildingPermitBonus;
 	}
-
+	/**
+	 * Analyzes the super bonus runtime instance.
+	 * @return true if the bonus analyzed in the view is a {@link RecycleBuildingPermitBonus}
+	 */
 	public boolean isRecycleBuildingPermitBonus() {
 		return currentBonus instanceof RecycleBuildingPermitBonus;
 	}
-	
+	/**
+	 * Analyzes the super bonus runtime instance.
+	 * @return true if the bonus analyzed in the view is a {@link RecycleRewardTokenBonus}
+	 */	
 	public boolean isRecycleRewardTokenBonus() {
 		return currentBonus instanceof RecycleRewardTokenBonus;
 	}

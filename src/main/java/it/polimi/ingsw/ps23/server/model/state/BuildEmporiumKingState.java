@@ -30,29 +30,43 @@ public class BuildEmporiumKingState extends MainActionState {
 	BuildEmporiumKingState(String name) {
 		super(name);
 	}
-	
+	/**
+	 * 
+	 * @return 4 if the player has more the four card that matches the king council, otherwhise the numer of cards thaht matches the king council
+	 */
 	public int getPoliticHandSize() {
 		if(availableCards.getHandSize() > 4){
 			return 4;
 		}
 		return availableCards.getHandSize();
 	}
+	/**
+	 * 
+	 * @return the string of available cards
+	 */
 	
 	public String getAvailableCards() {
 		return availableCards.toString();
 	}
-	
+	/**
+	 * 
+	 * @return the number of cards if the player has more than zero card
+	 * @throws IllegalActionSelectedException
+	 */
 	public int getAvailableCardsNumber() throws IllegalActionSelectedException {
 		if(availableCards.getHandSize() == 0) {
 			throw new IllegalActionSelectedException();
 		}
 		return availableCards.getHandSize();
 	}
-
+	/**
+	 * 
+	 * @return the string of the city whare the king is palced.
+	 */
 	public String getKingPosition() {
 		return kingPosition.toString();
 	}
-	
+
 	private void checkCards(List<String> removedPoliticCards) throws InvalidCardException {
 		String council = kingCouncil.toString();
 		for (String string : removedPoliticCards) {

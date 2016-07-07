@@ -14,7 +14,7 @@ import it.polimi.ingsw.ps23.server.model.player.Player;
 import it.polimi.ingsw.ps23.server.model.player.PlayersSet;
 /**
  * Provides methods to show the status of the map in the current game.
- * @author Mirco Manzoni
+ * @author Mirco Manzoni & Alessandro Erba
  *
  */
 public abstract class MapUpdateState extends State {
@@ -95,6 +95,11 @@ public abstract class MapUpdateState extends State {
 		}
 		lastActionPerformed = game.getLastActionPerformed();
 	}
+	
+	/**
+	 * This method provides the print of the game status.
+	 * @return the game status string
+	 */
 	
 	public String getStatus() {
 		String print = "\n===============================================================================================================\n";

@@ -80,7 +80,10 @@ public class Player implements Serializable {
 	public int getNobilityTrackPoints() {
 		return nobilityTrackPoints;
 	}
-
+	/**
+	 * Sets the player online or offline boolean
+	 * @param online
+	 */
 	public void setOnline(boolean online) {
 		this.online = online;
 	}
@@ -153,7 +156,10 @@ public class Player implements Serializable {
 	public HandDeck getPermitHandDeck() {
 		return permitHandDeck;
 	}
-	
+	/**
+	 * Gets the player total hand deck, composed by used and unused permit tiles.
+	 * @return the Hand Deck composed by used and unused permit tiles
+	 */
 	public HandDeck getAllPermitHandDeck() {
 		HandDeck permissionTotalHandDeck = new PermitHandDeck();
 		permissionTotalHandDeck.getCards().addAll(permitHandDeck.getCards());
@@ -163,10 +169,10 @@ public class Player implements Serializable {
 	/**
 	 * Adds the selected {@link City} to the list of the emporiums of the player and he takes the {@link Bonus}
 	 * of this city and the nearest city where he built. If the player reaches the maximum size of emporiums 
-	 * built, he recives {@link VictoryPointBonus}.
+	 * built, he receives {@link VictoryPointBonus}.
 	 * @param game - current game for references to cities
 	 * @param turnHandler - turnhandler to apply bonuses
-	 * @param city - city wheer the player wants to build
+	 * @param city - city where the player wants to build
 	 */
 	public void updateEmporiumSet(Game game, TurnHandler turnHandler, City city) {
 		builtEmporiumsSet.addBuiltEmporium(city);
@@ -224,7 +230,10 @@ public class Player implements Serializable {
 	public HandDeck getPermitUsedHandDeck() {
 		return permitUsedHandDeck;
 	}
-	
+	/**
+	 * Gets all the emporiums of the current player that have not a {@link NobilityTrackStepBonus} as Reward Token.
+	 * @return the {@link BuiltEmporiumsSet} of the player without cities with a {@link NobilityTrackStepBonus} as Reward Token
+	 */
 	public BuiltEmporiumsSet getEmporiumForRecycleRewardToken() {
 		return builtEmporiumsSet.getCitiesForRecycleRewardTokens();
 	}
@@ -243,11 +252,17 @@ public class Player implements Serializable {
 	public void getAllTilesPoints(Game game, TurnHandler turnHandler) {
 		bonusTiles.useBonus(game, turnHandler);
 	}
-	
+	/**
+	 * Gets the size of the player permit hand deck.
+	 * @return the sum of not used and nor used permit hand deck.
+	 */
 	public int getNumberOfPermitCards() {
 		return permitHandDeck.getHandSize() + permitUsedHandDeck.getHandSize();
 	}
-	
+	/**
+	 * Gets the size of the player politic hand deck.
+	 * @return number of politic cards in player hand.
+	 */
 	public int getNumberOfPoliticCards() {
 		return politicHandDeck.getHandSize();
 	}
