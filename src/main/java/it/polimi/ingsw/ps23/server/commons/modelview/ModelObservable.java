@@ -139,7 +139,8 @@ public class ModelObservable {
 				}
 				else {
 					timer.cancel();
-					timer = null;
+					timer = new Timer();
+					timer.schedule(new RMITimeoutTask(gameInstance, rmiPlayer.getValue(), timer), timeout * 1000L);
 				}
 			}
 			try {
